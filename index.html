@@ -114,14 +114,41 @@ function autoScroll() {
 
 autoScroll();
 function checkout(){
- if(!cart.length){alert("Cart empty");return;}
- const n=name.value.trim(),p=phone.value.trim();
- if(!n||!p){alert("Enter name & phone");return;}
- let body=`Customer: ${n}%0APhone: ${p}%0A%0AItems:%0A`;
- let total=0;
- cart.forEach(c=>{body+=`${c.name} | Size: ${c.size} | Qty: ${c.qty} - ₹${c.price*c.qty}%0A`;total+=c.price*c.qty;});
- body+=`%0ATotal: ₹${total}`;
- location.href=`mailto:aquilux.support@gmail.com?subject=New Aquilux Order&body=${body}`;
+
+ if(!cart.length){
+   alert("Cart empty");
+   return;
+ }
+
+ const n = name.value.trim();
+ const p = phone.value.trim();
+
+ if(!n || !p){
+   alert("Enter name & phone");
+   return;
+ }
+
+ let message = `🛒 *New Aquilux Order*%0A%0A`;
+ message += `👤 Name: ${n}%0A`;
+ message += `📞 Phone: ${p}%0A%0A`;
+
+ let total = 0;
+
+ cart.forEach(c=>{
+   message += `• ${c.name}%0A`;
+   message += `Size: ${c.size}%0A`;
+   message += `Qty: ${c.qty}%0A`;
+   message += `Price: ₹${c.price * c.qty}%0A%0A`;
+
+   total += c.price * c.qty;
+ });
+
+ message += `💰 Total: ₹${total}`;
+
+ window.open(
+`https://wa.me/919558039135?text=${message}`,
+"_blank"
+ );
 }
 </script>
 </body>
