@@ -139,14 +139,14 @@ to{transform:translateX(30px)}
 
 <script>
 const products=[
-["Altitude Tee",999,"https://i.ibb.co/R4PTq00T/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],
-["Classic Oversized",999,"https://i.ibb.co/3mt9mrDN/IMG-0424.jpg"],
-["Premium Street",1099,"https://i.ibb.co/HMYVKm3/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],
-["Luxury Fit",699,"https://i.ibb.co/C5bvGbnd/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],
-["Luxury Fit",599,"https://i.ibb.co/JWtCwG3r/IMG-0307.jpg"],
-["Luxury Fit",599,"https://i.ibb.co/wFCQCfhZ/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],  
-["Luxury Fit",599,"https://i.ibb.co/c0d46XP/Green-and-Beige-Modern-Casual-Fashion-Poster-4.jpg"],
-["Luxury Fit",599,"https://i.ibb.co/mCvsmh6m/IMG-0400.jpg"],
+["Teamspirit",999,"https://i.ibb.co/R4PTq00T/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],
+["Cherry Kiss Crop Tee",999,"https://i.ibb.co/3mt9mrDN/IMG-0424.jpg"],
+["Serve the Lord",1099,"https://i.ibb.co/HMYVKm3/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],
+["Courtside Terry Shorts",699,"https://i.ibb.co/C5bvGbnd/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],
+["Aquilux Mosaie",599,"https://i.ibb.co/JWtCwG3r/IMG-0307.jpg"],
+["Metropolitan Heritage Tee",599,"https://i.ibb.co/wFCQCfhZ/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"],  
+["New York- Manhattan",599,"https://i.ibb.co/c0d46XP/Green-and-Beige-Modern-Casual-Fashion-Poster-4.jpg"],
+["Slow Morning Club",599,"https://i.ibb.co/mCvsmh6m/IMG-0400.jpg"],
 ];
 let cart=[];
 const g=document.getElementById("grid");
@@ -162,7 +162,7 @@ g.innerHTML+=`<div class=card>
 });
 function add(i){
 let s=document.getElementById("s"+i).value;
-let f=cart.find(x=>x.n==products[i][0]&&x.s==s);
+let f=cart.find(x=>x.n==products[i][0]&&x.s==s);c
 if(f)f.q++;else cart.push({n:products[i][0],p:products[i][1],s:s,q:1});
 draw();
 }
