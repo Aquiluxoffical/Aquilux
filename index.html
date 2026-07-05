@@ -120,10 +120,10 @@ function checkout(){
    return;
  }
 
- const n = name.value.trim();
- const p = phone.value.trim();
-
- if(!n || !p){
+const n = name.value.trim();
+const p = phone.value.trim();
+const a = address.value.trim();
+ if(!n || !p || !a){
    alert("Enter name & phone");
    return;
  }
