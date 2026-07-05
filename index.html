@@ -2,80 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Aquilux | Own. Your. Altitude.</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
 body{background:#fafafa;color:#111}
-header{position:fixed;top:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 6%;background:#fff;box-shadow:0 2px 15px rgba(0,0,0,.08);z-index:99}
-.logo{display:flex;align-items:center;gap:12px}.logo img{height:52px}
+header{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 6%;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08);z-index:99}
+.logo{display:flex;align-items:center;gap:12px}.logo img{height:50px}
 nav a{text-decoration:none;color:#111;margin-left:18px}
-.hero{height:100vh;background:url('https://i.ibb.co/VYTDBPYg/IMG-2285.jpg') center/cover;display:flex;align-items:center;justify-content:center;position:relative}
+.hero{height:100vh;background:url('https://i.ibb.co/VYTDBPYg/IMG-2285.jpg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;position:relative}
 .hero:before{content:"";position:absolute;inset:0;background:rgba(0,0,0,.45)}
-.hero div{position:relative;color:#fff;text-align:center}
-.btn{background:#fff;color:#111;padding:14px 30px;border-radius:40px;text-decoration:none;font-weight:600}
+.hero-content{position:relative;z-index:2;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center;gap:18px;padding:20px}
+.hero h1{font-size:56px;line-height:1.1}
+.hero p{font-size:22px}
+.btn{display:inline-block;background:#fff;color:#111;padding:15px 36px;border-radius:40px;text-decoration:none;font-weight:600}
 section{padding:90px 6%}
-.products{display:flex;overflow-x:auto;gap:20px}
-.card{min-width:300px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.08)}
-.card img{width:100%;height:380px;object-fit:cover}
-.info{padding:18px}.price{font-weight:700;margin:12px 0}
-button{width:100%;padding:12px;background:#111;color:#fff;border:none;border-radius:30px;cursor:pointer}
-.cart{background:#fff;padding:30px;border-radius:18px;max-width:500px;margin:50px auto;box-shadow:0 10px 25px rgba(0,0,0,.08)}
-input,textarea,select{width:100%;padding:12px;margin:10px 0;border:1px solid #ddd;border-radius:10px}
+h2{text-align:center;margin-bottom:30px}
+.products{display:flex;gap:20px;overflow-x:auto}
+.card{min-width:300px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.card img{width:100%;height:360px;object-fit:cover}.info{padding:18px}
+.price{font-weight:bold;margin:10px 0}
+input,textarea,select,button{width:100%;padding:12px;margin:10px 0;border-radius:10px}
+input,textarea,select{border:1px solid #ddd}
+button{background:#25D366;color:#fff;border:none;font-weight:600;cursor:pointer}
+.cart{max-width:520px;margin:auto;background:#fff;padding:25px;border-radius:18px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
 #cartItems div{display:flex;justify-content:space-between;margin:8px 0}
-footer{text-align:center;background:#111;color:#fff;padding:35px}
-.wa{position:fixed;bottom:20px;right:20px;background:#25D366;color:#fff;text-decoration:none;width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px}
-</style>
-</head>
-<body>
-<header><div class="logo"><img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png"><div><strong>Aquilux</strong><br><small>Own. Your. Altitude.</small></div></div><nav><a href="#">Home</a><a href="#products">Products</a><a href="#order">Order</a></nav></header>
-<section class="hero"><div><h1>Own. Your. Altitude.</h1><p>Minimalist Clothing Brand</p><a class="btn" href="#products">Shop Now</a></div></section>
+footer{background:#111;color:#fff;text-align:center;padding:30px;margin-top:40px}
+</style></head><body>
+<header><div class="logo"><img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png"><div><b>Aquilux</b><br><small>Own. Your. Altitude.</small></div></div><nav><a href="#">Home</a><a href="#products">Products</a><a href="#order">Order</a></nav></header>
+<section class="hero"><div class="hero-content"><h1>Own. Your. Altitude.</h1><p>Minimalist Clothing Brand</p><a class="btn" href="#products">Shop Now</a></div></section>
 <section id="products"><h2>Featured Collection</h2><div class="products" id="slider"></div></section>
-<section id="order"><div class="cart">
-<h2>Your Cart</h2><div id="cartItems">Cart is empty</div>
-<h3>Total ₹<span id="total">0</span></h3>
-<input id="name" placeholder="Customer Name">
-<input id="phone" placeholder="Phone Number">
-<textarea id="address" rows="4" placeholder="Delivery Address"></textarea>
-<button onclick="checkout()">Place Order on WhatsApp</button>
-</div></section>
-<footer><p>Aquilux</p><p>Own. Your. Altitude.</p><p>aquilux.support@gmail.com</p></footer>
-<a class="wa" href="https://wa.me/919558039135">💬</a>
+<section id="order"><div class="cart"><h2>Your Cart</h2><div id="cartItems">Cart is empty</div><h3>Total ₹<span id="total">0</span></h3><input id="name" placeholder="Customer Name"><input id="phone" placeholder="Phone Number"><textarea id="address" rows="4" placeholder="Delivery Address"></textarea><button onclick="checkout()">Place Order on WhatsApp</button></div></section>
+<footer>Aquilux<br>Own. Your. Altitude.</footer>
 <script>
 const products=[
 {name:"Altitude Tee",price:999,img:"https://i.ibb.co/R4PTq00T/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"},
 {name:"Classic Oversized Tee",price:1199,img:"https://i.ibb.co/3mt9mrDN/IMG-0424.jpg"},
-{name:"Premium Street Tee",price:999,img:"https://i.ibb.co/HMYVKm3/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"},
-{name:"Essential Tee",price:999,img:"https://i.ibb.co/C5bvGbnd/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"}];
-const slider=document.getElementById("slider");
-const cart=[];
-products.forEach((p,i)=>slider.innerHTML+=`<div class="card"><img src="${p.img}"><div class="info"><h3>${p.name}</h3><div class="price">₹${p.price}</div><select id="size${i}"><option value="">Select Size</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button onclick="add(${i})">Add to Cart</button></div></div>`);
-function add(i){
-const s=document.getElementById("size"+i).value;
-if(!s){alert("Please select a size.");return;}
-let e=cart.find(x=>x.name===products[i].name&&x.size===s);
-if(e)e.qty++;else cart.push({...products[i],size:s,qty:1});
-render();
-}
-function render(){
-let t=0,h="";
-cart.forEach(c=>{t+=c.price*c.qty;h+=`<div><div><b>${c.name}</b><br>Size:${c.size} × ${c.qty}</div><span>₹${c.price*c.qty}</span></div>`});
-document.getElementById("cartItems").innerHTML=h||"Cart is empty";
-document.getElementById("total").textContent=t;
-}
-function checkout(){
-if(!cart.length){alert("Cart empty");return;}
-const n=document.getElementById("name").value.trim();
-const p=document.getElementById("phone").value.trim();
-const a=document.getElementById("address").value.trim();
-if(!n||!p||!a){alert("Please fill name, phone and address.");return;}
-let m=`🛍️ *NEW AQUILUX ORDER*%0A%0A👤 ${n}%0A📞 ${p}%0A📍 ${a}%0A%0A`;
-let total=0;
-cart.forEach(c=>{m+=`• ${c.name} | ${c.size} | Qty:${c.qty} | ₹${c.price*c.qty}%0A`;total+=c.price*c.qty;});
-m+=`%0A💰 Total: ₹${total}`;
-window.open(`https://wa.me/919558039135?text=${m}`,"_blank");
-setTimeout(()=>alert("🎉 Thank you for your order!\nPlease tap Send in WhatsApp to complete your order."),500);
-}
-</script>
-</body></html>
+{name:"Premium Street Tee",price:1099,img:"https://i.ibb.co/HMYVKm3/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"},
+{name:"Essential Tee",price:1299,img:"https://i.ibb.co/C5bvGbnd/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"}];
+const slider=document.getElementById("slider"),cart=[];
+products.forEach((p,i)=>slider.innerHTML+=`<div class="card"><img src="${p.img}"><div class="info"><h3>${p.name}</h3><div class="price">₹${p.price}</div><select id="s${i}"><option value="">Select Size</option><option>S</option><option>M</option><option>L</option><option>XL</option></select><button onclick="add(${i})">Add to Cart</button></div></div>`);
+function add(i){let s=document.getElementById("s"+i).value;if(!s){alert("Select size");return;}let e=cart.find(x=>x.name==products[i].name&&x.size==s);if(e)e.qty++;else cart.push({...products[i],size:s,qty:1});render();}
+function render(){let t=0,h="";cart.forEach(c=>{t+=c.price*c.qty;h+=`<div><span>${c.name} (${c.size}) x${c.qty}</span><span>₹${c.price*c.qty}</span></div>`});cartItems.innerHTML=h||"Cart is empty";total.textContent=t;}
+function checkout(){if(!cart.length)return alert("Cart empty");let n=name.value.trim(),p=phone.value.trim(),a=address.value.trim();if(!n||!p||!a)return alert("Fill all details");let m=`🛍️ *NEW AQUILUX ORDER*%0A👤 ${n}%0A📞 ${p}%0A📍 ${a}%0A%0A`;let t=0;cart.forEach(c=>{m+=`${c.name} ${c.size} x${c.qty} ₹${c.price*c.qty}%0A`;t+=c.price*c.qty});m+=`%0A💰 Total ₹${t}`;window.open(`https://wa.me/919558039135?text=${m}`,"_blank");setTimeout(()=>alert("🎉 Thank you! Please tap Send in WhatsApp."),500);}
+</script></body></html>
