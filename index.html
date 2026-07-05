@@ -46,8 +46,8 @@ footer{text-align:center;background:#111;color:#fff;padding:35px}
 const products=[
 {name:"Altitude Tee",price:999,img:"https://i.ibb.co/R4PTq00T/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"},
 {name:"Classic Oversized Tee",price:1199,img:"https://i.ibb.co/3mt9mrDN/IMG-0424.jpg"},
-{name:"Premium Street Tee",price:1099,img:"https://i.ibb.co/HMYVKm3/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"},
-{name:"Essential Tee",price:1299,img:"https://i.ibb.co/C5bvGbnd/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"}];
+{name:"Premium Street Tee",price:999,img:"https://i.ibb.co/HMYVKm3/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"},
+{name:"Essential Tee",price:999,img:"https://i.ibb.co/C5bvGbnd/Green-and-Beige-Modern-Casual-Fashion-Poster.jpg"}];
 const slider=document.getElementById("slider");
 const cart=[];
 products.forEach((p,i)=>slider.innerHTML+=`<div class="card"><img src="${p.img}"><div class="info"><h3>${p.name}</h3><div class="price">₹${p.price}</div><select id="size${i}"><option value="">Select Size</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><button onclick="add(${i})">Add to Cart</button></div></div>`);
