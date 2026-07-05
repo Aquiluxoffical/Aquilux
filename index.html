@@ -146,10 +146,14 @@ function checkout(){
  message += `💰 Total: ₹${total}`;
 
  window.open(
-   `https://wa.me/919558039135?text=${message}`,
-   "_blank"
- );
-}
+  `https://wa.me/919558039135?text=${message}`,
+  "_blank"
+);
+
+// Thank you popup
+setTimeout(() => {
+    alert("🎉 Thank you for your order!\n\nYour order details have been prepared in WhatsApp.\n\nPlease tap 'Send' in WhatsApp to complete your order.\n\nThank you for shopping with Aquilux ❤️");
+}, 500);
 </script>
 </body>
 </html>
