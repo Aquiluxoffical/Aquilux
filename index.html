@@ -100,6 +100,18 @@ from{transform:translateX(-30px)}
 to{transform:translateX(30px)}
 }
 
+
+@media(max-width:768px){
+.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.info{padding:10px}
+.info h3{font-size:14px}
+.price{font-size:13px}
+select,button{padding:8px;font-size:13px}
+.hero h1{font-size:2.6rem}
+.hero-bg:before{width:420px;height:420px}
+.hero-bg span{width:2px;height:2px}
+}
+
 </style>
 </head>
 <body>
@@ -162,7 +174,7 @@ g.innerHTML+=`<div class=card>
 });
 function add(i){
 let s=document.getElementById("s"+i).value;
-let f=cart.find(x=>x.n==products[i][0]&&x.s==s);c
+let f=cart.find(x=>x.n==products[i][0]&&x.s==s);
 if(f)f.q++;else cart.push({n:products[i][0],p:products[i][1],s:s,q:1});
 draw();
 }
