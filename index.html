@@ -179,6 +179,43 @@ select,button{padding:8px;font-size:13px}
 }
 
 
+.cart-table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+.cart-table th{
+background:#111;
+padding:14px;
+border-bottom:1px solid #333;
+font-weight:600;
+text-align:center;
+}
+
+.cart-table td{
+padding:14px;
+border-bottom:1px solid #222;
+text-align:center;
+}
+
+.cart-table tr:hover{
+background:#151515;
+}
+
+.delete-btn{
+background:none;
+border:none;
+font-size:20px;
+cursor:pointer;
+width:auto;
+padding:0;
+}
+
+.delete-btn:hover{
+transform:scale(1.2);
+}
+
     
 
 </style>
@@ -295,20 +332,62 @@ function addToCart(i){
 
     
 function draw(){
-let h="",t=0;
-cart.forEach((c,i)=>{t+=c.p*c.q;h+=`<p>${c.n} (${c.s}) × ${c.q} — ₹${c.p*c.q} <a href=# onclick="cart.splice(${i},1);draw()">✕</a></p>`});
-items.innerHTML=h||"Cart is empty.";
+
+let t=0;
+
+let h=`
+<table class="cart-table">
+<thead>
+<tr>
+<th>Product</th>
+<th>Size</th>
+<th>Qty</th>
+<th>Price</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+`;
+
+cart.forEach((c,i)=>{
+
+t+=c.p*c.q;
+
+h+=`
+<tr>
+<td>${c.n}</td>
+<td>${c.s}</td>
+<td>${c.q}</td>
+<td>₹${c.p*c.q}</td>
+<td>
+<button class="delete-btn" onclick="cart.splice(${i},1);draw()">
+🗑️
+</button>
+</td>
+</tr>
+`;
+
+});
+
+h+=`
+</tbody>
+</table>
+`;
+
+if(cart.length==0){
+h="Cart is empty.";
+}
+
+items.innerHTML=h;
 total.textContent=t;
+
 }
-function checkout(){
-if(!cart.length)return alert("Cart is empty");
-let msg=`*Aquilux Order*%0AName:${n.value}%0APhone:${p.value}%0AAddress:${a.value}%0A%0A`;
-let tot=0;
-cart.forEach(c=>{msg+=`${c.n} ${c.s} x${c.q} = ₹${c.p*c.q}%0A`;tot+=c.p*c.q});
-msg+=`%0ATotal: ₹${tot}`;
-window.open("https://wa.me/919558039135?text="+msg,"_blank");
-setTimeout(()=>alert("Thank you for your order."),600);
-}
+
+
+
+    
+
+    
 </script>
 </body>
 </html>
