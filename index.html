@@ -270,7 +270,19 @@ onAuthStateChanged(auth, (user) => {
 });
 </script>    
 <body>
-<header>
+<<header>
+
+<div style="display:flex;align-items:center;gap:12px">
+<img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+<strong>Aquilux</strong>
+</div>
+
+<nav>
+<a href="#shop">Shop</a>
+<a href="#cart">Cart</a>
+</nav>
+
+<div style="display:flex;align-items:center;gap:12px;">
 
 <button id="loginBtn" onclick="googleLogin()">
 Sign in with Google
@@ -281,9 +293,9 @@ Sign in with Google
 <span id="userName"></span>
 <button onclick="googleLogout()">Logout</button>
 </div>
-    
-<div style="display:flex;align-items:center;gap:12px"><img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png"><strong>Aquilux</strong></div>
-<nav><a href="#shop">Shop</a><a href="#cart">Cart</a></nav>
+
+</div>
+
 </header>
 
 <section class="hero">
