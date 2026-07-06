@@ -29,8 +29,8 @@ draw();
 function draw(){
 let h="",t=0;
 cart.forEach((c,i)=>{t+=c.p*c.q;h+=`<p>${c.n} (${c.s}) × ${c.q} — ₹${c.p*c.q} <a href=# onclick="cart.splice(${i},1);draw()">✕</a></p>`});
-items.innerHTML=h||"Cart is empty.";
-total.textContent=t;
+document.getElementById("items").innerHTML = h || "Cart is empty.";
+document.getElementById("total").textContent = t;
 }
 function checkout(){
 if(!cart.length)return alert("Cart is empty");
