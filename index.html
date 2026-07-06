@@ -142,6 +142,32 @@ select,button{padding:8px;font-size:13px}
 .hero-bg span{width:2px;height:2px}
 }
 
+.qty{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:12px;
+    margin-top:12px;
+}
+
+.qty button{
+    width:42px;
+    height:42px;
+    padding:0;
+    font-size:22px;
+    border-radius:50%;
+}
+
+.qty span{
+    min-width:25px;
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+}
+
+
+    
+
 </style>
 </head>
 <body>
@@ -199,15 +225,62 @@ g.innerHTML+=`<div class=card>
 <h3>${p[0]}</h3>
 <div class=price>₹${p[1]}</div>
 <select id=s${i}><option>S</option><option>M</option><option>L</option><option>XL</option></select>
-<button onclick="add(${i})">ADD TO CART</button>
+<div class="qty">
+    <button onclick="changeQty(${i},-1)">−</button>
+    <span id="q${i}">0</span>
+    <button onclick="changeQty(${i},1)">+</button>
+</div>
 </div></div>`;
 });
-function add(i){
-let s=document.getElementById("s"+i).value;
-let f=cart.find(x=>x.n==products[i][0]&&x.s==s);
-if(f)f.q++;else cart.push({n:products[i][0],p:products[i][1],s:s,q:1});
-draw();
+
+let qty = Array(products.length).fill(0);
+
+function changeQty(i, change){
+
+    const q = document.getElementById("q"+i);
+
+    let value = parseInt(q.textContent);
+
+    if(change===1){
+        value++;
+        add(i,1);
+    }else if(value>0){
+        value--;
+        add(i,-1);
+    }
+
+    q.textContent=value;
 }
+    
+function add(i, change){
+    const size = document.getElementById("s"+i).value;
+
+    let item = cart.find(x => x.n===products[i][0] && x.s===size);
+
+    if(change===1){
+        if(item){
+            item.q++;
+        }else{
+            cart.push({
+                n:products[i][0],
+                p:products[i][1],
+                s:size,
+                q:1
+            });
+        }
+    }else{
+        if(item){
+            item.q--;
+
+            if(item.q<=0){
+                cart = cart.filter(x => !(x.n===products[i][0] && x.s===size));
+            }
+        }
+    }
+
+    draw();
+}
+    
 function draw(){
 let h="",t=0;
 cart.forEach((c,i)=>{t+=c.p*c.q;h+=`<p>${c.n} (${c.s}) × ${c.q} — ₹${c.p*c.q} <a href=# onclick="cart.splice(${i},1);draw()">✕</a></p>`});
