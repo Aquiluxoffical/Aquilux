@@ -224,62 +224,62 @@ g.innerHTML+=`<div class=card>
 <div class=info>
 <h3>${p[0]}</h3>
 <div class=price>₹${p[1]}</div>
-<select id=s${i}><option>S</option><option>M</option><option>L</option><option>XL</option></select>
+<select id="s${i}">
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+</select>
+
 <div class="qty">
-    <button onclick="changeQty(${i},-1)">−</button>
-    <span id="q${i}">0</span>
-    <button onclick="changeQty(${i},1)">+</button>
+<button onclick="changeQty(${i},-1)">−</button>
+<span id="q${i}">1</span>
+<button onclick="changeQty(${i},1)">+</button>
 </div>
+
+<button onclick="addToCart(${i})">
+ADD TO CART
+</button>
 </div></div>`;
 });
 
-let qty = Array(products.length).fill(0);
+let qty = Array(products.length).fill(1);
 
-function changeQty(i, change){
+function changeQty(i,change){
 
-    const q = document.getElementById("q"+i);
+    qty[i]+=change;
 
-    let value = parseInt(q.textContent);
+    if(qty[i]<1) qty[i]=1;
 
-    if(change===1){
-        value++;
-        add(i,1);
-    }else if(value>0){
-        value--;
-        add(i,-1);
-    }
-
-    q.textContent=value;
+    document.getElementById("q"+i).textContent=qty[i];
 }
     
-function add(i, change){
-    const size = document.getElementById("s"+i).value;
+function addToCart(i){
 
-    let item = cart.find(x => x.n===products[i][0] && x.s===size);
+    let size=document.getElementById("s"+i).value;
 
-    if(change===1){
-        if(item){
-            item.q++;
-        }else{
-            cart.push({
-                n:products[i][0],
-                p:products[i][1],
-                s:size,
-                q:1
-            });
-        }
+    let quantity=qty[i];
+
+    let item=cart.find(x=>x.n==products[i][0] && x.s==size);
+
+    if(item){
+        item.q+=quantity;
     }else{
-        if(item){
-            item.q--;
-
-            if(item.q<=0){
-                cart = cart.filter(x => !(x.n===products[i][0] && x.s===size));
-            }
-        }
+        cart.push({
+            n:products[i][0],
+            p:products[i][1],
+            s:size,
+            q:quantity
+        });
     }
 
     draw();
+
+    qty[i]=1;
+
+    document.getElementById("q"+i).textContent=1;
 }
+
     
 function draw(){
 let h="",t=0;
