@@ -22,8 +22,21 @@ nav a{color:#ddd;text-decoration:none;margin-left:26px}
 section{padding:100px 8%}
 .title{font-size:2rem;font-weight:300;margin-bottom:30px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
-.card{border:1px solid var(--line);transition:.3s}
-.card:hover{transform:translateY(-4px)}
+
+.card,
+button,
+select{
+    transition:.3s ease;
+}
+
+.card:hover,
+button:hover,
+select:hover{
+    transform:translateY(-4px);
+    border-color:#fff;
+    box-shadow:0 10px 25px rgba(255,255,255,.08);
+}
+
 .card img{width:100%;aspect-ratio:4/5;object-fit:cover}
 .info{padding:18px; text-align:center}
 .info h3{font-weight:400}
