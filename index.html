@@ -263,6 +263,41 @@ flex-direction:column;
 }
 
 
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+backdrop-filter:blur(10px);
+}
+
+.popup-box{
+width:min(420px,90%);
+background:#111;
+border:1px solid #333;
+border-radius:20px;
+padding:30px;
+text-align:center;
+}
+
+.popup-box h2{
+margin-bottom:25px;
+font-weight:400;
+}
+
+.popup-box button{
+margin-top:12px;
+}
+
+.close-btn{
+background:#222;
+color:#fff;
+}
+
     
 
 </style>
@@ -535,10 +570,61 @@ total.textContent=t;
 }
 
 
+function openPayment(){
 
+document.getElementById("paymentPopup").style.display="flex";
+
+}
+
+function closePopup(){
+
+document.getElementById("paymentPopup").style.display="none";
+
+}
+
+
+function pay(app){
+
+let amount=document.getElementById("total").textContent;
+
+let upi="aquilux@okaxis";
+
+let url=`upi://pay?pa=${upi}&pn=Aquilux&am=${amount}&cu=INR`;
+
+window.location.href=url;
+
+}
+    
     
 
     
 </script>
+
+<div id="paymentPopup" class="popup">
+
+<div class="popup-box">
+
+<h2>Choose Payment Method</h2>
+
+<button onclick="pay('gpay')">
+🟢 Google Pay
+</button>
+
+<button onclick="pay('phonepe')">
+🟣 PhonePe
+</button>
+
+<button onclick="pay('paytm')">
+🔵 Paytm
+</button>
+
+<button class="close-btn" onclick="closePopup()">
+Cancel
+</button>
+
+</div>
+
+</div>    
+    
 </body>
 </html>
