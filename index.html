@@ -249,7 +249,7 @@ function changeQty(i,change){
 
     qty[i]+=change;
 
-    if(qty[i]<1) qty[i]=1;
+    if(qty[i]<1) qty[i]=0;
 
     document.getElementById("q"+i).textContent=qty[i];
 }
