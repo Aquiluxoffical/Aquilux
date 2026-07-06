@@ -220,6 +220,49 @@ transform:scale(1.2);
     overflow-x:auto;
 }
 
+.delivery-card{
+margin-top:40px;
+padding:25px;
+background:#111;
+border:1px solid #222;
+border-radius:18px;
+}
+
+.delivery-card h2{
+margin-bottom:20px;
+font-weight:400;
+}
+
+.input-row{
+display:flex;
+gap:15px;
+margin-top:10px;
+}
+
+.input-row input{
+flex:1;
+}
+
+.payment-btn{
+margin-top:25px;
+background:#fff;
+color:#000;
+font-weight:600;
+}
+
+.payment-btn:hover{
+background:#ddd;
+}
+
+@media(max-width:768px){
+
+.input-row{
+flex-direction:column;
+}
+
+}
+
+
     
 
 </style>
@@ -270,7 +313,7 @@ onAuthStateChanged(auth, (user) => {
 });
 </script>    
 <body>
-<<header>
+<header>
 
 <div style="display:flex;align-items:center;gap:12px">
 <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
@@ -280,6 +323,37 @@ onAuthStateChanged(auth, (user) => {
 <nav>
 <a href="#shop">Shop</a>
 <a href="#cart">Cart</a>
+
+<div class="delivery-card">
+
+<h2>Delivery Details</h2>
+
+<input type="text" id="receiverName" placeholder="Receiver Name *">
+
+<input type="tel" id="phone" maxlength="10" placeholder="Contact Number *">
+
+<input type="text" id="flat" placeholder="Flat / Floor / Society *">
+
+<input type="text" id="road" placeholder="Road / Area *">
+
+<input type="text" id="landmark" placeholder="Landmark (Optional)">
+
+<div class="input-row">
+    <input type="text" id="pincode" maxlength="6" placeholder="PIN Code *">
+    <button type="button" onclick="lookupPin()">Lookup</button>
+</div>
+
+<div class="input-row">
+    <input type="text" id="city" placeholder="City" readonly>
+    <input type="text" id="state" placeholder="State" readonly>
+</div>
+
+<button class="payment-btn" onclick="openPayment()">
+Proceed To Payment
+</button>
+
+</div>
+
 </nav>
 
 <div style="display:flex;align-items:center;gap:12px;">
@@ -316,10 +390,8 @@ Sign in with Google
 <div class="title">Cart</div>
 <div id="items"></div>
 <h2>Total ₹<span id="total">0</span></h2>
-<input id="n" placeholder="Full Name">
-<input id="p" placeholder="Phone">
-<textarea id="a" placeholder="Delivery Address"></textarea>
-<button onclick="checkout()">Checkout on WhatsApp</button>
+
+<button onclick="checkout()">Proceed to Payment</button>
 </section>
 
 <footer>
