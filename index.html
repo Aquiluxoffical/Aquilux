@@ -233,7 +233,7 @@ g.innerHTML+=`<div class=card>
 
 <div class="qty">
 <button onclick="changeQty(${i},-1)">−</button>
-<span id="q${i}">1</span>
+<span id="q${i}">0</span>
 <button onclick="changeQty(${i},1)">+</button>
 </div>
 
@@ -243,7 +243,7 @@ ADD TO CART
 </div></div>`;
 });
 
-let qty = Array(products.length).fill(1);
+let qty = Array(products.length).fill(0);
 
 function changeQty(i,change){
 
@@ -275,7 +275,7 @@ function addToCart(i){
 
     draw();
 
-    qty[i]=1;
+    qty[i]=0;
 
     document.getElementById("q"+i).textContent=1;
 }
