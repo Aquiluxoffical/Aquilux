@@ -596,13 +596,17 @@ document.getElementById("paymentPopup").style.display="none";
 
 function pay(app){
 
-let amount=document.getElementById("total").textContent;
+    let amount = document.getElementById("total").textContent;
 
-let upi="aquilux@okaxis";
+    let upi = "Yashojhaoffical1982@oksbi";
 
-let url=`upi://pay?pa=${upi}&pn=Aquilux&am=${amount}&cu=INR`;
+    let name = "Aquilux";
 
-window.location.href=url;
+    let note = "Aquilux Order Payment";
+
+    let url = `upi://pay?pa=${upi}&pn=${encodeURIComponent(name)}&tn=${encodeURIComponent(note)}&am=${amount}&cu=INR`;
+
+    window.location.href = url;
 
 }
     
