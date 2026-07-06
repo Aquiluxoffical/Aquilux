@@ -216,12 +216,72 @@ padding:0;
 transform:scale(1.2);
 }
 
+#items{
+    overflow-x:auto;
+}
+
     
 
 </style>
 </head>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+  authDomain: "aquilux-5b489.firebaseapp.com",
+  projectId: "aquilux-5b489",
+  storageBucket: "aquilux-5b489.firebasestorage.app",
+  messagingSenderId: "93678277046",
+  appId: "1:93678277046:web:22a1904a3d8a9112edf117"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+window.auth = auth;
+const provider = new GoogleAuthProvider();
+
+window.googleLogin = () => {
+  signInWithPopup(auth, provider);
+};
+
+window.googleLogout = () => {
+  signOut(auth);
+};
+
+onAuthStateChanged(auth, (user) => {
+  if(user){
+    document.getElementById("loginBtn").style.display="none";
+    document.getElementById("userBox").style.display="flex";
+    document.getElementById("userName").innerText=user.displayName;
+    document.getElementById("userImg").src=user.photoURL;
+  }else{
+    document.getElementById("loginBtn").style.display="block";
+    document.getElementById("userBox").style.display="none";
+  }
+});
+</script>    
 <body>
 <header>
+
+<button id="loginBtn" onclick="googleLogin()">
+Sign in with Google
+</button>
+
+<div id="userBox" style="display:none;align-items:center;gap:10px;">
+<img id="userImg" width="35" height="35" style="border-radius:50%;">
+<span id="userName"></span>
+<button onclick="googleLogout()">Logout</button>
+</div>
+    
 <div style="display:flex;align-items:center;gap:12px"><img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png"><strong>Aquilux</strong></div>
 <nav><a href="#shop">Shop</a><a href="#cart">Cart</a></nav>
 </header>
@@ -305,6 +365,11 @@ function changeQty(i,change){
 }
     
 function addToCart(i){
+
+    if(qty[i]===0){
+    alert("Please select quantity.");
+    return;
+}
 
     let size=document.getElementById("s"+i).value;
 
