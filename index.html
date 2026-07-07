@@ -498,6 +498,78 @@ border-color:#fff;
     white-space:nowrap;
 }
 
+
+/* ==========================================
+   User Profile Box & Logout Button Styling
+   ========================================== */
+
+#userBox {
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid #222;
+    padding: 6px 14px;
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#userImg {
+    border-radius: 50%;
+    border: 1px solid #444;
+    object-fit: cover;
+    width: 28px;
+    height: 28px;
+}
+
+#userName {
+    font-size: 14px;
+    font-weight: 500;
+    color: #ddd;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Premium Logout Button */
+.logout-btn {
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+    background: transparent !important;
+    color: #888 !important;
+    border: 1px solid transparent !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0 !important;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    color: #ff4a4a !important;
+    background: rgba(255, 74, 74, 0.1) !important;
+    transform: translateY(0) !important;
+    box-shadow: none !important;
+}
+
+.logout-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.logout-btn:hover svg {
+    transform: translateX(2px);
+}
+
+
 /* 13. Combined Responsive Media Queries (Mobile Optimize) */
 @media(max-width:768px) {
     header {
@@ -652,10 +724,19 @@ onAuthStateChanged(auth, (user) => {
         <span>Sign in</span>
     </button>
 
-    <div id="userBox" style="display:none;align-items:center;gap:10px;">
-<img id="userImg" width="35" height="35" style="border-radius:50%;">
-<span id="userName"></span>
-<button onclick="googleLogout()">Logout</button>
+<div id="userBox" style="display: none;">
+    <div class="user-info">
+        <img id="userImg" alt="Profile">
+        <span id="userName"></span>
+    </div>
+    <button onclick="googleLogout()" class="logout-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Logout
+    </button>
 </div>
 
 
