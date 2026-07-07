@@ -681,34 +681,37 @@ border-color:#fff;
 .marquee{
     width:100%;
     overflow:hidden;
-    margin-bottom:28px;
-    padding:14px 0;
     background:#111;
     border-top:1px solid #2a2a2a;
     border-bottom:1px solid #2a2a2a;
     border-radius:14px;
+    margin-bottom:30px;
 }
 
 .marquee-track{
-    display:inline-block;
+    display:flex;
+    width:max-content;
+    animation:marquee 28s linear infinite;
+}
+
+.marquee-track span{
     white-space:nowrap;
-    color:#dcdcdc;
+    padding:14px 40px;
     font-size:15px;
     font-weight:600;
     letter-spacing:3px;
+    color:#ddd;
     text-transform:uppercase;
-    animation:marquee 18s linear infinite;
 }
 
 @keyframes marquee{
     from{
-        transform:translateX(100%);
+        transform:translateX(0);
     }
     to{
-        transform:translateX(-100%);
+        transform:translateX(-50%);
     }
 }
-
 
 
 
@@ -980,14 +983,17 @@ onAuthStateChanged(auth, (user) => {
 
 <div class="marquee">
     <div class="marquee-track">
-        ★ NEW ARRIVALS ★ PREMIUM STREETWEAR ★ AQUILUX ★ OWN. YOUR. ALTITUDE. ★ LIMITED DROP ★ FREE SHIPPING ★ NEW ARRIVALS ★ PREMIUM STREETWEAR ★ AQUILUX ★ OWN. YOUR. ALTITUDE. ★ LIMITED DROP ★ FREE SHIPPING ★
+
+        <span>
+            ✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦
+        </span>
+
+        <span>
+            ✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦
+        </span>
+
     </div>
 </div>
-
-<div class="title">Collection</div>
-
-<div class="grid" id="grid"></div>
-
 </section>
 
 <section id="cart">
