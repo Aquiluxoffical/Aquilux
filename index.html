@@ -262,6 +262,20 @@ flex-direction:column;
 
 }
 
+.google-btn{
+padding:8px 12px;
+gap:8px;
+}
+
+.google-btn img{
+width:18px;
+height:18px;
+}
+
+.google-btn span{
+font-size:13px;
+}
+
 
 
 .popup{
@@ -424,21 +438,44 @@ gap:8px;
 display:none;
 }
 
-.google-btn{
-font-size:12px;
-padding:8px 10px;
-}
-
-#cartCount{
-width:24px;
-height:24px;
-font-size:12px;
-}
-
-}
     
 
+.google-btn{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+width:auto;
+padding:10px 18px;
+background:#111;
+color:#fff;
+border:1px solid #444;
+border-radius:10px;
+cursor:pointer;
+transition:.3s;
+white-space:nowrap;
+}
 
+.google-btn:hover{
+background:#1b1b1b;
+border-color:#fff;
+}
+
+.google-btn img{
+width:22px;
+height:22px;
+display:block;
+}
+
+.google-btn span{
+font-size:15px;
+font-weight:500;
+}
+
+
+
+
+    
     
 
 </style>
@@ -507,7 +544,13 @@ onAuthStateChanged(auth, (user) => {
 </div>
 
 <button id="loginBtn" onclick="googleLogin()" class="google-btn">
-Sign in with Google
+
+<img
+src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+alt="Google">
+
+<span>Sign in</span>
+
 </button>
 
 <div id="userBox" style="display:none;align-items:center;gap:10px;">
