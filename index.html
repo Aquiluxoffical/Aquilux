@@ -621,16 +621,23 @@ function pay(app){
 
 <h2>Choose Payment Method</h2>
 
-<button onclick="pay('gpay')">
-🟢 Google Pay
-</button>
+<div class="payment-option" onclick="pay('gpay')">
+    <img src="images/gpay.svg" alt="Google Pay">
+    <span>Google Pay</span>
+</div>
 
-<button onclick="pay('phonepe')">
-🟣 PhonePe
-</button>
+<div class="payment-option" onclick="pay('phonepe')">
+    <img src="images/phonepe.svg" alt="PhonePe">
+    <span>PhonePe</span>
+</div>
 
-<button onclick="pay('paytm')">
-🔵 Paytm
+<div class="payment-option" onclick="pay('paytm')">
+    <img src="images/paytm.svg" alt="Paytm">
+    <span>Paytm</span>
+</div>
+
+<button class="close-btn" onclick="closePopup()">
+Cancel
 </button>
 
 <button class="close-btn" onclick="closePopup()">
