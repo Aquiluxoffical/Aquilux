@@ -627,6 +627,38 @@ border-color:#fff;
     letter-spacing:.5px;
 }
 
+.theme-switcher{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+}
+
+.theme-dot{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    border:2px solid rgba(255,255,255,.3);
+    cursor:pointer;
+    transition:.35s;
+}
+
+.theme-dot:hover{
+    transform:scale(1.25);
+    box-shadow:0 0 12px rgba(255,255,255,.35);
+}
+
+.dark{
+    background:#0a0a0a;
+}
+
+.olive{
+    background:#8a9a5b;
+}
+
+.cream{
+    background:#f4edd8;
+}
+
 
 
 
@@ -850,6 +882,12 @@ onAuthStateChanged(auth, (user) => {
 <div class="logo-box">
     <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
     <strong>Aquilux</strong>
+</div>
+
+<div class="theme-switcher">
+    <button onclick="setTheme('dark')" class="theme-dot dark"></button>
+    <button onclick="setTheme('olive')" class="theme-dot olive"></button>
+    <button onclick="setTheme('cream')" class="theme-dot cream"></button>
 </div>
 
 <div class="header-right">
@@ -1212,6 +1250,41 @@ function checkPin(input){
     }
 
 }
+
+function setTheme(theme){
+
+if(theme==="dark"){
+document.documentElement.style.setProperty('--bg','#0a0a0a');
+document.documentElement.style.setProperty('--card','#111');
+document.documentElement.style.setProperty('--line','#222');
+document.documentElement.style.setProperty('--text','#f5f5f5');
+}
+
+if(theme==="olive"){
+document.documentElement.style.setProperty('--bg','#1d2318');
+document.documentElement.style.setProperty('--card','#2c3525');
+document.documentElement.style.setProperty('--line','#49543d');
+document.documentElement.style.setProperty('--text','#f3f0e8');
+}
+
+if(theme==="cream"){
+document.documentElement.style.setProperty('--bg','#f7f4eb');
+document.documentElement.style.setProperty('--card','#ffffff');
+document.documentElement.style.setProperty('--line','#d8cfb7');
+document.documentElement.style.setProperty('--text','#222');
+}
+
+localStorage.setItem("theme",theme);
+
+}
+
+const savedTheme=localStorage.getItem("theme");
+
+if(savedTheme){
+setTheme(savedTheme);
+}
+
+    
 
 
 
