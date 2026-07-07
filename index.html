@@ -345,6 +345,27 @@ color:#fff;
 }
 
 
+.cart-title{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+#cartCount{
+min-width:28px;
+height:28px;
+padding:0 8px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#fff;
+color:#000;
+font-size:14px;
+font-weight:700;
+border-radius:999px;
+}
+
+
     
 
 
@@ -407,7 +428,10 @@ onAuthStateChanged(auth, (user) => {
 
 <nav>
 <a href="#shop">Shop</a>
-<a href="#cart">Cart</a>
+<div class="title cart-title">
+    🛒 Cart
+    <span id="cartCount">0</span>
+</div>
 
 
 
@@ -620,6 +644,14 @@ items.innerHTML=h;
 total.textContent=t;
 
 }
+
+let count = 0;
+
+cart.forEach(item=>{
+    count += item.q;
+});
+
+document.getElementById("cartCount").textContent = count;
 
 
 function openPayment(){
