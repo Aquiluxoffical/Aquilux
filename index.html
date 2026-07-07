@@ -616,16 +616,18 @@ window.googleLogout = () => {
 };
 
 onAuthStateChanged(auth, (user) => {
-  if(user){
-    document.getElementById("loginBtn").style.display="none";
-    document.getElementById("userBox").style.display="flex";
-    document.getElementById("userName").innerText=user.displayName;
-    document.getElementById("userImg").src=user.photoURL;
-  }else{
-    document.getElementById("loginBtn").style.display="block";
-    document.getElementById("userBox").style.display="none";
+  if (user) {
+    // !important CSS ko overwrite karne ke liye setProperty ka use karenge
+    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
+    document.getElementById("userBox").style.setProperty("display", "flex", "important");
+    document.getElementById("userName").innerText = user.displayName;
+    document.getElementById("userImg").src = user.photoURL;
+  } else {
+    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
+    document.getElementById("userBox").style.setProperty("display", "none", "important");
   }
 });
+
 </script>    
 <body>
 
