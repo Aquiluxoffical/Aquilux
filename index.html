@@ -635,42 +635,55 @@ document.getElementById("paymentPopup").style.display="none";
 
 function pay(app){
 
-    let amount = document.getElementById("total").textContent;
+    const amount = document.getElementById("total").textContent;
 
-    let upi = "Yashojhaoffical1982@oksbi";
+    const upi = "Yashojhaoffical1982@oksbi";
+    const name = encodeURIComponent("Aquilux");
+    const note = encodeURIComponent("Aquilux Order");
 
-    let name = encodeURIComponent("Aquilux");
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const isAndroid = /Android/i.test(navigator.userAgent);
 
-    let note = encodeURIComponent("Aquilux Order");
+    let appLink = "";
+    let storeLink = "";
 
-    let upiUrl = `upi://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+    switch(app){
 
-    if(app==="gpay"){
-        window.location.href =
-        `gpay://upi/pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+        case "gpay":
+            appLink = `gpay://upi/pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
 
-        setTimeout(()=>{
-            window.location.href=upiUrl;
-        },1000);
+            storeLink = isIOS
+            ? "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
+            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
+
+            break;
+
+        case "phonepe":
+            appLink = `phonepe://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+
+            storeLink = isIOS
+            ? "https://apps.apple.com/in/app/phonepe-secure-payments-app/id1170055821"
+            : "https://play.google.com/store/apps/details?id=com.phonepe.app";
+
+            break;
+
+        case "paytm":
+            appLink = `paytmmp://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+
+            storeLink = isIOS
+            ? "https://apps.apple.com/in/app/paytm-secure-upi-payments/id473941634"
+            : "https://play.google.com/store/apps/details?id=net.one97.paytm";
+
+            break;
     }
 
-    if(app==="phonepe"){
-        window.location.href =
-        `phonepe://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+    // Open App
+    window.location.href = appLink;
 
-        setTimeout(()=>{
-            window.location.href=upiUrl;
-        },1000);
-    }
-
-    if(app==="paytm"){
-        window.location.href =
-        `paytmmp://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-
-        setTimeout(()=>{
-            window.location.href=upiUrl;
-        },1000);
-    }
+    // Fallback to Store
+    setTimeout(()=>{
+        window.location.href = storeLink;
+    },1800);
 
 }
     
