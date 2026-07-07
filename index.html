@@ -639,13 +639,38 @@ function pay(app){
 
     let upi = "Yashojhaoffical1982@oksbi";
 
-    let name = "Aquilux";
+    let name = encodeURIComponent("Aquilux");
 
-    let note = "Aquilux Order Payment";
+    let note = encodeURIComponent("Aquilux Order");
 
-    let url = `upi://pay?pa=${upi}&pn=${encodeURIComponent(name)}&tn=${encodeURIComponent(note)}&am=${amount}&cu=INR`;
+    let upiUrl = `upi://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
 
-    window.location.href = url;
+    if(app==="gpay"){
+        window.location.href =
+        `gpay://upi/pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+
+        setTimeout(()=>{
+            window.location.href=upiUrl;
+        },1000);
+    }
+
+    if(app==="phonepe"){
+        window.location.href =
+        `phonepe://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+
+        setTimeout(()=>{
+            window.location.href=upiUrl;
+        },1000);
+    }
+
+    if(app==="paytm"){
+        window.location.href =
+        `paytmmp://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
+
+        setTimeout(()=>{
+            window.location.href=upiUrl;
+        },1000);
+    }
 
 }
     
