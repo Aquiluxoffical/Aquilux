@@ -592,7 +592,6 @@ function addToCart(i){
     document.getElementById("q"+i).textContent=0;
 }
 
-    
 function draw(){
 
 let t=0;
@@ -637,13 +636,13 @@ h+=`
 `;
 
 if(cart.length==0){
-h="Cart is empty.";
+    h="Cart is empty.";
 }
 
-items.innerHTML=h;
-total.textContent=t;
+items.innerHTML = h;
+total.textContent = t;
 
-
+// 👇 Ye code yahi hona chahiye
 let count = 0;
 
 cart.forEach(item=>{
@@ -651,6 +650,9 @@ cart.forEach(item=>{
 });
 
 document.getElementById("cartCount").textContent = count;
+
+} // <-- Function yahan close hoga  
+
 
 
 function openPayment(){
