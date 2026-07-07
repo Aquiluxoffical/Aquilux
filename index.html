@@ -616,18 +616,16 @@ window.googleLogout = () => {
 };
 
 onAuthStateChanged(auth, (user) => {
-  if (user) {
-    // !important CSS ko overwrite karne ke liye setProperty ka use karenge
-    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
-    document.getElementById("userBox").style.setProperty("display", "flex", "important");
-    document.getElementById("userName").innerText = user.displayName;
-    document.getElementById("userImg").src = user.photoURL;
-  } else {
-    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-    document.getElementById("userBox").style.setProperty("display", "none", "important");
+  if(user){
+    document.getElementById("loginBtn").style.display="none";
+    document.getElementById("userBox").style.display="flex";
+    document.getElementById("userName").innerText=user.displayName;
+    document.getElementById("userImg").src=user.photoURL;
+  }else{
+    document.getElementById("loginBtn").style.display="block";
+    document.getElementById("userBox").style.display="none";
   }
 });
-
 </script>    
 <body>
 
@@ -652,15 +650,10 @@ onAuthStateChanged(auth, (user) => {
         <span>Sign in</span>
     </button>
 
-    <div id="userBox" style="display:none;">
-    <div class="user-info">
-        <img id="userImg" alt="Profile">
-        <span id="userName"></span>
-    </div>
-    <button onclick="googleLogout()" class="logout-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-        Logout
-    </button>
+    <div id="userBox" style="display:none;align-items:center;gap:10px;">
+<img id="userImg" width="35" height="35" style="border-radius:50%;">
+<span id="userName"></span>
+<button onclick="googleLogout()">Logout</button>
 </div>
 
 
