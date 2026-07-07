@@ -659,6 +659,24 @@ border-color:#fff;
     background:#f4edd8;
 }
 
+.logo-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logo-text{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+.theme-switcher{
+    display:flex;
+    gap:8px;
+    margin-top:6px;
+}
+
 
 
 
@@ -879,47 +897,41 @@ onAuthStateChanged(auth, (user) => {
 
 <header>
 
-<div class="logo-box">
-    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-    <strong>Aquilux</strong>
-</div>
+    <div class="logo-box">
 
-<div class="theme-switcher">
-    <button onclick="setTheme('dark')" class="theme-dot dark"></button>
-    <button onclick="setTheme('olive')" class="theme-dot olive"></button>
-    <button onclick="setTheme('cream')" class="theme-dot cream"></button>
-</div>
+        <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
 
-<div class="header-right">
+        <div class="logo-text">
+            <strong>Aquilux</strong>
 
-    <a href="#cart" class="cart-title">
-        🛒
-        <span>Cart</span>
-        <span id="cartCount">0</span>
-    </a>
+            <div class="theme-switcher">
+                <button onclick="setTheme('dark')" class="theme-dot dark"></button>
+                <button onclick="setTheme('olive')" class="theme-dot olive"></button>
+                <button onclick="setTheme('cream')" class="theme-dot cream"></button>
+            </div>
 
-    <button id="loginBtn" onclick="googleLogin()" class="google-btn">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-        <span>Sign in</span>
-    </button>
+        </div>
 
-<div id="userBox" style="display: none;">
-    <div class="user-info">
-        <img id="userImg" alt="Profile">
-        <span id="userName"></span>
     </div>
-    <button onclick="googleLogout()" class="logout-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-            <polyline points="16 17 21 12 16 7"></polyline>
-            <line x1="21" y1="12" x2="9" y2="12"></line>
-        </svg>
-        Logout
-    </button>
-</div>
 
+    <div class="header-right">
 
-</div>
+        <a href="#cart" class="cart-title">
+            🛒
+            <span>Cart</span>
+            <span id="cartCount">0</span>
+        </a>
+
+        <button id="loginBtn" onclick="googleLogin()" class="google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
+            <span>Sign in</span>
+        </button>
+
+        <div id="userBox" style="display:none;">
+            ...
+        </div>
+
+    </div>
 
 </header>
     
