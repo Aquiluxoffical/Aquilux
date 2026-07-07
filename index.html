@@ -595,6 +595,51 @@ border-color:#fff;
     transform: translateX(2px);
 }
 
+.total-box{
+    margin:30px 0;
+    padding:22px 28px;
+    background:linear-gradient(180deg,#1b1b1b,#131313);
+    border:1px solid #2c2c2c;
+    border-radius:18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+    transition:.3s;
+}
+
+.total-box:hover{
+    border-color:#555;
+    box-shadow:0 18px 40px rgba(255,255,255,.06);
+}
+
+.total-label{
+    font-size:17px;
+    color:#bdbdbd;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
+.total-price{
+    font-size:30px;
+    font-weight:700;
+    color:#fff;
+    letter-spacing:.5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 /* 13. Combined Responsive Media Queries (Mobile Optimize) */
 @media(max-width:768px) {
@@ -816,7 +861,10 @@ onAuthStateChanged(auth, (user) => {
 <div class="title">Cart</div>
 <div id="items"></div>
 <br> </br>
-<h2>Total ₹<span id="total">0</span></h2>
+<div class="total-box">
+    <span class="total-label">Order Total</span>
+    <span class="total-price">₹<span id="total">0</span></span>
+</div>
 
 <div class="delivery-card">
 
