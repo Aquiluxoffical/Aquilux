@@ -614,34 +614,28 @@ onAuthStateChanged(auth, (user) => {
 <header>
 
 <div class="logo-box">
-<img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-<strong>Aquilux</strong>
+    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+    <strong>Aquilux</strong>
 </div>
 
 <div class="header-right">
 
-<a href="#cart" class="cart-title">
-🛒
-<span>Cart</span>
-<span id="cartCount">0</span>
-</a>
-</div>
+    <a href="#cart" class="cart-title">
+        🛒
+        <span>Cart</span>
+        <span id="cartCount">0</span>
+    </a>
 
-<button id="loginBtn" onclick="googleLogin()" class="google-btn">
+    <button id="loginBtn" onclick="googleLogin()" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        <span>Sign in</span>
+    </button>
 
-<img
-src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-alt="Google">
-
-<span>Sign in</span>
-
-</button>
-
-<div id="userBox" style="display:none;align-items:center;gap:10px;">
-<img id="userImg" width="35" height="35" style="border-radius:50%;">
-<span id="userName"></span>
-<button onclick="googleLogout()">Logout</button>
-</div>
+    <div id="userBox" style="display:none;align-items:center;gap:10px;">
+        <img id="userImg" width="35" height="35" style="border-radius:50%;">
+        <span id="userName"></span>
+        <button onclick="googleLogout()">Logout</button>
+    </div>
 
 </div>
 
