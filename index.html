@@ -686,6 +686,46 @@ function pay(app){
     },1800);
 
 }
+
+async function lookupPin(){
+
+    const pin = document.getElementById("pincode").value;
+
+    if(pin.length!=6){
+        alert("Enter valid 6 digit PIN Code");
+        return;
+    }
+
+    try{
+
+        const res = await fetch("https://api.postalpincode.in/pincode/" + pin);
+
+        const data = await res.json();
+
+        if(data[0].Status==="Success"){
+
+            document.getElementById("city").value =
+            data[0].PostOffice[0].District;
+
+            document.getElementById("state").value =
+            data[0].PostOffice[0].State;
+
+        }else{
+
+            alert("PIN Code not found");
+
+            document.getElementById("city").value="";
+            document.getElementById("state").value="";
+
+        }
+
+    }catch(e){
+
+        alert("Unable to lookup PIN Code.");
+
+    }
+
+}
     
     
 
