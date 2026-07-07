@@ -366,7 +366,76 @@ font-weight:700;
 border-radius:999px;
 }
 
+.logo-box{
+display:flex;
+align-items:center;
+gap:12px;
+}
 
+.header-right{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.google-btn{
+width:auto;
+padding:10px 16px;
+white-space:nowrap;
+}
+
+.cart-title{
+display:flex;
+align-items:center;
+gap:8px;
+margin:0;
+font-size:20px;
+}
+
+#cartCount{
+width:30px;
+height:30px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:#fff;
+color:#000;
+border-radius:50%;
+font-size:14px;
+font-weight:700;
+}
+
+
+@media(max-width:768px){
+
+header{
+padding:14px;
+}
+
+.logo-box strong{
+font-size:18px;
+}
+
+.header-right{
+gap:8px;
+}
+
+.cart-title span:first-of-type{
+display:none;
+}
+
+.google-btn{
+font-size:12px;
+padding:8px 10px;
+}
+
+#cartCount{
+width:24px;
+height:24px;
+font-size:12px;
+}
+
+}
     
 
 
@@ -420,27 +489,24 @@ onAuthStateChanged(auth, (user) => {
 });
 </script>    
 <body>
+
+
 <header>
 
-<div style="display:flex;align-items:center;gap:12px">
+<div class="logo-box">
 <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
 <strong>Aquilux</strong>
 </div>
 
-<nav>
+<div class="header-right">
 
 <div class="title cart-title">
-    🛒 Cart
-    <span id="cartCount">0</span>
+🛒
+<span>Cart</span>
+<span id="cartCount">0</span>
 </div>
 
-
-
-</nav>
-
-<div style="display:flex;align-items:center;gap:12px;">
-
-<button id="loginBtn" onclick="googleLogin()">
+<button id="loginBtn" onclick="googleLogin()" class="google-btn">
 Sign in with Google
 </button>
 
@@ -453,6 +519,7 @@ Sign in with Google
 </div>
 
 </header>
+    
 
 <section class="hero">
 <div class="hero-bg"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
