@@ -8,10 +8,16 @@
 /* 1. Global Variables & Base Resets */
 :root {
     --bg: #0a0a0a;
-    --card: #111;
-    --line: #222;
+    /* Card ko thoda transparent kiya (0.03 alpha) */
+    --card: rgba(255, 255, 255, 0.03); 
+    /* Borders ko bhi transparent white kiya taaki glass edge mile */
+    --line: rgba(255, 255, 255, 0.08); 
     --text: #f5f5f5;
+    /* Blur amount aur hover glow control karne ke liye */
+    --glass-blur: 16px;
+    --glass-glow: rgba(255, 255, 255, 0.05);
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -1132,33 +1138,28 @@ function displayProducts() {
     g.innerHTML = ""; 
 
     products.forEach((p, i) => {
-        // Agar sizes sheet mein nahi hain toh custom default sizes set karein
         const sizesList = p.sizes && p.sizes.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
         const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
 
+        // Yeh naya layout glass effects ko perfect dikhayega
         g.innerHTML += `<div class="card">
-        <img
-    src="${p.image}"
-    alt="${p.product}"
-    loading="lazy"
-    decoding="async">
-    
-        <div class="info">
-        <h3>${p.product}</h3>
-        <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
-        <select id="s${i}">
-            ${optionsHTML}
-        </select>
-
-        <div class="qty">
-            <button onclick="changeQty(${i},-1)">−</button>
-            <span id="q${i}">0</span>
-            <button onclick="changeQty(${i},1)">+</button>
+        <div class="card-img-wrapper">
+            <img src="${p.image}" alt="${p.product}" loading="lazy" decoding="async">
         </div>
-
-        <button onclick="addToCart(${i})">
-            ADD TO CART
-        </button>
+        <div class="info">
+            <h3>${p.product}</h3>
+            <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
+            <select id="s${i}">
+                ${optionsHTML}
+            </select>
+            <div class="qty">
+                <button onclick="changeQty(${i},-1)">−</button>
+                <span id="q${i}">0</span>
+                <button onclick="changeQty(${i},1)">+</button>
+            </div>
+            <button class="glass-action-btn" onclick="addToCart(${i})">
+                ADD TO CART
+            </button>
         </div></div>`;
     });
 }
