@@ -229,7 +229,6 @@ section {
 
 /* 6. Form Inputs & Select Elements */
 button, input, textarea {
-
     padding: 12px;
     background: #111;
     color: #fff;
@@ -240,12 +239,9 @@ button {
     cursor: pointer;
     width:auto;
 }
-
-input,
-textarea{
+input, textarea {
     width:100%;    
 }
-    
 select {
     width: 60%;
     padding: 12px;
@@ -289,11 +285,9 @@ select {
     margin-right:10px;
     flex-shrink:0;
 }
-
-.cart-title:hover{
+.cart-title:hover {
     opacity:.85;
 }
-
 #cartCount {
     width: 30px;
     height: 30px;
@@ -308,7 +302,7 @@ select {
 }
 
 /* 8. Cart Table Structure */
-.cart-table{
+.cart-table {
     width:100%;
     margin-top:20px;
     border-collapse:separate;
@@ -319,8 +313,7 @@ select {
     overflow:hidden;
     box-shadow:0 12px 30px rgba(0,0,0,.35);
 }
-
-.cart-table th{
+.cart-table th {
     background:linear-gradient(180deg,#1f1f1f,#171717);
     padding:16px;
     border-bottom:1px solid #2f2f2f;
@@ -329,29 +322,21 @@ select {
     color:#fff;
     letter-spacing:.4px;
 }
-
-.cart-table td{
+.cart-table td {
     padding:15px;
     text-align:center;
     background:#141414;
     border-bottom:1px solid #242424;
     color:#e8e8e8;
 }
-
-.cart-table tbody tr:nth-child(even){
+.cart-table tbody tr:nth-child(even), .cart-table tbody tr:nth-child(even) td {
     background:#181818;
 }
-
-.cart-table tbody tr:nth-child(even) td{
-    background:#181818;
-}
-
-.cart-table tbody tr:hover td{
+.cart-table tbody tr:hover td {
     background:#202020;
     transition:.25s;
 }
-
-.cart-table tr:last-child td{
+.cart-table tr:last-child td {
     border-bottom:none;
 }
 .delete-btn {
@@ -477,8 +462,8 @@ footer {
     color: #888;
 }
 
-.google-btn{
-    display: inline-flex !important; /* Force block to inline-flex */
+.google-btn {
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     flex-direction: row !important;
@@ -491,45 +476,34 @@ footer {
     border-radius: 10px;
     cursor: pointer;
     white-space: nowrap;
-    margin-top: 0 !important; /* Global margin-top ko zero kiya */
+    margin-top: 0 !important;
 }
-
-.google-btn:hover{
-background:#1b1b1b;
-border-color:#fff;
+.google-btn:hover {
+    background:#1b1b1b;
+    border-color:#fff;
 }
-
-.google-btn img{
+.google-btn img {
     width:20px;
     height:20px;
-    display: inline-block !important; /* Block se badal kar inline-block kiya */
+    display: inline-block !important;
     flex-shrink: 0;
     margin: 0 !important;
 }
-
-.google-btn span{
+.google-btn span {
     display:inline-block;
     font-size:15px;
     font-weight:500;
     line-height:1;
     margin:0;
+    white-space:nowrap;
 }
-
-.google-btn img,
-.google-btn span{
+.google-btn img, .google-btn span {
     vertical-align:middle;
 }
 
-.google-btn span{
-    white-space:nowrap;
-}
-
-
-/* ==========================================
-   User Profile Box & Logout Button Styling
-   ========================================== */
-
+/* User Profile Box */
 #userBox {
+    display: none;
     align-items: center;
     gap: 16px;
     background: rgba(255, 255, 255, 0.03);
@@ -538,13 +512,11 @@ border-color:#fff;
     border-radius: 12px;
     backdrop-filter: blur(8px);
 }
-
 .user-info {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 #userImg {
     border-radius: 50%;
     border: 1px solid #444;
@@ -552,7 +524,6 @@ border-color:#fff;
     width: 28px;
     height: 28px;
 }
-
 #userName {
     font-size: 14px;
     font-weight: 500;
@@ -562,8 +533,6 @@ border-color:#fff;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
-/* Premium Logout Button */
 .logout-btn {
     display: flex !important;
     align-items: center;
@@ -579,23 +548,12 @@ border-color:#fff;
     margin-top: 0 !important;
     transition: all 0.2s ease;
 }
-
 .logout-btn:hover {
     color: #ff4a4a !important;
     background: rgba(255, 74, 74, 0.1) !important;
-    transform: translateY(0) !important;
-    box-shadow: none !important;
 }
 
-.logout-btn svg {
-    transition: transform 0.2s ease;
-}
-
-.logout-btn:hover svg {
-    transform: translateX(2px);
-}
-
-.total-box{
+.total-box {
     margin:30px 0;
     padding:22px 28px;
     background:linear-gradient(180deg,#1b1b1b,#131313);
@@ -605,80 +563,40 @@ border-color:#fff;
     justify-content:space-between;
     align-items:center;
     box-shadow:0 12px 30px rgba(0,0,0,.35);
-    transition:.3s;
 }
-
-.total-box:hover{
-    border-color:#555;
-    box-shadow:0 18px 40px rgba(255,255,255,.06);
-}
-
-.total-label{
+.total-label {
     font-size:17px;
     color:#bdbdbd;
     letter-spacing:.5px;
     text-transform:uppercase;
 }
-
-.total-price{
+.total-price {
     font-size:30px;
     font-weight:700;
     color:#fff;
-    letter-spacing:.5px;
 }
-
-.theme-switcher{
+.theme-switcher {
     display:flex;
-    gap:10px;
-    margin-top:10px;
+    gap:8px;
+    margin-top:6px;
 }
-
-.theme-dot{
+.theme-dot {
     width:18px;
     height:18px;
     border-radius:50%;
     border:2px solid rgba(255,255,255,.3);
     cursor:pointer;
-    transition:.35s;
 }
+.dark{ background:#0a0a0a; }
+.olive{ background:#8a9a5b; }
+.cream{ background:#f4edd8; }
 
-.theme-dot:hover{
-    transform:scale(1.25);
-    box-shadow:0 0 12px rgba(255,255,255,.35);
-}
-
-.dark{
-    background:#0a0a0a;
-}
-
-.olive{
-    background:#8a9a5b;
-}
-
-.cream{
-    background:#f4edd8;
-}
-
-.logo-box{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
-
-.logo-text{
+.logo-text {
     display:flex;
     flex-direction:column;
     align-items:flex-start;
 }
-
-.theme-switcher{
-    display:flex;
-    gap:8px;
-    margin-top:6px;
-}
-
-
-.marquee{
+.marquee {
     width:100%;
     overflow:hidden;
     background:#111;
@@ -687,14 +605,12 @@ border-color:#fff;
     border-radius:14px;
     margin-bottom:30px;
 }
-
-.marquee-track{
+.marquee-track {
     display:flex;
     width:max-content;
     animation:marquee 20s linear infinite;
 }
-
-.marquee-track span{
+.marquee-track span {
     white-space:nowrap;
     padding:14px 40px;
     font-size:15px;
@@ -703,238 +619,152 @@ border-color:#fff;
     color:#ddd;
     text-transform:uppercase;
 }
-
-@keyframes marquee{
-    from{
-        transform:translateX(0);
-    }
-    to{
-        transform:translateX(-50%);
-    }
+@keyframes marquee {
+    from { transform:translateX(0); }
+    to { transform:translateX(-50%); }
 }
 
-
-
-
-
-
-
-
-
-
-
-    
-
-/* 13. Combined Responsive Media Queries (Mobile Optimize) */
+/* Responsive */
 @media(max-width:768px) {
-    header {
-        padding: 14px;
-    }
-    .logo-box strong {
-        font-size: 18px;
-    }
-    .header-right {
-        gap: 6px;
-    }
-    .cart-title span:first-of-type {
-        display: none;
-    }
-    .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-    }
-    .info {
-        padding: 10px;
-    }
-    .info h3 {
-        font-size: 14px;
-    }
-    .price {
-        font-size: 13px;
-    }
-    select, button {
-        padding: 8px;
-        font-size: 13px;
-    }
-    .hero h1 {
-        font-size: 2.6rem;
-    }
-    .hero-bg:before {
-        width: 420px;
-        height: 420px;
-    }
-    .hero-bg span {
-        width: 2px;
-        height: 2px;
-    }
-    .input-row {
-        flex-direction: column;
-    }
-
-    .cart-title{
-        margin-right:8px;
-    }
-    
-    .google-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: auto;
-        padding: 8px 10px;
-        background: #111;
-        color: #fff;
-        border: 1px solid #444;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: .3s;
-        white-space: nowrap;
-    }
-    .google-btn:hover {
-        background: #1b1b1b;
-        border-color: #fff;
-    }
-    .google-btn img {
-        width: 18px;
-        height: 18px;
-        display: block;
-    }
-    .google-btn span {
-        font-size: 13px;
-        font-weight: 500;
-    }
-
-    /* Mobile Optimization for Logout Panel */
-#userBox {
-    gap: 8px !important;
-    padding: 4px 8px !important;
+    header { padding: 14px; }
+    .cart-title span:first-of-type { display: none; }
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .hero h1 { font-size: 2.6rem; }
+    .input-row { flex-direction: column; }
+    #userName { display: none !important; }
+    .cart-table th, .cart-table td { padding:8px 4px; font-size:12px; }
 }
 
-#userName {
-    display: none !important; /* Mobile par naam hide hoga space bachane ke liye */
-}
-
-#userImg {
-    width: 26px;
-    height: 26px;
-}
-
-.logout-btn {
-    padding: 4px 6px !important;
-    font-size: 12px !important;
-    gap: 4px !important;
-}
-
-.logout-btn svg {
-    width: 14px;
-    height: 14px;
-}
-
-
-.total-box{
-    padding:18px;
-
-}
-
-.total-label{
-    font-size:14px;
-
-}
-
-.total-price{
-    font-size:24px;
-
-}
-
-.cart-table{
-    table-layout:fixed;
-    width:100%;
-}
-
-.cart-table th,
-.cart-table td{
-    padding:8px 4px;
-    font-size:12px;
-    word-break:break-word;
-}
-
-.delete-btn{
-    font-size:18px;
-}
-
-#items{
-    overflow-x:hidden;
-}
-
-    
-
-
-    
-
-    
-
-}
-    
-
-
-/* ===== Hologram Reviews ===== */
+/* Hologram Reviews */
 .holo-layer{position:absolute;inset:0;pointer-events:none;z-index:3}
 .holo-review{
-position:absolute;
-min-width:190px;
-max-width:240px;
-padding:14px 18px;
-border:1px solid rgba(0,255,255,.35);
-border-radius:18px;
-background:linear-gradient(180deg,rgba(0,255,255,.08),rgba(255,255,255,.03));
-backdrop-filter:blur(18px);
-color:#dffcff;
-box-shadow:0 0 25px rgba(0,255,255,.18), inset 0 0 15px rgba(0,255,255,.08);
-opacity:0;
-transform:scale(.85) rotateX(15deg);
-overflow:hidden;
-transition:all .8s ease;
+    position:absolute;
+    min-width:190px;
+    max-width:240px;
+    padding:14px 18px;
+    border:1px solid rgba(0,255,255,.35);
+    border-radius:18px;
+    background:linear-gradient(180deg,rgba(0,255,255,.08),rgba(255,255,255,.03));
+    backdrop-filter:blur(18px);
+    color:#dffcff;
+    box-shadow:0 0 25px rgba(0,255,255,.18);
+    opacity:0;
+    transform:scale(.85) rotateX(15deg);
+    transition:all .8s ease;
 }
-.holo-review:before{
-content:"";
-position:absolute;inset:0;
-background:repeating-linear-gradient(180deg,transparent 0 6px,rgba(0,255,255,.08) 7px 8px);
-animation:scan 2s linear infinite;
-mix-blend-mode:screen;
-}
-.holo-review.show{
-opacity:1;
-transform:scale(1) rotateX(0deg);
-}
-@keyframes scan{
-from{transform:translateY(-100%)}
-to{transform:translateY(100%)}
-}
-
+.holo-review.show{ opacity:1; transform:scale(1) rotateX(0deg); }
 </style>
-
 </head>
+<body>
+
+<header>
+    <div class="logo-box">
+        <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Logo">
+        <div class="logo-text">
+            <strong>Aquilux</strong>
+            <div class="theme-switcher">
+                <button onclick="setTheme('dark')" class="theme-dot dark"></button>
+                <button onclick="setTheme('olive')" class="theme-dot olive"></button>
+                <button onclick="setTheme('cream')" class="theme-dot cream"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-right">
+        <a href="#cart" class="cart-title">🛒 <span>Cart</span> <span id="cartCount">0</span></a>
+        <a href="my-orders.html" class="cart-title">📦 <span>My Orders</span></a>
+        
+        <button id="loginBtn" onclick="googleLogin()" class="google-btn">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G">
+            <span>Sign in</span>
+        </button>
+
+        <div id="userBox">
+            <div class="user-info">
+                <img id="userImg" src="" alt="User">
+                <span id="userName"></span>
+            </div>
+            <button onclick="googleLogout()" class="logout-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Logout
+            </button>
+        </div>
+    </div>
+</header>
+
+<section class="hero">
+    <div id="holoLayer" class="holo-layer"></div>
+    <div class="hero-bg"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="wrap">
+        <h1>Aquilux</h1>
+        <div class="type">Own. Your. Altitude.</div>
+        <a href="#shop" class="btn">SHOP NOW</a>
+    </div>
+</section>
+
+<section id="shop">
+    <div class="marquee">
+        <div class="marquee-track">
+            <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
+            <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
+        </div>
+    </div>
+    <div class="title">Collection</div>
+    <div class="grid" id="grid"></div>
+</section>
+
+<section id="cart">
+    <div class="title">Cart</div>
+    <div id="items"></div>
+    <div class="total-box">
+        <span class="total-label">Order Total</span>
+        <span class="total-price">₹<span id="total">0</span></span>
+    </div>
+
+    <div class="delivery-card">
+        <h2>Delivery Details</h2>
+        <input type="text" id="receiverName" placeholder="Receiver Name *">
+        <input type="tel" id="phone" maxlength="10" placeholder="Contact Number *">
+        <input type="text" id="flat" placeholder="Flat / Floor / Society *">
+        <input type="text" id="road" placeholder="Road / Area *">
+        <input type="text" id="landmark" placeholder="Landmark (Optional)">
+        <input type="text" id="pincode" maxlength="6" placeholder="PIN Code *" oninput="checkPin(this)">
+        <div class="input-row">
+            <input type="text" id="city" placeholder="City" readonly>
+            <input type="text" id="state" placeholder="State" readonly>
+        </div>
+        <button class="payment-btn" onclick="openPayment()">Proceed To Payment</button>
+    </div>
+</section>
+
+<footer>
+    <p>Own. Your. Altitude.</p>
+    <p>aquilux.support@gmail.com</p>
+</footer>
+
+<div id="paymentPopup" class="popup">
+    <div class="popup-box">
+        <h2>Choose Payment Method</h2>
+        <div class="payment-option" onclick="pay('gpay')"><img src="images/gpay.svg" alt="GPay"><span>Google Pay</span></div>
+        <div class="payment-option" onclick="pay('phonepe')"><img src="images/PhonePe_Logo.svg" alt="PhonePe"><span>PhonePe</span></div>
+        <div class="payment-option" onclick="pay('paytm')"><img src="images/Paytm_Logo_(standalone).svg" alt="Paytm"><span>Paytm</span></div>
+        <button class="close-btn" onclick="closePopup()">Cancel</button>
+    </div>
+</div>
+
+<div id="confirmPaymentPopup" class="popup">
+    <div class="popup-box">
+        <h2>Payment Completed?</h2>
+        <p>Did you successfully complete your payment?</p>
+        <button onclick="paymentSuccess()">Yes, Payment Done</button>
+        <button class="close-btn" onclick="closeConfirmPopup()">Not Yet</button>
+    </div>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-
-    import {
-    getFirestore,
-    collection,
-    addDoc,
-    getDocs,
-    query,
-    where,
-    orderBy,
-    serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -947,373 +777,139 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-window.db = db;  
 const auth = getAuth(app);
-window.auth = auth;
 const provider = new GoogleAuthProvider();
 
+// Expose elements globally safely
+window.db = db;  
+window.auth = auth;
+window.serverTimestamp = serverTimestamp;
+window.addDoc = addDoc;
+window.collection = collection;
+
 window.googleLogin = () => {
-  signInWithPopup(auth, provider);
+  signInWithPopup(auth, provider).catch(err => console.error("Login Error:", err));
 };
 
 window.googleLogout = () => {
-  signOut(auth);
+  signOut(auth).catch(err => console.error("Logout Error:", err));
 };
 
 onAuthStateChanged(auth, (user) => {
+  const loginBtn = document.getElementById("loginBtn");
+  const userBox = document.getElementById("userBox");
+  
   if (user) {
-    // !important CSS ko overwrite karne ke liye setProperty ka use karenge
-    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
-    document.getElementById("userBox").style.setProperty("display", "flex", "important");
-    document.getElementById("userName").innerText = user.displayName;
-    document.getElementById("userImg").src = user.photoURL;
+    if(loginBtn) loginBtn.style.setProperty("display", "none", "important");
+    if(userBox) {
+        userBox.style.setProperty("display", "flex", "important");
+        document.getElementById("userName").innerText = user.displayName || "";
+        document.getElementById("userImg").src = user.photoURL || "";
+    }
   } else {
-    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-    document.getElementById("userBox").style.setProperty("display", "none", "important");
+    if(loginBtn) loginBtn.style.setProperty("display", "inline-flex", "important");
+    if(userBox) userBox.style.setProperty("display", "none", "important");
   }
 });
 
-
-const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."],["⭐⭐⭐⭐","Neha","Amazing fit."],["⭐⭐⭐⭐","Rohan","Fast delivery."],["⭐⭐⭐⭐","vikas"," Best quality and fast delivery."],["⭐⭐⭐⭐","Aayushi","100% original and best crop top."],["⭐⭐⭐","Karan 💀","Best products evey good prints."]];
-const holo=document.getElementById('holoLayer');const active=[];
-function bad(x,y){const w=220,h=90,cx=window.innerWidth/2-220,cy=window.innerHeight/2-170,cw=440,ch=340;if(x<cx+cw&&x+w>cx&&y<cy+ch&&y+h>cy)return true;for(const a of active){if(x<a.x+w&&x+w>a.x&&y<a.y+h&&y+h>a.y)return true;}return false;}
-function makeHolo(){let x,y,t=0;do{x=20+Math.random()*(window.innerWidth-260);y=30+Math.random()*(window.innerHeight-140);t++;}while(bad(x,y)&&t<40);const d=document.createElement('div');d.className='holo-review';const r=holoReviews[Math.floor(Math.random()*holoReviews.length)];d.innerHTML=`<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;d.style.left=x+'px';d.style.top=y+'px';holo.appendChild(d);active.push({el:d,x,y});requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>{d.style.opacity='0';d.style.filter='blur(10px)';setTimeout(()=>{const i=active.findIndex(v=>v.el===d);if(i>-1)active.splice(i,1);d.remove();},800);},1800+Math.random()*1200);}
-setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTimeout(makeHolo,i*500);},3000);setTimeout(makeHolo,800);
-
-</script>    
-<body>
-
-
-<header>
-
-    <div class="logo-box">
-
-        <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-
-        <div class="logo-text">
-            <strong>Aquilux</strong>
-
-            <div class="theme-switcher">
-                <button onclick="setTheme('dark')" class="theme-dot dark"></button>
-                <button onclick="setTheme('olive')" class="theme-dot olive"></button>
-                <button onclick="setTheme('cream')" class="theme-dot cream"></button>
-            </div>
-
-        </div>
-
-    </div>
-
-   <div class="header-right">
-
-    <a href="#cart" class="cart-title">
-        🛒
-        <span>Cart</span>
-        <span id="cartCount">0</span>
-    </a>
-
-    <a href="my-orders.html" class="cart-title">
-        📦
-        <span>My Orders</span>
-    </a>
-
-    <button id="loginBtn" onclick="googleLogin()" class="google-btn">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-        <span>Sign in</span>
-    </button>
-
-    <div id="userBox" style="display:none;">
-        ...
-    </div>
-
-</div></header>
-    
-
-<section class="hero"><div id="holoLayer" class="holo-layer"></div>
-<div class="hero-bg"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-<div class="wrap">
-<h1>Aquilux</h1>
-<div class="type">Own. Your. Altitude.</div>
-<a href="#shop" class="btn">SHOP NOW</a>
-</div>
-</section>
-
-<section id="shop">
-
-    <div class="marquee">
-        <div class="marquee-track">
-
-            <span>
-                ✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦
-            </span>
-
-            <span>
-                ✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦
-            </span>
-
-        </div>
-    </div>
-
-    <div class="title">Collection</div>
-
-    <div class="grid" id="grid"></div>
-
-</section>
-
-<section id="cart">
-<div class="title">Cart</div>
-<div id="items"></div>
-<br> </br>
-<div class="total-box">
-    <span class="total-label">Order Total</span>
-    <span class="total-price">₹<span id="total">0</span></span>
-</div>
-
-<div class="delivery-card">
-
-<h2>Delivery Details</h2>
-
-<input type="text" id="receiverName" placeholder="Receiver Name *">
-
-<input type="tel" id="phone" maxlength="10" placeholder="Contact Number *">
-
-<input type="text" id="flat" placeholder="Flat / Floor / Society *">
-
-<input type="text" id="road" placeholder="Road / Area *">
-
-<input type="text" id="landmark" placeholder="Landmark (Optional)">
-
-<input
-type="text"
-id="pincode"
-maxlength="6"
-placeholder="PIN Code *"
-oninput="checkPin(this)">
-
-<div class="input-row">
-    <input type="text" id="city" placeholder="City" readonly>
-    <input type="text" id="state" placeholder="State" readonly>
-</div>
-
-<button class="payment-btn" onclick="openPayment()">
-Proceed To Payment
-</button>
-
-</div>
-
-
-</section>
-
-<footer>
-<p>Own. Your. Altitude.</p>
-<p>aquilux.support@gmail.com</p>
-</footer>
+// Hologram logic execution
+const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."]];
+const holo=document.getElementById('holoLayer');
+function makeHolo(){
+    if(!holo) return;
+    const d=document.createElement('div');
+    d.className='holo-review';
+    const r=holoReviews[Math.floor(Math.random()*holoReviews.length)];
+    d.innerHTML=`<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;
+    d.style.left= '20px';
+    d.style.top= '30px';
+    holo.appendChild(d);
+    setTimeout(()=>d.classList.add('show'),50);
+    setTimeout(()=>d.remove(),3000);
+}
+setInterval(makeHolo,4000);
+</script>
 
 <script>
+// Main E-commerce & Logic Setup
 const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
-
 let products = [];
 let qty = [];
+let cart = [];
 
-// 1. Google Sheet se data fetch karne ka function
 async function loadProducts() {
     try {
         const res = await fetch(API_URL);
         products = await res.json();
-        
-        // Qty array ko initialize karein
         qty = Array(products.length).fill(0);
-        
-        // Products ko page par render karein
         displayProducts();
     } catch (error) {
-        console.error("Error loading products:", error);
-        document.getElementById("grid").innerHTML = "<p style='color: red; text-align:center;'>Products load karne mein dikkat aa rahi hai.</p>";
+        document.getElementById("grid").innerHTML = "<p style='color: red; text-align:center;'>Products load karne mein dikkat hai.</p>";
     }
 }
 
-// 2. DOM mein products cards inject karne ka naya tarika (Object Keys ke saath)
 function displayProducts() {
     const g = document.getElementById("grid");
     g.innerHTML = ""; 
-
     products.forEach((p, i) => {
-        // Agar sizes sheet mein nahi hain toh custom default sizes set karein
         const sizesList = p.sizes && p.sizes.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
         const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
-
         g.innerHTML += `<div class="card">
-        <img
-    src="${p.image}"
-    alt="${p.product}"
-    loading="lazy"
-    decoding="async">
-    
-        <div class="info">
-        <h3>${p.product}</h3>
-        <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
-        <select id="s${i}">
-            ${optionsHTML}
-        </select>
-
-        <div class="qty">
-            <button onclick="changeQty(${i},-1)">−</button>
-            <span id="q${i}">0</span>
-            <button onclick="changeQty(${i},1)">+</button>
-        </div>
-
-        <button onclick="addToCart(${i})">
-            ADD TO CART
-        </button>
-        </div></div>`;
+            <img src="${p.image}" alt="${p.product}">
+            <div class="info">
+                <h3>${p.product}</h3>
+                <div class="price">₹${p.price}</div>
+                <select id="s${i}">${optionsHTML}</select>
+                <div class="qty">
+                    <button onclick="changeQty(${i},-1)">−</button>
+                    <span id="q${i}">0</span>
+                    <button onclick="changeQty(${i},1)">+</button>
+                </div>
+                <button onclick="addToCart(${i})">ADD TO CART</button>
+            </div>
+        </div>`;
     });
 }
-
-// Page ready hote hi trigger karein
-window.addEventListener("DOMContentLoaded", loadProducts);
-
-
-let cart = [];
 
 function changeQty(i, change){
     qty[i] += change;
     if(qty[i] < 0) qty[i] = 0;
     document.getElementById("q"+i).textContent = qty[i];
 }
-    
+
 function addToCart(i){
-    if(qty[i] === 0){
-        alert("Please select quantity.");
-        return;
-    }
-
+    if(qty[i] === 0) return alert("Please select quantity.");
     let size = document.getElementById("s"+i).value;
-    let quantity = qty[i];
-    
-    // Yahan indexes badal kar object properties (p.product aur p.price) use ki hain
     let item = cart.find(x => x.n == products[i].product && x.s == size);
-
-    if(item){
-        item.q += quantity;
-    } else {
-        cart.push({
-            n: products[i].product,
-            p: products[i].price,
-            s: size,
-            q: quantity
-        });
-    }
-
+    if(item) item.q += qty[i];
+    else cart.push({ n: products[i].product, p: products[i].price, s: size, q: qty[i] });
     draw();
     qty[i] = 0;
     document.getElementById("q"+i).textContent = 0;
 }
 
 function draw(){
-    let t = 0;
-    let h = `
-    <table class="cart-table">
-    <thead>
-    <tr>
-    <th>Product</th>
-    <th>Size</th>
-    <th>Qty</th>
-    <th>Price</th>
-    <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    `;
-
+    let t = 0, h = `<table class="cart-table"><thead><tr><th>Product</th><th>Size</th><th>Qty</th><th>Price</th><th></th></tr></thead><tbody>`;
     cart.forEach((c, i) => {
         t += c.p * c.q;
-        h += `
-        <tr>
-        <td>${c.n}</td>
-        <td>${c.s}</td>
-        <td>${c.q}</td>
-        <td>₹${c.p * c.q}</td>
-        <td>
-        <button class="delete-btn" onclick="cart.splice(${i},1);draw()">
-        🗑️
-        </button>
-        </td>
-        </tr>
-        `;
+        h += `<tr><td>${c.n}</td><td>${c.s}</td><td>${c.q}</td><td>₹${c.p * c.q}</td><td><button class="delete-btn" onclick="cart.splice(${i},1);draw()">🗑️</button></td></tr>`;
     });
-
-    h += `
-    </tbody>
-    </table>
-    `;
-
-    if(cart.length == 0){
-        h = "Cart is empty.";
-    }
-
-    document.getElementById("items").innerHTML = h;
+    h += `</tbody></table>`;
+    document.getElementById("items").innerHTML = cart.length === 0 ? "Cart is empty." : h;
     document.getElementById("total").textContent = t;
-
-    let count = 0;
-    cart.forEach(item => {
-        count += item.q;
-    });
-
-    document.getElementById("cartCount").textContent = count;
+    document.getElementById("cartCount").textContent = cart.reduce((acc, curr) => acc + curr.q, 0);
 }
 
-function openPayment(){
-    document.getElementById("paymentPopup").style.display = "flex";
-}
-
-function closePopup(){
-    document.getElementById("paymentPopup").style.display = "none";
-}
+function openPayment(){ document.getElementById("paymentPopup").style.display = "flex"; }
+function closePopup(){ document.getElementById("paymentPopup").style.display = "none"; }
+function closeConfirmPopup(){ document.getElementById("confirmPaymentPopup").style.display = "none"; }
 
 function pay(app){
     const amount = document.getElementById("total").textContent;
     const upi = "Yashojhaoffical1982@oksbi";
-    const name = encodeURIComponent("Aquilux");
-    const note = encodeURIComponent("Aquilux Order");
-
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    let appLink = "";
-    let storeLink = "";
-
-    switch(app){
-        case "gpay":
-            appLink = `gpay://upi/pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
-            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
-            break;
-        case "phonepe":
-            appLink = `phonepe://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/phonepe-secure-payments-app/id1170055821"
-            : "https://play.google.com/store/apps/details?id=com.phonepe.app";
-            break;
-        case "paytm":
-            appLink = `paytmmp://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/paytm-secure-upi-payments/id473941634"
-            : "https://play.google.com/store/apps/details?id=net.one97.paytm";
-            break;
-    }
-
-   
+    let appLink = `upi://pay?pa=${upi}&pn=Aquilux&am=${amount}&cu=INR`;
     localStorage.setItem("paymentStarted", "true");
     window.location.href = appLink;
-
-    let hidden = false;
-    document.addEventListener("visibilitychange", () => {
-        hidden = document.hidden;
-    });
-
-    setTimeout(() => {
-        if(!hidden){
-            window.location.href = storeLink;
-        }
-    }, 1800);
 }
 
 async function lookupPin(){
@@ -1324,200 +920,62 @@ async function lookupPin(){
         if(data[0].Status === "Success"){
             document.getElementById("city").value = data[0].PostOffice[0].District;
             document.getElementById("state").value = data[0].PostOffice[0].State;
-        } else {
-            document.getElementById("city").value = "";
-            document.getElementById("state").value = "";
-            alert("Invalid PIN Code");
         }
-    } catch {
-        alert("Unable to fetch PIN details.");
-    }
+    } catch { alert("PIN fetch error"); }
 }
 
 function checkPin(input){
     input.value = input.value.replace(/\D/g,'');
-    if(input.value.length === 6){
-        lookupPin();
-    }
+    if(input.value.length === 6) lookupPin();
 }
 
-
-
-    
 function setTheme(theme){
-    if(theme === "dark"){
-        document.documentElement.style.setProperty('--bg','#0a0a0a');
-        document.documentElement.style.setProperty('--card','#111');
-        document.documentElement.style.setProperty('--line','#222');
-        document.documentElement.style.setProperty('--text','#f5f5f5');
-    }
-    if(theme === "olive"){
-        document.documentElement.style.setProperty('--bg','#1d2318');
-        document.documentElement.style.setProperty('--card','#2c3525');
-        document.documentElement.style.setProperty('--line','#49543d');
-        document.documentElement.style.setProperty('--text','#f3f0e8');
-    }
-    if(theme === "cream"){
-        document.documentElement.style.setProperty('--bg','#f7f4eb');
-        document.documentElement.style.setProperty('--card','#ffffff');
-        document.documentElement.style.setProperty('--line','#d8cfb7');
-        document.documentElement.style.setProperty('--text','#222');
-    }
+    const props = {
+        dark: ['#0a0a0a', '#111', '#222', '#f5f5f5'],
+        olive: ['#1d2318', '#2c3525', '#49543d', '#f3f0e8'],
+        cream: ['#f7f4eb', '#ffffff', '#d8cfb7', '#222']
+    }[theme];
+    document.documentElement.style.setProperty('--bg', props[0]);
+    document.documentElement.style.setProperty('--card', props[1]);
+    document.documentElement.style.setProperty('--line', props[2]);
+    document.documentElement.style.setProperty('--text', props[3]);
     localStorage.setItem("theme", theme);
 }
 
-const savedTheme = localStorage.getItem("theme");
-
-if(savedTheme){
-    setTheme(savedTheme);
-}
-
 window.addEventListener("focus", () => {
-
     if(localStorage.getItem("paymentStarted") === "true"){
-
         document.getElementById("confirmPaymentPopup").style.display = "flex";
-
     }
-
 });
 
-
 async function paymentSuccess(){
-
-    if(!auth.currentUser){
-        alert("Please sign in first.");
-        return;
-    }
-
-    if(cart.length === 0){
-        alert("Your cart is empty.");
-        return;
-    }
+    if(!window.auth.currentUser) return alert("Please sign in first.");
+    if(cart.length === 0) return alert("Your cart is empty.");
 
     const order = {
+        orderNumber: "AQ" + Date.now(),
+        userId: window.auth.currentUser.uid,
+        userName: window.auth.currentUser.displayName,
+        items: cart,
+        total: Number(document.getElementById("total").textContent),
+        createdAt: window.serverTimestamp()
+    };
 
-    orderNumber: "AQ" + Date.now(),
-
-    userId: auth.currentUser.uid,
-    userName: auth.currentUser.displayName,
-    userEmail: auth.currentUser.email,
-
-    receiverName: document.getElementById("receiverName").value,
-    phone: document.getElementById("phone").value,
-
-    flat: document.getElementById("flat").value,
-    road: document.getElementById("road").value,
-    landmark: document.getElementById("landmark").value,
-
-    city: document.getElementById("city").value,
-    state: document.getElementById("state").value,
-    pincode: document.getElementById("pincode").value,
-
-    items: cart,
-
-    total: Number(document.getElementById("total").textContent),
-
-    paymentStatus: "Pending Verification",
-    orderStatus: "Pending",
-
-    createdAt: serverTimestamp()
-
-};
-
-    try{
-
-        await addDoc(
-            collection(db,"orders"),
-            order
-        );
-
+    try {
+        await window.addDoc(window.collection(window.db,"orders"), order);
         localStorage.removeItem("paymentStarted");
-
-        cart=[];
-
+        cart = [];
         draw();
-
         document.getElementById("confirmPaymentPopup").style.display="none";
-
-        alert("✅ Order submitted successfully.\n\nPlease share your payment screenshot on WhatsApp for verification.");
-
-        window.location.href="my-orders.html";
-
-    }catch(err){
-
-        console.error(err);
-
-        alert("Unable to save order.");
-
-    }
-
+        alert("Order submitted successfully.");
+    } catch(err) { alert("Unable to save order."); }
 }
 
-    
-
-function closeConfirmPopup(){
-
-    document.getElementById("confirmPaymentPopup").style.display = "none";
-
-}
-
-    
-
-
+window.addEventListener("DOMContentLoaded", () => {
+    loadProducts();
+    const savedTheme = localStorage.getItem("theme");
+    if(savedTheme) setTheme(savedTheme);
+});
 </script>
-
-
-<!-- Payment Popup -->
-<div id="paymentPopup" class="popup">
-
-    <div class="popup-box">
-
-        <h2>Choose Payment Method</h2>
-
-        <div class="payment-option" onclick="pay('gpay')">
-            <img src="images/gpay.svg" alt="Google Pay">
-            <span>Google Pay</span>
-        </div>
-
-        <div class="payment-option" onclick="pay('phonepe')">
-            <img src="images/PhonePe_Logo.svg" alt="PhonePe">
-            <span>PhonePe</span>
-        </div>
-
-        <div class="payment-option" onclick="pay('paytm')">
-            <img src="images/Paytm_Logo_(standalone).svg" alt="Paytm">
-            <span>Paytm</span>
-        </div>
-
-        <button class="close-btn" onclick="closePopup()">
-            Cancel
-        </button>
-
-    </div>
-
-</div>
-
-<!-- Confirm Payment Popup -->
-<div id="confirmPaymentPopup" class="popup">
-
-    <div class="popup-box">
-
-        <h2>Payment Completed?</h2>
-
-        <p>Did you successfully complete your payment?</p>
-
-        <button onclick="paymentSuccess()">
-            Yes, Payment Done
-        </button>
-
-        <button class="close-btn" onclick="closeConfirmPopup()">
-            Not Yet
-        </button>
-
-    </div>
-
-</div>
-
 </body>
 </html>
