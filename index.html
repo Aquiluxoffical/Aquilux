@@ -391,6 +391,50 @@ select {
     font-weight: 700;
 }
 
+/* ===== Collection Loader ===== */
+#menuLoader{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.96);
+backdrop-filter:blur(18px);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+gap:18px;
+z-index:999999;
+opacity:0;
+transition:.35s;
+}
+
+#menuLoader.show{
+display:flex;
+opacity:1;
+}
+
+#menuLoader img{
+width:95px;
+animation:luxSpin 1.2s linear infinite;
+filter:drop-shadow(0 0 18px rgba(255,255,255,.25));
+}
+
+#menuLoader p{
+color:#fff;
+font-size:13px;
+letter-spacing:4px;
+text-transform:uppercase;
+opacity:.75;
+}
+
+@keyframes luxSpin{
+0%{transform:rotate(0deg) scale(.9);}
+50%{transform:rotate(180deg) scale(1.08);}
+100%{transform:rotate(360deg) scale(.9);}
+}
+
+    
+    
+
 /* 8. Cart Table Structure */
 .cart-table{
     width:100%;
@@ -1056,8 +1100,14 @@ setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTime
 
 </script>    
 <body>
+<div id="menuLoader">
+    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+    <p>Loading Collection...</p>
+</div>
 
 <header>
+
+
 
     <div class="logo-box">
 
@@ -1195,19 +1245,29 @@ let qty = [];
 
 // 1. Google Sheet se data fetch karne ka function
 async function loadProducts() {
+
+    showLoader();
+
     try {
+
         const res = await fetch(API_URL);
+
         products = await res.json();
-        
-        // Qty array ko initialize karein
+
         qty = Array(products.length).fill(0);
-        
-        // Products ko page par render karein
+
         displayProducts();
+
     } catch (error) {
+
         console.error("Error loading products:", error);
-        document.getElementById("grid").innerHTML = "<p style='color: red; text-align:center;'>Products load karne mein dikkat aa rahi hai.</p>";
+
+        document.getElementById("grid").innerHTML =
+        "<p style='color:red;text-align:center;'>Products load karne mein dikkat aa rahi hai.</p>";
+
     }
+
+    hideLoader();
 }
 
 // 2. DOM mein products cards inject karne ka naya tarika (Object Keys ke saath)
@@ -1341,6 +1401,44 @@ function openPayment(){
 function closePopup(){
     document.getElementById("paymentPopup").style.display = "none";
 }
+
+function showLoader(){
+
+    const loader = document.getElementById("menuLoader");
+
+    loader.classList.add("show");
+
+}
+
+function hideLoader(){
+
+    const loader = document.getElementById("menuLoader");
+
+    setTimeout(() => {
+
+        loader.classList.remove("show");
+
+    }, 500);
+
+}
+
+    
+function openCollection(menu){
+
+    const loader=document.getElementById("menuLoader");
+
+    loader.classList.add("show");
+
+    setTimeout(()=>{
+
+        loader.classList.remove("show");
+
+        menu.classList.toggle("open");
+
+    },650);
+
+}
+
 
 function pay(app){
     closePopup();
