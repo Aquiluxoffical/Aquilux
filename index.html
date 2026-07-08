@@ -1398,6 +1398,8 @@ window.addEventListener("focus", () => {
 
 async function paymentSuccess(){
 
+    alert("paymentSuccess called");
+
     if(!auth.currentUser){
         alert("Please sign in first.");
         return;
