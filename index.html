@@ -952,8 +952,14 @@ const auth = getAuth(app);
 window.auth = auth;
 const provider = new GoogleAuthProvider();
 
-window.googleLogin = () => {
-  signInWithPopup(auth, provider);
+window.googleLogin = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log(result.user);
+  } catch (e) {
+    console.error("LOGIN ERROR:", e);
+    alert(e.code + "\n" + e.message);
+  }
 };
 
 window.googleLogout = () => {
@@ -1021,10 +1027,17 @@ setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTime
         <span>Sign in</span>
     </button>
 
-    <div id="userBox" style="display:none;">
-        ...
-    </div>
+<div id="userBox" style="display:none;">
+   <div class="user-info">
+      <img id="userImg">
+      <span id="userName"></span>
+   </div>
 
+   <button onclick="googleLogout()" class="logout-btn">
+      Logout
+   </button>
+</div>
+       
 </div></header>
     
 
