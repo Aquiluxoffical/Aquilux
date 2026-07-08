@@ -839,7 +839,41 @@ border-color:#fff;
     }
 }
 
-    
+.collection-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    gap:15px;
+}
+
+#priceFilter{
+    width:180px;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:#111;
+    color:#fff;
+}
+
+#priceFilter option{
+    background:#111;
+}
+
+@media(max-width:768px){
+
+.collection-header{
+    flex-direction:column;
+    align-items:flex-start;
+}
+
+#priceFilter{
+    width:100%;
+}
+
+}
+
+
 
 /* 13. Combined Responsive Media Queries (Mobile Optimize) */
 @media(max-width:768px) {
@@ -1160,7 +1194,7 @@ setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTime
 <body>
 <div id="menuLoader">
     <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-    <p>Loading Collection...</p>
+    <p>Welocome to aquilux</p>
 </div>
 
 <header>
@@ -1241,9 +1275,21 @@ setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTime
         </div>
     </div>
 
+    <div class="collection-header">
+
     <div class="title">Collection</div>
 
-    <div class="grid" id="grid"></div>
+    <select id="priceFilter" onchange="filterProducts()">
+        <option value="all">All Prices</option>
+        <option value="0-499">₹0 - ₹499</option>
+        <option value="500-999">₹500 - ₹999</option>
+        <option value="1000-1499">₹1000 - ₹1499</option>
+        <option value="1500">₹1500+</option>
+    </select>
+
+</div>
+
+<div class="grid" id="grid"></div>
 
 </section>
 
@@ -1329,11 +1375,11 @@ async function loadProducts() {
 }
 
 // 2. DOM mein products cards inject karne ka naya tarika (Object Keys ke saath)
-function displayProducts() {
+function displayProducts(list = products) {
     const g = document.getElementById("grid");
     g.innerHTML = ""; 
 
-    products.forEach((p, i) => {
+    list.forEach((p, i) => {
         const sizesList = p.sizes && p.sizes.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
         const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
 
@@ -1358,7 +1404,38 @@ function displayProducts() {
             </button>
         </div></div>`;
     });
+} 
+
+function filterProducts(){
+
+    const value = document.getElementById("priceFilter").value;
+
+    let filtered = [...products];
+
+    if(value !== "all"){
+
+        if(value === "1500"){
+
+            filtered = products.filter(p => Number(p.price) >= 1500);
+
+        }else{
+
+            const [min,max] = value.split("-");
+
+            filtered = products.filter(p =>
+                Number(p.price) >= Number(min) &&
+                Number(p.price) <= Number(max)
+            );
+
+        }
+
+    }
+
+    displayProducts(filtered);
+
 }
+
+    
 
 // Page ready hote hi trigger karein
 window.addEventListener("DOMContentLoaded", loadProducts);
