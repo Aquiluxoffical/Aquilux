@@ -1737,6 +1737,7 @@ async function paymentSuccess(){
 
     const order = {
     orderNumber: "AQ" + Date.now(),
+    localStorage.setItem("lastOrderNumber", order.orderNumber);    
     userId: auth.currentUser.uid,
     userName: auth.currentUser.displayName,
     userEmail: auth.currentUser.email,
@@ -1786,7 +1787,7 @@ async function paymentSuccess(){
 
         alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
 
-        window.location.href="my-orders.html";
+        window.location.href = "payment-proof.html";
 
     }catch(err){
 
