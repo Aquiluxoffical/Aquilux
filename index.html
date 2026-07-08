@@ -1098,63 +1098,64 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4l
 let products = [];
 let qty = [];
 
-// 1. Products ko load karne aur cards generate karne ka main function
+// 1. Google Sheet se data fetch karne ka function
 async function loadProducts() {
     try {
         const res = await fetch(API_URL);
         products = await res.json();
         
-        // Qty array ko products ki length ke mutabik initialize karein
+        // Qty array ko initialize karein
         qty = Array(products.length).fill(0);
         
-        // UI render karne wala function call karein
+        // Products ko page par render karein
         displayProducts();
     } catch (error) {
         console.error("Error loading products:", error);
-        document.getElementById("grid").innerHTML = "<p style='color: red;'>Failed to load products. Please try again later.</p>";
+        document.getElementById("grid").innerHTML = "<p style='color: red; text-align:center;'>Products load karne mein dikkat aa rahi hai.</p>";
     }
 }
 
-// 2. Cards ko HTML Grid mein display karne ka function
+// 2. DOM mein products cards inject karne ka naya tarika (Object Keys ke saath)
 function displayProducts() {
     const g = document.getElementById("grid");
-    g.innerHTML = ""; // Grid ko pehle clear karein
+    g.innerHTML = ""; 
 
     products.forEach((p, i) => {
+        // Agar sizes sheet mein nahi hain toh custom default sizes set karein
+        const sizesList = p.sizes && p.sizes.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
+        const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
+
         g.innerHTML += `<div class="card">
-        <img src="${p[2]}">
+        <img src="${p.image}" alt="${p.product}">
         <div class="info">
-        <h3>${p[0]}</h3>
-        <div class="price">₹${p[1]}</div>
+        <h3>${p.product}</h3>
+        <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
         <select id="s${i}">
-        <option>S</option>
-        <option>M</option>
-        <option>L</option>
-        <option>XL</option>
+            ${optionsHTML}
         </select>
 
         <div class="qty">
-        <button onclick="changeQty(${i},-1)">−</button>
-        <span id="q${i}">0</span>
-        <button onclick="changeQty(${i},1)">+</button>
-    </div>
+            <button onclick="changeQty(${i},-1)">−</button>
+            <span id="q${i}">0</span>
+            <button onclick="changeQty(${i},1)">+</button>
+        </div>
 
-    <button onclick="addToCart(${i})">
-    ADD TO CART
-    </button>
-    </div></div>`;
+        <button onclick="addToCart(${i})">
+            ADD TO CART
+        </button>
+        </div></div>`;
     });
 }
 
-// 3. Page load hote hi API call karne ke liye listener
+// Page ready hote hi trigger karein
 window.addEventListener("DOMContentLoaded", loadProducts);
 
 
-let cart=[];
+let cart = [];
 
 function changeQty(i, change){
     qty[i] += change;
-    if(qty[i] < 0) qty[i] = 0; // Negative quantity rokne ke liye
+    if(qty[i] < 0) qty[i] = 0;
     document.getElementById("q"+i).textContent = qty[i];
 }
     
@@ -1166,14 +1167,16 @@ function addToCart(i){
 
     let size = document.getElementById("s"+i).value;
     let quantity = qty[i];
-    let item = cart.find(x => x.n == products[i][0] && x.s == size);
+    
+    // Yahan indexes badal kar object properties (p.product aur p.price) use ki hain
+    let item = cart.find(x => x.n == products[i].product && x.s == size);
 
     if(item){
         item.q += quantity;
     } else {
         cart.push({
-            n: products[i][0],
-            p: products[i][1],
+            n: products[i].product,
+            p: products[i].price,
             s: size,
             q: quantity
         });
@@ -1226,7 +1229,7 @@ function draw(){
         h = "Cart is empty.";
     }
 
-    document.getElementById("items").innerHTML = h; // Explicitly get element
+    document.getElementById("items").innerHTML = h;
     document.getElementById("total").textContent = t;
 
     let count = 0;
@@ -1342,6 +1345,7 @@ if(savedTheme){
     setTheme(savedTheme);
 }
 </script>
+
 
 <div id="paymentPopup" class="popup">
 
