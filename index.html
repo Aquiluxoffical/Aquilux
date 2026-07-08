@@ -925,14 +925,10 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-    import {
+import {
     getFirestore,
     collection,
     addDoc,
-    getDocs,
-    query,
-    where,
-    orderBy,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
@@ -947,40 +943,61 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-window.db = db;  
 const auth = getAuth(app);
-window.auth = auth;
 const provider = new GoogleAuthProvider();
 
+// Global exposure for non-module scripts
+window.db = db;  
+window.auth = auth;
+window.addDoc = addDoc;
+window.collection = collection;
+window.serverTimestamp = serverTimestamp;
+
 window.googleLogin = () => {
-  signInWithPopup(auth, provider);
+  signInWithPopup(auth, provider).catch(err => console.error("Login fail:", err));
 };
 
 window.googleLogout = () => {
-  signOut(auth);
+  signOut(auth).catch(err => console.error("Logout fail:", err));
 };
 
 onAuthStateChanged(auth, (user) => {
+  const loginBtn = document.getElementById("loginBtn");
+  const userBox = document.getElementById("userBox");
+
   if (user) {
-    // !important CSS ko overwrite karne ke liye setProperty ka use karenge
-    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
-    document.getElementById("userBox").style.setProperty("display", "flex", "important");
-    document.getElementById("userName").innerText = user.displayName;
-    document.getElementById("userImg").src = user.photoURL;
+    if(loginBtn) loginBtn.style.setProperty("display", "none", "important");
+    if(userBox) {
+        userBox.style.setProperty("display", "flex", "important");
+        // Dynamically injected content inside your designated userBox layout
+        userBox.innerHTML = `
+          <div class="user-info">
+              <img id="userImg" src="${user.photoURL || ''}" alt="User">
+              <span id="userName">${user.displayName || 'User'}</span>
+          </div>
+          <button onclick="googleLogout()" class="logout-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Logout
+          </button>
+        `;
+    }
   } else {
-    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-    document.getElementById("userBox").style.setProperty("display", "none", "important");
+    if(loginBtn) loginBtn.style.setProperty("display", "inline-flex", "important");
+    if(userBox) {
+        userBox.style.setProperty("display", "none", "important");
+        userBox.innerHTML = "...";
+    }
   }
 });
 
-
-const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."],["⭐⭐⭐⭐","Neha","Amazing fit."],["⭐⭐⭐⭐","Rohan","Fast delivery."],["⭐⭐⭐⭐","vikas"," Best quality and fast delivery."],["⭐⭐⭐⭐","Aayushi","100% original and best crop top."],["⭐⭐⭐","Karan 💀","Best products evey good prints."]];
+// Hologram Reviews Engine
+const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."],["⭐⭐⭐⭐","Neha","Amazing fit."],["⭐⭐⭐⭐","Rohan","Fast delivery."]];
 const holo=document.getElementById('holoLayer');const active=[];
 function bad(x,y){const w=220,h=90,cx=window.innerWidth/2-220,cy=window.innerHeight/2-170,cw=440,ch=340;if(x<cx+cw&&x+w>cx&&y<cy+ch&&y+h>cy)return true;for(const a of active){if(x<a.x+w&&x+w>a.x&&y<a.y+h&&y+h>a.y)return true;}return false;}
-function makeHolo(){let x,y,t=0;do{x=20+Math.random()*(window.innerWidth-260);y=30+Math.random()*(window.innerHeight-140);t++;}while(bad(x,y)&&t<40);const d=document.createElement('div');d.className='holo-review';const r=holoReviews[Math.floor(Math.random()*holoReviews.length)];d.innerHTML=`<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;d.style.left=x+'px';d.style.top=y+'px';holo.appendChild(d);active.push({el:d,x,y});requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>{d.style.opacity='0';d.style.filter='blur(10px)';setTimeout(()=>{const i=active.findIndex(v=>v.el===d);if(i>-1)active.splice(i,1);d.remove();},800);},1800+Math.random()*1200);}
+function makeHolo(){if(!holo)return;let x,y,t=0;do{x=20+Math.random()*(window.innerWidth-260);y=30+Math.random()*(window.innerHeight-140);t++;}while(bad(x,y)&&t<40);const d=document.createElement('div');d.className='holo-review';const r=holoReviews[Math.floor(Math.random()*holoReviews.length)];d.innerHTML=`<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;d.style.left=x+'px';d.style.top=y+'px';holo.appendChild(d);active.push({el:d,x,y});requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>{d.style.opacity='0';d.style.filter='blur(10px)';setTimeout(()=>{const i=active.findIndex(v=>v.el===d);if(i>-1)active.splice(i,1);d.remove();},800);},1800+Math.random()*1200);}
 setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTimeout(makeHolo,i*500);},3000);setTimeout(makeHolo,800);
-
-</script>    
+</script>
+    
 <body>
 
 
