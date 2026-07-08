@@ -70,6 +70,8 @@ header{
 
 <body>
 
+
+
 <header>
 
 <div class="logo">
@@ -88,17 +90,68 @@ Aquilux
 My Orders
 </h1>
 
-<div class="order-card">
+<div id="ordersContainer">
 
-<h2>No Orders Yet</h2>
-
-<p>
-You haven't placed any order yet.
-</p>
+    <!-- Firebase se orders yahan automatically aayenge -->
 
 </div>
 
 </div>
 
+
+
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+    getAuth,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    orderBy
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+// 👇 YAHAN ye config paste karna hai
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+
+  authDomain: "aquilux-5b489.firebaseapp.com",
+
+  projectId: "aquilux-5b489",
+
+  storageBucket: "aquilux-5b489.firebasestorage.app",
+
+  messagingSenderId: "93678277046",
+
+  appId: "1:93678277046:web:22a1904a3d8a9112edf117"
+
+};
+
+// Firebase start
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+    
+
+
+
+
+    
+
+</script>
+
+    
 </body>
 </html>
