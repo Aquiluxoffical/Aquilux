@@ -1414,14 +1414,10 @@ document.addEventListener("visibilitychange", () => {
 
 async function paymentSuccess(){
 
-    alert("1");
-
     if(!auth.currentUser){
         alert("Please sign in first.");
         return;
     }
-
-    alert("2");
 
     const order = {
     orderNumber: "AQ" + Date.now(),
@@ -1448,42 +1444,27 @@ async function paymentSuccess(){
 
     createdAt: serverTimestamp()
 };
-
-    alert("3");
+    };
 
     try{
-
         document.getElementById("confirmPaymentPopup").style.display="none";
 
-        alert("4");
-
-        await addDoc(
-            collection(db,"orders"),
-            order
-        );
-
-        alert("5");
+        await addDoc(collection(db,"orders"), order);
 
         localStorage.removeItem("paymentStarted");
 
-        cart=[];
-
+        cart = [];
         draw();
 
-        document.getElementById("confirmPaymentPopup").style.display="none";
-
-        alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
+        alert("✅ Order Created.\n\nPlease check My Orders page.");
 
         window.location.href="my-orders.html";
 
     }catch(err){
-
         console.error(err);
         alert(err.code + "\n" + err.message);
-
     }
 }
-
     
 
 function closeConfirmPopup(){
