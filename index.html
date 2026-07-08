@@ -1398,54 +1398,32 @@ window.addEventListener("focus", () => {
 
 async function paymentSuccess(){
 
-    alert("paymentSuccess called");
+    alert("1");
 
     if(!auth.currentUser){
         alert("Please sign in first.");
         return;
     }
 
-    if(cart.length === 0){
-        alert("Your cart is empty.");
-        return;
-    }
+    alert("2");
 
     const order = {
+        ...
+        createdAt: serverTimestamp()
+    };
 
-    orderNumber: "AQ" + Date.now(),
-
-    userId: auth.currentUser.uid,
-    userName: auth.currentUser.displayName,
-    userEmail: auth.currentUser.email,
-
-    receiverName: document.getElementById("receiverName").value,
-    phone: document.getElementById("phone").value,
-
-    flat: document.getElementById("flat").value,
-    road: document.getElementById("road").value,
-    landmark: document.getElementById("landmark").value,
-
-    city: document.getElementById("city").value,
-    state: document.getElementById("state").value,
-    pincode: document.getElementById("pincode").value,
-
-    items: cart,
-
-    total: Number(document.getElementById("total").textContent),
-
-    paymentStatus: "Pending Verification",
-    orderStatus: "Pending",
-
-    createdAt: serverTimestamp()
-
-};
+    alert("3");
 
     try{
+
+        alert("4");
 
         await addDoc(
             collection(db,"orders"),
             order
         );
+
+        alert("5");
 
         localStorage.removeItem("paymentStarted");
 
@@ -1455,18 +1433,16 @@ async function paymentSuccess(){
 
         document.getElementById("confirmPaymentPopup").style.display="none";
 
-        alert("✅ Order submitted successfully.\n\nPlease share your payment screenshot on WhatsApp for verification.");
+        alert("6");
 
         window.location.href="my-orders.html";
 
     }catch(err){
 
         console.error(err);
-
-        alert("Unable to save order.");
+        alert(err.code + "\n" + err.message);
 
     }
-
 }
 
     
