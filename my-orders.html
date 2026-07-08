@@ -168,56 +168,51 @@ async function loadOrders(uid){
 
     container.innerHTML = "<p>Loading orders...</p>";
 
-    const q = query(
-        collection(db,"orders"),
-        where("userId","==",uid),
-        orderBy("createdAt","desc")
-    );
+    try {
 
-    const snapshot = await getDocs(q);
+        const q = query(
+            collection(db,"orders"),
+            where("userId","==",uid),
+            orderBy("createdAt","desc")
+        );
 
-    if(snapshot.empty){
+        const snapshot = await getDocs(q);
+
+        if(snapshot.empty){
+
+            container.innerHTML = `
+            <div class="order-card">
+                <h2>No Orders Yet</h2>
+                <p>You haven't placed any order yet.</p>
+            </div>`;
+            return;
+        }
+
+        container.innerHTML = "";
+
+        snapshot.forEach(doc=>{
+
+            const order = doc.data();
+
+            container.innerHTML += `
+            <div class="order-card">
+                <h2>${order.orderNumber}</h2>
+                <div class="status">${order.paymentStatus}</div>
+                <p>Total : ₹${order.total}</p>
+                <p>${order.items.length} Products</p>
+            </div>`;
+        });
+
+    } catch(err) {
+
+        console.error(err);
 
         container.innerHTML = `
-        <div class="order-card">
-            <h2>No Orders Yet</h2>
-            <p>You haven't placed any order yet.</p>
-        </div>
-        `;
-
-        return;
-
+        <p style="color:red">
+            ${err.code}<br>
+            ${err.message}
+        </p>`;
     }
-
-    container.innerHTML = "";
-
-    snapshot.forEach(doc=>{
-
-        const order = doc.data();
-
-        container.innerHTML += `
-        <div class="order-card">
-
-            <h2>${order.orderNumber}</h2>
-
-            <div class="status">
-                ${order.paymentStatus}
-            </div>
-
-            <p>
-                Total :
-                ₹${order.total}
-            </p>
-
-            <p>
-                ${order.items.length} Products
-            </p>
-
-        </div>
-        `;
-
-    });
-
 }  
 
 
