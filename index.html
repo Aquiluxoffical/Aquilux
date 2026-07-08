@@ -524,7 +524,6 @@ border-color:#fff;
     white-space:nowrap;
 }
 
-
 /* ==========================================
    User Profile Box & Logout Button Styling
    ========================================== */
@@ -677,7 +676,6 @@ border-color:#fff;
     margin-top:6px;
 }
 
-
 .marquee{
     width:100%;
     overflow:hidden;
@@ -712,16 +710,6 @@ border-color:#fff;
         transform:translateX(-50%);
     }
 }
-
-
-
-
-
-
-
-
-
-
 
     
 
@@ -830,7 +818,6 @@ border-color:#fff;
     height: 14px;
 }
 
-
 .total-box{
     padding:18px;
 
@@ -868,14 +855,12 @@ border-color:#fff;
 
     
 
-
     
 
     
 
 }
     
-
 
 /* ===== Hologram Reviews ===== */
 .holo-layer{position:absolute;inset:0;pointer-events:none;z-index:3}
@@ -979,7 +964,6 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-
 const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."],["⭐⭐⭐⭐","Neha","Amazing fit."],["⭐⭐⭐⭐","Rohan","Fast delivery."],["⭐⭐⭐⭐","vikas"," Best quality and fast delivery."],["⭐⭐⭐⭐","Aayushi","100% original and best crop top."],["⭐⭐⭐","Karan 💀","Best products evey good prints."]];
 const holo=document.getElementById('holoLayer');const active=[];
 function bad(x,y){const w=220,h=90,cx=window.innerWidth/2-220,cy=window.innerHeight/2-170,cw=440,ch=340;if(x<cx+cw&&x+w>cx&&y<cy+ch&&y+h>cy)return true;for(const a of active){if(x<a.x+w&&x+w>a.x&&y<a.y+h&&y+h>a.y)return true;}return false;}
@@ -988,7 +972,6 @@ setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTime
 
 </script>    
 <body>
-
 
 <header>
 
@@ -1113,7 +1096,6 @@ Proceed To Payment
 
 </div>
 
-
 </section>
 
 <footer>
@@ -1183,7 +1165,6 @@ function displayProducts() {
 
 // Page ready hote hi trigger karein
 window.addEventListener("DOMContentLoaded", loadProducts);
-
 
 let cart = [];
 
@@ -1318,9 +1299,6 @@ function pay(app){
 localStorage.setItem("paymentStarted", "true");
 
 window.location.href = appLink;
-setTimeout(() => {
-showConfirmPopup();
-}, 800);
 
 /*
 let hidden = false;
@@ -1362,8 +1340,6 @@ function checkPin(input){
     }
 }
 
-
-
     
 function setTheme(theme){
     if(theme === "dark"){
@@ -1395,29 +1371,26 @@ if(savedTheme){
 
 function showConfirmPopup(){
 
-    if(localStorage.getItem("paymentStarted") === "true"){
-        document.getElementById("confirmPaymentPopup").style.display = "flex";
-    }
+    if(localStorage.getItem("paymentStarted") !== "true") return;
+
+    document.getElementById("confirmPaymentPopup").style.display = "flex";
 
 }
 
 window.addEventListener("focus", showConfirmPopup);
+
 window.addEventListener("pageshow", showConfirmPopup);
-document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) {
-        showConfirmPopup();
-    }
-});
-
-    
-
 
 async function paymentSuccess(){
+
+    alert("1");
 
     if(!auth.currentUser){
         alert("Please sign in first.");
         return;
     }
+
+    alert("2");
 
     const order = {
     orderNumber: "AQ" + Date.now(),
@@ -1444,27 +1417,42 @@ async function paymentSuccess(){
 
     createdAt: serverTimestamp()
 };
-    };
+
+    alert("3");
 
     try{
+
         document.getElementById("confirmPaymentPopup").style.display="none";
 
-        await addDoc(collection(db,"orders"), order);
+        alert("4");
+
+        await addDoc(
+            collection(db,"orders"),
+            order
+        );
+
+        alert("5");
 
         localStorage.removeItem("paymentStarted");
 
-        cart = [];
+        cart=[];
+
         draw();
 
-        alert("✅ Order Created.\n\nPlease check My Orders page.");
+        document.getElementById("confirmPaymentPopup").style.display="none";
+
+        alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
 
         window.location.href="my-orders.html";
 
     }catch(err){
+
         console.error(err);
         alert(err.code + "\n" + err.message);
+
     }
 }
+
     
 
 function closeConfirmPopup(){
@@ -1479,9 +1467,7 @@ function closeConfirmPopup(){
 
     
 
-
 </script>
-
 
 <!-- Payment Popup -->
 <div id="paymentPopup" class="popup">
