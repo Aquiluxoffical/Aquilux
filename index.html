@@ -8,9 +8,11 @@
 /* 1. Global Variables & Base Resets */
 :root {
     --bg: #0a0a0a;
-    --card: #111;
-    --line: #222;
+    --card: rgba(255, 255, 255, 0.03);
+    --line: rgba(255, 255, 255, 0.08);
     --text: #f5f5f5;
+    --glass-blur: 16px;
+    --glass-glow: rgba(255, 255, 255, 0.05);
 }
 * {
     margin: 0;
@@ -191,45 +193,149 @@ section {
 }
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
 }
 
-/* 5. Product Cards & UI Interactivity */
-.card, button, select {
-    transition: .3s ease;
-}
-.card:hover, button:hover, select:hover {
-    transform: translateY(-4px);
-    border-color: #fff;
-    box-shadow: 0 10px 25px rgba(255, 255, 255, .08);
-}
+/* =========================================================
+   5. UPGRADED LIQUID GLASS UI (PRODUCT SECTION)
+   ========================================================= */
 .card {
+    background: var(--card);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 24px;
     overflow: hidden;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                border-color 0.4s ease;
+}
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 20px 40px var(--glass-glow), 
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+.card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    margin: 12px;
+    border-radius: 16px;
 }
 .card img {
     width: 100%;
     aspect-ratio: 4/5;
     object-fit: cover;
-    border-radius: 18px;
+    border-radius: 16px;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.card:hover img {
+    transform: scale(1.05);
 }
 .info {
-    padding: 18px;
+    padding: 20px 18px 24px 18px;
     text-align: center;
 }
 .info h3 {
     font-weight: 400;
+    font-size: 1.15rem;
+    letter-spacing: 0.5px;
 }
 .price {
-    opacity: .8;
-    margin: 10px 0;
+    font-weight: 500;
+    margin: 12px 0;
+    font-size: 1.1rem;
 }
 
-/* 6. Form Inputs & Select Elements */
-button, input, textarea {
+/* Glassified Inputs & Drops Inside Cards */
+.info select {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(4px);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    margin-top: 10px;
+    text-align-last: center;
+    outline: none;
+    cursor: pointer;
+}
+.info select:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255,255,255,0.2);
+    transform: none;
+    box-shadow: none;
+}
+.info select option {
+    background: #111;
+    color: #fff;
+}
+.glass-action-btn {
+    width: 100%;
+    padding: 14px;
+    background: #fff;
+    color: #000;
+    border: 1px solid #fff;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+}
+.glass-action-btn:hover {
+    background: transparent;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255,255,255,0.15);
+}
 
+/* 7. Quantity & Cart Controls */
+.qty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 16px;
+}
+.qty button {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+    color: var(--text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.qty button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+.qty span {
+    min-width: 25px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* ========================================================= */
+
+button, input, textarea {
     padding: 12px;
     background: #111;
     color: #fff;
@@ -240,42 +346,8 @@ button {
     cursor: pointer;
     width:auto;
 }
-
-input,
-textarea{
+input, textarea{
     width:100%;    
-}
-    
-select {
-    width: 60%;
-    padding: 12px;
-    background: #111;
-    color: #fff;
-    border: 1px solid #333;
-    margin-top: 10px;
-    text-align-last: center;
-}
-
-/* 7. Quantity & Cart Controls */
-.qty {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-top: 12px;
-}
-.qty button {
-    width: 42px;
-    height: 42px;
-    padding: 0;
-    font-size: 22px;
-    border-radius: 50%;
-}
-.qty span {
-    min-width: 25px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
 }
 .cart-title {
     display:flex;
@@ -289,11 +361,9 @@ select {
     margin-right:10px;
     flex-shrink:0;
 }
-
 .cart-title:hover{
     opacity:.85;
 }
-
 #cartCount {
     width: 30px;
     height: 30px;
@@ -319,7 +389,6 @@ select {
     overflow:hidden;
     box-shadow:0 12px 30px rgba(0,0,0,.35);
 }
-
 .cart-table th{
     background:linear-gradient(180deg,#1f1f1f,#171717);
     padding:16px;
@@ -329,7 +398,6 @@ select {
     color:#fff;
     letter-spacing:.4px;
 }
-
 .cart-table td{
     padding:15px;
     text-align:center;
@@ -337,20 +405,16 @@ select {
     border-bottom:1px solid #242424;
     color:#e8e8e8;
 }
-
 .cart-table tbody tr:nth-child(even){
     background:#181818;
 }
-
 .cart-table tbody tr:nth-child(even) td{
     background:#181818;
 }
-
 .cart-table tbody tr:hover td{
     background:#202020;
     transition:.25s;
 }
-
 .cart-table tr:last-child td{
     border-bottom:none;
 }
@@ -478,7 +542,7 @@ footer {
 }
 
 .google-btn{
-    display: inline-flex !important; /* Force block to inline-flex */
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     flex-direction: row !important;
@@ -491,22 +555,19 @@ footer {
     border-radius: 10px;
     cursor: pointer;
     white-space: nowrap;
-    margin-top: 0 !important; /* Global margin-top ko zero kiya */
+    margin-top: 0 !important;
 }
-
 .google-btn:hover{
-background:#1b1b1b;
-border-color:#fff;
+    background:#1b1b1b;
+    border-color:#fff;
 }
-
 .google-btn img{
     width:20px;
     height:20px;
-    display: inline-block !important; /* Block se badal kar inline-block kiya */
+    display: inline-block !important;
     flex-shrink: 0;
     margin: 0 !important;
 }
-
 .google-btn span{
     display:inline-block;
     font-size:15px;
@@ -514,19 +575,12 @@ border-color:#fff;
     line-height:1;
     margin:0;
 }
-
-.google-btn img,
-.google-btn span{
+.google-btn img, .google-btn span{
     vertical-align:middle;
 }
-
 .google-btn span{
     white-space:nowrap;
 }
-
-/* ==========================================
-   User Profile Box & Logout Button Styling
-   ========================================== */
 
 #userBox {
     align-items: center;
@@ -537,13 +591,11 @@ border-color:#fff;
     border-radius: 12px;
     backdrop-filter: blur(8px);
 }
-
 .user-info {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
 #userImg {
     border-radius: 50%;
     border: 1px solid #444;
@@ -551,7 +603,6 @@ border-color:#fff;
     width: 28px;
     height: 28px;
 }
-
 #userName {
     font-size: 14px;
     font-weight: 500;
@@ -562,7 +613,6 @@ border-color:#fff;
     text-overflow: ellipsis;
 }
 
-/* Premium Logout Button */
 .logout-btn {
     display: flex !important;
     align-items: center;
@@ -578,18 +628,15 @@ border-color:#fff;
     margin-top: 0 !important;
     transition: all 0.2s ease;
 }
-
 .logout-btn:hover {
     color: #ff4a4a !important;
     background: rgba(255, 74, 74, 0.1) !important;
     transform: translateY(0) !important;
     box-shadow: none !important;
 }
-
 .logout-btn svg {
     transition: transform 0.2s ease;
 }
-
 .logout-btn:hover svg {
     transform: translateX(2px);
 }
@@ -606,19 +653,16 @@ border-color:#fff;
     box-shadow:0 12px 30px rgba(0,0,0,.35);
     transition:.3s;
 }
-
 .total-box:hover{
     border-color:#555;
     box-shadow:0 18px 40px rgba(255,255,255,.06);
 }
-
 .total-label{
     font-size:17px;
     color:#bdbdbd;
     letter-spacing:.5px;
     text-transform:uppercase;
 }
-
 .total-price{
     font-size:30px;
     font-weight:700;
@@ -631,7 +675,6 @@ border-color:#fff;
     gap:10px;
     margin-top:10px;
 }
-
 .theme-dot{
     width:18px;
     height:18px;
@@ -640,42 +683,24 @@ border-color:#fff;
     cursor:pointer;
     transition:.35s;
 }
-
 .theme-dot:hover{
     transform:scale(1.25);
     box-shadow:0 0 12px rgba(255,255,255,.35);
 }
-
-.dark{
-    background:#0a0a0a;
-}
-
-.olive{
-    background:#8a9a5b;
-}
-
-.cream{
-    background:#f4edd8;
-}
-
-.logo-box{
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
+.dark{ background:#0a0a0a; }
+.olive{ background:#8a9a5b; }
+.cream{ background:#f4edd8; }
 
 .logo-text{
     display:flex;
     flex-direction:column;
     align-items:flex-start;
 }
-
 .theme-switcher{
     display:flex;
     gap:8px;
     margin-top:6px;
 }
-
 .marquee{
     width:100%;
     overflow:hidden;
@@ -683,15 +708,13 @@ border-color:#fff;
     border-top:1px solid #2a2a2a;
     border-bottom:1px solid #2a2a2a;
     border-radius:14px;
-    margin-bottom:30px;
+    margin-bottom:40px;
 }
-
 .marquee-track{
     display:flex;
     width:max-content;
     animation:marquee 20s linear infinite;
 }
-
 .marquee-track span{
     white-space:nowrap;
     padding:14px 40px;
@@ -701,67 +724,38 @@ border-color:#fff;
     color:#ddd;
     text-transform:uppercase;
 }
-
 @keyframes marquee{
-    from{
-        transform:translateX(0);
-    }
-    to{
-        transform:translateX(-50%);
-    }
+    from{ transform:translateX(0); }
+    to{ transform:translateX(-50%); }
 }
 
-    
-
-/* 13. Combined Responsive Media Queries (Mobile Optimize) */
+/* 13. Combined Responsive Media Queries */
 @media(max-width:768px) {
-    header {
-        padding: 14px;
-    }
-    .logo-box strong {
-        font-size: 18px;
-    }
-    .header-right {
-        gap: 6px;
-    }
-    .cart-title span:first-of-type {
-        display: none;
-    }
+    header { padding: 14px; }
+    .logo-box strong { font-size: 18px; }
+    .header-right { gap: 6px; }
+    .cart-title span:first-of-type { display: none; }
     .grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
+        gap: 16px;
     }
-    .info {
-        padding: 10px;
-    }
-    .info h3 {
-        font-size: 14px;
-    }
-    .price {
-        font-size: 13px;
-    }
-    select, button {
-        padding: 8px;
-        font-size: 13px;
-    }
-    .hero h1 {
-        font-size: 2.6rem;
-    }
-    .hero-bg:before {
-        width: 420px;
-        height: 420px;
-    }
-    .hero-bg span {
-        width: 2px;
-        height: 2px;
-    }
-    .input-row {
-        flex-direction: column;
-    }
-
-    .cart-title{
-        margin-right:8px;
-    }
+    .card { border-radius: 16px; }
+    .card-img-wrapper { margin: 6px; border-radius: 10px; }
+    .card img { border-radius: 10px; }
+    .info { padding: 12px 10px 16px 10px; }
+    .info h3 { font-size: 14px; }
+    .price { font-size: 13px; margin: 8px 0; }
+    .info select { padding: 8px; font-size: 12px; border-radius: 8px; }
+    .qty { gap: 10px; margin-top: 10px; }
+    .qty button { width: 30px; height: 30px; font-size: 14px; }
+    .qty span { font-size: 14px; }
+    .glass-action-btn { padding: 10px; font-size: 12px; border-radius: 8px; margin-top: 12px; }
+    
+    .hero h1 { font-size: 2.6rem; }
+    .hero-bg:before { width: 420px; height: 420px; }
+    .hero-bg span { width: 2px; height: 2px; }
+    .input-row { flex-direction: column; }
+    .cart-title{ margin-right:8px; }
     
     .google-btn {
         display: flex;
@@ -778,89 +772,23 @@ border-color:#fff;
         transition: .3s;
         white-space: nowrap;
     }
-    .google-btn:hover {
-        background: #1b1b1b;
-        border-color: #fff;
-    }
-    .google-btn img {
-        width: 18px;
-        height: 18px;
-        display: block;
-    }
-    .google-btn span {
-        font-size: 13px;
-        font-weight: 500;
-    }
+    .google-btn:hover { background: #1b1b1b; border-color: #fff; }
+    .google-btn img { width: 18px; height: 18px; display: block; }
+    .google-btn span { font-size: 13px; font-weight: 500; }
 
-    /* Mobile Optimization for Logout Panel */
-#userBox {
-    gap: 8px !important;
-    padding: 4px 8px !important;
+    #userBox { gap: 8px !important; padding: 4px 8px !important; }
+    #userName { display: none !important; }
+    #userImg { width: 26px; height: 26px; }
+    .logout-btn { padding: 4px 6px !important; font-size: 12px !important; gap: 4px !important; }
+    .logout-btn svg { width: 14px; height: 14px; }
+    .total-box{ padding:18px; }
+    .total-label{ font-size:14px; }
+    .total-price{ font-size:24px; }
+    .cart-table{ table-layout:fixed; width:100%; }
+    .cart-table th, .cart-table td { padding:8px 4px; font-size:12px; word-break:break-word; }
+    .delete-btn{ font-size:18px; }
+    #items{ overflow-x:hidden; }
 }
-
-#userName {
-    display: none !important; /* Mobile par naam hide hoga space bachane ke liye */
-}
-
-#userImg {
-    width: 26px;
-    height: 26px;
-}
-
-.logout-btn {
-    padding: 4px 6px !important;
-    font-size: 12px !important;
-    gap: 4px !important;
-}
-
-.logout-btn svg {
-    width: 14px;
-    height: 14px;
-}
-
-.total-box{
-    padding:18px;
-
-}
-
-.total-label{
-    font-size:14px;
-
-}
-
-.total-price{
-    font-size:24px;
-
-}
-
-.cart-table{
-    table-layout:fixed;
-    width:100%;
-}
-
-.cart-table th,
-.cart-table td{
-    padding:8px 4px;
-    font-size:12px;
-    word-break:break-word;
-}
-
-.delete-btn{
-    font-size:18px;
-}
-
-#items{
-    overflow-x:hidden;
-}
-
-    
-
-    
-
-    
-
-}
-    
 
 /* ===== Hologram Reviews ===== */
 .holo-layer{position:absolute;inset:0;pointer-events:none;z-index:3}
@@ -887,17 +815,12 @@ background:repeating-linear-gradient(180deg,transparent 0 6px,rgba(0,255,255,.08
 animation:scan 2s linear infinite;
 mix-blend-mode:screen;
 }
-.holo-review.show{
-opacity:1;
-transform:scale(1) rotateX(0deg);
-}
+.holo-review.show{ opacity:1; transform:scale(1) rotateX(0deg); }
 @keyframes scan{
 from{transform:translateY(-100%)}
 to{transform:translateY(100%)}
 }
-
 </style>
-
 </head>
 
 <script type="module">
@@ -910,14 +833,10 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 
-    import {
+import {
     getFirestore,
     collection,
     addDoc,
-    getDocs,
-    query,
-    where,
-    orderBy,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
@@ -953,7 +872,6 @@ window.googleLogout = () => {
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // !important CSS ko overwrite karne ke liye setProperty ka use karenge
     document.getElementById("loginBtn").style.setProperty("display", "none", "important");
     document.getElementById("userBox").style.setProperty("display", "flex", "important");
     document.getElementById("userName").innerText = user.displayName;
@@ -969,60 +887,44 @@ const holo=document.getElementById('holoLayer');const active=[];
 function bad(x,y){const w=220,h=90,cx=window.innerWidth/2-220,cy=window.innerHeight/2-170,cw=440,ch=340;if(x<cx+cw&&x+w>cx&&y<cy+ch&&y+h>cy)return true;for(const a of active){if(x<a.x+w&&x+w>a.x&&y<a.y+h&&y+h>a.y)return true;}return false;}
 function makeHolo(){let x,y,t=0;do{x=20+Math.random()*(window.innerWidth-260);y=30+Math.random()*(window.innerHeight-140);t++;}while(bad(x,y)&&t<40);const d=document.createElement('div');d.className='holo-review';const r=holoReviews[Math.floor(Math.random()*holoReviews.length)];d.innerHTML=`<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;d.style.left=x+'px';d.style.top=y+'px';holo.appendChild(d);active.push({el:d,x,y});requestAnimationFrame(()=>d.classList.add('show'));setTimeout(()=>{d.style.opacity='0';d.style.filter='blur(10px)';setTimeout(()=>{const i=active.findIndex(v=>v.el===d);if(i>-1)active.splice(i,1);d.remove();},800);},1800+Math.random()*1200);}
 setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTimeout(makeHolo,i*500);},3000);setTimeout(makeHolo,800);
-
 </script>    
+
 <body>
 
 <header>
-
     <div class="logo-box">
-
         <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-
         <div class="logo-text">
             <strong>Aquilux</strong>
-
             <div class="theme-switcher">
                 <button onclick="setTheme('dark')" class="theme-dot dark"></button>
                 <button onclick="setTheme('olive')" class="theme-dot olive"></button>
                 <button onclick="setTheme('cream')" class="theme-dot cream"></button>
             </div>
-
         </div>
-
     </div>
 
    <div class="header-right">
-
     <a href="#cart" class="cart-title">
-        🛒
-        <span>Cart</span>
-        <span id="cartCount">0</span>
+        🛒 <span>Cart</span> <span id="cartCount">0</span>
     </a>
-
     <a href="my-orders.html" class="cart-title">
-        📦
-        <span>My Orders</span>
+        📦 <span>My Orders</span>
     </a>
-
     <button id="loginBtn" onclick="googleLogin()" class="google-btn">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
         <span>Sign in</span>
     </button>
 
-<div id="userBox" style="display:none;">
-   <div class="user-info">
-      <img id="userImg">
-      <span id="userName"></span>
-   </div>
-
-   <button onclick="googleLogout()" class="logout-btn">
-      Logout
-   </button>
+    <div id="userBox" style="display:none;">
+       <div class="user-info">
+          <img id="userImg">
+          <span id="userName"></span>
+       </div>
+       <button onclick="googleLogout()" class="logout-btn">Logout</button>
+    </div>
 </div>
-       
-</div></header>
-    
+</header>
 
 <section class="hero"><div id="holoLayer" class="holo-layer"></div>
 <div class="hero-bg"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -1034,68 +936,40 @@ setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTime
 </section>
 
 <section id="shop">
-
     <div class="marquee">
         <div class="marquee-track">
-
-            <span>
-                ✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦
-            </span>
-
-            <span>
-                ✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦
-            </span>
-
+            <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
+            <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
         </div>
     </div>
-
     <div class="title">Collection</div>
-
     <div class="grid" id="grid"></div>
-
 </section>
 
 <section id="cart">
 <div class="title">Cart</div>
 <div id="items"></div>
-<br> </br>
+<br><br>
 <div class="total-box">
     <span class="total-label">Order Total</span>
     <span class="total-price">₹<span id="total">0</span></span>
 </div>
 
 <div class="delivery-card">
-
 <h2>Delivery Details</h2>
-
 <input type="text" id="receiverName" placeholder="Receiver Name *">
-
 <input type="tel" id="phone" maxlength="10" placeholder="Contact Number *">
-
 <input type="text" id="flat" placeholder="Flat / Floor / Society *">
-
 <input type="text" id="road" placeholder="Road / Area *">
-
 <input type="text" id="landmark" placeholder="Landmark (Optional)">
-
-<input
-type="text"
-id="pincode"
-maxlength="6"
-placeholder="PIN Code *"
-oninput="checkPin(this)">
+<input type="text" id="pincode" maxlength="6" placeholder="PIN Code *" oninput="checkPin(this)">
 
 <div class="input-row">
     <input type="text" id="city" placeholder="City" readonly>
     <input type="text" id="state" placeholder="State" readonly>
 </div>
-
-<button class="payment-btn" onclick="openPayment()">
-Proceed To Payment
-</button>
-
+<button class="payment-btn" onclick="openPayment()">Proceed To Payment</button>
 </div>
-
 </section>
 
 <footer>
@@ -1109,16 +983,11 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4l
 let products = [];
 let qty = [];
 
-// 1. Google Sheet se data fetch karne ka function
 async function loadProducts() {
     try {
         const res = await fetch(API_URL);
         products = await res.json();
-        
-        // Qty array ko initialize karein
         qty = Array(products.length).fill(0);
-        
-        // Products ko page par render karein
         displayProducts();
     } catch (error) {
         console.error("Error loading products:", error);
@@ -1126,44 +995,36 @@ async function loadProducts() {
     }
 }
 
-// 2. DOM mein products cards inject karne ka naya tarika (Object Keys ke saath)
 function displayProducts() {
     const g = document.getElementById("grid");
     g.innerHTML = ""; 
 
     products.forEach((p, i) => {
-        // Agar sizes sheet mein nahi hain toh custom default sizes set karein
         const sizesList = p.sizes && p.sizes.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
         const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
 
         g.innerHTML += `<div class="card">
-        <img
-    src="${p.image}"
-    alt="${p.product}"
-    loading="lazy"
-    decoding="async">
-    
-        <div class="info">
-        <h3>${p.product}</h3>
-        <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
-        <select id="s${i}">
-            ${optionsHTML}
-        </select>
-
-        <div class="qty">
-            <button onclick="changeQty(${i},-1)">−</button>
-            <span id="q${i}">0</span>
-            <button onclick="changeQty(${i},1)">+</button>
+        <div class="card-img-wrapper">
+            <img src="${p.image}" alt="${p.product}" loading="lazy" decoding="async">
         </div>
-
-        <button onclick="addToCart(${i})">
-            ADD TO CART
-        </button>
+        <div class="info">
+            <h3>${p.product}</h3>
+            <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
+            <select id="s${i}">
+                ${optionsHTML}
+            </select>
+            <div class="qty">
+                <button onclick="changeQty(${i},-1)">−</button>
+                <span id="q${i}">0</span>
+                <button onclick="changeQty(${i},1)">+</button>
+            </div>
+            <button class="glass-action-btn" onclick="addToCart(${i})">
+                ADD TO CART
+            </button>
         </div></div>`;
     });
 }
 
-// Page ready hote hi trigger karein
 window.addEventListener("DOMContentLoaded", loadProducts);
 
 let cart = [];
@@ -1179,11 +1040,8 @@ function addToCart(i){
         alert("Please select quantity.");
         return;
     }
-
     let size = document.getElementById("s"+i).value;
     let quantity = qty[i];
-    
-    // Yahan indexes badal kar object properties (p.product aur p.price) use ki hain
     let item = cart.find(x => x.n == products[i].product && x.s == size);
 
     if(item){
@@ -1196,7 +1054,6 @@ function addToCart(i){
             q: quantity
         });
     }
-
     draw();
     qty[i] = 0;
     document.getElementById("q"+i).textContent = 0;
@@ -1207,16 +1064,9 @@ function draw(){
     let h = `
     <table class="cart-table">
     <thead>
-    <tr>
-    <th>Product</th>
-    <th>Size</th>
-    <th>Qty</th>
-    <th>Price</th>
-    <th></th>
-    </tr>
+    <tr><th>Product</th><th>Size</th><th>Qty</th><th>Price</th><th></th></tr>
     </thead>
-    <tbody>
-    `;
+    <tbody>`;
 
     cart.forEach((c, i) => {
         t += c.p * c.q;
@@ -1227,41 +1077,25 @@ function draw(){
         <td>${c.q}</td>
         <td>₹${c.p * c.q}</td>
         <td>
-        <button class="delete-btn" onclick="cart.splice(${i},1);draw()">
-        🗑️
-        </button>
+        <button class="delete-btn" onclick="cart.splice(${i},1);draw()">🗑️</button>
         </td>
-        </tr>
-        `;
+        </tr>`;
     });
 
-    h += `
-    </tbody>
-    </table>
-    `;
-
-    if(cart.length == 0){
-        h = "Cart is empty.";
-    }
+    h += `</tbody></table>`;
+    if(cart.length == 0){ h = "Cart is empty."; }
 
     document.getElementById("items").innerHTML = h;
     document.getElementById("total").textContent = t;
 
     let count = 0;
-    cart.forEach(item => {
-        count += item.q;
-    });
-
+    cart.forEach(item => { count += item.q; });
     document.getElementById("cartCount").textContent = count;
 }
 
-function openPayment(){
-    document.getElementById("paymentPopup").style.display = "flex";
-}
-
-function closePopup(){
-    document.getElementById("paymentPopup").style.display = "none";
-}
+function openPayment(){ document.getElementById("paymentPopup").style.display = "flex"; }
+define
+function closePopup(){ document.getElementById("paymentPopup").style.display = "none"; }
 
 function pay(app){
     closePopup();
@@ -1269,50 +1103,22 @@ function pay(app){
     const upi = "Yashojhaoffical1982@oksbi";
     const name = encodeURIComponent("Aquilux");
     const note = encodeURIComponent("Aquilux Order");
-
     const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     let appLink = "";
-    let storeLink = "";
 
     switch(app){
         case "gpay":
             appLink = `gpay://upi/pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
-            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
             break;
         case "phonepe":
             appLink = `phonepe://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/phonepe-secure-payments-app/id1170055821"
-            : "https://play.google.com/store/apps/details?id=com.phonepe.app";
             break;
         case "paytm":
             appLink = `paytmmp://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/paytm-secure-upi-payments/id473941634"
-            : "https://play.google.com/store/apps/details?id=net.one97.paytm";
             break;
     }
-
-   
-localStorage.setItem("paymentStarted", "true");
-
-window.location.href = appLink;
-
-/*
-let hidden = false;
-
-document.addEventListener("visibilitychange", () => {
-    hidden = document.hidden;
-});
-
-setTimeout(() => {
-    if (!hidden) {
-        window.location.href = storeLink;
-    }
-}, 1800);
-*/
+    localStorage.setItem("paymentStarted", "true");
+    window.location.href = appLink;
 }
 
 async function lookupPin(){
@@ -1335,190 +1141,110 @@ async function lookupPin(){
 
 function checkPin(input){
     input.value = input.value.replace(/\D/g,'');
-    if(input.value.length === 6){
-        lookupPin();
-    }
+    if(input.value.length === 6){ lookupPin(); }
 }
 
-    
 function setTheme(theme){
     if(theme === "dark"){
         document.documentElement.style.setProperty('--bg','#0a0a0a');
-        document.documentElement.style.setProperty('--card','#111');
-        document.documentElement.style.setProperty('--line','#222');
+        document.documentElement.style.setProperty('--card','rgba(255, 255, 255, 0.03)');
+        document.documentElement.style.setProperty('--line','rgba(255, 255, 255, 0.08)');
         document.documentElement.style.setProperty('--text','#f5f5f5');
+        document.documentElement.style.setProperty('--glass-blur','16px');
+        document.documentElement.style.setProperty('--glass-glow','rgba(255, 255, 255, 0.05)');
     }
     if(theme === "olive"){
         document.documentElement.style.setProperty('--bg','#1d2318');
-        document.documentElement.style.setProperty('--card','#2c3525');
-        document.documentElement.style.setProperty('--line','#49543d');
+        document.documentElement.style.setProperty('--card','rgba(255, 255, 255, 0.02)');
+        document.documentElement.style.setProperty('--line','rgba(138, 154, 91, 0.2)');
         document.documentElement.style.setProperty('--text','#f3f0e8');
+        document.documentElement.style.setProperty('--glass-blur','20px');
+        document.documentElement.style.setProperty('--glass-glow','rgba(138, 154, 91, 0.1)');
     }
     if(theme === "cream"){
         document.documentElement.style.setProperty('--bg','#f7f4eb');
-        document.documentElement.style.setProperty('--card','#ffffff');
-        document.documentElement.style.setProperty('--line','#d8cfb7');
+        document.documentElement.style.setProperty('--card','rgba(0, 0, 0, 0.02)');
+        document.documentElement.style.setProperty('--line','rgba(0, 0, 0, 0.08)');
         document.documentElement.style.setProperty('--text','#222');
+        document.documentElement.style.setProperty('--glass-blur','12px');
+        document.documentElement.style.setProperty('--glass-glow','rgba(0, 0, 0, 0.03)');
     }
     localStorage.setItem("theme", theme);
 }
 
 const savedTheme = localStorage.getItem("theme");
-
-if(savedTheme){
-    setTheme(savedTheme);
-}
+if(savedTheme){ setTheme(savedTheme); }
 
 function showConfirmPopup(){
-
     if(localStorage.getItem("paymentStarted") !== "true") return;
-
     document.getElementById("confirmPaymentPopup").style.display = "flex";
-
 }
-
 window.addEventListener("focus", showConfirmPopup);
-
 window.addEventListener("pageshow", showConfirmPopup);
 
 async function paymentSuccess(){
-
-    alert("1");
-
     if(!auth.currentUser){
         alert("Please sign in first.");
         return;
     }
-
-    alert("2");
-
     const order = {
-    orderNumber: "AQ" + Date.now(),
-    userId: auth.currentUser.uid,
-    userName: auth.currentUser.displayName,
-    userEmail: auth.currentUser.email,
-
-    receiverName: document.getElementById("receiverName").value,
-    phone: document.getElementById("phone").value,
-
-    flat: document.getElementById("flat").value,
-    road: document.getElementById("road").value,
-    landmark: document.getElementById("landmark").value,
-
-    city: document.getElementById("city").value,
-    state: document.getElementById("state").value,
-    pincode: document.getElementById("pincode").value,
-
-    items: cart,
-    total: Number(document.getElementById("total").textContent),
-
-    paymentStatus: "Pending Verification",
-    orderStatus: "Pending",
-
-    createdAt: serverTimestamp()
-};
-
-    alert("3");
+        orderNumber: "AQ" + Date.now(),
+        userId: auth.currentUser.uid,
+        userName: auth.currentUser.displayName,
+        userEmail: auth.currentUser.email,
+        receiverName: document.getElementById("receiverName").value,
+        phone: document.getElementById("phone").value,
+        flat: document.getElementById("flat").value,
+        road: document.getElementById("road").value,
+        landmark: document.getElementById("landmark").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        pincode: document.getElementById("pincode").value,
+        items: cart,
+        total: Number(document.getElementById("total").textContent),
+        paymentStatus: "Pending Verification",
+        orderStatus: "Pending",
+        createdAt: serverTimestamp()
+    };
 
     try{
-
         document.getElementById("confirmPaymentPopup").style.display="none";
-
-        alert("4");
-
-        await addDoc(
-            collection(db,"orders"),
-            order
-        );
-
-        alert("5");
-
+        await addDoc(collection(db,"orders"), order);
         localStorage.removeItem("paymentStarted");
-
         cart=[];
-
         draw();
-
-        document.getElementById("confirmPaymentPopup").style.display="none";
-
         alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
-
         window.location.href="my-orders.html";
-
     }catch(err){
-
         console.error(err);
         alert(err.code + "\n" + err.message);
-
     }
 }
 
-    
-
 function closeConfirmPopup(){
-
     document.getElementById("confirmPaymentPopup").style.display="none";
-
     localStorage.removeItem("paymentStarted");
-
     window.location.href="#shop";
-
 }
-
-    
-
 </script>
 
-<!-- Payment Popup -->
 <div id="paymentPopup" class="popup">
-
     <div class="popup-box">
-
         <h2>Choose Payment Method</h2>
-
-        <div class="payment-option" onclick="pay('gpay')">
-            <img src="images/gpay.svg" alt="Google Pay">
-            <span>Google Pay</span>
-        </div>
-
-        <div class="payment-option" onclick="pay('phonepe')">
-            <img src="images/PhonePe_Logo.svg" alt="PhonePe">
-            <span>PhonePe</span>
-        </div>
-
-        <div class="payment-option" onclick="pay('paytm')">
-            <img src="images/Paytm_Logo_(standalone).svg" alt="Paytm">
-            <span>Paytm</span>
-        </div>
-
-        <button class="close-btn" onclick="closePopup()">
-            Cancel
-        </button>
-
+        <div class="payment-option" onclick="pay('gpay')"><img src="images/gpay.svg" alt="Google Pay"><span>Google Pay</span></div>
+        <div class="payment-option" onclick="pay('phonepe')"><img src="images/PhonePe_Logo.svg" alt="PhonePe"><span>PhonePe</span></div>
+        <div class="payment-option" onclick="pay('paytm')"><img src="images/Paytm_Logo_(standalone).svg" alt="Paytm"><span>Paytm</span></div>
+        <button class="close-btn" onclick="closePopup()">Cancel</button>
     </div>
-
 </div>
 
-<!-- Confirm Payment Popup -->
 <div id="confirmPaymentPopup" class="popup">
-
     <div class="popup-box">
-
         <h2>Payment Completed?</h2>
-
         <p>Did you successfully complete your payment?</p>
-
-        <button onclick="paymentSuccess()">
-            Yes, Payment Done
-        </button>
-
-        <button class="close-btn" onclick="closeConfirmPopup()">
-            Not Yet
-        </button>
-
+        <button onclick="paymentSuccess()">Yes, Payment Done</button>
+        <button class="close-btn" onclick="closeConfirmPopup()">Not Yet</button>
     </div>
-
 </div>
-
 </body>
 </html>
