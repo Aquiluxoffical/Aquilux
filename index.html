@@ -1284,6 +1284,8 @@ function pay(app){
             break;
     }
 
+   
+    localStorage.setItem("paymentStarted", "true");
     window.location.href = appLink;
 
     let hidden = false;
@@ -1323,6 +1325,9 @@ function checkPin(input){
     }
 }
 
+
+
+    
 function setTheme(theme){
     if(theme === "dark"){
         document.documentElement.style.setProperty('--bg','#0a0a0a');
@@ -1346,41 +1351,99 @@ function setTheme(theme){
 }
 
 const savedTheme = localStorage.getItem("theme");
+
 if(savedTheme){
     setTheme(savedTheme);
 }
+
+window.addEventListener("focus", () => {
+
+    if(localStorage.getItem("paymentStarted") === "true"){
+
+        document.getElementById("confirmPaymentPopup").style.display = "flex";
+
+    }
+
+});
+
+
+function paymentSuccess(){
+
+    localStorage.removeItem("paymentStarted");
+
+    cart = [];
+    draw();
+
+    document.getElementById("confirmPaymentPopup").style.display = "none";
+
+    alert("🎉 Order Placed Successfully!");
+
+    window.location.href = "#shop";
+
+}
+
+function closeConfirmPopup(){
+
+    document.getElementById("confirmPaymentPopup").style.display = "none";
+
+}
+
+    
+
+
 </script>
 
 
+<!-- Payment Popup -->
 <div id="paymentPopup" class="popup">
 
-<div class="popup-box">
+    <div class="popup-box">
 
-<h2>Choose Payment Method</h2>
+        <h2>Choose Payment Method</h2>
 
-<div class="payment-option" onclick="pay('gpay')">
-    <img src="images/gpay.svg" alt="Google Pay">
-    <span>Google Pay</span>
+        <div class="payment-option" onclick="pay('gpay')">
+            <img src="images/gpay.svg" alt="Google Pay">
+            <span>Google Pay</span>
+        </div>
+
+        <div class="payment-option" onclick="pay('phonepe')">
+            <img src="images/PhonePe_Logo.svg" alt="PhonePe">
+            <span>PhonePe</span>
+        </div>
+
+        <div class="payment-option" onclick="pay('paytm')">
+            <img src="images/Paytm_Logo_(standalone).svg" alt="Paytm">
+            <span>Paytm</span>
+        </div>
+
+        <button class="close-btn" onclick="closePopup()">
+            Cancel
+        </button>
+
+    </div>
+
 </div>
 
-<div class="payment-option" onclick="pay('phonepe')">
-    <img src="images/PhonePe_Logo.svg" alt="PhonePe">
-    <span>PhonePe</span>
+<!-- Confirm Payment Popup -->
+<div id="confirmPaymentPopup" class="popup">
+
+    <div class="popup-box">
+
+        <h2>Payment Completed?</h2>
+
+        <p>Did you successfully complete your payment?</p>
+
+        <button onclick="paymentSuccess()">
+            Yes, Payment Done
+        </button>
+
+        <button class="close-btn" onclick="closeConfirmPopup()">
+            Not Yet
+        </button>
+
+    </div>
+
 </div>
 
-<div class="payment-option" onclick="pay('paytm')">
-    <img src="images/Paytm_Logo_(standalone).svg" alt="Paytm">
-    <span>Paytm</span>
-</div>
-
-
-<button class="close-btn" onclick="closePopup()">
-Cancel
-</button>
-
-</div>
-
-</div>    
-    
 </body>
 </html>
