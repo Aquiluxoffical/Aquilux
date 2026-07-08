@@ -1283,6 +1283,7 @@ function closePopup(){
 }
 
 function pay(app){
+    closePopup();
     const amount = document.getElementById("total").textContent;
     const upi = "Yashojhaoffical1982@oksbi";
     const name = encodeURIComponent("Aquilux");
@@ -1314,20 +1315,23 @@ function pay(app){
     }
 
    
-    localStorage.setItem("paymentStarted", "true");
-    window.location.href = appLink;
+localStorage.setItem("paymentStarted", "true");
 
-    let hidden = false;
-    document.addEventListener("visibilitychange", () => {
-        hidden = document.hidden;
-    });
+window.location.href = appLink;
 
-    setTimeout(() => {
-        if(!hidden){
-            window.location.href = storeLink;
-        }
-    }, 1800);
-}
+/*
+let hidden = false;
+
+document.addEventListener("visibilitychange", () => {
+    hidden = document.hidden;
+});
+
+setTimeout(() => {
+    if (!hidden) {
+        window.location.href = storeLink;
+    }
+}, 1800);
+*/
 
 async function lookupPin(){
     const pin = document.getElementById("pincode").value;
@@ -1385,15 +1389,17 @@ if(savedTheme){
     setTheme(savedTheme);
 }
 
-window.addEventListener("focus", () => {
+function showConfirmPopup(){
 
-    if(localStorage.getItem("paymentStarted") === "true"){
+    if(localStorage.getItem("paymentStarted") !== "true") return;
 
-        document.getElementById("confirmPaymentPopup").style.display = "flex";
+    document.getElementById("confirmPaymentPopup").style.display = "flex";
 
-    }
+}
 
-});
+window.addEventListener("focus", showConfirmPopup);
+
+window.addEventListener("pageshow", showConfirmPopup);
 
 
 async function paymentSuccess(){
@@ -1437,6 +1443,8 @@ async function paymentSuccess(){
 
     try{
 
+        document.getElementById("confirmPaymentPopup").style.display="none";
+
         alert("4");
 
         await addDoc(
@@ -1454,7 +1462,7 @@ async function paymentSuccess(){
 
         document.getElementById("confirmPaymentPopup").style.display="none";
 
-        alert("6");
+        alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
 
         window.location.href="my-orders.html";
 
@@ -1470,7 +1478,11 @@ async function paymentSuccess(){
 
 function closeConfirmPopup(){
 
-    document.getElementById("confirmPaymentPopup").style.display = "none";
+    document.getElementById("confirmPaymentPopup").style.display="none";
+
+    localStorage.removeItem("paymentStarted");
+
+    window.location.href="#shop";
 
 }
 
