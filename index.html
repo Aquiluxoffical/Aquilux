@@ -1126,7 +1126,12 @@ function displayProducts() {
         const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
 
         g.innerHTML += `<div class="card">
-        <img src="${p.image}" alt="${p.product}">
+        <img
+    src="${p.image}"
+    alt="${p.product}"
+    loading="lazy"
+    decoding="async">
+    
         <div class="info">
         <h3>${p.product}</h3>
         <div class="price">₹${p.price} <span style="text-decoration:line-through; font-size:12px; opacity:0.5;">₹${p.mrp}</span></div>
