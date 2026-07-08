@@ -1318,6 +1318,9 @@ function pay(app){
 localStorage.setItem("paymentStarted", "true");
 
 window.location.href = appLink;
+setTimeout(() => {
+showConfirmPopup();
+}, 800);
 
 /*
 let hidden = false;
@@ -1392,15 +1395,21 @@ if(savedTheme){
 
 function showConfirmPopup(){
 
-    if(localStorage.getItem("paymentStarted") !== "true") return;
-
-    document.getElementById("confirmPaymentPopup").style.display = "flex";
+    if(localStorage.getItem("paymentStarted") === "true"){
+        document.getElementById("confirmPaymentPopup").style.display = "flex";
+    }
 
 }
 
 window.addEventListener("focus", showConfirmPopup);
-
 window.addEventListener("pageshow", showConfirmPopup);
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+        showConfirmPopup();
+    }
+});
+
+    
 
 
 async function paymentSuccess(){
