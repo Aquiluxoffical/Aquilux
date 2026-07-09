@@ -64,83 +64,122 @@ button{width:100%;padding:15px;border:none;border-radius:12px;margin-top:12px;fo
 </style>
 </head>
 <body>
-
 <div class="card">
-<img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-<h1>Complete Payment</h1>
-<p>Choose your preferred UPI app.</p>
 
-<div class="summary">
+<img class="logo" src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
 
-<div>
-<span>Customer</span>
-<strong id="customerName">-</strong>
-</div>
+<h1>Secure Checkout</h1>
 
-<div id="deliveryDetails" style="margin-top:15px;font-size:14px;line-height:1.7;color:#bbb;"></div>
+<p class="subtitle">
+Complete your Aquilux order
+</p>
+
+<div class="box">
+
+<h2>Delivery Address</h2>
+
+<div id="deliveryDetails"></div>
 
 <button
-onclick="window.location.href='index.html#cart'"
-class="no"
-style="margin-top:12px;">
-Change Delivery Address
+class="changeBtn"
+onclick="window.location.href='index.html#cart'">
+Change Address
 </button>
 
-  <hr style="margin:18px 0;border-color:#333;">
+</div>
 
-<h3 style="margin-bottom:12px;">Order Summary</h3>
+<div class="box">
+
+<h2>Order Summary</h2>
 
 <div id="orderItems"></div>
 
-<hr style="margin:18px 0;border-color:#333;">
+<div class="total">
 
-<div style="display:flex;justify-content:space-between;font-weight:bold;">
 <span>Total</span>
-<strong>₹<span id="totalAmount">0</span></strong>
-</div>
+
+<span>
+₹<span id="totalAmount">0</span>
+</span>
 
 </div>
 
-<h2 style="margin-top:25px;margin-bottom:15px;">
-Choose Payment Method
-</h2>
+</div>
 
-<button class="pay" onclick="pay('gpay')">
-    <img src="images/gpay.svg" class="pay-logo">
-    <span>Google Pay</span>
+<div class="box">
+
+<h2>Choose Payment Method</h2>
+
+<div class="paymentGrid">
+
+<button class="payBtn" onclick="pay('gpay')">
+
+<img src="images/gpay.svg">
+
+<span>Google Pay</span>
+
 </button>
 
-<button class="pay" onclick="pay('phonepe')">
-    <img src="images/PhonePe_Logo.svg"class="pay-logo">
-    <span>PhonePe</span>
+<button class="payBtn" onclick="pay('phonepe')">
+
+<img src="images/PhonePe_Logo.svg">
+
+<span>PhonePe</span>
+
 </button>
 
-<button class="pay" onclick="pay('paytm')">
-    <img src="images/Paytm_Logo_(standalone).svg" class="pay-logo">
-    <span>Paytm</span>
+<button class="payBtn" onclick="pay('paytm')">
+
+<img src="images/Paytm_Logo_(standalone).svg">
+
+<span>Paytm</span>
+
 </button>
 
-<div style="margin-top:25px;
-padding:14px;
-background:#171717;
-border:1px solid #2d2d2d;
-border-radius:14px;
-font-size:13px;
-color:#aaa;
-line-height:1.7;">
+</div>
 
-✔ Secure UPI Payment<br>
-✔ Instant Order Confirmation<br>
-✔ Cash on Delivery unavailable
+<div class="note">
+
+✔ Secure UPI Payment
+
+<br>
+
+✔ Instant Order Confirmation
+
+<br>
+
+✔ Payment Verified Manually
+
+</div>
 
 </div>
 
 <div id="paymentDoneBox">
-<h2 style="text-align:center;margin-bottom:10px">Payment Completed?</h2>
-<p>Did you successfully complete your payment?</p>
-<button class="yes" onclick="paymentDone()">Yes, Payment Done</button>
-<button class="no" onclick="hidePaymentDone()">Not Yet</button>
+
+<h2>Payment Completed?</h2>
+
+<p>
+Did you successfully complete the payment?
+</p>
+
+<button
+class="success"
+onclick="paymentDone()">
+
+Yes, Payment Done
+
+</button>
+
+<button
+class="cancel"
+onclick="hidePaymentDone()">
+
+Not Yet
+
+</button>
+
 </div>
+
 </div>
 
 <script type="module">
