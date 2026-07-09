@@ -1567,11 +1567,12 @@ if(item){
     item.q += quantity;
 }else{
     cart.push({
-        n: product.product,
-        p: Number(product.price),
-        s: size,
-        q: quantity
-    });
+    n: product.product,
+    p: Number(product.price),
+    s: size,
+    q: quantity,
+    img: product.image
+});
 }
 
     draw();
