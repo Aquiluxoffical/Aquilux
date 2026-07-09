@@ -1865,7 +1865,11 @@ function closeConfirmPopup(){
         <h2>Payment Completed?</h2>
 
         <p>Did you successfully complete your payment?</p>
-<button onclick="window.location.href='payment.html'">
+        
+<button onclick="
+localStorage.removeItem('paymentStarted');
+window.location.href='payment.html';
+">
     Yes, Payment Done
 </button>
 
