@@ -160,10 +160,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 
-const order=JSON.parse(localStorage.getItem("pendingOrder")||"{}");
+const order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
 
-document.getElementById("customerName").textContent = order.receiverName || "-";
+// Customer
+document.getElementById("customerName").textContent =
+order.receiverName || "-";
 
+// Delivery Details
 document.getElementById("deliveryDetails").innerHTML = `
 ${order.flat || ""}<br>
 ${order.road || ""}<br>
@@ -172,166 +175,109 @@ ${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
 📞 ${order.phone || ""}
 `;
 
-let html = "";
+// Order Summary
+renderCart();
 
-(order.cart || []).forEach((item,index)=>{
+function renderCart(){
 
-html += `
-<div style="border-bottom:1px solid #333;padding:14px 0;">
+    let html = "";
 
-<div style="display:flex;justify-content:space-between;">
-<div>
-html += `
-<div style="display:flex;gap:15px;padding:15px 0;border-bottom:1px solid #333;">
+    (order.cart || []).forEach((item,index)=>{
 
-<img src="${item.img}"
-style="
-width:70px;
-height:90px;
-object-fit:cover;
-border-radius:12px;
-">
+        html += `
+        <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:15px 0;
+        border-bottom:1px solid #333;
+        ">
 
-<div style="flex:1">
+            <div style="flex:1">
 
-<b>${item.n}</b><br>
+                <b>${item.n}</b><br>
 
-<small>Size : ${item.s}</small><br>
+                <small>Size : ${item.s}</small><br>
 
-<small>Qty : ${item.q}</small><br>
+                <div style="margin-top:8px">
 
-<small>₹${item.p}</small>
+                    <button onclick="changeQty(${index},-1)">−</button>
 
-</div>
+                    <span id="qty${index}" style="margin:0 10px;">
+                        ${item.q}
+                    </span>
 
-<div style="font-weight:bold;">
-₹${item.p*item.q}
-</div>
+                    <button onclick="changeQty(${index},1)">+</button>
 
-</div>
-`;
-<small>Size ${item.s}</small>
-</div>
+                </div>
 
-<div>
-₹<span id="price${index}">${item.p*item.q}</span>
-</div>
-</div>
+            </div>
 
-<div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="text-align:right">
 
-<div>
-<button onclick="changeQty(${index},-1)">−</button>
+                <div id="price${index}">
+                    ₹${item.p * item.q}
+                </div>
 
-<span id="qty${index}" style="margin:0 12px;">${item.q}</span>
+                <button
+                onclick="removeItem(${index})"
+                style="margin-top:8px;">
+                Remove
+                </button>
 
-<button onclick="changeQty(${index},1)">+</button>
-</div>
+            </div>
 
-<button onclick="removeItem(${index})">
-Remove
-</button>
+        </div>
+        `;
 
-</div>
+    });
 
-</div>
-`;
+    document.getElementById("orderItems").innerHTML = html;
 
-});
+    updateTotal();
+}
 
-html += `
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #333;">
-<div>
-<b>${item.n}</b><br>
-<small>Size ${item.s}</small><br>
-<small>Qty ${item.q}</small>
-</div>
-
-<div>
-₹${item.p * item.q}
-</div>
-</div>
-`;
-
-});
-
-document.getElementById("orderItems").innerHTML = html;
-
-document.getElementById("totalAmount").textContent = order.total || 0;
-
-
-
-
-  
-document.getElementById("customerName").textContent=order.receiverName||"-";
-document.getElementById("totalAmount").textContent=order.total||0;
-
-window.pay=function(appName){
- const upi="Yashojhaoffical1982@oksbi";
- const amount=order.total||0;
- const pn=encodeURIComponent("Aquilux");
- const tn=encodeURIComponent("Aquilux Order");
- let url="";
- if(appName==="gpay")url=`gpay://upi/pay?pa=${upi}&pn=${pn}&tn=${tn}&am=${amount}&cu=INR`;
- if(appName==="phonepe")url=`phonepe://pay?pa=${upi}&pn=${pn}&tn=${tn}&am=${amount}&cu=INR`;
- if(appName==="paytm")url=`paytmmp://pay?pa=${upi}&pn=${pn}&tn=${tn}&am=${amount}&cu=INR`;
- localStorage.setItem("paymentStarted","true");
- location.href=url;
-};
-
-window.addEventListener("focus",()=>{
- if(localStorage.getItem("paymentStarted")==="true"){
-   document.getElementById("paymentDoneBox").style.display="block";
- }
-});
-
-window.hidePaymentDone=function(){
- document.getElementById("paymentDoneBox").style.display="none";
-};
-
-window.changeQty = function(index, change){
+// Increase / Decrease Qty
+window.changeQty = function(index,change){
 
     if(order.cart[index].q + change < 1) return;
 
     order.cart[index].q += change;
 
-    document.getElementById("qty"+index).textContent = order.cart[index].q;
-
-    document.getElementById("price"+index).textContent =
-    order.cart[index].p * order.cart[index].q;
-
-    updateTotal();
+    renderCart();
 
 }
 
+// Remove Item
 window.removeItem = function(index){
 
     order.cart.splice(index,1);
 
-    localStorage.setItem("pendingOrder",JSON.stringify(order));
-
-    location.reload();
+    renderCart();
 
 }
 
+// Update Total
 function updateTotal(){
 
     let total = 0;
 
     order.cart.forEach(item=>{
+
         total += item.p * item.q;
+
     });
 
     order.total = total;
 
     document.getElementById("totalAmount").textContent = total;
 
-    localStorage.setItem("pendingOrder",JSON.stringify(order));
+    localStorage.setItem(
+        "pendingOrder",
+        JSON.stringify(order)
+    );
 
 }
-
-  
-
 
   
 window.paymentDone=async function(){
