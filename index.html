@@ -1649,6 +1649,7 @@ function pay(app){
 
    
 localStorage.setItem("paymentStarted", "true");
+    sessionStorage.removeItem("popupShown");
 
 window.location.href = appLink;
 
@@ -1723,24 +1724,14 @@ if(savedTheme){
 
 function showConfirmPopup(){
 
+    if(sessionStorage.getItem("popupShown") === "true") return;
+
     if(localStorage.getItem("paymentStarted") !== "true") return;
 
+    sessionStorage.setItem("popupShown","true");
+
     document.getElementById("confirmPaymentPopup").style.display = "flex";
-
-}
-
-window.addEventListener("focus", showConfirmPopup);
-
-window.addEventListener("pageshow", showConfirmPopup);
-
- async function paymentSuccess(){
-
-    if(!auth.currentUser){
-        alert("Please sign in first.");
-        return;
-    }
-
-   
+}   
 
     const order = {
     orderNumber: "AQ" + Date.now(),
@@ -1823,6 +1814,18 @@ function closeConfirmPopup(){
     window.location.href="#shop";
 
 }
+
+function goToPaymentPage(){
+
+    localStorage.removeItem("paymentStarted");
+    sessionStorage.removeItem("popupShown");
+
+    document.getElementById("confirmPaymentPopup").style.display = "none";
+
+    window.location.href = "payment.html";
+
+}
+  
     
 
 </script>
@@ -1866,10 +1869,7 @@ function closeConfirmPopup(){
 
         <p>Did you successfully complete your payment?</p>
         
-<button onclick="
-localStorage.removeItem('paymentStarted');
-window.location.href='payment.html';
-">
+<button onclick="goToPaymentPage()">
     Yes, Payment Done
 </button>
 
