@@ -287,7 +287,7 @@ function renderCart(){
 
             <div style="flex:1">
 
-                <b>${item.n}</b><br>
+                <b>${item. n}</b><br>
 
                 <small>Size : ${item.s}</small><br>
 
@@ -330,9 +330,11 @@ function renderCart(){
     
 }
 
-    window.pay=function(){
+    window.pay=function(app){
 
-const upi="upi://pay?pa=Yashojhaoffical1982@oksbi&pn=Aquilux&tn=Order&am="+order.total+"&cu=INR";
+const upiId="Yashojhaoffical1982@oksbi";
+
+const amount=order.total;
 
 localStorage.setItem("paymentStarted","true");
 
