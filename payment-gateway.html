@@ -7,7 +7,48 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
 body{background:#0a0a0a;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
-.card{max-width:560px;width:100%;background:#111;border:1px solid #2a2a2a;border-radius:22px;padding:28px}
+.card{
+max-width:720px;
+width:100%;
+background:#111;
+border:1px solid #2b2b2b;
+border-radius:24px;
+padding:30px;
+box-shadow:0 30px 80px rgba(0,0,0,.45);
+}
+
+.summary{
+margin:25px 0;
+padding:22px;
+background:#181818;
+border:1px solid #2a2a2a;
+border-radius:18px;
+}
+
+.summary h3{
+margin-bottom:18px;
+}
+
+.summary strong{
+font-size:15px;
+}
+
+.pay{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.pay-logo{
+    width:28px;
+    height:28px;
+    object-fit:contain;
+}
+
+  
+
+
 img{width:70px;display:block;margin:auto}
 h1{text-align:center;margin:18px 0 8px}
 p{text-align:center;color:#aaa}
@@ -28,13 +69,69 @@ button{width:100%;padding:15px;border:none;border-radius:12px;margin-top:12px;fo
 <p>Choose your preferred UPI app.</p>
 
 <div class="summary">
-<div><span>Customer</span><strong id="customerName">-</strong></div>
-<div><span>Total</span><strong>₹<span id="totalAmount">0</span></strong></div>
+
+<div>
+<span>Customer</span>
+<strong id="customerName">-</strong>
 </div>
 
-<button class="pay" onclick="pay('gpay')">Google Pay</button>
-<button class="pay" onclick="pay('phonepe')">PhonePe</button>
-<button class="pay" onclick="pay('paytm')">Paytm</button>
+<div id="deliveryDetails" style="margin-top:15px;font-size:14px;line-height:1.7;color:#bbb;"></div>
+
+<button
+onclick="window.location.href='index.html#cart'"
+class="no"
+style="margin-top:12px;">
+Change Delivery Address
+</button>
+
+  <hr style="margin:18px 0;border-color:#333;">
+
+<h3 style="margin-bottom:12px;">Order Summary</h3>
+
+<div id="orderItems"></div>
+
+<hr style="margin:18px 0;border-color:#333;">
+
+<div style="display:flex;justify-content:space-between;font-weight:bold;">
+<span>Total</span>
+<strong>₹<span id="totalAmount">0</span></strong>
+</div>
+
+</div>
+
+<h2 style="margin-top:25px;margin-bottom:15px;">
+Choose Payment Method
+</h2>
+
+<button class="pay" onclick="pay('gpay')">
+    <img src="images/gpay.svg" class="pay-logo">
+    <span>Google Pay</span>
+</button>
+
+<button class="pay" onclick="pay('phonepe')">
+    <img src="images/phone.svg"class="pay-logo">>
+    <span>PhonePe</span>
+</button>
+
+<button class="pay" onclick="pay('paytm')">
+    <img src="images/paytm.svg" class="pay-logo">
+    <span>Paytm</span>
+</button>
+
+<div style="margin-top:25px;
+padding:14px;
+background:#171717;
+border:1px solid #2d2d2d;
+border-radius:14px;
+font-size:13px;
+color:#aaa;
+line-height:1.7;">
+
+✔ Secure UPI Payment<br>
+✔ Instant Order Confirmation<br>
+✔ Cash on Delivery unavailable
+
+</div>
 
 <div id="paymentDoneBox">
 <h2 style="text-align:center;margin-bottom:10px">Payment Completed?</h2>
@@ -62,6 +159,108 @@ const db = getFirestore(app);
 
 
 const order=JSON.parse(localStorage.getItem("pendingOrder")||"{}");
+
+document.getElementById("customerName").textContent = order.receiverName || "-";
+
+document.getElementById("deliveryDetails").innerHTML = `
+${order.flat || ""}<br>
+${order.road || ""}<br>
+${order.landmark || ""}<br>
+${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
+📞 ${order.phone || ""}
+`;
+
+let html = "";
+
+(order.cart || []).forEach((item,index)=>{
+
+html += `
+<div style="border-bottom:1px solid #333;padding:14px 0;">
+
+<div style="display:flex;justify-content:space-between;">
+<div>
+html += `
+<div style="display:flex;gap:15px;padding:15px 0;border-bottom:1px solid #333;">
+
+<img src="${item.img}"
+style="
+width:70px;
+height:90px;
+object-fit:cover;
+border-radius:12px;
+">
+
+<div style="flex:1">
+
+<b>${item.n}</b><br>
+
+<small>Size : ${item.s}</small><br>
+
+<small>Qty : ${item.q}</small><br>
+
+<small>₹${item.p}</small>
+
+</div>
+
+<div style="font-weight:bold;">
+₹${item.p*item.q}
+</div>
+
+</div>
+`;
+<small>Size ${item.s}</small>
+</div>
+
+<div>
+₹<span id="price${index}">${item.p*item.q}</span>
+</div>
+</div>
+
+<div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+
+<div>
+<button onclick="changeQty(${index},-1)">−</button>
+
+<span id="qty${index}" style="margin:0 12px;">${item.q}</span>
+
+<button onclick="changeQty(${index},1)">+</button>
+</div>
+
+<button onclick="removeItem(${index})">
+Remove
+</button>
+
+</div>
+
+</div>
+`;
+
+});
+
+html += `
+<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #333;">
+<div>
+<b>${item.n}</b><br>
+<small>Size ${item.s}</small><br>
+<small>Qty ${item.q}</small>
+</div>
+
+<div>
+₹${item.p * item.q}
+</div>
+</div>
+`;
+
+});
+
+document.getElementById("orderItems").innerHTML = html;
+
+document.getElementById("totalAmount").textContent = order.total || 0;
+
+
+
+
+  
 document.getElementById("customerName").textContent=order.receiverName||"-";
 document.getElementById("totalAmount").textContent=order.total||0;
 
@@ -88,6 +287,51 @@ window.hidePaymentDone=function(){
  document.getElementById("paymentDoneBox").style.display="none";
 };
 
+window.changeQty = function(index, change){
+
+    if(order.cart[index].q + change < 1) return;
+
+    order.cart[index].q += change;
+
+    document.getElementById("qty"+index).textContent = order.cart[index].q;
+
+    document.getElementById("price"+index).textContent =
+    order.cart[index].p * order.cart[index].q;
+
+    updateTotal();
+
+}
+
+window.removeItem = function(index){
+
+    order.cart.splice(index,1);
+
+    localStorage.setItem("pendingOrder",JSON.stringify(order));
+
+    location.reload();
+
+}
+
+function updateTotal(){
+
+    let total = 0;
+
+    order.cart.forEach(item=>{
+        total += item.p * item.q;
+    });
+
+    order.total = total;
+
+    document.getElementById("totalAmount").textContent = total;
+
+    localStorage.setItem("pendingOrder",JSON.stringify(order));
+
+}
+
+  
+
+
+  
 window.paymentDone=async function(){
  const orderNo="AQ"+Date.now();
  order.orderNumber=orderNo;
