@@ -3,236 +3,327 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aquilux Payment Gateway</title>
+<title>Aquilux — Secure Checkout</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
-body{background:#0a0a0a;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
-.card{
-max-width:720px;
-width:100%;
-background:#111;
-border:1px solid #2b2b2b;
-border-radius:24px;
-padding:30px;
-box-shadow:0 30px 80px rgba(0,0,0,.45);
+/* Global Resets matching main site premium dark theme */
+:root {
+    --bg: #0a0a0a;
+    --card: rgba(255, 255, 255, 0.03); 
+    --line: rgba(255, 255, 255, 0.08); 
+    --text: #f5f5f5;
+    --success: #18b75a;
 }
 
-    .pay{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Inter, Arial, sans-serif;
 }
 
-.pay-logo{
-    width:28px;
-    height:28px;
-    object-fit:contain;
+body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
 }
 
-.summary{
-margin:25px 0;
-padding:22px;
-background:#181818;
-border:1px solid #2a2a2a;
-border-radius:18px;
+.card {
+    max-width: 650px;
+    width: 100%;
+    background: #111111;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
 }
 
-.summary h3{
-margin-bottom:18px;
+.logo {
+    width: 65px;
+    display: block;
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 0 12px rgba(255,255,255,0.1));
 }
 
-.summary strong{
-font-size:15px;
+h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
 }
 
+.subtitle {
+    text-align: center;
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 35px;
+}
 
+.box {
+    background: var(--card);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(10px);
+    padding: 24px;
+    border-radius: 20px;
+    margin-bottom: 24px;
+    transition: border-color 0.3s ease;
+}
 
-  
+.box:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+}
 
+h2 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 18px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 10px;
+}
 
-img{width:70px;display:block;margin:auto}
-h1{text-align:center;margin:18px 0 8px}
-p{text-align:center;color:#aaa}
-.summary{margin:22px 0;padding:16px;background:#181818;border-radius:14px}
-.summary div{display:flex;justify-content:space-between;margin:8px 0}
-button{width:100%;padding:15px;border:none;border-radius:12px;margin-top:12px;font-weight:700;cursor:pointer}
-.pay{background:#fff;color:#000}
-#paymentDoneBox{display:none;margin-top:24px;padding-top:18px;border-top:1px solid #333}
-.yes{background:#18b75a;color:#fff}
-.no{background:#2a2a2a;color:#fff}
-      .logo{width:70px;display:block;margin:auto;margin-bottom:20px;}
-.subtitle{text-align:center;color:#999;margin-bottom:25px;}
-.box{
-background:#181818;
-border:1px solid #2d2d2d;
-padding:20px;
-border-radius:18px;
-margin-bottom:20px;
+#deliveryDetails {
+    color: #aaa;
+    line-height: 1.6;
+    font-size: 0.95rem;
 }
-.changeBtn{background:#2b2b2b;color:#fff;}
-.total{
-display:flex;
-justify-content:space-between;
-font-size:22px;
-font-weight:bold;
-margin-top:20px;
+
+.changeBtn {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 10px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.85rem;
+    margin-top: 15px;
+    transition: all 0.2s ease;
 }
-.paymentGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:15px;
+
+.changeBtn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
 }
-.payBtn{
-background:#fff;
-color:#000;
-border:none;
-padding:18px;
-border-radius:16px;
-cursor:pointer;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:10px;
+
+/* Order Summary Items styling */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
-.payBtn img{
-width:50px;
-height:50px;
-object-fit:contain;
+.cart-item:last-of-type {
+    border-bottom: none;
 }
-.note{
-margin-top:20px;
-padding:15px;
-background:#171717;
-border-radius:12px;
-color:#aaa;
+
+.qty-controls button {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
 }
-.success{background:#18b75a;color:#fff;}
-.cancel{background:#333;color:#fff;}  
+.qty-controls button:hover {
+    background: #fff;
+    color: #000;
+}
+
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: #ff4a4a;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    opacity: 0.8;
+}
+.remove-btn:hover { opacity: 1; }
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* Payment App Grid Layout */
+.paymentGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.payBtn {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    color: #fff;
+    padding: 16px 10px;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.payBtn:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(255,255,255,0.05);
+}
+
+.payBtn img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.payBtn span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.note {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(24, 183, 90, 0.05);
+    border: 1px solid rgba(24, 183, 90, 0.15);
+    border-radius: 14px;
+    color: #8cd6a5;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+/* Modal Confirmation Box style */
+#paymentDoneBox {
+    display: none;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+#paymentDoneBox p {
+    color: #aaa;
+    margin-bottom: 18px;
+    font-size: 0.95rem;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+}
+
+.success {
+    background: #fff;
+    color: #000;
+}
+.success:hover {
+    background: #e5e5e5;
+}
+.cancel {
+    background: transparent;
+    color: #888;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.cancel:hover {
+    color: #fff;
+    border-color: rgba(255,255,255,0.3);
+}
+
+@media(max-width: 480px) {
+    .card { padding: 20px; }
+    .paymentGrid { grid-template-columns: 1fr; gap: 10px; }
+    .payBtn { flex-direction: row; padding: 14px 20px; gap: 16px; }
+    .payBtn img { width: 32px; height: 32px; }
+}
 </style> 
 </head>
 <body>
+
 <div class="card">
+    <img class="logo" src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+    <h1>Secure Checkout</h1>
+    <p class="subtitle">Complete your Aquilux order</p>
 
-<img class="logo" src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+    <!-- Delivery Box -->
+    <div class="box">
+        <h2>Delivery Address</h2>
+        <div style="margin-bottom:12px; font-size: 1.05rem;">
+            <strong style="font-weight: 500; color: #fff;">Customer: </strong>
+            <span id="customerName"></span>
+        </div>
+        <div id="deliveryDetails"></div>
+        <button class="changeBtn" onclick="window.location.href='index.html#cart'">Change Address</button>
+    </div>
 
-<h1>Secure Checkout</h1>
+    <!-- Order Summary Box -->
+    <div class="box">
+        <h2>Order Summary</h2>
+        <div id="orderItems"></div>
+        <div class="total">
+            <span>Total</span>
+            <span>₹<span id="totalAmount">0</span></span>
+        </div>
+    </div>
 
-<p class="subtitle">
-Complete your Aquilux order
-</p>
+    <!-- Payment Box -->
+    <div class="box">
+        <h2>Choose Payment Method</h2>
+        <div class="paymentGrid">
+            <button class="payBtn" onclick="pay('gpay')">
+                <img src="images/gpay.svg">
+                <span>Google Pay</span>
+            </button>
+            <button class="payBtn" onclick="pay('phonepe')">
+                <img src="images/PhonePe_Logo.svg">
+                <span>PhonePe</span>
+            </button>
+            <button class="payBtn" onclick="pay('paytm')">
+                <img src="images/Paytm_Logo_(standalone).svg">
+                <span>Paytm</span>
+            </button>
+        </div>
 
-<div class="box">
+        <div class="note">
+            ✦ Secure UPI Payment Engine<br>
+            ✦ Instant Digital Order Confirmation<br>
+            ✦ Payment Process Verified Automatically
+        </div>
+    </div>
 
-<h2>Delivery Address</h2>
-
-    <div style="margin-bottom:15px;">
-<strong>Customer</strong><br>
-<span id="customerName"></span>
-</div>
-
-<div id="deliveryDetails"></div>
-
-<button
-class="changeBtn"
-onclick="window.location.href='index.html#cart'">
-Change Address
-</button>
-
-</div>
-
-<div class="box">
-
-<h2>Order Summary</h2>
-
-<div id="orderItems"></div>
-
-<div class="total">
-
-<span>Total</span>
-
-<span>
-₹<span id="totalAmount">0</span>
-</span>
-
-</div>
-
-</div>
-
-<div class="box">
-
-<h2>Choose Payment Method</h2>
-
-<div class="paymentGrid">
-
-<button class="payBtn" onclick="pay('gpay')">
-
-<img src="images/gpay.svg">
-
-<span>Google Pay</span>
-
-</button>
-
-<button class="payBtn" onclick="pay('phonepe')">
-
-<img src="images/PhonePe_Logo.svg">
-
-<span>PhonePe</span>
-
-</button>
-
-<button class="payBtn" onclick="pay('paytm')">
-
-<img src="images/Paytm_Logo_(standalone).svg">
-
-<span>Paytm</span>
-
-</button>
-
-</div>
-
-<div class="note">
-
-✔ Secure UPI Payment
-
-<br>
-
-✔ Instant Order Confirmation
-
-<br>
-
-✔ Payment Verified Manually
-
-</div>
-
-</div>
-
-<div id="paymentDoneBox">
-
-<h2>Payment Completed?</h2>
-
-<p>
-Did you successfully complete the payment?
-</p>
-
-<button
-class="success"
-onclick="paymentDone()">
-
-Yes, Payment Done
-
-</button>
-
-<button
-class="cancel"
-onclick="hidePaymentDone()">
-
-Not Yet
-
-</button>
-
-</div>
-
+    <!-- Payment Verification Prompt -->
+    <div id="paymentDoneBox" class="box" style="border-color: rgba(255,255,255,0.15);">
+        <h2 style="border:none; margin-bottom: 5px;">Payment Status</h2>
+        <p>Did you successfully complete the checkout redirection?</p>
+        <button class="action-btn success" onclick="paymentDone()">Yes, Payment Done</button>
+        <button class="action-btn cancel" onclick="hidePaymentDone()">Not Yet</button>
+    </div>
 </div>
 
 <script type="module">
@@ -251,193 +342,110 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
 const order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
 
-// Customer
-document.getElementById("customerName").textContent =
-order.receiverName || "-";
-
-// Delivery Details
+// Setup info
+document.getElementById("customerName").textContent = order.receiverName || "-";
 document.getElementById("deliveryDetails").innerHTML = `
-${order.flat || ""}<br>
-${order.road || ""}<br>
-${order.landmark || ""}<br>
-${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
-📞 ${order.phone || ""}
+    ${order.flat || ""}, ${order.road || ""}<br>
+    ${order.landmark ? order.landmark + '<br>' : ''}
+    ${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
+    <span style="color: #fff; font-size:0.9rem; display:inline-block; margin-top:8px;">📞 ${order.phone || ""}</span>
 `;
 
-// Order Summary
 renderCart();
 
 function renderCart(){
-
     let html = "";
-
-    (order.cart || []).forEach((item,index)=>{
-
+    (order.cart || []).forEach((item, index)=>{
         html += `
-        <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:15px 0;
-        border-bottom:1px solid #333;
-        ">
-
+        <div class="cart-item">
             <div style="flex:1">
-
-                <b>${item. n}</b><br>
-
-                <small>Size : ${item.s}</small><br>
-
-                <div style="margin-top:8px">
-
+                <b style="color:#fff; font-weight:500;">${item.n}</b><br>
+                <small style="color:#777;">Size: ${item.s}</small>
+                <div class="qty-controls" style="margin-top:8px; display:flex; align-items:center; gap:10px;">
                     <button onclick="changeQty(${index},-1)">−</button>
-
-                    <span id="qty${index}" style="margin:0 10px;">
-                        ${item.q}
-                    </span>
-
+                    <span id="qty${index}" style="font-size:0.95rem; font-weight:600; min-width:15px; text-align:center;">${item.q}</span>
                     <button onclick="changeQty(${index},1)">+</button>
-
                 </div>
-
             </div>
-
             <div style="text-align:right">
-
-                <div id="price${index}">
-                    ₹${item.p * item.q}
-                </div>
-
-                <button
-                onclick="removeItem(${index})"
-                style="margin-top:8px;">
-                Remove
-                </button>
-
+                <div id="price${index}" style="font-weight:500; color:#fff;">₹${item.p * item.q}</div>
+                <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
             </div>
-
         </div>
         `;
-
     });
-
-    document.getElementById("orderItems").innerHTML = html;
-
+    document.getElementById("orderItems").innerHTML = html || "<p style='color:#666;'>No items found</p>";
     updateTotal();
+}
+
+window.pay = function(appChoice){
+    const upiId = "Yashojhaoffical1982@oksbi";
+    const amount = order.total;
+    const name = "Aquilux Store";
     
+    // Dynamic UPI deep link layout setup string 
+    let upiString = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+    
+    // Specific app handling logic redirection strings
+    if(appChoice === 'gpay') window.location.href = `intent://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+    else if(appChoice === 'phonepe') window.location.href = `intent://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR#Intent;scheme=upi;package=com.phonepe.app;end`;
+    else if(appChoice === 'paytm') window.location.href = `intent://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR#Intent;scheme=upi;package=net.one97.paytm;end`;
+    else window.location.href = upiString;
+
+    localStorage.setItem("paymentStarted", "true");
 }
 
-    window.pay=function(app){
-
-const upiId="Yashojhaoffical1982@oksbi";
-
-const amount=order.total;
-
-localStorage.setItem("paymentStarted","true");
-
-window.location.href=upi;
-
-}
-
-// 👇 Step 4 yahin paste hoga
-window.addEventListener("focus",()=>{
-
-if(localStorage.getItem("paymentStarted")=="true"){
-
-document.getElementById("paymentDoneBox").style.display="block";
-
-}
-
+window.addEventListener("focus", ()=>{
+    if(localStorage.getItem("paymentStarted") == "true"){
+        document.getElementById("paymentDoneBox").style.display = "block";
+    }
 });
 
-    window.hidePaymentDone=function(){
-
-document.getElementById("paymentDoneBox").style.display="none";
-
+window.hidePaymentDone = function(){
+    document.getElementById("paymentDoneBox").style.display = "none";
 }
-    
 
-// Increase / Decrease Qty
-window.changeQty = function(index,change){
-
+window.changeQty = function(index, change){
     if(order.cart[index].q + change < 1) return;
-
     order.cart[index].q += change;
-
     renderCart();
-
 }
 
-// Remove Item
 window.removeItem = function(index){
-
-    order.cart.splice(index,1);
-
+    order.cart.splice(index, 1);
     renderCart();
-
 }
 
-// Update Total
 function updateTotal(){
-
     let total = 0;
-
-    order.cart.forEach(item=>{
-
-        total += item.p * item.q;
-
-    });
-
+    order.cart.forEach(item => { total += item.p * item.q; });
     order.total = total;
-
     document.getElementById("totalAmount").textContent = total;
-
-    localStorage.setItem(
-        "pendingOrder",
-        JSON.stringify(order)
-    );
-
+    localStorage.setItem("pendingOrder", JSON.stringify(order));
 }
 
+window.paymentDone = async function(){
+    const orderNo = "AQ" + Date.now();
+    const message = `🛍️ Aquilux Order\n\nOrder No: ${orderNo}\nCustomer: ${order.receiverName}\nPhone: ${order.phone}\n\nAddress:\n${order.flat}\n${order.road}\n${order.landmark || ''}\n${order.city}, ${order.state} - ${order.pincode}\n\nTotal: ₹${order.total}`;
+
+    window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank");
   
-window.paymentDone=async function(){
- const orderNo="AQ"+Date.now();
-const message = `🛍️ Aquilux Order
-
-Order No: ${orderNo}
-
-Customer: ${order.receiverName}
-
-Phone: ${order.phone}
-
-Address:
-${order.flat}
-${order.road}
-${order.landmark}
-${order.city}, ${order.state} - ${order.pincode}
-
-Total: ₹${order.total}`;
-
-window.open(
-"https://wa.me/919558039135?text=" + encodeURIComponent(message),
-"_blank"
-);
-  
- order.orderNumber=orderNo;
- order.paymentStatus="Pending Verification";
- order.orderStatus="Pending";
- order.createdAt=serverTimestamp();
- try{
-   await addDoc(collection(db,"orders"),order);
- }catch(e){
-   console.error(e);
- }
- localStorage.setItem("lastOrderNumber",orderNo);
- localStorage.removeItem("paymentStarted");
- location.href="payment.html";
+    order.orderNumber = orderNo;
+    order.paymentStatus = "Pending Verification";
+    order.orderStatus = "Pending";
+    order.createdAt = serverTimestamp();
+    
+    try {
+        await addDoc(collection(db, "orders"), order);
+    } catch(e) {
+        console.error(e);
+    }
+    
+    localStorage.setItem("lastOrderNumber", orderNo);
+    localStorage.removeItem("paymentStarted");
+    location.href = "payment.html";
 };
 </script>
 </body>
