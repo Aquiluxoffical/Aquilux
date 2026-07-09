@@ -1442,7 +1442,31 @@ function goToGateway(){
 }
 
 
+function openPayment(){
 
+    if(cart.length===0){
+        alert("Cart is empty.");
+        return;
+    }
+
+    const order = {
+        receiverName: document.getElementById("receiverName").value,
+        phone: document.getElementById("phone").value,
+        flat: document.getElementById("flat").value,
+        road: document.getElementById("road").value,
+        landmark: document.getElementById("landmark").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        pincode: document.getElementById("pincode").value,
+
+        items: cart,
+        total: Number(document.getElementById("total").textContent)
+    };
+
+    localStorage.setItem("pendingOrder", JSON.stringify(order));
+
+    window.location.href = "payment-gateway.html";
+}
 
 
     
