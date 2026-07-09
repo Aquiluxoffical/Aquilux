@@ -1352,11 +1352,10 @@ oninput="checkPin(this)">
     <input type="text" id="city" placeholder="City" readonly>
     <input type="text" id="state" placeholder="State" readonly>
 </div>
-
-<button class="payment-btn" onclick="openPayment()">
+    
+<button class="payment-btn" onclick="goToGateway()">
 Proceed To Payment
 </button>
-
 </div>
 
 </section>
@@ -1401,6 +1400,52 @@ displayProducts(currentProducts);
 
     hideLoader();
 }
+
+function goToGateway(){
+
+    if(cart.length === 0){
+        alert("Your cart is empty.");
+        return;
+    }
+
+    const orderData = {
+
+        cart: cart,
+
+        total: Number(document.getElementById("total").textContent),
+
+        receiverName: document.getElementById("receiverName").value,
+
+        phone: document.getElementById("phone").value,
+
+        flat: document.getElementById("flat").value,
+
+        road: document.getElementById("road").value,
+
+        landmark: document.getElementById("landmark").value,
+
+        city: document.getElementById("city").value,
+
+        state: document.getElementById("state").value,
+
+        pincode: document.getElementById("pincode").value
+
+    };
+
+    localStorage.setItem(
+        "pendingOrder",
+        JSON.stringify(orderData)
+    );
+
+    window.location.href="payment-gateway.html";
+
+}
+
+
+
+
+
+    
 
 // 2. DOM mein products cards inject karne ka naya tarika (Object Keys ke saath)
 function displayProducts(list = products) {
@@ -1569,13 +1614,6 @@ function draw(){
     document.getElementById("cartCount").textContent = count;
 }
 
-function openPayment(){
-    document.getElementById("paymentPopup").style.display = "flex";
-}
-
-function closePopup(){
-    document.getElementById("paymentPopup").style.display = "none";
-}
 
 function showLoader(){
 
@@ -1614,59 +1652,6 @@ function openCollection(menu){
 
 }
 
-
-function pay(app){
-    closePopup();
-    const amount = document.getElementById("total").textContent;
-    const upi = "Yashojhaoffical1982@oksbi";
-    const name = encodeURIComponent("Aquilux");
-    const note = encodeURIComponent("Aquilux Order");
-
-    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    let appLink = "";
-    let storeLink = "";
-
-    switch(app){
-        case "gpay":
-            appLink = `gpay://upi/pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
-            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
-            break;
-        case "phonepe":
-            appLink = `phonepe://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/phonepe-secure-payments-app/id1170055821"
-            : "https://play.google.com/store/apps/details?id=com.phonepe.app";
-            break;
-        case "paytm":
-            appLink = `paytmmp://pay?pa=${upi}&pn=${name}&tn=${note}&am=${amount}&cu=INR`;
-            storeLink = isIOS
-            ? "https://apps.apple.com/in/app/paytm-secure-upi-payments/id473941634"
-            : "https://play.google.com/store/apps/details?id=net.one97.paytm";
-            break;
-    }
-
-   
-localStorage.setItem("paymentStarted", "true");
-    sessionStorage.removeItem("popupShown");
-
-window.location.href = appLink;
-
-/*
-let hidden = false;
-
-document.addEventListener("visibilitychange", () => {
-    hidden = document.hidden;
-});
-
-setTimeout(() => {
-    if (!hidden) {
-        window.location.href = storeLink;
-    }
-}, 1800);
-*/
-}
 
 async function lookupPin(){
     const pin = document.getElementById("pincode").value;
@@ -1722,95 +1707,10 @@ if(savedTheme){
     setTheme(savedTheme);
 }
 
-function showConfirmPopup(){
-
-    if(sessionStorage.getItem("popupShown") === "true") return;
-
-    if(localStorage.getItem("paymentStarted") !== "true") return;
-
-    sessionStorage.setItem("popupShown","true");
-
-    document.getElementById("confirmPaymentPopup").style.display = "flex";
-}
-
-window.addEventListener("focus", showConfirmPopup);
-window.addEventListener("pageshow", showConfirmPopup);
-
-
-function goToPaymentPage(){
-
-    localStorage.removeItem("paymentStarted");
-    sessionStorage.removeItem("popupShown");
-
-    document.getElementById("confirmPaymentPopup").style.display = "none";
-
-    window.location.href = "payment.html";
-}
-
-
-function closeConfirmPopup(){
-
-    document.getElementById("confirmPaymentPopup").style.display = "none";
-
-    localStorage.removeItem("paymentStarted");
-    sessionStorage.removeItem("popupShown");
-
-}
-    
 
 </script>
 
-<!-- Payment Popup -->
-<div id="paymentPopup" class="popup">
 
-    <div class="popup-box">
-
-        <h2>Choose Payment Method</h2>
-
-        <div class="payment-option" onclick="pay('gpay')">
-            <img src="images/gpay.svg" alt="Google Pay">
-            <span>Google Pay</span>
-        </div>
-
-        <div class="payment-option" onclick="pay('phonepe')">
-            <img src="images/PhonePe_Logo.svg" alt="PhonePe">
-            <span>PhonePe</span>
-        </div>
-
-        <div class="payment-option" onclick="pay('paytm')">
-            <img src="images/Paytm_Logo_(standalone).svg" alt="Paytm">
-            <span>Paytm</span>
-        </div>
-
-        <button class="close-btn" onclick="closePopup()">
-            Cancel
-        </button>
-
-    </div>
-
-</div>
-
-<!-- Confirm Payment Popup -->
-<div id="confirmPaymentPopup" class="popup">
-
-    <div class="popup-box">
-
-        <h2>Payment Completed?</h2>
-
-        <p>Did you successfully complete your payment?</p>
-        
-<button onclick="goToPaymentPage()">
-    Yes, Payment Done
-</button>
-
-
-        <button class="close-btn" onclick="closeConfirmPopup()">
-            Not Yet
-        </button>
-
-    </div>
-
-</div>
-
+    
 </body>
 </html>
