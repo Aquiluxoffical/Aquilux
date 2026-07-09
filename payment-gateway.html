@@ -61,7 +61,55 @@ button{width:100%;padding:15px;border:none;border-radius:12px;margin-top:12px;fo
 #paymentDoneBox{display:none;margin-top:24px;padding-top:18px;border-top:1px solid #333}
 .yes{background:#18b75a;color:#fff}
 .no{background:#2a2a2a;color:#fff}
-</style>
+      .logo{width:70px;display:block;margin:auto;margin-bottom:20px;}
+.subtitle{text-align:center;color:#999;margin-bottom:25px;}
+.box{
+background:#181818;
+border:1px solid #2d2d2d;
+padding:20px;
+border-radius:18px;
+margin-bottom:20px;
+}
+.changeBtn{background:#2b2b2b;color:#fff;}
+.total{
+display:flex;
+justify-content:space-between;
+font-size:22px;
+font-weight:bold;
+margin-top:20px;
+}
+.paymentGrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+}
+.payBtn{
+background:#fff;
+color:#000;
+border:none;
+padding:18px;
+border-radius:16px;
+cursor:pointer;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+}
+.payBtn img{
+width:50px;
+height:50px;
+object-fit:contain;
+}
+.note{
+margin-top:20px;
+padding:15px;
+background:#171717;
+border-radius:12px;
+color:#aaa;
+}
+.success{background:#18b75a;color:#fff;}
+.cancel{background:#333;color:#fff;}  
+</style> 
 </head>
 <body>
 <div class="card">
@@ -77,6 +125,11 @@ Complete your Aquilux order
 <div class="box">
 
 <h2>Delivery Address</h2>
+
+    <div style="margin-bottom:15px;">
+<strong>Customer</strong><br>
+<span id="customerName"></span>
+</div>
 
 <div id="deliveryDetails"></div>
 
@@ -274,7 +327,36 @@ function renderCart(){
     document.getElementById("orderItems").innerHTML = html;
 
     updateTotal();
+    
 }
+
+    window.pay=function(){
+
+const upi="upi://pay?pa=Yashojhaoffical1982@oksbi&pn=Aquilux&tn=Order&am="+order.total+"&cu=INR";
+
+localStorage.setItem("paymentStarted","true");
+
+window.location.href=upi;
+
+}
+
+// 👇 Step 4 yahin paste hoga
+window.addEventListener("focus",()=>{
+
+if(localStorage.getItem("paymentStarted")=="true"){
+
+document.getElementById("paymentDoneBox").style.display="block";
+
+}
+
+});
+
+    window.hidePaymentDone=function(){
+
+document.getElementById("paymentDoneBox").style.display="none";
+
+}
+    
 
 // Increase / Decrease Qty
 window.changeQty = function(index,change){
@@ -321,6 +403,27 @@ function updateTotal(){
   
 window.paymentDone=async function(){
  const orderNo="AQ"+Date.now();
+const message = `🛍️ Aquilux Order
+
+Order No: ${orderNo}
+
+Customer: ${order.receiverName}
+
+Phone: ${order.phone}
+
+Address:
+${order.flat}
+${order.road}
+${order.landmark}
+${order.city}, ${order.state} - ${order.pincode}
+
+Total: ₹${order.total}`;
+
+window.open(
+"https://wa.me/919558039135?text=" + encodeURIComponent(message),
+"_blank"
+);
+  
  order.orderNumber=orderNo;
  order.paymentStatus="Pending Verification";
  order.orderStatus="Pending";
