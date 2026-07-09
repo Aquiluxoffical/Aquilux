@@ -1731,89 +1731,11 @@ function showConfirmPopup(){
     sessionStorage.setItem("popupShown","true");
 
     document.getElementById("confirmPaymentPopup").style.display = "flex";
-}   
-
-    const order = {
-    orderNumber: "AQ" + Date.now(),
-    userId: auth.currentUser.uid,
-    userName: auth.currentUser.displayName,
-    userEmail: auth.currentUser.email,
-
-    receiverName: document.getElementById("receiverName").value,
-    phone: document.getElementById("phone").value,
-
-    flat: document.getElementById("flat").value,
-    road: document.getElementById("road").value,
-    landmark: document.getElementById("landmark").value,
-
-    city: document.getElementById("city").value,
-    state: document.getElementById("state").value,
-    pincode: document.getElementById("pincode").value,
-
-    items: cart,
-    total: Number(document.getElementById("total").textContent),
-
-    paymentStatus: "Pending Verification",
-    orderStatus: "Pending",
-
-    createdAt: serverTimestamp()
-};
-localStorage.setItem("lastOrderNumber", order.orderNumber);
-
-    
-
-    try{
-
-        document.getElementById("confirmPaymentPopup").style.display="none";
-
-        await addDoc(
-            collection(db,"orders"),
-            order
-        );
-
-        localStorage.removeItem("paymentStarted");
-
-        cart=[];
-
-        draw();
-
-        document.getElementById("confirmPaymentPopup").style.display="none";
-
-        localStorage.removeItem("paymentStarted");
-
-cart = [];
-draw();
-
-localStorage.setItem("lastOrderNumber", order.orderNumber);
-
-window.location.href = "payment.html";
-    }catch(err){
-
-        console.error(err);
-        alert(err.code + "\n" + err.message);
-
-    }
-}
-function goToPaymentPage(){
-
-    document.getElementById("confirmPaymentPopup").style.display = "none";
-
-    window.location.href = "payment.html";
-
 }
 
-    
-    
+window.addEventListener("focus", showConfirmPopup);
+window.addEventListener("pageshow", showConfirmPopup);
 
-function closeConfirmPopup(){
-
-    document.getElementById("confirmPaymentPopup").style.display="none";
-
-    localStorage.removeItem("paymentStarted");
-
-    window.location.href="#shop";
-
-}
 
 function goToPaymentPage(){
 
@@ -1823,9 +1745,17 @@ function goToPaymentPage(){
     document.getElementById("confirmPaymentPopup").style.display = "none";
 
     window.location.href = "payment.html";
+}
+
+
+function closeConfirmPopup(){
+
+    document.getElementById("confirmPaymentPopup").style.display = "none";
+
+    localStorage.removeItem("paymentStarted");
+    sessionStorage.removeItem("popupShown");
 
 }
-  
     
 
 </script>
