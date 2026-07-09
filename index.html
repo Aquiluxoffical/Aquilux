@@ -1803,7 +1803,15 @@ window.location.href = "payment.html";
 
     }
 }
+function goToPaymentPage(){
 
+    document.getElementById("confirmPaymentPopup").style.display = "none";
+
+    window.location.href = "payment.html";
+
+}
+
+    
     
 
 function closeConfirmPopup(){
@@ -1857,10 +1865,10 @@ function closeConfirmPopup(){
         <h2>Payment Completed?</h2>
 
         <p>Did you successfully complete your payment?</p>
+<button onclick="window.location.href='payment.html'">
+    Yes, Payment Done
+</button>
 
-        <button onclick="paymentSuccess()">
-            Yes, Payment Done
-        </button>
 
         <button class="close-btn" onclick="closeConfirmPopup()">
             Not Yet
