@@ -1788,10 +1788,14 @@ localStorage.setItem("lastOrderNumber", order.orderNumber);
 
         document.getElementById("confirmPaymentPopup").style.display="none";
 
-        alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
+        localStorage.removeItem("paymentStarted");
 
-        window.location.href="my-orders.html";
+cart = [];
+draw();
 
+localStorage.setItem("lastOrderNumber", order.orderNumber);
+
+window.location.href = "payment.html";
     }catch(err){
 
         console.error(err);
