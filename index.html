@@ -1733,15 +1733,23 @@ window.addEventListener("focus", showConfirmPopup);
 
 window.addEventListener("pageshow", showConfirmPopup);
 
- async function paymentSuccess(){
+async function paymentSuccess(){
+
+    alert("paymentSuccess called");
 
     if(!auth.currentUser){
         alert("Please sign in first.");
         return;
     }
 
-   
+    const order = {
+        // ...
+    };
 
+    // baaki tumhara code
+}
+
+   
     const order = {
     orderNumber: "AQ" + Date.now(),
     userId: auth.currentUser.uid,
