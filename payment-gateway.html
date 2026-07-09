@@ -17,6 +17,19 @@ padding:30px;
 box-shadow:0 30px 80px rgba(0,0,0,.45);
 }
 
+    .pay{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.pay-logo{
+    width:28px;
+    height:28px;
+    object-fit:contain;
+}
+
 .summary{
 margin:25px 0;
 padding:22px;
@@ -33,18 +46,7 @@ margin-bottom:18px;
 font-size:15px;
 }
 
-.pay{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-}
 
-.pay-logo{
-    width:28px;
-    height:28px;
-    object-fit:contain;
-}
 
   
 
@@ -109,7 +111,7 @@ Choose Payment Method
 </button>
 
 <button class="pay" onclick="pay('phonepe')">
-    <img src="images/phone.svg"class="pay-logo">>
+    <img src="images/phonepe.svg"class="pay-logo">
     <span>PhonePe</span>
 </button>
 
