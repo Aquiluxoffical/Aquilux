@@ -48,17 +48,18 @@ button{width:100%;padding:15px;border:none;border-radius:12px;margin-top:12px;fo
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
-const firebaseConfig={
-apiKey:"REPLACE_API_KEY",
-authDomain:"REPLACE_AUTH_DOMAIN",
-projectId:"REPLACE_PROJECT_ID",
-storageBucket:"REPLACE_STORAGE_BUCKET",
-messagingSenderId:"REPLACE_SENDER_ID",
-appId:"REPLACE_APP_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+  authDomain: "aquilux-5b489.firebaseapp.com",
+  projectId: "aquilux-5b489",
+  storageBucket: "aquilux-5b489.firebasestorage.app",
+  messagingSenderId: "93678277046",
+  appId: "1:93678277046:web:22a1904a3d8a9112edf117"
 };
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 
 const order=JSON.parse(localStorage.getItem("pendingOrder")||"{}");
 document.getElementById("customerName").textContent=order.receiverName||"-";
