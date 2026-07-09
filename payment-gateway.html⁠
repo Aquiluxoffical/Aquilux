@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aquilux Payment Gateway</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+body{background:#0a0a0a;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.card{width:100%;max-width:560px;background:#111;border:1px solid #262626;border-radius:22px;padding:30px}
+h1{margin-bottom:8px}
+p{color:#aaa}
+.box{margin:20px 0;padding:16px;background:#181818;border-radius:14px;border:1px solid #2c2c2c}
+.row{display:flex;justify-content:space-between;margin:8px 0}
+.btn{display:block;width:100%;padding:15px;margin-top:12px;border:none;border-radius:14px;font-weight:700;cursor:pointer}
+.gpay,.phonepe,.paytm{background:#fff;color:#000}
+.cancel{background:#222;color:#fff}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>Payment Gateway</h1>
+<p>Complete your payment using any UPI app.</p>
+
+<div class="box">
+<div class="row"><span>Customer</span><strong id="name">-</strong></div>
+<div class="row"><span>Total</span><strong>₹<span id="amount">0</span></strong></div>
+</div>
+
+<button class="btn gpay" onclick="pay('gpay')">Google Pay</button>
+<button class="btn phonepe" onclick="pay('phonepe')">PhonePe</button>
+<button class="btn paytm" onclick="pay('paytm')">Paytm</button>
+<button class="btn cancel" onclick="history.back()">Back</button>
+</div>
+
+<script>
+const order=JSON.parse(localStorage.getItem("pendingOrder")||"{}");
+document.getElementById("name").textContent=order.receiverName||"-";
+document.getElementById("amount").textContent=order.total||0;
+
+function pay(app){
+ const amount=order.total||0;
+ const upi="Yashojhaoffical1982@oksbi";
+ const pn=encodeURIComponent("Aquilux");
+ const tn=encodeURIComponent("Aquilux Order");
+ let url="";
+ if(app==="gpay") url=`gpay://upi/pay?pa=${upi}&pn=${pn}&tn=${tn}&am=${amount}&cu=INR`;
+ if(app==="phonepe") url=`phonepe://pay?pa=${upi}&pn=${pn}&tn=${tn}&am=${amount}&cu=INR`;
+ if(app==="paytm") url=`paytmmp://pay?pa=${upi}&pn=${pn}&tn=${tn}&am=${amount}&cu=INR`;
+ localStorage.setItem("paymentStarted","true");
+ location.href=url;
+}
+
+window.addEventListener("focus",()=>{
+ if(localStorage.getItem("paymentStarted")==="true"){
+   if(confirm("Did you complete the payment?")){
+      localStorage.removeItem("paymentStarted");
+      localStorage.setItem("lastOrderNumber","AQ"+Date.now());
+      location.href="payment.html";
+   }else{
+      localStorage.removeItem("paymentStarted");
+   }
+ }
+});
+</script>
+</body>
+</html>
