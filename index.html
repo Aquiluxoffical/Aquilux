@@ -1733,11 +1733,11 @@ async function paymentSuccess(){
         return;
     }
 
-    alert("2");
+
 
     const order = {
     orderNumber: "AQ" + Date.now(),
-    localStorage.setItem("lastOrderNumber", order.orderNumber);    
+
     userId: auth.currentUser.uid,
     userName: auth.currentUser.displayName,
     userEmail: auth.currentUser.email,
@@ -1762,41 +1762,38 @@ async function paymentSuccess(){
     createdAt: serverTimestamp()
 };
 
-    alert("3");
+// 👇 Object banne ke baad ye line likho
+localStorage.setItem("lastOrderNumber", order.orderNumber);
 
-    try{
 
-        document.getElementById("confirmPaymentPopup").style.display="none";
+try {
 
-        alert("4");
+    document.getElementById("confirmPaymentPopup").style.display = "none";
 
-        await addDoc(
-            collection(db,"orders"),
-            order
-        );
 
-        alert("5");
+    await addDoc(
+        collection(db, "orders"),
+        order
+    );
 
-        localStorage.removeItem("paymentStarted");
 
-        cart=[];
 
-        draw();
+    localStorage.removeItem("paymentStarted");
 
-        document.getElementById("confirmPaymentPopup").style.display="none";
+    cart = [];
 
-        alert("✅ Order Created.\n\nPlease check My Orders page for order status.");
+    draw();
 
-        window.location.href = "payment-proof.html";
+    alert("✅ Order Created.");
 
-    }catch(err){
+    window.location.href = "payment-proof.html";
 
-        console.error(err);
-        alert(err.code + "\n" + err.message);
+} catch (err) {
 
-    }
+    console.error(err);
+    alert(err.code + "\n" + err.message);
+
 }
-
     
 
 function closeConfirmPopup(){
