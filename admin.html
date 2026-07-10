@@ -2,67 +2,178 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Aquilux — Owner Console Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Aquilux Hub — Administration Console</title>
 <style>
+/* ==========================================================================
+   1. Luxury Old Money Layout Frameworks & Theme Architecture
+   ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', Arial, sans-serif; }
-body { background: #ffffff; color: #111111; padding: 40px 6%; -webkit-font-smoothing: antialiased; }
-h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; margin-bottom: 8px; letter-spacing: 0.5px; }
-.subtitle { font-size: 14px; opacity: 0.6; margin-bottom: 40px; letter-spacing: 0.5px; text-transform: uppercase; }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-.admin-table-wrapper { width: 100%; overflow-x: auto; border: 1px solid rgba(17, 17, 17, 0.08); border-radius: 8px; background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(12px); margin-bottom: 40px; }
-.admin-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-.admin-table th { background: rgba(17, 17, 17, 0.02); padding: 16px; font-weight: 500; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(17, 17, 17, 0.08); }
-.admin-table td { padding: 18px 16px; border-bottom: 1px solid rgba(17, 17, 17, 0.06); vertical-align: top; }
+body {
+    background: #090909;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 40px 6%;
+}
 
-.badge { display: inline-block; font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; letter-spacing: 0.5px; }
-.badge.pending { background: rgba(255, 191, 0, 0.1); color: #d49b00; }
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 24px;
+    margin-bottom: 35px;
+}
+
+.admin-brand h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+.admin-brand p {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+}
+
+/* Control Hub Element Grids */
+.control-actions-hub {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.delete-all-btn {
+    padding: 12px 24px;
+    background: rgba(255, 74, 74, 0.03);
+    color: #ff4a4a;
+    border: 1px dashed rgba(255, 74, 74, 0.3);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.delete-all-btn:hover {
+    background: #ff4a4a;
+    color: #ffffff;
+    border-style: solid;
+    border-color: #ff4a4a;
+    box-shadow: 0 4px 20px rgba(255, 74, 74, 0.2);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   2. Data Tables & Matrix Containers Look
+   ========================================================================== */
+.table-wrapper {
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+}
+
+th {
+    background: #161616;
+    padding: 18px 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+td {
+    padding: 18px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: #e5e5e5;
+    vertical-align: top;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.01); }
+
+.ord-id { font-weight: 600; color: #ffffff; letter-spacing: 0.5px; }
+.ord-meta { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 4px; }
+.badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge.pending { background: rgba(255, 191, 0, 0.1); color: #b88600; }
 .badge.approved { background: rgba(24, 183, 90, 0.1); color: #148f43; }
-.badge.rejected { background: rgba(255, 74, 74, 0.1); color: #c22d2d; }
 
-.nested-items-list { margin-top: 8px; display: flex; flex-direction: column; gap: 10px; }
-.nested-item-row { display: flex; align-items: center; gap: 12px; background: rgba(17,17,17,0.01); padding: 6px; border-radius: 4px; border: 1px solid rgba(17,17,17,0.03); }
-.nested-item-row img { width: 40px; aspect-ratio: 3/4; object-fit: cover; border-radius: 2px; }
+.items-list-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.item-entry-row {
+    font-size: 12px;
+    opacity: 0.85;
+}
 
-.action-btn { padding: 8px 14px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; margin-right: 5px; }
-.action-btn.approve { background: #18b75a; color: #fff; border-color: #18b75a; }
-.action-btn.approve:hover { background: transparent; color: #18b75a; }
-.action-btn.reject { background: transparent; color: #888; border-color: rgba(17, 17, 17, 0.15); }
-.action-btn.reject:hover { color: #ffbf00; border-color: #ffbf00; }
-.action-btn.delete { background: #ff4a4a; color: #fff; border-color: #ff4a4a; }
-.action-btn.delete:hover { background: transparent; color: #ff4a4a; }
+.action-select-styled {
+    padding: 8px 12px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
 
-<h1>Owner Console</h1>
-<p class="subtitle">Aquilux Database Order Registry</p>
+<div class="admin-header">
+    <div class="admin-brand">
+        <h1>Aquilux Operational Console</h1>
+        <p>Live Cloud Remittance & Order Registry Tracker</p>
+    </div>
+    <div class="control-actions-hub">
+        <button class="delete-all-btn" onclick="deleteAllOrdersFromDatabase()">⚠️ Delete All Entries</button>
+    </div>
+</div>
 
-<div class="admin-table-wrapper">
- <table class="admin-table">
-   <thead>
-     <tr>
-       <th>Order Details</th>
-       <th>Customer & Shipping Address</th>
-       <th>Products Breakdown</th>
-       <th>Total</th>
-       <th>Status</th>
-       <th>Actions</th>
-     </tr>
-   </thead>
-   <tbody id="adminOrdersContainer">
-     <tr>
-       <td colspan="6" style="text-align:center; opacity:0.5; padding:40px;">Syncing with Firebase secure node database...</td>
-     </tr>
-   </tbody>
- </table>
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Order Stamp Reference</th>
+                <th>Client Coordinates</th>
+                <th>Manifest Itemization</th>
+                <th>Remittance Target</th>
+                <th>Registry Operational Controls</th>
+            </tr>
+        </thead>
+        <tbody id="adminOrdersTargetTable">
+            </tbody>
+    </table>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -76,67 +187,109 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-async function loadOwnerDashboard() {
-   const container = document.getElementById("adminOrdersContainer");
-   try {
-       const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
-       const snapshot = await getDocs(q);
-       if(snapshot.empty) { container.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:40px;'>No records found.</td></tr>"; return; }
-       container.innerHTML = "";
-       snapshot.forEach(docSnap => {
-           const order = docSnap.data();
-           const docId = docSnap.id;
-           let nestedProductsHtml = `<div class="nested-items-list">`;
-           const targetCart = order.cart || order.items || [];
-           targetCart.forEach(item => {
-               nestedProductsHtml += `
-               <div class="nested-item-row">
-                  <img src="${item.img || item.image || ''}" onerror="this.style.display='none'">
-                  <div>
-                     <span style="font-weight:500; font-size:13px;">${item.n || item.productName || 'Item'}</span><br>
-                     <small style="opacity:0.6; font-size:11px;">Size: ${item.s || item.size || 'M'} · Qty: ${item.q || item.quantity || 1}</small>
-                  </div>
-               </div>`;
-           });
-           nestedProductsHtml += `</div>`;
+// Dynamic Listener Engine to feed live streams tracking orders table matrices
+function listenToOrderTelemetryLogs() {
+    const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
+    
+    onSnapshot(q, (snapshot) => {
+        const tableBody = document.getElementById("adminOrdersTargetTable");
+        if (snapshot.empty) {
+            tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; opacity:0.4; padding:40px;">No telemetry records deployed within database.</td></tr>`;
+            return;
+        }
+        
+        tableBody.innerHTML = "";
+        snapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const docId = docSnap.id;
+            
+            let statusBadgeClass = data.paymentStatus?.toLowerCase() === 'approved' ? 'approved' : 'pending';
+            let formattedDate = data.createdAt ? new Date(data.createdAt).toLocaleString('en-IN') : 'N/A';
 
-           let statusLabel = order.paymentStatus || "Pending Verification";
-           let badgeClass = "pending";
-           if(statusLabel.toLowerCase() === "approved") badgeClass = "approved";
-           if(statusLabel.toLowerCase() === "rejected") badgeClass = "rejected";
+            let itemsMarkup = "";
+            if (Array.isArray(data.cart)) {
+                data.cart.forEach(item => {
+                    itemsMarkup += `<div class="item-entry-row">· ${item.n} (Size: ${item.s} | Qty: ${item.q})</div>`;
+                });
+            }
 
-           container.innerHTML += `
-           <tr>
-              <td><strong>${order.orderNumber || 'N/A'}</strong><br><small style="color:#888;">UTR: ${order.utrReference || 'None'}</small></td>
-              <td style="font-size:13px; line-height:1.5;"><b>${order.receiverName}</b><br>${order.flat}, ${order.road}<br>${order.city} - ${order.pincode}<br>📞 ${order.phone}</td>
-              <td>${nestedProductsHtml}</td>
-              <td style="font-weight:600;">₹${order.total}</td>
-              <td><span class="badge ${badgeClass}">${statusLabel}</span></td>
-              <td>
-                 <button class="action-btn approve" onclick="updateOrderStatus('${docId}', 'Approved')">Approve</button>
-                 <button class="action-btn reject" onclick="updateOrderStatus('${docId}', 'Rejected')">Reject</button>
-                 <button class="action-btn delete" onclick="deleteOrderPermanent('${docId}')">Delete</button>
-              </td>
-           </tr>`;
-       });
-   } catch(e) { container.innerHTML = "<tr><td colspan='6'>Failed loading data.</td></tr>"; }
+            tableBody.innerHTML += `
+            <tr id="row-${docId}">
+                <td>
+                    <div class="ord-id">${data.orderNumber || docId}</div>
+                    <div class="ord-meta">${formattedDate}</div>
+                </td>
+                <td>
+                    <strong>${data.receiverName || 'N/A'}</strong><br>
+                    <span style="font-size:11px; opacity:0.7;">📞 ${data.phone || '-'}</span><br>
+                    <span style="font-size:11px; opacity:0.6;">${data.flat || ''}, ${data.road || ''}, ${data.city || ''}</span>
+                </td>
+                <td><div class="items-list-box">${itemsMarkup || 'Card drop tracking metadata empty.'}</div></td>
+                <td>
+                    <strong>₹${data.total || 0}</strong><br>
+                    <span class="badge ${statusBadgeClass}" style="margin-top:6px;">${data.paymentStatus || 'Pending Verification'}</span><br>
+                    <small style="font-size:10px; opacity:0.5; display:block; margin-top:4px;">UTR: ${data.utrReference || 'N/A'}</small>
+                </td>
+                <td>
+                    <select class="action-select-styled" onchange="updateOrderStatusRegistry('${docId}', this.value)">
+                        <option value="Pending Verification" ${data.paymentStatus === 'Pending Verification' ? 'selected' : ''}>Pending</option>
+                        <option value="Approved" ${data.paymentStatus === 'Approved' ? 'selected' : ''}>Approve Order</option>
+                        <option value="Cancelled by Owner" ${data.paymentStatus === 'Cancelled by Owner' ? 'selected' : ''}>Cancel Order</option>
+                    </select>
+                </td>
+            </tr>`;
+        });
+    });
 }
 
-window.updateOrderStatus = async function(docRefId, targetStatusState) {
+// Single order field state modifier handler
+window.updateOrderStatusRegistry = async function(docId, selectedStatus) {
     try {
-        await updateDoc(doc(db, "orders", docRefId), { paymentStatus: targetStatusState, orderStatus: targetStatusState });
-        alert(`Status changed to ${targetStatusState}`); loadOwnerDashboard();
-    } catch(err) { alert(err.message); }
-}
+        const targetRef = doc(db, "orders", docId);
+        await updateDoc(targetRef, { paymentStatus: selectedStatus });
+    } catch(err) {
+        console.error("Status modify loop anomaly:", err);
+    }
+};
 
-window.deleteOrderPermanent = async function(docRefId) {
-    if(!confirm("Warning: Permanent delete order from database?")) return;
+// ==========================================================================
+/* DANGER SYSTEM HUB: BULLETPROOF ALL ORDERS ERASURE ENGINE */
+// ==========================================================================
+window.deleteAllOrdersFromDatabase = async function() {
+    // Stage 1 Validation Track
+    if (!confirm("🚨 WARNING: Kya aap sach mein saare orders database se hamesha ke liye delete karna chahte hain? Yeh process reverse nahi ho sakta!")) {
+        return;
+    }
+    
+    // Stage 2 Validation Lock
+    if (!confirm("🔒 ABSOLUTE CONFIRMATION: Kya aap poori tarah sure hain? Orders table ka saara telemetry log saaf ho jayega.")) {
+        return;
+    }
+
     try {
-        await deleteDoc(doc(db, "orders", docRefId));
-        alert("Order completely wiped out!"); loadOwnerDashboard();
-    } catch(err) { alert(err.message); }
-}
-window.addEventListener("DOMContentLoaded", loadOwnerDashboard);
+        const querySnapshot = await getDocs(collection(db, "orders"));
+        if (querySnapshot.empty) {
+            alert("Database tracking record sheet pehle se hi empty hai!");
+            return;
+        }
+
+        const deletePromises = [];
+        querySnapshot.forEach((docSnapshot) => {
+            const docRef = doc(db, "orders", docSnapshot.id);
+            deletePromises.push(deleteDoc(docRef));
+        });
+
+        // Clear all entries concurrently using thread pooling mechanics
+        await Promise.all(deletePromises);
+        alert("✨ Perfect! Database clear ho gaya hai. Saare order logs successfully terminate ho chuke hain.");
+        
+    } catch (err) {
+        console.error("Purge system drop track error:", err);
+        alert("Wipe operation failed securely. Check technical console logging parameter sets.");
+    }
+};
+
+listenToOrderTelemetryLogs();
 </script>
 </body>
 </html>
