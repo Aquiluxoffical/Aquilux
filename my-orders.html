@@ -81,7 +81,7 @@ html[data-theme="dark"] .back-btn { border-color: rgba(255, 255, 255, 0.2); }
 }
 
 /* ==========================================================================
-   3. Main Dashboard Grid Structure (Sidebar + Main panel)
+   3. Main Dashboard Grid Structure
    ========================================================================== */
 .main-wrapper {
     max-width: 1200px;
@@ -179,7 +179,6 @@ html[data-theme="olive"] .order-card { background: rgba(255, 255, 255, 0.35); bo
     flex-wrap: wrap;
     gap: 10px;
 }
-html[data-theme="dark"] .order-meta-header { border-bottom-color: rgba(255, 255, 255, 0.06); }
 
 .order-id-group h2 {
     font-size: 15px;
@@ -192,16 +191,67 @@ html[data-theme="dark"] .order-meta-header { border-bottom-color: rgba(255, 255,
     margin-top: 2px;
 }
 
+/* Status Badges with Dynamic Micro Pulses */
+.status-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
 .status-badge {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    background: rgba(17, 17, 17, 0.05);
     padding: 6px 14px;
     border-radius: 20px;
     font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
-html[data-theme="dark"] .status-badge { background: rgba(255, 255, 255, 0.08); }
+.status-badge.pending { background: rgba(255, 191, 0, 0.1); color: #d49b00; }
+.status-badge.approved { background: rgba(24, 183, 90, 0.1); color: #148f43; }
+
+/* Small Status Pulse Indicator Dot */
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.status-badge.pending .pulse-dot {
+    background: #ffbf00;
+    animation: yellowPulse 1.6s infinite ease-in-out;
+}
+.status-badge.approved .pulse-dot {
+    background: #18b75a;
+    animation: greenPulse 1.6s infinite ease-in-out;
+}
+
+@keyframes yellowPulse {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(255, 191, 0, 0.6); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(255, 191, 0, 0); }
+    100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(255, 191, 0, 0); }
+}
+@keyframes greenPulse {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(24, 183, 90, 0.6); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(24, 183, 90, 0); }
+    100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(24, 183, 90, 0); }
+}
+
+/* Post-Approval Flash Message Layout Banner */
+.approval-banner {
+    background: rgba(24, 183, 90, 0.05);
+    border: 1px dashed rgba(24, 183, 90, 0.3);
+    color: #148f43;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 18px;
+    border-radius: 4px;
+    text-align: left;
+    letter-spacing: 0.2px;
+}
+html[data-theme="dark"] .approval-banner { color: #26d26b; }
 
 /* Products Layout Inside Order Card */
 .order-item-row {
@@ -211,7 +261,6 @@ html[data-theme="dark"] .status-badge { background: rgba(255, 255, 255, 0.08); }
     padding: 12px 0;
     border-bottom: 1px solid rgba(17, 17, 17, 0.04);
 }
-html[data-theme="dark"] .order-item-row { border-bottom-color: rgba(255, 255, 255, 0.04); }
 .order-item-row:last-of-type { border-bottom: none; }
 
 .item-thumb-wrapper {
@@ -254,11 +303,9 @@ html[data-theme="dark"] .order-item-row { border-bottom-color: rgba(255, 255, 25
     padding-top: 15px;
     border-top: 1px solid rgba(17, 17, 17, 0.06);
 }
-html[data-theme="dark"] .order-summary-footer { border-top-color: rgba(255, 255, 255, 0.06); }
 .order-total-lbl { font-size: 13px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.5px; }
 .order-total-val { font-size: 18px; font-weight: 600; }
 
-/* Empty Setup */
 .empty-card {
     text-align: center;
     padding: 60px 20px;
@@ -271,9 +318,6 @@ html[data-theme="dark"] .order-summary-footer { border-top-color: rgba(255, 255,
 }
 .empty-card p { font-size: 14px; opacity: 0.6; }
 
-/* ==========================================================================
-   5. Responsive Adapters
-   ========================================================================== */
 @media(max-width: 768px) {
     header { padding: 14px 20px; }
     .main-wrapper { grid-template-columns: 1fr; padding-top: 100px; gap: 25px; }
@@ -329,11 +373,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Global State Arrays
 let allFetchedOrders = [];
 let activeFilter = 'all';
 
-// Sync local interface color tokens dynamically
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
 
@@ -359,54 +401,34 @@ async function fetchOrderManifest(uid) {
 
         const snapshot = await getDocs(q);
         allFetchedOrders = [];
-
-        snapshot.forEach(doc => {
-            allFetchedOrders.push(doc.data());
-        });
-
+        snapshot.forEach(doc => { allFetchedOrders.push(doc.data()); });
         applyVisualRenders();
 
     } catch(err) {
-        console.error("Firebase Fetch Exception Error:", err);
-        container.innerHTML = `<p style="color:#ff4a4a; font-size:14px;">Error reading manifest: ${err.message}</p>`;
+        console.error("Firebase Exception Error:", err);
+        container.innerHTML = `<p style="color:#ff4a4a; font-size:14px;">Sync error: ${err.message}</p>`;
     }
 }
 
 function applyVisualRenders() {
     const container = document.getElementById("ordersContainer");
     container.innerHTML = "";
-
-    // Calculation parameters for timeline metrics
     const now = Date.now();
     
     let filteredList = allFetchedOrders.filter(order => {
         if (activeFilter === 'all') return true;
-        
-        // Handling timestamp fallbacks securely
         let timestampMillis = now;
-        if(order.createdAt && order.createdAt.toMillis) {
-            timestampMillis = order.createdAt.toMillis();
-        } else if (order.createdAt && order.createdAt.seconds) {
-            timestampMillis = order.createdAt.seconds * 1000;
-        } else {
-            return true; // render if format unrecognizable
-        }
-        
-        const absoluteDiffDays = (now - timestampMillis) / (1000 * 60 * 60 * 24);
-        return absoluteDiffDays <= Number(activeFilter);
+        if(order.createdAt && order.createdAt.toMillis) timestampMillis = order.createdAt.toMillis();
+        else if (order.createdAt && order.createdAt.seconds) timestampMillis = order.createdAt.seconds * 1000;
+        return ((now - timestampMillis) / (1000 * 60 * 60 * 24)) <= Number(activeFilter);
     });
 
     if(filteredList.length === 0){
-        container.innerHTML = `
-        <div class="empty-card">
-            <h2>No Records Found</h2>
-            <p>You haven't placed any order matching this criteria.</p>
-        </div>`;
+        container.innerHTML = `<div class="empty-card"><h2>No Records Found</h2><p>No orders placed matching this criteria.</p></div>`;
         return;
     }
 
     filteredList.forEach(order => {
-        // Humanize dynamic calendar dates formatting variables
         let displayDate = "Recent Transaction";
         if(order.createdAt) {
             const dateObj = order.createdAt.toMillis ? new Date(order.createdAt.toMillis()) : new Date();
@@ -416,23 +438,30 @@ function applyVisualRenders() {
         let itemsHtml = "";
         if(Array.isArray(order.items)) {
             order.items.forEach(item => {
-               const productFallbackImage = item.img || "https://images.unsplash.com/photo-1617137968427-85924c800a22?w=150&auto=format&fit=crop&q=60";
                itemsHtml += `
                <div class="order-item-row">
-                   <div class="item-thumb-wrapper">
-                       <img src="${productFallbackImage}" alt="${item.n || 'Product Image'}">
-                   </div>
+                   <div class="item-thumb-wrapper"><img src="${item.img || ''}"></div>
                    <div class="item-particulars">
                        <h4>${item.n || 'Premium Apparel'}</h4>
                        <p>Size : ${item.s || 'M'} · Qty : ${item.q || 1}</p>
                    </div>
-                   <div class="item-cost-summary">
-                       ₹${(item.p || 0) * (item.q || 1)}
-                   </div>
-               </div>
-               `;
+                   <div class="item-cost-summary">₹${(item.p || 0) * (item.q || 1)}</div>
+               </div>`;
             });
         }
+
+        // Logic check for Verification Status Mapping
+        let currentStatus = order.paymentStatus || "Pending Verification";
+        let isApproved = currentStatus.toLowerCase() === "approved" || currentStatus.toLowerCase() === "success" || order.orderStatus === "Approved";
+        
+        let statusClass = isApproved ? "approved" : "pending";
+        let statusText = isApproved ? "Approved" : "Pending Verification";
+
+        // Dynamic banner insertion condition based on status check matches
+        let successBannerHtml = isApproved ? `
+        <div class="approval-banner">
+           🎉 Your order is successful! You will get your delivery ID soon.
+        </div>` : "";
 
         container.innerHTML += `
         <div class="order-card">
@@ -441,30 +470,26 @@ function applyVisualRenders() {
                     <h2>ID: ${order.orderNumber || 'AQ-Unverified'}</h2>
                     <div class="order-date">Purchased on ${displayDate}</div>
                 </div>
-                <div class="status-badge">${order.paymentStatus || 'Processing'}</div>
+                <div class="status-container">
+                    <div class="status-badge ${statusClass}">
+                        <span class="pulse-dot"></span>${statusText}
+                    </div>
+                </div>
             </div>
-            <div class="order-manifest-items">
-                ${itemsHtml}
-            </div>
+            ${successBannerHtml}
+            <div class="order-manifest-items">${itemsHtml}</div>
             <div class="order-summary-footer">
                 <span class="order-total-lbl">Gross Liability</span>
                 <span class="order-total-val">₹${order.total || 0}</span>
             </div>
-        </div>
-        `;
+        </div>`;
     });
 }
 
-// Global filter state switching pipeline trigger router
 window.setDaysFilter = function(filterValue) {
     activeFilter = filterValue;
-    
-    // Clear styles toggle pipeline mapping updates
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-    
-    const targetId = filterValue === 'all' ? 'btn-all' : `btn-${filterValue}`;
-    document.getElementById(targetId).classList.add('active');
-    
+    document.getElementById(filterValue === 'all' ? 'btn-all' : `btn-${filterValue}`).classList.add('active');
     applyVisualRenders();
 }
 </script>
