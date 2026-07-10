@@ -79,7 +79,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 #userImg:hover { transform: scale(1.05); }
 
 /* ==========================================================================
-   3. Premium Sliding Drawers (Safari dvh & Strict Default Hidden State Fix)
+   3. Premium Sliding Drawers (Fixed Dynamic Flex Overlap & Safari dvh Fix)
    ========================================================================== */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
@@ -93,16 +93,16 @@ html[data-theme="olive"] header img { filter: invert(1); }
  border-left: 1px solid var(--line);
  z-index: 200005;
  padding: 30px 24px;
- display: none; /* FORCE STRICT DEFAULT HIDDEN HIDE STATE MATRIX */
+ display: flex;
  flex-direction: column;
  box-shadow: -10px 0 40px rgba(0,0,0,0.08);
  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .account-sidebar-panel { right: -460px; overflow-y: auto; }
-.account-sidebar-panel.active { display: block; right: 0; }
+.account-sidebar-panel.active { right: 0; }
 
 .cart-sidebar-panel { right: -460px; }
-.cart-sidebar-panel.active { display: flex; right: 0; }
+.cart-sidebar-panel.active { right: 0; }
 
 .panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
 .panel-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; }
@@ -114,14 +114,49 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .profile-meta-card h4 { font-size: 14px; font-weight: 500; }
 .profile-meta-card p { font-size: 11px; opacity: 0.6; }
 
-.account-tabs-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 15px; }
-.tab-nav-btn { padding: 10px 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; background: var(--glass-bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px; cursor: pointer; transition: all 0.2s ease; margin-top: 0; }
-.tab-nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+/* Dynamic Menu Buttons Navigation Panel */
+.account-tabs-nav {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 8px;
+ margin-bottom: 20px;
+ border-bottom: 1px solid var(--line);
+ padding-bottom: 15px;
+}
+.tab-nav-btn {
+ padding: 10px 4px;
+ font-size: 11px;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ background: var(--glass-bg);
+ color: var(--text);
+ border: 1px solid var(--line);
+ border-radius: 4px;
+ cursor: pointer;
+ transition: all 0.2s ease;
+ margin-top: 0;
+}
+.tab-nav-btn.active {
+ background: var(--text);
+ color: var(--bg);
+ border-color: var(--text);
+}
 
+/* Individual Content Pages Panels Container */
 .account-page-content { display: none; }
 .account-page-content.active { display: block; }
 
-.saved-address-view-card { background: rgba(17,17,17,0.02); border: 1px dashed var(--line); padding: 14px; border-radius: 6px; font-size: 12px; line-height: 1.6; margin-bottom: 15px; }
+/* Saved Address Dashboard Box styling */
+.saved-address-view-card {
+ background: rgba(17,17,17,0.02);
+ border: 1px dashed var(--line);
+ padding: 14px;
+ border-radius: 6px;
+ font-size: 12px;
+ line-height: 1.6;
+ margin-bottom: 15px;
+}
 .saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
 
 .panel-address-grid input { width: 100%; padding: 8px 10px; font-size: 12px; margin-top: 6px; background: transparent; border: 1px solid var(--line); border-radius: 4px; }
@@ -131,6 +166,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
 .logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
 
+/* Rows Configurations inside Tabs */
 .panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.05); font-size: 13px; }
 .panel-item-row img { width: 45px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
 .panel-item-row-info { flex: 1; }
@@ -145,6 +181,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .mini-status-badge.approved { background: rgba(24,183,90,0.1); color: #148f43; }
 .mini-status-badge.cancelled { background: rgba(255,74,74,0.15); color: #ff4a4a; }
 
+/* Cart Layout elements */
 .cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; -webkit-overflow-scrolling: touch; }
 .cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 15px; padding-bottom: max(15px, env(safe-area-inset-bottom)); flex-shrink: 0; background: transparent; width: 100%; }
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
@@ -218,6 +255,13 @@ input, textarea { width: 100%; }
 .collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; gap: 15px; }
 #priceFilter { width: 180px; }
 
+.payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
+
+#menuLoader { position: fixed; inset: 0; background: var(--bg); display: none; justify-content: center; align-items: center; flex-direction: column; gap: 18px; z-index: 999999; opacity: 0; transition: .35s; }
+#menuLoader.show { display: flex; opacity: 1; }
+#menuLoader img { width: 75px; animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes luxSpin { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
+
 footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
 
 /* Mobile & Tablet Optimization Framework Patch */
@@ -225,6 +269,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
  .grid { grid-template-columns: repeat(3, 1fr); }
 }
+
 @media(max-width: 768px) {
  header { padding: 12px 16px !important; height: 64px; }
  .logo-box img { height: 26px !important; }
@@ -248,7 +293,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <p>Welcome to aquilux</p>
 </div>
 
-<!-- Sliding Interactive Account Drawer Panel Matrix -->
 <div id="accountDrawer" class="account-sidebar-panel">
    <div class="panel-header">
        <h2>My Premium Space</h2>
@@ -274,7 +318,9 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
            <h4>Auto Saved Core Address</h4>
            <div id="savedAddressSummaryDisplay">No parameters configured. Please deploy inputs below.</div>
        </div>
+
        <div class="panel-address-grid">
+           <p style="font-size:11px; opacity:0.5; text-transform:uppercase; letter-spacing:0.5px;">Deploy New Shipping Parameters:</p>
            <input type="text" id="panel_receiverName" placeholder="Receiver Full Name">
            <input type="tel" id="panel_phone" maxlength="10" placeholder="Contact Tracker No">
            <input type="text" id="panel_flat" placeholder="Flat / Society Space Info">
@@ -300,15 +346,16 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
 </div>
 
-<!-- Premium Embedded Cart Header Panel -->
 <div id="cartDrawer" class="cart-sidebar-panel">
    <div class="panel-header">
        <h2>Shopping Bag</h2>
        <button class="close-panel-btn" onclick="toggleCartDrawer(false)">×</button>
    </div>
+   
    <div class="cart-items-scroll-area" id="drawerCartContainer">
        <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
    </div>
+
    <div class="cart-footer-calculation-dock">
        <div class="cart-panel-total-row">
            <span>Total Remittance</span>
@@ -339,12 +386,14 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
      </svg>
      <span>Cart</span><span id="cartCount">0</span>
    </div>
+
    <button id="loginBtn" onclick="googleLogin()" class="google-btn">
      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
      <span>Sign in</span>
    </button>
+
    <div id="userBox" style="display:none;" onclick="toggleAccountDrawer(true)">
-       <img id="userImg" alt="Profile Target">
+       <img id="userImg" alt="Profile Root Target">
    </div>
  </div>
 </header>
@@ -366,6 +415,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 <section id="shop">
  <div class="marquee">
    <div class="marquee-track">
+     <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
      <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
    </div>
  </div>
@@ -392,9 +442,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude.</p><p>aquilux.support@gmail.com</p>
 </footer>
 
-<!-- ==========================================================================
-     5. Firebase System Hub Modules 
-     ========================================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -415,7 +462,9 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 window.googleLogin = async () => {
- try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
+ try {
+   await signInWithPopup(auth, provider);
+ } catch (e) { console.error(e); }
 };
 window.googleLogout = () => { signOut(auth); toggleAccountDrawer(false); };
 
@@ -429,18 +478,15 @@ onAuthStateChanged(auth, (user) => {
    document.getElementById("drawerUserName").innerText = user.displayName;
    document.getElementById("drawerUserEmail").innerText = user.email;
    
-   window.currentLoggedInUid = user.uid;
    fetchPanelOrders(user.uid);
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
    document.getElementById("userBox").style.setProperty("display", "none", "important");
-   window.currentLoggedInUid = null;
  }
 });
 
-window.fetchPanelOrders = async function(uid) {
-    if(!uid) return;
+async function fetchPanelOrders(uid) {
     const pContainer = document.getElementById("panelOrdersContainer");
     try {
         const q = query(collection(db, "orders"), where("userId", "==", uid), orderBy("createdAt", "desc"));
@@ -452,9 +498,13 @@ window.fetchPanelOrders = async function(uid) {
             let badgeStyle = "pending";
             let displayStatusText = ord.paymentStatus || 'Pending Verification';
             
-            if(ord.paymentStatus?.toLowerCase() === "approved") { badgeStyle = "approved"; displayStatusText = "Approved"; }
+            if(ord.paymentStatus?.toLowerCase() === "approved") {
+                badgeStyle = "approved";
+                displayStatusText = "Approved";
+            }
             if(ord.paymentStatus?.toLowerCase() === "cancelled by user" || ord.paymentStatus?.toLowerCase() === "cancelled by owner") {
-                badgeStyle = "cancelled"; displayStatusText = "Your Order is Cancelled";
+                badgeStyle = "cancelled";
+                displayStatusText = "Your Order is Cancelled";
             }
             pContainer.innerHTML += `
             <div class="panel-item-row">
@@ -478,27 +528,27 @@ let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 function toggleAccountDrawer(openState) {
     if(openState) toggleCartDrawer(false); 
-    const panel = document.getElementById("accountDrawer");
-    panel.style.display = openState ? "block" : "none";
-    setTimeout(() => panel.classList.toggle("active", openState), 10);
-    if(openState && window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
+    document.getElementById("accountDrawer").classList.toggle("active", openState);
 }
 
 function toggleCartDrawer(openState) {
     if(openState) toggleAccountDrawer(false);
-    const panel = document.getElementById("cartDrawer");
-    panel.style.display = openState ? "flex" : "none";
-    setTimeout(() => panel.classList.toggle("active", openState), 10);
+    document.getElementById("cartDrawer").classList.toggle("active", openState);
 }
 
+/* Tab Switching Layout Logic */
 function switchAccountTab(tabName) {
+    // Reset buttons active states
     document.getElementById("tabBtnAddress").classList.remove("active");
     document.getElementById("tabBtnWishlist").classList.remove("active");
     document.getElementById("tabBtnOrders").classList.remove("active");
+    
+    // Reset content pages states
     document.getElementById("accountPageAddress").classList.remove("active");
     document.getElementById("accountPageWishlist").classList.remove("active");
     document.getElementById("accountPageOrders").classList.remove("active");
     
+    // Set targeted tab alive
     if(tabName === 'address') {
         document.getElementById("tabBtnAddress").classList.add("active");
         document.getElementById("accountPageAddress").classList.add("active");
@@ -508,7 +558,6 @@ function switchAccountTab(tabName) {
     } else if(tabName === 'orders') {
         document.getElementById("tabBtnOrders").classList.add("active");
         document.getElementById("accountPageOrders").classList.add("active");
-        if(window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
     }
 }
 
@@ -523,18 +572,21 @@ function setTheme(theme){
 }
 setTheme(localStorage.getItem("theme") || "light");
 
+const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."]];
 function setupReviewRoller() {
   const roller = document.getElementById("reviewsRollerDisplay"); roller.innerHTML = "";
-  [["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."]].forEach(r => { roller.innerHTML += `<div class="roller-card"><strong>${r[0]} ${r[1]} ✓</strong><p>${r[2]}</p></div>`; });
+  holoReviews.forEach(r => { roller.innerHTML += `<div class="roller-card"><strong>${r[0]} ${r[1]} ✓</strong><p>${r[2]}</p></div>`; });
 }
 
 async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
- setupReviewRoller(); draw(); renderWishlistPanel();
+ setupReviewRoller(); 
+ draw(); 
+ renderWishlistPanel();
  try {
    const res = await fetch(API_URL); products = await res.json(); currentProducts = [...products];
    qty = Array(products.length).fill(0); displayProducts(currentProducts);
- } catch (e) { document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; }
+ } catch (e) { document.getElementById("grid").innerHTML = "<p>Failed loading manifest products.</p>"; }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
@@ -594,15 +646,28 @@ window.saveAddressToMemoryStore = function() {
         city: document.getElementById("panel_city").value,
         state: document.getElementById("panel_state").value
     };
-    if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) { alert("Please completely fill out Name, Contact, and Pincode!"); return; }
+    
+    if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) {
+        alert("Please completely fill out Name, Contact, and Pincode components!");
+        return;
+    }
+    
     localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock));
-    alert("Shipping parameter locked!"); renderAddressSummaryBlock(addressBlock);
+    alert("Shipping layout parameter locked & updated!");
+    renderAddressSummaryBlock(addressBlock);
 }
 
 function renderAddressSummaryBlock(addr) {
     const display = document.getElementById("savedAddressSummaryDisplay");
-    if(!addr.receiverName) { display.innerHTML = "No configured profiles active."; return; }
-    display.innerHTML = `<strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br><span>${addr.flat || ""}, ${addr.road || ""}</span><br><span>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
+    if(!addr.receiverName) {
+        display.innerHTML = "No configured profiles active. Deploy using fields below.";
+        return;
+    }
+    display.innerHTML = `
+        <strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br>
+        <span>${addr.flat || ""}, ${addr.road || ""}</span><br>
+        <span>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>
+    `;
 }
 
 function loadSavedAddressToPanel() {
@@ -638,8 +703,10 @@ function addToCart(i){
  let item = cart.find(x => x.n == product.product && x.s == size);
  if(item) { item.q += quantity; } 
  else { cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
+ 
  qty[i] = 0; document.getElementById("q"+i).textContent = 0;
- draw(); toggleCartDrawer(true); 
+ draw();
+ toggleCartDrawer(true); 
 }
 
 window.changeDrawerQty = function(index, change) {
@@ -652,7 +719,20 @@ function draw(){
  let t = 0; let h = "";
  cart.forEach((c, i) => {
    t += c.p * c.q;
-   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="cart.splice(${i},1);draw()">×</button></div>`;
+   h += `
+    <div class="panel-item-row">
+        <img src="${c.img || ''}" onerror="this.style.display='none'">
+        <div class="panel-item-row-info">
+            <h5>${c.n}</h5>
+            <p>Size: ${c.s} · Price: ₹${c.p * c.q}</p>
+            <div class="mini-qty-box">
+                <button onclick="changeDrawerQty(${i},-1)">−</button>
+                <span>${c.q}</span>
+                <button onclick="changeDrawerQty(${i},1)">+</button>
+            </div>
+        </div>
+        <button class="panel-action-icon-btn" onclick="cart.splice(${i},1);draw()">×</button>
+    </div>`;
  });
  if(cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
  localStorage.setItem("aquilux_cart", JSON.stringify(cart));
@@ -666,8 +746,9 @@ function goToGateway(){
  if(cart.length === 0) { alert("Your shopping cart is empty!"); return; }
  const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
  if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
-     alert("Please save your delivery address first!");
-     toggleAccountDrawer(true); switchAccountTab('address'); return;
+     alert("Please add and save your delivery address space parameter inside navigation portal first!");
+     toggleAccountDrawer(true); switchAccountTab('address');
+     return;
  }
  const orderData = {
    cart: cart, total: Number(document.getElementById("drawerCartTotal").textContent),
