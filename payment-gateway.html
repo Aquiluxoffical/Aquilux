@@ -85,30 +85,49 @@ body {
 .total-label { font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
 .total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
 
-.universal-intent-btn {
+/* ==========================================================================
+   New Multi-Button Premium Layout
+   ========================================================================== */
+.payment-buttons-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 5px;
+}
+
+.premium-pay-btn {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    justify-content: space-between;
     width: 100%;
-    padding: 16px;
-    background: #ffffff;
-    color: #000000;
-    border: 1px solid #ffffff;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
     font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-pay-btn:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.premium-pay-btn span {
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    margin-top: 5px;
-    transition: all 0.2s ease;
 }
-.universal-intent-btn:hover { background: rgba(255, 255, 255, 0.9); }
-.universal-intent-btn img {
-    height: 18px;
-    width: auto;
-    object-fit: contain;
+
+.premium-pay-btn .arrow-indicator {
+    font-family: serif;
+    font-size: 16px;
+    opacity: 0.6;
 }
 </style>
 </head>
@@ -136,13 +155,26 @@ body {
 
     <div class="summary-card">
         <h3>Select Premium Payment Mode</h3>
-        <button class="universal-intent-btn" onclick="triggerAppPaymentAndRedirect()">
-            <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Logo">
-            Pay through UPI
-        </button>
+        <div class="payment-buttons-grid">
+            <button class="premium-pay-btn" onclick="triggerAppPayment('google-pay')">
+                <span>Pay via Google Pay</span>
+                <span class="arrow-indicator">→</span>
+            </button>
+            <button class="premium-pay-btn" onclick="triggerAppPayment('phonepe')">
+                <span>Pay via PhonePe</span>
+                <span class="arrow-indicator">→</span>
+            </button>
+            <button class="premium-pay-btn" onclick="triggerAppPayment('paytm')">
+                <span>Pay via Paytm</span>
+                <span class="arrow-indicator">→</span>
+            </button>
+            <button class="premium-pay-btn" onclick="triggerAppPayment('bhim')">
+                <span>Pay via BHIM UPI</span>
+                <span class="arrow-indicator">→</span>
+            </button>
+        </div>
     </div>
 </div>
-
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -192,20 +224,37 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// BULLETPROOF HARDWARE-LEVEL ANCHOR INTERCEPTOR SYSTEM
-window.triggerAppPaymentAndRedirect = async function() {
+// HARDWARE DEEP-LINK DIRECT DIRECTIVITY SYSTEM
+window.triggerAppPayment = async function(appTarget) {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
     
+    // Cross-platform specific anchor routes
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
-    // Use one verified UPI ID across all devices
-    const targetVpa = "yashojhaoffical1982@oksbi";
-    const universalUpiString =
-        `upi://pay?pa=${targetVpa}&pn=${merchantName}&tn=${encodeURIComponent("Aquilux Order")}&am=${amount}&cu=INR`;
+    let targetVpa = "yashojhaoffical1982@oksbi"; // Anchor VPA Fallback
+    if (isIOS) {
+        targetVpa = "yashojha.13@ybl";
+    } else if (/Android/i.test(userAgentStr)) {
+        targetVpa = "9558039135@upi";
+    }
 
-    // Compile state parameters token logs instantly
+    const baseParams = `pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
+    let targetUpiUri = `upi://pay?${baseParams}`;
+
+    // Specific Hard Intent Triggers according to chosen button choice
+    if (appTarget === 'google-pay') {
+        targetUpiUri = isIOS ? `gpay://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+    } else if (appTarget === 'phonepe') {
+        targetUpiUri = isIOS ? `phonepe://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=com.phonepe.app;end`;
+    } else if (appTarget === 'paytm') {
+        targetUpiUri = isIOS ? `paytmmp://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=net.one97.paytm;end`;
+    } else if (appTarget === 'bhim') {
+        targetUpiUri = isIOS ? `bhim://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=in.org.npci.upiapp;end`;
+    }
+
+    // Compile dynamic token logs instantly
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -216,24 +265,20 @@ window.triggerAppPaymentAndRedirect = async function() {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // Dynamic structural fix: Update invisible anchor reference path context safely
-    const nativeLinkElement = document.getElementById("secureNativeUpiLink");
-    nativeLinkElement.href = universalUpiString;
-
-    // Trigger direct hardware intent protocol loop execution
-    nativeLinkElement.click();
+    // Force call selected native app immediately
+    window.location.href = targetUpiUri;
 
     try {
-        // Run network pipeline data storage
+        // Safe asynchronous database injection
         await addDoc(collection(db, "orders"), order);
         localStorage.removeItem("aquilux_cart");
         
-        // Smoothly proceed to message submission sheet layer
+        // Redirect context smoothly to verification screen
         setTimeout(() => {
             window.location.href = "payment.html";
-        }, 800);
+        }, 1200);
     } catch (err) {
-        console.error("Cloud tracking compilation exception logged:", err);
+        console.error("Firebase submission drop logging:", err);
         window.location.href = "payment.html";
     }
 };
