@@ -132,7 +132,6 @@ body {
     object-fit: contain;
 }
 
-/* User hover hone par icons ko automatic solid contrast match dene ke liye loop fallback filter handler */
 .premium-pay-btn:hover .app-svg-icon {
     filter: invert(1) brightness(0);
 }
@@ -148,6 +147,102 @@ body {
 }
 .premium-pay-btn:hover .arrow-indicator {
     opacity: 0.9;
+}
+
+/* ==========================================================================
+   Premium Minimalist App Download Modal Look
+   ========================================================================== */
+.download-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.download-modal-card {
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 32px 24px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: modalReveal 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalReveal {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-icon-alert {
+    font-size: 28px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.download-modal-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.download-modal-card p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.modal-action-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal-download-link {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #ffffff;
+    color: #000000;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+.modal-download-link:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.modal-close-trigger {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    padding: 12px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: all 0.2s;
+}
+.modal-close-trigger:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.2);
 }
 </style>
 </head>
@@ -177,6 +272,7 @@ body {
         <h3>Select Premium Payment Mode</h3>
         
         <div class="payment-buttons-grid">
+            <!-- 1. Google Pay Premium Anchor Router Block -->
             <button class="premium-pay-btn" onclick="triggerAppPayment('google-pay')">
                 <div class="btn-left-content">
                     <img class="app-svg-icon" src="images/gpay.svg" alt="Google Pay">
@@ -185,6 +281,7 @@ body {
                 <span class="arrow-indicator">→</span>
             </button>
 
+            <!-- 2. PhonePe Premium Anchor Router Block -->
             <button class="premium-pay-btn" onclick="triggerAppPayment('phonepe')">
                 <div class="btn-left-content">
                     <img class="app-svg-icon" src="images/PhonePe_Logo.svg" alt="PhonePe">
@@ -193,6 +290,7 @@ body {
                 <span class="arrow-indicator">→</span>
             </button>
 
+            <!-- 3. BHIM UPI Premium Anchor Router Block -->
             <button class="premium-pay-btn" onclick="triggerAppPayment('bhim')">
                 <div class="btn-left-content">
                     <img class="app-svg-icon" src="images/Bhim.svg" alt="BHIM UPI">
@@ -200,6 +298,19 @@ body {
                 </div>
                 <span class="arrow-indicator">→</span>
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- Premium Intelligent Download Fallback Pop-up Overlay Container -->
+<div id="appDownloadFallbackModal" class="download-modal-overlay">
+    <div class="download-modal-card">
+        <span class="modal-icon-alert">📱</span>
+        <h4 id="fallbackModalTitle">Application Not Found</h4>
+        <p id="fallbackModalDesc">Chuna gaya premium payment application aapke device par response nahi de raha hai. Kripya process complete karne ke liye ise download karein.</p>
+        <div class="modal-action-row">
+            <a id="modalStoreActionLink" class="modal-download-link" href="#" target="_blank">Get Application</a>
+            <button class="modal-close-trigger" onclick="toggleFallbackPopup(false)">Cancel & Return</button>
         </div>
     </div>
 </div>
@@ -252,7 +363,20 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// PERFECT INDEPENDENT DEEP LINK TRACE CONNECTOR (Corrected VPA Interchanges)
+// TOGGLE HANDLER FOR THE EXCLUSIVE FALLBACK MODAL
+window.toggleFallbackPopup = function(showState, appName = "", downloadUrl = "#") {
+    const modal = document.getElementById("appDownloadFallbackModal");
+    if (showState) {
+        document.getElementById("fallbackModalTitle").innerText = `${appName} Not Found`;
+        document.getElementById("fallbackModalDesc").innerText = `${appName} application aapke device par response nahi de raha hai. Kripya secure ledger parameters verify karne ke liye ise official store se download karein.`;
+        document.getElementById("modalStoreActionLink").href = downloadUrl;
+        modal.style.display = "flex";
+    } else {
+        modal.style.display = "none";
+    }
+};
+
+// PERFECT INDEPENDENT DEEP LINK TRACE CONNECTOR (With Smart Modal Trigger)
 window.triggerAppPayment = async function(appTarget) {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -260,20 +384,34 @@ window.triggerAppPayment = async function(appTarget) {
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
-    // Strict Independent Mapping - Koi condition dynamic variable mix nahi karegi
     let targetVpa = "";
+    let cleanAppName = "";
+    let appStoreLink = "";
+
+    // App parameters configuration matrix
     if (appTarget === 'google-pay') {
-        targetVpa = "yashojhaoffical1982@oksbi"; // 1st VPA for GPay
+        targetVpa = "yashojhaoffical1982@oksbi";
+        cleanAppName = "Google Pay";
+        appStoreLink = isIOS 
+            ? "https://apps.apple.com/in/app/google-pay-save-pay-earn/id1193357041"
+            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
     } else if (appTarget === 'phonepe') {
-        targetVpa = "yashojha.13@ybl";           // 2nd VPA for PhonePe
+        targetVpa = "yashojha.13@ybl";
+        cleanAppName = "PhonePe";
+        appStoreLink = isIOS 
+            ? "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563"
+            : "https://play.google.com/store/apps/details?id=com.phonepe.app";
     } else if (appTarget === 'bhim') {
-        targetVpa = "9558039135@upi";           // 3rd VPA for BHIM
+        targetVpa = "9558039135@upi";
+        cleanAppName = "BHIM UPI";
+        appStoreLink = isIOS 
+            ? "https://apps.apple.com/in/app/bhim-making-india-cashless/id1193102223"
+            : "https://play.google.com/store/apps/details?id=in.org.npci.upiapp";
     }
 
     const baseParams = `pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
     let targetUpiUri = `upi://pay?${baseParams}`;
 
-    // Hardware Platform Level Protocol Routing Injection
     if (appTarget === 'google-pay') {
         targetUpiUri = isIOS ? `gpay://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
     } else if (appTarget === 'phonepe') {
@@ -282,7 +420,6 @@ window.triggerAppPayment = async function(appTarget) {
         targetUpiUri = isIOS ? `bhim://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=in.org.npci.upiapp;end`;
     }
 
-    // Compile dynamic token orders tracking matrix records instantly
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -293,24 +430,40 @@ window.triggerAppPayment = async function(appTarget) {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // Instant deep link call redirection execute loop
+    // Execute app wake up call instantly
     window.location.href = targetUpiUri;
 
+    // Smart Fallback Detection Trigger Loop (Triggers Pop-up if app fails to pull browser focus)
+    let fallbackModalTimer = setTimeout(() => {
+        window.toggleFallbackPopup(true, cleanAppName, appStoreLink);
+    }, 2500);
+
+    // Cancel pop-up modal if device window blur event confirms app execution priority focus
+    const neutralizeTimers = () => {
+        clearTimeout(fallbackModalTimer);
+        window.removeEventListener("blur", neutralizeTimers);
+        document.removeEventListener("visibilitychange", neutralizeTimers);
+    };
+    window.addEventListener("blur", neutralizeTimers);
+    document.addEventListener("visibilitychange", neutralizeTimers);
+
     try {
-        // Safe database background injection
         await addDoc(collection(db, "orders"), order);
         localStorage.removeItem("aquilux_cart");
         
-        // Context shift transition straight to success screen sheet
         setTimeout(() => {
-            window.location.href = "payment.html";
+            // Background check ensures screen doesn't force switch if download popup is active
+            if(document.getElementById("appDownloadFallbackModal").style.display !== "flex") {
+                window.location.href = "payment.html";
+            }
         }, 1200);
     } catch (err) {
-        console.error("Firebase compilation log sync dropped:", err);
-        window.location.href = "payment.html";
+        console.error(err);
+        if(document.getElementById("appDownloadFallbackModal").style.display !== "flex") {
+            window.location.href = "payment.html";
+        }
     }
 };
-
 
 renderUI();
 </script>
