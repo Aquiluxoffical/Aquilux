@@ -33,12 +33,6 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 .action-btn.reject:hover { color: #ffbf00; border-color: #ffbf00; }
 .action-btn.delete { background: #ff4a4a; color: #fff; border-color: #ff4a4a; }
 .action-btn.delete:hover { background: transparent; color: #ff4a4a; }
-
-@media(max-width: 768px) {
- h1 { font-size: 2rem; }
- .admin-table th, .admin-table td { padding: 12px 10px; font-size: 13px; }
- .action-btn { padding: 6px 10px; font-size: 10px; display: block; width: 100%; margin-bottom: 5px; text-align: center; }
-}
 </style>
 </head>
 <body>
@@ -84,31 +78,14 @@ const db = getFirestore(app);
 
 async function loadOwnerDashboard() {
    const container = document.getElementById("adminOrdersContainer");
-   
    try {
        const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
        const snapshot = await getDocs(q);
-       
-       if(snapshot.empty) {
-           container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:40px; opacity:0.5;">No orders logged inside database yet.</td></tr>`;
-           return;
-       }
-       
+       if(snapshot.empty) { container.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:40px;'>No records found.</td></tr>"; return; }
        container.innerHTML = "";
-       
        snapshot.forEach(docSnap => {
            const order = docSnap.data();
            const docId = docSnap.id;
-           
-           let dateText = "Recent Date";
-           if(order.createdAt) {
-               let d = new Date();
-               if (typeof order.createdAt === "string") d = new Date(order.createdAt);
-               else if (order.createdAt.toMillis) d = new Date(order.createdAt.toMillis());
-               else if (order.createdAt.seconds) d = new Date(order.createdAt.seconds * 1000);
-               dateText = d.toLocaleString('en-IN', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
-           }
-
            let nestedProductsHtml = `<div class="nested-items-list">`;
            const targetCart = order.cart || order.items || [];
            targetCart.forEach(item => {
@@ -116,7 +93,7 @@ async function loadOwnerDashboard() {
                <div class="nested-item-row">
                   <img src="${item.img || item.image || ''}" onerror="this.style.display='none'">
                   <div>
-                     <span style="font-weight:500; font-size:13px;">${item.n || item.productName || 'Apparel Item'}</span><br>
+                     <span style="font-weight:500; font-size:13px;">${item.n || item.productName || 'Item'}</span><br>
                      <small style="opacity:0.6; font-size:11px;">Size: ${item.s || item.size || 'M'} · Qty: ${item.q || item.quantity || 1}</small>
                   </div>
                </div>`;
@@ -125,71 +102,40 @@ async function loadOwnerDashboard() {
 
            let statusLabel = order.paymentStatus || "Pending Verification";
            let badgeClass = "pending";
-           if(statusLabel.toLowerCase() === "approved" || statusLabel.toLowerCase() === "success") badgeClass = "approved";
+           if(statusLabel.toLowerCase() === "approved") badgeClass = "approved";
            if(statusLabel.toLowerCase() === "rejected") badgeClass = "rejected";
 
            container.innerHTML += `
            <tr>
-              <td>
-                 <strong style="font-size:14px; letter-spacing:0.3px;">${order.orderNumber || 'N/A'}</strong><br>
-                 <span style="font-size:12px; opacity:0.5; display:inline-block; margin-top:4px;">${dateText}</span><br>
-                 <small style="color:#888; font-size:10px;">UTR: ${order.utrReference || 'None'}</small>
-              </td>
-              <td style="font-size:13px; line-height:1.5;">
-                 <b style="font-weight:600;">${order.receiverName || 'Guest User'}</b><br>
-                 <span style="opacity:0.8;">
-                   ${order.flat || ""}, ${order.road || ""}<br>
-                   ${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
-                 </span>
-                 <span style="display:inline-block; margin-top:4px; font-weight:500;">📞 ${order.phone || "-"}</span>
-              </td>
+              <td><strong>${order.orderNumber || 'N/A'}</strong><br><small style="color:#888;">UTR: ${order.utrReference || 'None'}</small></td>
+              <td style="font-size:13px; line-height:1.5;"><b>${order.receiverName}</b><br>${order.flat}, ${order.road}<br>${order.city} - ${order.pincode}<br>📞 ${order.phone}</td>
               <td>${nestedProductsHtml}</td>
-              <td style="font-weight:600; font-size:15px;">₹${order.total || 0}</td>
+              <td style="font-weight:600;">₹${order.total}</td>
               <td><span class="badge ${badgeClass}">${statusLabel}</span></td>
               <td>
                  <button class="action-btn approve" onclick="updateOrderStatus('${docId}', 'Approved')">Approve</button>
                  <button class="action-btn reject" onclick="updateOrderStatus('${docId}', 'Rejected')">Reject</button>
                  <button class="action-btn delete" onclick="deleteOrderPermanent('${docId}')">Delete</button>
               </td>
-           </tr>
-           `;
+           </tr>`;
        });
-       
-   } catch(e) {
-       console.error(e);
-       container.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:20px;">Failed to trace pipeline: ${e.message}</tr>`;
-   }
+   } catch(e) { container.innerHTML = "<tr><td colspan='6'>Failed loading data.</td></tr>"; }
 }
 
 window.updateOrderStatus = async function(docRefId, targetStatusState) {
     try {
-        const orderDocRef = doc(db, "orders", docRefId);
-        await updateDoc(orderDocRef, {
-            paymentStatus: targetStatusState,
-            orderStatus: targetStatusState
-        });
-        alert(`Status changed to ${targetStatusState}`);
-        loadOwnerDashboard();
-    } catch(err) {
-        alert("Error: " + err.message);
-    }
+        await updateDoc(doc(db, "orders", docRefId), { paymentStatus: targetStatusState, orderStatus: targetStatusState });
+        alert(`Status changed to ${targetStatusState}`); loadOwnerDashboard();
+    } catch(err) { alert(err.message); }
 }
 
 window.deleteOrderPermanent = async function(docRefId) {
-    const confirmation = confirm("Warning: Kya aap sach mein is order ko database se permanent delete karna chahte hain? Yeh entry wapas nahi aayegi!");
-    if(!confirmation) return;
-    
+    if(!confirm("Warning: Permanent delete order from database?")) return;
     try {
-        const orderDocRef = doc(db, "orders", docRefId);
-        await deleteDoc(orderDocRef);
-        
-        alert("Order backend database se completely wipe out/delete ho gaya hai!");
-        loadOwnerDashboard();
-    } catch(err) {
-        alert("Delete operation failed: " + err.message);
-    }
+        await deleteDoc(doc(db, "orders", docRefId));
+        alert("Order completely wiped out!"); loadOwnerDashboard();
+    } catch(err) { alert(err.message); }
 }
-
 window.addEventListener("DOMContentLoaded", loadOwnerDashboard);
 </script>
 </body>
