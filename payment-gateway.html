@@ -136,7 +136,6 @@ body {
 
     <div class="summary-card">
         <h3>Select Premium Payment Mode</h3>
-        <!-- Single action button with inline embedded premium logo -->
         <button class="universal-intent-btn" onclick="triggerAppPaymentAndRedirect()">
             <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Logo">
             Pay through UPI
@@ -192,27 +191,24 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// MULTI-APP INTELLIGENT ROUTER SYSTEM
-window.triggerAppPaymentAndRedirect = function() {
+// iOS & ANDROID BALANCED DEEP LINK ENGINE WITH INTENT APP PROTECTION
+window.triggerAppPaymentAndRedirect = async function() {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
     
-    // Fallback global handler string structure
-    let standardUpiUrl = `upi://pay?pa=yashojhaoffical1982@oksbi&pn=${merchantName}&am=${amount}&cu=INR`;
-
-    // Dynamic target detection rules to prevent device-level protocol drops
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
+    let targetVpa = "yashojhaoffical1982@oksbi"; // Gpay Default Anchor Base
     if (isIOS) {
-        // iOS focus protection requires a smooth universal base fallback mapping
-        standardUpiUrl = `upi://pay?pa=yashojha.13@ybl&pn=${merchantName}&am=${amount}&cu=INR`;
-    } else {
-        // Android intent strings structure configured using custom deep link properties
-        standardUpiUrl = `upi://pay?pa=9558039135@upi&pn=${merchantName}&am=${amount}&cu=INR`;
+        targetVpa = "yashojha.13@ybl"; // PhonePe Core Target mapping for iOS
+    } else if (/Android/i.test(userAgentStr)) {
+        targetVpa = "9558039135@upi"; // BHIM Node Target mapping for Android
     }
 
-    // 1. Compile state logs token metrics instantly for verification routing
+    const universalUpiString = `upi://pay?pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
+
+    // Compile token logs configuration sheets
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -223,22 +219,37 @@ window.triggerAppPaymentAndRedirect = function() {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // 2. Fire direct hardware application handshake sheet
-    window.location.href = standardUpiUrl;
+    // Execute hardware level deep linking handshake redirect instantly
+    window.location.href = universalUpiString;
 
-    // 3. Silent server background compilation pipeline
-    addDoc(collection(db, "orders"), order)
-        .then(() => {
-            localStorage.removeItem("aquilux_cart");
-        })
-        .catch((err) => {
-            console.error("Database cloud compilation trace error:", err);
-        });
+    // Strict Device App Fallback tracking loop setup
+    let appStoreFallbackTimer = setTimeout(() => {
+        const storeLinks = isIOS 
+            ? "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563"
+            : "https://play.google.com/store/apps/details?id=in.org.npci.upiapp";
+        window.location.replace(storeLinks);
+    }, 2500);
 
-    // 4. Force seamless view redirection routing rules straight to success layout dashboard
-    setTimeout(() => {
+    // Freeze backup routing if device shifts window focus back to app smoothly
+    const clearFallbackTimers = () => {
+        clearTimeout(appStoreFallbackTimer);
+        window.removeEventListener("blur", clearFallbackTimers);
+        document.removeEventListener("visibilitychange", clearFallbackTimers);
+    };
+    window.addEventListener("blur", clearFallbackTimers);
+    document.addEventListener("visibilitychange", clearFallbackTimers);
+
+    try {
+        await addDoc(collection(db, "orders"), order);
+        localStorage.removeItem("aquilux_cart");
+        
+        setTimeout(() => {
+            window.location.href = "payment.html";
+        }, 1000);
+    } catch (err) {
+        console.error("Cloud data registry sync error:", err);
         window.location.href = "payment.html";
-    }, 1200);
+    }
 };
 
 renderUI();
