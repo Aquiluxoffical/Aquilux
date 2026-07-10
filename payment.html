@@ -3,222 +3,191 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Payment Verification • Aquilux</title>
-
+<title>Order Submitted — Aquilux</title>
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Inter,Arial,sans-serif;
+/* ==========================================================================
+   1. Typography & Base Theme (Matches Timeluxe & Modern Clean Layout)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'Inter', Arial, sans-serif;
 }
 
-body{
-background:#0a0a0a;
-color:#fff;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
-padding:20px;
+body {
+ background: #ffffff; /* Matches your updated index theme */
+ color: #111111;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ min-height: 100vh;
+ padding: 20px;
+ -webkit-font-smoothing: antialiased;
+ transition: background 0.4s ease, color 0.4s ease;
 }
 
-.card{
-width:100%;
-max-width:480px;
-background:#111;
-border:1px solid #242424;
-border-radius:24px;
-padding:35px;
-text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,.45);
-animation:fade .6s ease;
+/* Base Theme Color Adaptations for active dynamic state variables */
+html[data-theme="dark"] body { background: #111111; color: #ffffff; }
+html[data-theme="olive"] body { background: #d7d9cf; color: #2c3525; }
+
+/* Wrapper Container Block */
+.success-card {
+ max-width: 460px;
+ width: 100%;
+ text-align: center;
+ padding: 40px 30px;
+ background: rgba(255, 255, 255, 0.45);
+ backdrop-filter: blur(12px);
+ -webkit-backdrop-filter: blur(12px);
+ border: 1px solid rgba(17, 17, 17, 0.08);
+ border-radius: 12px;
+ box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+}
+html[data-theme="dark"] .success-card {
+ background: rgba(255, 255, 255, 0.04);
+ border-color: rgba(255, 255, 255, 0.08);
+}
+html[data-theme="olive"] .success-card {
+ background: rgba(255, 255, 255, 0.35);
+ border-color: rgba(44, 53, 37, 0.1);
 }
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(30px);
+/* Elegant SVG Checked Animation Placement */
+.success-icon-wrapper {
+ margin-bottom: 25px;
+ display: flex;
+ justify-content: center;
 }
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-.check{
-width:90px;
-height:90px;
-margin:auto;
-border-radius:50%;
-background:#18b75a;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:46px;
-margin-bottom:25px;
-animation:pop .5s ease;
+.success-icon-wrapper svg {
+ width: 64px;
+ height: 64px;
+ stroke: var(--text);
+ fill: none;
 }
 
-@keyframes pop{
-0%{
-transform:scale(.4);
-}
-100%{
-transform:scale(1);
-}
-}
-
-h1{
-font-size:30px;
-margin-bottom:10px;
-font-weight:600;
+h1 {
+ font-family: 'Cormorant Garamond', serif;
+ font-size: 2.4rem;
+ font-weight: 400;
+ margin-bottom: 12px;
+ letter-spacing: 0.5px;
 }
 
-.subtitle{
-color:#aaa;
-line-height:1.6;
-margin-bottom:28px;
+.message-desc {
+ font-size: 14px;
+ opacity: 0.7;
+ line-height: 1.6;
+ margin-bottom: 30px;
+ padding: 0 10px;
 }
 
-.order-box{
-background:#181818;
-border:1px solid #2d2d2d;
-padding:16px;
-border-radius:14px;
-margin-bottom:28px;
+/* Minimal Luxury Order Sheet Meta Box */
+.order-id-box {
+ background: rgba(17, 17, 17, 0.02);
+ border: 1px dashed rgba(17, 17, 17, 0.15);
+ padding: 18px;
+ border-radius: 6px;
+ margin-bottom: 35px;
+}
+html[data-theme="dark"] .order-id-box {
+ background: rgba(255, 255, 255, 0.02);
+ border-color: rgba(255, 255, 255, 0.2);
+}
+.order-id-box small {
+ font-size: 11px;
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ opacity: 0.5;
+ display: block;
+ margin-bottom: 6px;
+}
+.order-id-box strong {
+ font-size: 18px;
+ font-weight: 600;
+ letter-spacing: 1px;
+ display: block;
 }
 
-.order-box small{
-display:block;
-color:#888;
-margin-bottom:8px;
+/* Single Action Dynamic Navigation Button Layout */
+.primary-action-btn {
+ display: block;
+ width: 100%;
+ padding: 15px;
+ background: #111111;
+ color: #ffffff;
+ text-decoration: none;
+ border: 1px solid #111111;
+ border-radius: 4px;
+ font-size: 13px;
+ font-weight: 500;
+ letter-spacing: 1.5px;
+ text-transform: uppercase;
+ transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+html[data-theme="dark"] .primary-action-btn {
+ background: #ffffff;
+ color: #111111;
+ border-color: #ffffff;
+}
+.primary-action-btn:hover {
+ background: transparent;
+ color: inherit;
+ border-color: currentColor;
+ transform: translateY(-1px);
 }
 
-.order-box strong{
-font-size:22px;
-letter-spacing:1px;
-}
-
-.steps{
-text-align:left;
-margin-bottom:30px;
-}
-
-.steps p{
-margin:12px 0;
-line-height:1.6;
-color:#ddd;
-}
-
-.btn{
-display:block;
-width:100%;
-padding:16px;
-border-radius:14px;
-text-decoration:none;
-font-weight:600;
-margin-top:15px;
-transition:.3s;
-}
-
-.whatsapp{
-background:#25D366;
-color:#fff;
-}
-
-.whatsapp:hover{
-transform:translateY(-2px);
-}
-
-.orders{
-background:#fff;
-color:#000;
-}
-
-.orders:hover{
-transform:translateY(-2px);
-}
-
-footer{
-margin-top:25px;
-font-size:13px;
-color:#666;
+.footer-brand {
+ margin-top: 35px;
+ font-size: 11px;
+ opacity: 0.4;
+ letter-spacing: 1px;
+ text-transform: uppercase;
 }
 </style>
-
 </head>
 <body>
 
-<div class="card">
+<div class="success-card">
+  
+  <!-- Minimal Checkmark SVG Vector -->
+  <div class="success-icon-wrapper">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+  </div>
 
-<div class="check">✓</div>
+  <h1>Order Submitted</h1>
+  <p class="message-desc">
+    Your request has been successfully registered in our logs. The details and receipt request tracking configurations have been synchronized with WhatsApp.
+  </p>
 
-<h1>Payment Submitted</h1>
+  <!-- Dynamic Receipt Token Display Box -->
+  <div class="order-id-box">
+    <small>Registry Reference Token</small>
+    <strong id="displayOrderNumber">AQ-Retrieving...</strong>
+  </div>
 
-<p class="subtitle">
-Your order has been created successfully.
-To verify your payment, please send your payment screenshot on WhatsApp.
-</p>
+  <!-- Direct Premium Redirection Button -->
+  <a href="my-orders.html" class="primary-action-btn">Go To My Orders</a>
 
-<div class="order-box">
-
-<small>Order Number</small>
-
-<strong id="orderNo">AQ----------</strong>
-
-</div>
-
-<div class="steps">
-
-<p>📱 Take a screenshot of your successful payment.</p>
-
-<p>💬 Click the WhatsApp button below.</p>
-
-<p>📎 Attach the screenshot and send it.</p>
-
-<p>✅ Your order will be verified shortly.</p>
-
-</div>
-
-<a
-id="waBtn"
-class="btn whatsapp"
-target="_blank">
-Share Payment Screenshot
-</a>
-
-<a
-href="my-orders.html"
-class="btn orders">
-Go To My Orders
-</a>
-
-<footer>
-Aquilux • Own. Your. Altitude.
-</footer>
-
+  <div class="footer-brand">Aquilux · Own. Your. Altitude.</div>
 </div>
 
 <script>
+// Dynamic Interface Synchronization Configs
+const activeTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", activeTheme);
 
-const orderNo =
-localStorage.getItem("lastOrderNumber") || "AQ--------";
-
-document.getElementById("orderNo").innerText = orderNo;
-
-const message =
-`Hi Aquilux,
-
-Order ID: ${orderNo}
-
-I have completed my payment.
-
-I am attaching my payment screenshot for verification.`;
-
-document.getElementById("waBtn").href =
-"https://wa.me/919558039135?text="+encodeURIComponent(message);
-
+// Pull system order number from storage manifest context
+window.addEventListener("DOMContentLoaded", () => {
+    const fallbackToken = "AQ" + Date.now();
+    const resolvedOrderNumber = localStorage.getItem("lastOrderNumber") || fallbackToken;
+    document.getElementById("displayOrderNumber").textContent = resolvedOrderNumber;
+});
 </script>
 
 </body>
