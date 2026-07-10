@@ -178,13 +178,21 @@ body {
     <div class="summary-card">
         <h3>Select Premium Payment Mode</h3>
         
-        <div class="apps-routing-grid">
-            <!-- 1. Google Pay App Link Redirector Router -->
-            <button class="app-pay-btn" onclick="triggerAppPayment('gpay')">
-                <div class="app-info-side">
-                    <img class="app-icon" src="images/gpay.svg" alt="Google Pay">
-                    <span class="app-name">Google Pay</span>
-                </div>
+<div class="summary-card">
+    <h3>Select Premium Payment Mode</h3>
+    
+    <!-- Sirf yeh ek universal button rahega -->
+    <button class="universal-intent-btn" onclick="triggerAppPayment('universal')" style="background: #ffffff; color: #000000; font-size: 13px; padding: 16px; border-style: solid;">
+        Pay through UPI
+    </button>
+
+    <!-- UTR Entry Code Block Elements Box -->
+    <div class="utr-wrapper">
+        <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; text-align:center; line-is-not-empty:1.4;">Payment done hone ke baad bank statement ya app se 12-digit UTR No. yahan enter karein:</p>
+        <input type="text" id="utrNumber" class="utr-input" placeholder="Enter 12-Digit Transaction UTR No." autocomplete="off" maxlength="12">
+    </div>
+</div>
+
                 <span class="pay-action-arrow">Pay Via →</span>
             </button>
 
@@ -276,45 +284,20 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// INTELLIGENT DEEP LINKING INTEGRATION ROUTER (With Native OS Detection & Focus Protection)
+// PURE UPI INTENT ROUTER (Direct Device Handshake)
 window.triggerAppPayment = function(targetKey) {
     const amount = order.total || 0;
     const name = encodeURIComponent("Aquilux Luxury Store");
     
-    const ids = {
-        gpay: "yashojhaoffical1982@oksbi",
-        phonepe: "yashojha.13@ybl",
-        bhim: "9558039135@upi",
-        universal: "yashojhaoffical1982@oksbi"
-    };
-    
-    const targetVpa = ids[targetKey];
+    // Aapka common UPI VPA address aur standard merchant format
+    const targetVpa = "yashojhaoffical1982@oksbi";
     const standardUpiUrl = `upi://pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
-    
-    let finalIntentUrl = standardUpiUrl;
-    if(targetKey === 'gpay') {
-        finalIntentUrl = `gpay://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
-    } else if(targetKey === 'phonepe') {
-        finalIntentUrl = `phonepe://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
-    }
 
-    // 1. Dynamic OS Detection System (Android vs iOS)
-    const isAndroid = /Android/i.test(navigator.userAgent);
-    
-    const storeLinks = {
-        gpay: isAndroid 
-            ? "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user"
-            : "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041",
-        phonepe: isAndroid 
-            ? "https://play.google.com/store/apps/details?id=com.phonepe.app"
-            : "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563",
-        bhim: isAndroid 
-            ? "https://play.google.com/store/apps/details?id=in.org.npci.upiapp"
-            : "https://apps.apple.com/in/app/bhim-making-india-digital/id1193138243",
-        universal: isAndroid 
-            ? "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user"
-            : "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
-    };
+    // Seedhe device ka default intent call karein
+    // Android aur iOS dono is link par phone me installed saare UPI apps auto-detect karke popup open kar denge
+    window.location.href = standardUpiUrl;
+};
+
 
     // 2. Firing Intent Direct URL
     window.location.href = finalIntentUrl;
