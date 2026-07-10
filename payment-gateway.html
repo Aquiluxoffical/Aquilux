@@ -169,9 +169,10 @@ html[data-theme="dark"] .payBtn:hover {
 }
 
 .payBtn img {
- width: 38px;
- height: 38px;
+ width: 44px;
+ height: 44px;
  object-fit: contain;
+ border-radius: 8px;
 }
 .payBtn span {
  font-size: 12px;
@@ -294,7 +295,7 @@ html[data-theme="dark"] .cancel {
  .box { padding: 18px; }
  .paymentGrid { gap: 10px; }
  .payBtn { padding: 15px 5px; }
- .payBtn img { width: 32px; height: 32px; }
+ .payBtn img { width: 38px; height: 38px; }
  .total { font-size: 18px; }
 }
 </style> 
@@ -336,22 +337,23 @@ html[data-theme="dark"] .cancel {
  <h2>Choose Payment Method</h2>
  <div class="paymentGrid">
    <button class="payBtn" onclick="pay('gpay')">
-     <img src="https://cdn.jsdelivr.net/gh/rishi255/payment-logos/gpay.svg" onerror="this.src='https://www.gstatic.com/images/branding/product/1x/gpay_32dp.png'">
+     <!-- Permanent High-Res Logo Fix -->
+     <img src="https://img.icons8.com/color/144/google-pay.png" alt="GPay">
      <span>Google Pay</span>
    </button>
    <button class="payBtn" onclick="pay('phonepe')">
-     <img src="https://cdn.jsdelivr.net/gh/rishi255/payment-logos/phonepe.svg" onerror="this.src='https://img.icons8.com/color/48/phonepe.png'">
+     <img src="https://img.icons8.com/color/144/phonepe.png" alt="PhonePe">
      <span>PhonePe</span>
    </button>
    <button class="payBtn" onclick="pay('paytm')">
-     <img src="https://cdn.jsdelivr.net/gh/rishi255/payment-logos/paytm.svg" onerror="this.src='https://img.icons8.com/color/48/paytm.png'">
+     <img src="https://img.icons8.com/color/144/paytm.png" alt="Paytm">
      <span>Paytm</span>
    </button>
  </div>
  <div class="note">
    ✔ Secure UPI Payment Gateway Engine<br>
    ✔ Cross-Device Smart Redirection Tracking Fix<br>
-   ✔ Desktop/Tablet Manual Verification System
+   ✔ Desktop/Tablet Manual Validation System
  </div>
 </div>
 
@@ -424,13 +426,14 @@ function getMobileOS() {
   return "desktop";
 }
 
-// Universal Smart Routing Payment Router with Focus Event Handlers
+// Universal Smart Routing Payment Router with Direct URI Call Fix
 window.pay = function(appChoice) {
    const upiId = "Yashojhaoffical1982@oksbi";
    const amount = order.total;
    const note = encodeURIComponent("Aquilux Order Payment");
    const os = getMobileOS();
 
+   // Sabhi apps ke liye universal direct target deep link patterns
    let targetUrl = `upi://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
    let storeUrl = "";
 
@@ -447,6 +450,7 @@ window.pay = function(appChoice) {
      }
    };
 
+   // Streamlined cross-platform fallback handling bugs fix
    if (os === "android") {
      if (appChoice === "gpay") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
      if (appChoice === "phonepe") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.phonepe.app;end`;
@@ -473,9 +477,9 @@ window.pay = function(appChoice) {
      window.addEventListener("pagehide", preventRedirect);
      window.addEventListener("blur", preventRedirect);
 
+     // Try opening the deep link app
      window.location.href = targetUrl;
 
-     // Delay timer fallback executes strictly if browser focus remains uninterrupted
      setTimeout(() => {
        if (!appOpened && !document.hidden) {
          window.location.href = storeUrl;
@@ -527,13 +531,12 @@ function updateTotal(){
    localStorage.setItem("pendingOrder", JSON.stringify(order));
 }
 
-// Highly Optimized Single Action Combination Hook (Database Push + Combined WhatsApp Redirect)
 window.paymentDone = async function() {
   const orderNo = "AQ" + Date.now();
   const user = auth.currentUser;
   
   if (user) {
-    order.userId = user.uid; // Attaching User UID to fix index parsing leaks securely
+    order.userId = user.uid; 
   } else {
     order.userId = "Guest_" + Date.now();
   }
@@ -543,7 +546,6 @@ window.paymentDone = async function() {
   order.orderStatus = "Pending";
   order.createdAt = serverTimestamp();
   
-  // Step A: Push to Firebase Database first to lock the data firmly
   try {
     await addDoc(collection(db, "orders"), order);
     console.log("Database Sync Successful for order:", orderNo);
@@ -553,7 +555,6 @@ window.paymentDone = async function() {
     return;
   }
 
-  // Step B: Build comprehensive text payload strings
   const message = `🛍️ Aquilux Order
 
 Order No: ${orderNo}
@@ -571,10 +572,8 @@ Total Amount: ₹${order.total}
 ----------------------------------------
 📸 Please attach your Payment Screenshot below this message for quick verification!`;
 
-  // Opens official WhatsApp application directly
   window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank");
  
-  // Step C: Cleanup transient memory fields safely
   localStorage.setItem("lastOrderNumber", orderNo);
   localStorage.removeItem("paymentStarted");
   localStorage.removeItem("aquilux_cart");
