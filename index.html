@@ -35,7 +35,7 @@ body {
 }
 
 /* ==========================================================================
-   2. Header & Navigation (Minimal Fixed Bar)
+   2. Header & Navigation (Minimal Fixed Bar - Desktop Layout)
    ========================================================================== */
 header {
  position: fixed;
@@ -101,9 +101,7 @@ nav a, .cart-title {
  font-weight: 600;
 }
 
-/* ==========================================================================
-   3. Theme Switcher Dots Styling
-   ========================================================================== */
+/* Theme Switcher Dots Styling */
 .theme-switcher {
  display: flex;
  gap: 8px;
@@ -123,7 +121,7 @@ nav a, .cart-title {
 .theme-dot.dark { background: #111111; }
 
 /* ==========================================================================
-   4. Hero Section & High-End Floating Background Layer
+   3. Hero Section & High-End Floating Background Layer
    ========================================================================== */
 .hero {
  height: 100vh;
@@ -134,7 +132,6 @@ nav a, .cart-title {
  overflow: hidden;
 }
 
-/* Luxury Old-Money Abstract Animations Base */
 .hero-luxury-bg {
  position: absolute;
  inset: 0;
@@ -144,7 +141,6 @@ nav a, .cart-title {
  z-index: 1;
 }
 
-/* Smooth Interactive Ambient Blur Shapes */
 .luxury-blur-orb {
  position: absolute;
  border-radius: 50%;
@@ -169,7 +165,6 @@ nav a, .cart-title {
  animation-delay: -8s;
 }
 
-/* Fine-line Art Contours for Altitude Feel */
 .hero-luxury-bg svg {
  position: absolute;
  width: 100%;
@@ -190,7 +185,6 @@ nav a, .cart-title {
 .kinetic-path:nth-child(2) { animation-duration: 55s; animation-delay: -10s; }
 .kinetic-path:nth-child(3) { animation-duration: 70s; stroke-width: 0.3; }
 
-/* Floating Premium Luxury Speckles */
 .luxury-dust {
  position: absolute;
  width: 2px;
@@ -264,7 +258,7 @@ nav a, .cart-title {
 }
 
 /* ==========================================================================
-   5. Manual Scroll Review Roller
+   4. Manual Scroll Review Roller
    ========================================================================== */
 .review-roller-container {
  margin-bottom: 40px;
@@ -320,7 +314,7 @@ nav a, .cart-title {
 }
 
 /* ==========================================================================
-   6. Section & Structured Product Grid Layout
+   5. Section & Structured Product Grid Layout
    ========================================================================== */
 section {
  padding: 90px 6%;
@@ -340,7 +334,7 @@ section {
 }
 
 /* ==========================================================================
-   7. Product Cards UI (Glass Effects & Dynamic Image Swap)
+   6. Product Cards UI (Glass Effects & Dynamic Image Swap)
    ========================================================================== */
 .card {
  border: none !important; 
@@ -449,7 +443,7 @@ section {
 }
 
 /* ==========================================================================
-   8. Quantity Controls & Global Input Boxes
+   7. Quantity Controls & Global Input Boxes
    ========================================================================== */
 .qty {
  display: flex;
@@ -505,7 +499,7 @@ input:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   9. Marquee Header Ticker & Main Filtering Area
+   8. Marquee Header Ticker & Main Filtering Area
    ========================================================================== */
 .marquee {
  width: 100%;
@@ -545,7 +539,7 @@ input:focus, textarea:focus {
 #priceFilter { width: 180px; }
 
 /* ==========================================================================
-   10. User Auth Session & Checkout Elements
+   9. User Auth Session & Checkout Elements
    ========================================================================== */
 .google-btn {
  display: inline-flex !important;
@@ -716,7 +710,7 @@ input:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   11. System Modern App Loader Setup
+   10. System Modern App Loader Setup
    ========================================================================== */
 #menuLoader {
  position: fixed;
@@ -777,16 +771,81 @@ footer p:last-of-type {
 }
 
 /* ==========================================================================
-   12. Combined Responsive Framework
+   11. Smart Mobile Responsive Framework (iPhone/Android Screen Patch Fix)
    ========================================================================== */
 @media(max-width: 1024px) {
  .grid { grid-template-columns: repeat(3, 1fr); }
 }
+
 @media(max-width: 768px) {
- header { padding: 14px 20px; }
- .logo-text strong { font-size: 19px; }
- .header-right { gap: 12px; }
- .cart-title span:first-of-type { display: none; }
+ /* 1. Cleaned Fixed Header constraints for tight mobile views */
+ header { 
+   padding: 12px 16px !important; 
+   justify-content: space-between !important;
+   height: 64px;
+ }
+ .logo-box {
+   gap: 6px !important;
+ }
+ .logo-box img {
+   height: 26px !important; /* Made structural icons compact */
+ }
+ .logo-text strong { 
+   font-size: 17px !important; /* Scaled down signature font size */
+ }
+ 
+ /* 2. Restructured Switcher Layout below brand title area */
+ .theme-switcher {
+   margin-top: 2px !important;
+   gap: 5px !important;
+ }
+ .theme-dot {
+   width: 12px !important;
+   height: 12px !important;
+ }
+
+ /* 3. Bundled target actions efficiently to avoid right-side overlap spacing errors */
+ .header-right { 
+   gap: 12px !important; 
+   align-items: center !important;
+ }
+ .cart-title {
+   gap: 4px !important;
+ }
+ .cart-title span:first-of-type { 
+   display: none !important; /* Completely hides "Cart" text to prioritize pure icon layout space */
+ }
+ #cartCount {
+   width: 18px !important;
+   height: 18px !important;
+   font-size: 10px !important;
+ }
+ 
+ /* Scaled icons to absolute 18px boundary layout scales */
+ .header-right svg {
+   width: 18px !important;
+   height: 18px !important;
+ }
+ .header-right span {
+   font-size: 12px !important;
+ }
+ 
+ /* Hidden extra dynamic details inside button blocks for minimal look */
+ .logout-btn span, .google-btn span {
+   display: none !important; 
+ }
+ .logout-btn {
+   padding: 6px !important;
+   color: var(--text) !important;
+   border: 1px solid var(--line) !important;
+   border-radius: 4px;
+   background: var(--glass-bg) !important;
+ }
+ .google-btn {
+   padding: 6px 10px !important;
+ }
+
+ /* Core sections grid layout optimizations */
  .grid {
    grid-template-columns: repeat(2, 1fr) !important;
    gap: 25px 12px !important;
@@ -803,6 +862,7 @@ footer p:last-of-type {
  .title { font-size: 2rem; }
  .roller-card { flex: 0 0 230px; padding: 15px; }
 }
+.holo-layer { display: none !important; }
 </style>
 </head>
 
@@ -836,7 +896,7 @@ footer p:last-of-type {
      <span id="cartCount">0</span>
    </a>
 
-   <a href="my-orders.html" class="cart-title">
+   <a href="my-orders.html" class="cart-title" title="My Orders">
      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
        <path d="M21 8l-9-5-9 5 9 5 9-5z"/>
        <path d="M3 8v8l9 5 9-5V8"/>
@@ -855,7 +915,7 @@ footer p:last-of-type {
        <img id="userImg">
        <span id="userName"></span>
      </div>
-     <button onclick="googleLogout()" class="logout-btn">
+     <button onclick="googleLogout()" class="logout-btn" title="Logout">
        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
          <polyline points="16 17 21 12 16 7"></polyline>
@@ -868,7 +928,6 @@ footer p:last-of-type {
 </header>
  
 <section class="hero">
-  <!-- New Luxury Full-Bleed Kinetic Background Art & Floating Orbs Layer -->
   <div class="hero-luxury-bg">
     <div class="luxury-blur-orb orb-1"></div>
     <div class="luxury-blur-orb orb-2"></div>
@@ -948,7 +1007,7 @@ footer p:last-of-type {
 </footer>
 
 <!-- ==========================================================================
-     13. Firebase Framework Integration Engine
+     12. Firebase Framework Integration Engine
      ========================================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -997,7 +1056,7 @@ onAuthStateChanged(auth, (user) => {
 </script> 
 
 <!-- ==========================================================================
-     14. Core Logic Engine & Dynamic Manual Slider Setup
+     13. Core Logic Engine & Dynamic Manual Slider Setup
      ========================================================================== -->
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
