@@ -252,7 +252,7 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// BULLETPROOF HARDWARE-LEVEL INTERACTION DEEP LINKS
+// PERFECT INDEPENDENT DEEP LINK TRACE CONNECTOR (Corrected VPA Interchanges)
 window.triggerAppPayment = async function(appTarget) {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -260,16 +260,20 @@ window.triggerAppPayment = async function(appTarget) {
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
-    let targetVpa = "yashojhaoffical1982@oksbi"; 
-    if (isIOS) {
-        targetVpa = "yashojha.13@ybl";
-    } else if (/Android/i.test(userAgentStr)) {
-        targetVpa = "9558039135@upi";
+    // Strict Independent Mapping - Koi condition dynamic variable mix nahi karegi
+    let targetVpa = "";
+    if (appTarget === 'google-pay') {
+        targetVpa = "yashojhaoffical1982@oksbi"; // 1st VPA for GPay
+    } else if (appTarget === 'phonepe') {
+        targetVpa = "yashojha.13@ybl";           // 2nd VPA for PhonePe
+    } else if (appTarget === 'bhim') {
+        targetVpa = "9558039135@upi";           // 3rd VPA for BHIM
     }
 
     const baseParams = `pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
     let targetUpiUri = `upi://pay?${baseParams}`;
 
+    // Hardware Platform Level Protocol Routing Injection
     if (appTarget === 'google-pay') {
         targetUpiUri = isIOS ? `gpay://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
     } else if (appTarget === 'phonepe') {
@@ -278,6 +282,7 @@ window.triggerAppPayment = async function(appTarget) {
         targetUpiUri = isIOS ? `bhim://upi/pay?${baseParams}` : `intent://pay?${baseParams}#Intent;scheme=upi;package=in.org.npci.upiapp;end`;
     }
 
+    // Compile dynamic token orders tracking matrix records instantly
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -288,21 +293,24 @@ window.triggerAppPayment = async function(appTarget) {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // Instant deep link call redirection
+    // Instant deep link call redirection execute loop
     window.location.href = targetUpiUri;
 
     try {
+        // Safe database background injection
         await addDoc(collection(db, "orders"), order);
         localStorage.removeItem("aquilux_cart");
         
+        // Context shift transition straight to success screen sheet
         setTimeout(() => {
             window.location.href = "payment.html";
         }, 1200);
     } catch (err) {
-        console.error(err);
+        console.error("Firebase compilation log sync dropped:", err);
         window.location.href = "payment.html";
     }
 };
+
 
 renderUI();
 </script>
