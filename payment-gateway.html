@@ -18,11 +18,10 @@
 }
 
 body {
-    background: #090909; /* Deep matte premium black */
+    background: #090909;
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-    min-height: 100dvh;
     padding: 50px 20px;
     display: flex;
     justify-content: center;
@@ -35,9 +34,6 @@ body {
     margin: 0 auto;
 }
 
-/* ==========================================================================
-   2. Brand Hero Header (Minimal Fine Arts Style)
-   ========================================================================== */
 .brand-hero {
     text-align: center;
     margin-bottom: 40px;
@@ -53,23 +49,18 @@ body {
     font-size: 32px;
     font-weight: 400;
     letter-spacing: 2px;
-    text-transform: capitalize;
     color: #f5f5f5;
 }
 
-/* ==========================================================================
-   3. Old Money Summary Cards Grid
-   ========================================================================== */
 .summary-card {
     background: #111111;
-    border: 1px solid rgba(255, 255, 255, 0.05); /* Extremely thin luxury divider line */
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
 }
 .summary-card h3 {
-    font-family: 'Inter', sans-serif;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -78,155 +69,83 @@ body {
     font-weight: 600;
 }
 
-.address-details {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #b5b5b5;
-}
-.address-details strong {
-    color: #ffffff;
-    font-weight: 500;
-}
+.address-details { font-size: 13px; line-height: 1.6; color: #b5b5b5; }
+.address-details strong { color: #ffffff; font-weight: 500; }
 
-/* Items Blueprint Layout */
-.item-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 14px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-.item-row:last-of-type {
-    border-bottom: none;
-}
-.item-thumb {
-    width: 48px;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    border-radius: 4px;
-    background: #1a1a1a;
-}
-.item-meta {
-    flex: 1;
-}
-.item-meta h4 {
-    font-size: 13px;
-    font-weight: 400;
-    color: #ffffff;
-    letter-spacing: 0.3px;
-}
-.item-meta p {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
-    margin-top: 3px;
-}
-.item-price {
-    font-size: 13px;
-    font-weight: 500;
-    color: #ffffff;
-}
+.item-row { display: flex; align-items: center; gap: 15px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.item-row:last-of-type { border-bottom: none; }
+.item-thumb { width: 48px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; background: #1a1a1a; }
+.item-meta { flex: 1; }
+.item-meta h4 { font-size: 13px; font-weight: 400; color: #ffffff; letter-spacing: 0.3px; }
+.item-meta p { font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 3px; }
+.item-price { font-size: 13px; font-weight: 500; color: #ffffff; }
 
-.total-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 15px;
-    padding-top: 18px;
-    border-top: 1px dashed rgba(255, 255, 255, 0.1);
-}
-.total-label {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.total-amount {
-    font-family: 'Inter', sans-serif;
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-}
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, 0.1); }
+.total-label { font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
 
 /* ==========================================================================
-   4. Premium Logos Grid & UTR Console
+   4. Active Deep Linking Apps Router Grids
    ========================================================================== */
-.upi-logos-strip {
+.apps-routing-grid {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
+.app-pay-btn {
+    display: flex;
     align-items: center;
-    gap: 25px;
-    padding: 5px 0 15px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-    margin-bottom: 15px;
-}
-.upi-logo-icon {
-    height: 18px;
-    object-fit: contain;
-    filter: grayscale(1) brightness(1.4); /* Minimal muted palette */
-    opacity: 0.6;
-}
-
-.utr-wrapper {
-    margin-top: 12px;
-}
-.utr-input {
+    justify-content: space-between;
     width: 100%;
-    padding: 14px;
+    padding: 14px 18px;
     background: #161616;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    color: #ffffff;
-    font-size: 13px;
-    outline: none;
-    text-align: center;
-    letter-spacing: 1px;
-    transition: border-color 0.3s ease;
-}
-.utr-input:focus {
-    border-color: rgba(255, 255, 255, 0.25);
-}
-
-/* Complete Order Button Framework */
-.confirm-btn {
-    width: 100%;
-    padding: 16px;
-    background: #ffffff; /* Sharp contrasts button alignment */
-    color: #000000;
-    border: none;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    margin-top: 8px;
-}
-.confirm-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-/* Custom Interactive Dialog Box */
-.status-popup {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(12px);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
-}
-.popup-inner {
-    background: #111111;
     border: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 40px 30px;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 380px;
-    width: 90%;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
+.app-pay-btn:hover {
+    background: #1c1616;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+.app-info-side { display: flex; align-items: center; gap: 12px; }
+.app-icon { height: 20px; width: 20px; object-fit: contain; filter: grayscale(0.2); }
+.app-name { font-size: 13px; font-weight: 500; letter-spacing: 0.3px; }
+.pay-action-arrow { font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 1px; }
+
+.universal-intent-btn {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #ffffff;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+.universal-intent-btn:hover { background: #fff; color: #000; border-style: solid; }
+
+.utr-wrapper { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 20px; }
+.utr-input {
+    width: 100%; padding: 14px; background: #161616; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px;
+    color: #ffffff; font-size: 13px; outline: none; text-align: center; letter-spacing: 1px;
+}
+.utr-input:focus { border-color: rgba(255, 255, 255, 0.25); }
+
+.confirm-btn {
+    width: 100%; padding: 16px; background: #ffffff; color: #000000; border: none; border-radius: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 15px;
+}
+.confirm-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.status-popup { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); display: none; justify-content: center; align-items: center; z-index: 99999; }
+.popup-inner { background: #111111; border: 1px solid rgba(255, 255, 255, 0.06); padding: 40px 30px; border-radius: 12px; text-align: center; max-width: 380px; width: 90%; }
 .popup-inner h2 { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 400; margin-bottom: 12px; }
 .popup-inner p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 25px; }
 .popup-btn { padding: 12px 28px; background: #ffffff; color: #000000; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
@@ -235,20 +154,16 @@ body {
 <body>
 
 <div class="checkout-container">
-    
-    <!-- Premium Brand Anchor Header -->
     <div class="brand-hero">
         <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Aquilux Emblem">
         <div class="brand-title">Aquilux Checkout Ledger</div>
     </div>
 
-    <!-- Card Block A: Shipping Meta logs -->
     <div class="summary-card">
         <h3>Shipping Coordinates</h3>
         <div class="address-details" id="addressText">Tracing shipping records...</div>
     </div>
 
-    <!-- Card Block B: Active Basket Breakdown -->
     <div class="summary-card">
         <h3>Items Summary</h3>
         <div id="checkoutItemsList"></div>
@@ -258,32 +173,46 @@ body {
         </div>
     </div>
 
-    <!-- Card Block C: Premium Payment Grid Matrix -->
     <div class="summary-card">
-        <h3>Payment Registry Tracker</h3>
+        <h3>Select Premium Payment Mode</h3>
         
-        <!-- Integrated Muted Brands Logos Strip -->
-        <div class="upi-logos-strip">
-            <img class="upi-logo-icon" src="https://images.squarespace-cdn.com/content/v1/5be0dbf6365f02bc1fef1316/1583234907921-AF77A0F1WURW0Q1X3Y4G/GPay+Logo.png" alt="Google Pay">
-            <img class="upi-logo-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/phonepe-logo-icon.png" alt="PhonePe">
-            <img class="upi-logo-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Paytm_Logo_%28standalone%29.svg/1200px-Paytm_Logo_%28standalone%29.svg.png" alt="Paytm">
+        <div class="apps-routing-grid">
+            <button class="app-pay-btn" onclick="triggerAppPayment('gpay')">
+                <div class="app-info-side">
+                    <img class="app-icon" src="https://images.squarespace-cdn.com/content/v1/5be0dbf6365f02bc1fef1316/1583234907921-AF77A0F1WURW0Q1X3Y4G/GPay+Logo.png">
+                     <span class="app-name">Google Pay</span>
+                </div>
+                <span class="pay-action-arrow">Pay Via →</span>
+            </button>
+
+            <button class="app-pay-btn" onclick="triggerAppPayment('phonepe')">
+                <div class="app-info-side">
+                    <img class="app-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/phonepe-logo-icon.png">
+                     <span class="app-name">PhonePe</span>
+                </div>
+                <span class="pay-action-arrow">Pay Via →</span>
+            </button>
+
+            <button class="app-pay-btn" onclick="triggerAppPayment('bhim')">
+                <div class="app-info-side">
+                    <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/BHIM_logo.svg/1200px-BHIM_logo.svg.png">
+                     <span class="app-name">BHIM UPI</span>
+                </div>
+                <span class="pay-action-arrow">Pay Via →</span>
+            </button>
         </div>
 
-        <p style="font-size:12px; color: rgba(255,255,255,0.4); margin-bottom:14px; line-height:1.5; text-align: center;">
-            Transfer the total liability amount securely to UPI ID:<br>
-            <span style="color: #ffffff; font-weight: 500; display: inline-block; margin-top: 4px; letter-spacing: 0.5px;">Yashojhaoffical1982@oksbi</span>
-        </p>
-        
+        <button class="universal-intent-btn" onclick="triggerAppPayment('universal')">✨ Auto-Open Any UPI App</button>
+
         <div class="utr-wrapper">
+            <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; text-align:center; line-height:1.4;">Payment done hone ke baad bank statement ya app se 12-digit UTR No. yahan enter karein:</p>
             <input type="text" id="utrNumber" class="utr-input" placeholder="Enter 12-Digit Transaction UTR No." autocomplete="off" maxlength="12">
         </div>
     </div>
 
-    <!-- Action Trigger button -->
     <button class="confirm-btn" onclick="placeOrderFinal()">Confirm & Place Order</button>
 </div>
 
-<!-- Modal Framework Structure Overlay -->
 <div id="paymentDoneBox" class="status-popup">
     <div class="popup-inner">
         <h2>Order Request Compiled</h2>
@@ -340,32 +269,42 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-window.placeOrderFinal = async function() {
-    const utrVal = document.getElementById("utrNumber").value.trim();
-    if(utrVal === "" || utrVal.length < 12) { alert("Please input a valid 12-digit payment reference UTR number!"); return; }
+// Deep Linking Routing Intention Logic Core
+window.triggerAppPayment = function(targetKey) {
+    const amount = order.total || 0;
+    const name = encodeURIComponent("Aquilux Luxury Store");
+    
+    // Configured Mapping IDs arrays parameters
+    const ids = {
+        gpay: "yashojhaoffical1982@oksbi",
+        phonepe: "yashojha.13@ybl",
+        bhim: "9558039135@upi",
+        universal: "yashojhaoffical1982@oksbi" // Uses gpay standard VPA as universal anchor base
+    };
+    
+    const targetVpa = ids[targetKey];
+    const standardUpiUrl = `upi://pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
+    
+    // Platform scheme specific adjustments for strict redirecting rules
+    let finalIntentUrl = standardUpiUrl;
+    if(targetKey === 'gpay') {
+        finalIntentUrl = `gpay://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
+    } else if(targetKey === 'phonepe') {
+        finalIntentUrl = `phonepe://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
+    }
 
-    const orderNo = "AQ" + Date.now();
-    order.orderNumber = orderNo;
-    order.paymentStatus = "Pending Verification";
-    order.orderStatus = "Pending";
-    order.utrReference = utrVal;
-    order.createdAt = new Date().toISOString();
-    order.userId = currentUserId;
+    // Attempting live browser intent firing route execution loop
+    window.location.href = finalIntentUrl;
 
-    document.getElementById("paymentDoneBox").style.display = "flex";
-
-    try {
-        await addDoc(collection(db, "orders"), order);
-        localStorage.removeItem("aquilux_cart");
-        localStorage.removeItem("pendingOrder");
-    } catch(err) { console.error(err); }
-
-    const message = `🛍️ Aquilux Verified Order Manifest\n\nOrder Token: ${orderNo}\nCustomer Name: ${order.receiverName}\nContact Number: ${order.phone}\n\nTotal Remittance Liability: ₹${order.total}\n----------------------------------------\n💳 Payment Tracking UTR No: ${utrVal}`;
-    setTimeout(() => { window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank"); }, 1200);
-};
-
-window.closePopupAndHome = function() { window.location.href = "payment.html"; };
-renderUI();
-</script>
-</body>
-</html>
+    // Fallback security timing logic to direct store if application is uninstalled
+    setTimeout(() => {
+        if (confirm("Agar payment app direct khul nahi raha hai, kya aap ise install karne ke liye App Store par jaana chahte hain?")) {
+            const storeLinks = {
+                gpay: "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041",
+                phonepe: "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563",
+                bhim: "https://apps.apple.com/in/app/bhim-making-india-digital/id1193138243",
+                universal: "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
+            };
+            window.open(storeLinks[targetKey], "_blank");
+        }
+    }, 1500);
