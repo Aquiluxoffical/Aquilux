@@ -340,6 +340,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <p>Welcome to aquilux</p>
 </div>
 
+<!-- Sliding Interactive Account Drawer Panel Matrix -->
 <div id="accountDrawer" class="account-sidebar-panel">
    <div class="panel-header">
        <h2>My Premium Space</h2>
@@ -354,6 +355,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
+   <!-- Sub-Block A: Address Profiles (Saved & Editable Sync) -->
    <div class="account-section-block">
        <h3>Saved Shipping Matrix</h3>
        <div class="panel-address-grid">
@@ -371,11 +373,13 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
+   <!-- Sub-Block B: Absolute Live Wishlist Ledger Tracking -->
    <div class="account-section-block">
        <h3>My Wishlist Ledger</h3>
        <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
    </div>
 
+   <!-- Sub-Block C: Embedded Historical Core Tracking Timelines -->
    <div class="account-section-block">
        <h3>Real-Time Orders Trace</h3>
        <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
@@ -384,12 +388,14 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
 </div>
 
+<!-- Premium Embedded Cart Header Overlay Dropdown Panel -->
 <div id="cartDrawer" class="cart-sidebar-panel">
    <div class="panel-header">
        <h2>Shopping Bag</h2>
        <button class="close-panel-btn" onclick="toggleCartDrawer(false)">×</button>
    </div>
    
+   <!-- Embedded Scroll Engine Area for real-time item rows mapping -->
    <div class="cart-items-scroll-area" id="drawerCartContainer">
        <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
    </div>
@@ -399,6 +405,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
            <span>Total Remittance</span>
            <span>₹<span id="drawerCartTotal">0</span></span>
        </div>
+       <!-- Premium Proceed to Checkout Button -->
        <button class="payment-btn" onclick="goToGateway()">Proceed To Checkout</button>
    </div>
 </div>
@@ -417,6 +424,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  </div>
 
  <div class="header-right">
+   <!-- Cart Action Target Pointer toggles right sidebar drawer overlay -->
    <div class="cart-title" onclick="toggleCartDrawer(true)">
      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
@@ -480,6 +488,9 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude.</p><p>aquilux.support@gmail.com</p>
 </footer>
 
+<!-- ==========================================================================
+     5. Firebase System Hub Modules 
+     ========================================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -555,7 +566,6 @@ async function fetchPanelOrders(uid) {
 const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
 let products = [], currentProducts = [], qty = [];
 
-// Bug Fix: Initialization extracts direct arrays from persistent localStorage blocks
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
@@ -589,7 +599,7 @@ function setupReviewRoller() {
 async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
  setupReviewRoller(); 
- draw(); // Retain cart rows immediately on page refresh initialization
+ draw(); 
  renderWishlistPanel();
  try {
    const res = await fetch(API_URL); products = await res.json(); currentProducts = [...products];
@@ -693,7 +703,7 @@ function addToCart(i){
  
  qty[i] = 0; document.getElementById("q"+i).textContent = 0;
  draw();
- toggleCartDrawer(true); // Open Sidebar Drawer overlay natively
+ toggleCartDrawer(true); 
 }
 
 window.changeDrawerQty = function(index, change) {
@@ -726,7 +736,6 @@ function draw(){
  
  if(cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
  
- // Fixed: Always lock changes array back to persistent memory cache blocks
  localStorage.setItem("aquilux_cart", JSON.stringify(cart));
  
  document.getElementById("drawerCartContainer").innerHTML = h; 
@@ -737,8 +746,12 @@ function draw(){
  document.getElementById("cartCount").textContent = count;
 }
 
+/* FIX: Interceptor pipeline completely isolated from old missing layout attributes */
 function goToGateway(){
- if(cart.length === 0) return;
+ if(cart.length === 0) {
+     alert("Your shopping cart is empty!");
+     return;
+ }
  
  const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
  
@@ -749,14 +762,20 @@ function goToGateway(){
  }
  
  const orderData = {
-   cart: cart, total: Number(document.getElementById("drawerCartTotal").textContent),
-   receiverName: savedAddr.receiverName, phone: savedAddr.phone,
-   flat: savedAddr.flat, road: savedAddr.road,
-   landmark: savedAddr.landmark, city: savedAddr.city,
-   state: savedAddr.state, pincode: savedAddr.pincode
+   cart: cart, 
+   total: Number(document.getElementById("drawerCartTotal").textContent),
+   receiverName: savedAddr.receiverName, 
+   phone: savedAddr.phone,
+   flat: savedAddr.flat || "", 
+   road: savedAddr.road || "",
+   landmark: savedAddr.landmark || "", 
+   city: savedAddr.city || "",
+   state: savedAddr.state || "", 
+   pincode: savedAddr.pincode
  };
+ 
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
- window.location.href="payment-gateway.html";
+ window.location.href = "payment-gateway.html";
 }
 
 async function lookupPinApi(pinCode, cityField, stateField) {
