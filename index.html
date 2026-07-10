@@ -115,7 +115,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .theme-dot.olive { background: #d7d9cf; }
 .theme-dot.dark { background: #111111; }
 
-/* Interactive Profile Avatar Pointer Click Rules */
 #userBox { display: flex; align-items: center; cursor: pointer; }
 #userImg {
  border-radius: 50%;
@@ -160,7 +159,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .close-panel-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--text); opacity: 0.5; }
 .close-panel-btn:hover { opacity: 1; }
 
-/* Profile Banner */
 .profile-meta-card {
  display: flex;
  align-items: center;
@@ -175,7 +173,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .profile-meta-card h4 { font-size: 15px; font-weight: 500; }
 .profile-meta-card p { font-size: 12px; opacity: 0.6; }
 
-/* Dynamic Subsections */
 .account-section-block { margin-bottom: 25px; }
 .account-section-block h3 {
  font-family: 'Cormorant Garamond', serif;
@@ -188,7 +185,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
  letter-spacing: 0.5px;
 }
 
-/* Tab/List Row Styles */
 .panel-item-row {
  display: flex;
  align-items: center;
@@ -207,7 +203,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 }
 .panel-action-icon-btn:hover { opacity: 1; color: #ff4a4a; }
 
-/* Sidebar Editable Address Inputs Minimal */
 .panel-address-grid input {
  width: 100%; padding: 8px 10px; font-size: 12px; margin-top: 6px; background: transparent; border: 1px solid var(--line); border-radius: 4px;
 }
@@ -228,7 +223,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 }
 .google-btn img { width: 18px; height: 18px; }
 
-/* Dynamic Status Tracker Badges inside Panel */
 .mini-status-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase; display: inline-block; }
 .mini-status-badge.pending { background: rgba(255,191,0,0.1); color: #b88600; }
 .mini-status-badge.approved { background: rgba(24,183,90,0.1); color: #148f43; }
@@ -271,7 +265,6 @@ section { padding: 90px 6%; }
 .card:hover .primary-img { opacity: 0; }
 .card:hover .hover-img { opacity: 1; transform: scale(1.04); }
 
-/* Absolute Styled Heart Wishlist Icon Link Pointer */
 .wishlist-toggle-icon {
  position: absolute; top: 12px; right: 12px; z-index: 10; background: rgba(255,255,255,0.7); border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #111; transition: all 0.2s;
 }
@@ -307,8 +300,6 @@ input, textarea { width: 100%; }
 .total-box { margin: 30px 0; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
 .total-price { font-size: 26px; font-weight: 600; }
 
-.delivery-card { margin-top: 40px; padding: 30px; background: rgba(var(--text), 0.01); border: 1px solid var(--line); border-radius: 4px; }
-.delivery-card h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 20px; }
 .payment-btn { width: 100%; margin-top: 25px; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; }
 
 #menuLoader { position: fixed; inset: 0; background: var(--bg); display: none; justify-content: center; align-items: center; flex-direction: column; gap: 18px; z-index: 999999; opacity: 0; transition: .35s; }
@@ -333,6 +324,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  .hero h1 { font-size: 2.8rem; }
  .title { font-size: 2rem; }
 }
+.holo-layer { display: none !important; }
 </style>
 </head>
 <body>
@@ -342,7 +334,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <p>Welcome to aquilux</p>
 </div>
 
-<!-- Sliding Interactive Account Drawer Panel Matrix -->
 <div id="accountDrawer" class="account-sidebar-panel">
    <div class="panel-header">
        <h2>My Premium Space</h2>
@@ -357,15 +348,14 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
-   <!-- Sub-Block A: Address Profiles (Saved & Editable Sync) -->
    <div class="account-section-block">
        <h3>Saved Shipping Matrix</h3>
        <div class="panel-address-grid">
-           <input type="text" id="panel_receiverName" placeholder="Receiver Full Name" onchange="syncAddressToForm()">
-           <input type="tel" id="panel_phone" maxlength="10" placeholder="Contact Tracker No" onchange="syncAddressToForm()">
-           <input type="text" id="panel_flat" placeholder="Flat / Society Space Info" onchange="syncAddressToForm()">
-           <input type="text" id="panel_road" placeholder="Road / Sector Parameters" onchange="syncAddressToForm()">
-           <input type="text" id="panel_landmark" placeholder="Landmark Parameters (Optional)" onchange="syncAddressToForm()">
+           <input type="text" id="panel_receiverName" placeholder="Receiver Full Name">
+           <input type="tel" id="panel_phone" maxlength="10" placeholder="Contact Tracker No">
+           <input type="text" id="panel_flat" placeholder="Flat / Society Space Info">
+           <input type="text" id="panel_road" placeholder="Road / Sector Parameters">
+           <input type="text" id="panel_landmark" placeholder="Landmark Parameters (Optional)">
            <div class="row-split">
               <input type="text" id="panel_pincode" maxlength="6" placeholder="PIN Code" oninput="checkPanelPin(this)">
               <input type="text" id="panel_city" placeholder="City Engine" readonly>
@@ -375,13 +365,11 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
-   <!-- Sub-Block B: Absolute Live Wishlist Ledger Tracking -->
    <div class="account-section-block">
        <h3>My Wishlist Ledger</h3>
        <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
    </div>
 
-   <!-- Sub-Block C: Embedded Historical Core Tracking Timelines -->
    <div class="account-section-block">
        <h3>Real-Time Orders Trace</h3>
        <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
@@ -417,7 +405,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
      <span>Sign in</span>
    </button>
 
-   <!-- Tap targets profile element links to drawer directly -->
    <div id="userBox" style="display:none;" onclick="toggleAccountDrawer(true)">
        <img id="userImg" alt="Profile Root Target">
    </div>
@@ -468,29 +455,13 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
      <span class="total-label">Order Total</span><span class="total-price">₹<span id="total">0</span></span>
   </div>
 
-  <div class="delivery-card">
-    <h2>Delivery Details</h2>
-    <input type="text" id="receiverName" placeholder="Receiver Name *">
-    <input type="tel" id="phone" maxlength="10" placeholder="Contact Number *">
-    <input type="text" id="flat" placeholder="Flat / Floor / Society *">
-    <input type="text" id="road" placeholder="Road / Area *">
-    <input type="text" id="landmark" placeholder="Landmark (Optional)">
-    <input type="text" id="pincode" maxlength="6" placeholder="PIN Code *" oninput="checkPin(this)">
-    <div class="input-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-       <input type="text" id="city" placeholder="City" readonly>
-       <input type="text" id="state" placeholder="State" readonly>
-    </div>
-    <button class="payment-btn" onclick="goToGateway()">Proceed To Payment</button>
-  </div>
+  <button class="payment-btn" style="margin-top:0px;" onclick="goToGateway()">Proceed To Payment</button>
 </section>
 
 <footer>
   <p>Own. Your. Altitude.</p><p>aquilux.support@gmail.com</p>
 </footer>
 
-<!-- ==========================================================================
-     5. Firebase System Hub Modules 
-     ========================================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -525,7 +496,6 @@ onAuthStateChanged(auth, (user) => {
    document.getElementById("userBox").style.setProperty("display", "flex", "important");
    document.getElementById("userImg").src = user.photoURL;
    
-   // Map values directly to interactive user console drawer fields
    document.getElementById("drawerUserImg").src = user.photoURL;
    document.getElementById("drawerUserName").innerText = user.displayName;
    document.getElementById("drawerUserEmail").innerText = user.email;
@@ -643,7 +613,6 @@ function renderWishlistPanel() {
     });
 }
 
-// Editable Address Caching Engines Layout
 window.saveAddressToMemoryStore = function() {
     const addressBlock = {
         receiverName: document.getElementById("panel_receiverName").value,
@@ -657,7 +626,6 @@ window.saveAddressToMemoryStore = function() {
     };
     localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock));
     alert("Shipping matrix metadata safely synced!");
-    syncAddressToForm();
 }
 
 function loadSavedAddressToPanel() {
@@ -671,15 +639,6 @@ function loadSavedAddressToPanel() {
     document.getElementById("panel_pincode").value = addr.pincode || "";
     document.getElementById("panel_city").value = addr.city || "";
     document.getElementById("panel_state").value = addr.state || "";
-    syncAddressToForm();
-}
-
-function syncAddressToForm() {
-    const fields = ["receiverName", "phone", "flat", "road", "landmark", "pincode", "city", "state"];
-    fields.forEach(f => {
-        const val = document.getElementById("panel_" + f).value;
-        if(document.getElementById(f)) document.getElementById(f).value = val;
-    });
 }
 
 function filterProducts(){
@@ -715,14 +674,27 @@ function draw(){
  let count = 0; cart.forEach(x => { count += x.q; }); document.getElementById("cartCount").textContent = count;
 }
 
+// Smart Interceptor for New vs Old Customer Address Pipelines
 function goToGateway(){
- if(cart.length === 0) return; syncAddressToForm();
+ if(cart.length === 0) return;
+ 
+ // Pull saved profile drawer address logs
+ const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
+ 
+ // Condition check for New Users: If critical variables are blank
+ if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
+     alert("Please add and save your delivery address in your profile space first! (Opening Profile Menu)");
+     toggleAccountDrawer(true); // Auto fluid launch drawer for instant address inputs
+     return;
+ }
+ 
+ // Condition check for Old Users: Auto-fetching everything smoothly from cache
  const orderData = {
    cart: cart, total: Number(document.getElementById("total").textContent),
-   receiverName: document.getElementById("receiverName").value, phone: document.getElementById("phone").value,
-   flat: document.getElementById("flat").value, road: document.getElementById("road").value,
-   landmark: document.getElementById("landmark").value, city: document.getElementById("city").value,
-   state: document.getElementById("state").value, pincode: document.getElementById("pincode").value
+   receiverName: savedAddr.receiverName, phone: savedAddr.phone,
+   flat: savedAddr.flat, road: savedAddr.road,
+   landmark: savedAddr.landmark, city: savedAddr.city,
+   state: savedAddr.state, pincode: savedAddr.pincode
  };
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
  window.location.href="payment-gateway.html";
@@ -734,11 +706,9 @@ async function lookupPinApi(pinCode, cityField, stateField) {
      if(d[0].Status === "Success"){
        document.getElementById(cityField).value = d[0].PostOffice[0].District;
        document.getElementById(stateField).value = d[0].PostOffice[0].State;
-       syncAddressToForm();
      }
    } catch(e) {}
 }
-function checkPin(inp){ inp.value = inp.value.replace(/\D/g,''); if(inp.value.length === 6){ lookupPinApi(inp.value, "city", "state"); } }
 function checkPanelPin(inp){ inp.value = inp.value.replace(/\D/g,''); if(inp.value.length === 6){ lookupPinApi(inp.value, "panel_city", "panel_state"); } }
 </script>
 </body>
