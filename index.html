@@ -47,11 +47,10 @@ header {
  z-index: 100;
 }
 
-/* Premium Branding Group Layout Fixes */
 .logo-box { 
  display: flex; 
  align-items: center; 
- gap: 14px; 
+ gap: 16px; 
  cursor: pointer;
  text-decoration: none;
  color: inherit;
@@ -59,13 +58,13 @@ header {
 }
 
 .logo-box img { 
- height: 38px; /* Increased size for prominent premium visibility */
+ height: 48px; 
  width: auto;
  object-fit: contain;
  transition: filter 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
 }
 .logo-box:hover img {
- transform: scale(1.05);
+ transform: scale(1.04);
 }
 
 html[data-theme="dark"] header img { filter: invert(0); }
@@ -74,9 +73,9 @@ html[data-theme="olive"] header img { filter: invert(1); }
 
 .logo-text strong { 
  font-family: 'Cormorant Garamond', serif; 
- font-size: 26px; /* Enhanced luxury typography balance */
+ font-size: 30px; 
  font-weight: 600; 
- letter-spacing: 1px; 
+ letter-spacing: 1.5px; 
  line-height: 1;
 }
 
@@ -104,6 +103,22 @@ html[data-theme="olive"] header img { filter: invert(1); }
 #userBox { display: flex; align-items: center; cursor: pointer; }
 #userImg { border-radius: 50%; border: 2px solid var(--text); object-fit: cover; width: 34px; height: 34px; transition: transform 0.3s ease; }
 #userImg:hover { transform: scale(1.05); }
+
+.google-btn {
+ display: inline-flex;
+ align-items: center;
+ gap: 8px;
+ padding: 8px 16px;
+ background: var(--glass-bg);
+ border: 1px solid var(--line);
+ border-radius: 4px;
+ cursor: pointer;
+ transition: background 0.2s;
+ margin-top: 0 !important;
+}
+.google-btn:hover { background: rgba(17, 17, 17, 0.05); }
+.google-btn img { height: 18px !important; width: 18px !important; object-fit: contain !important; filter: none !important; }
+.google-btn span { font-size: 13px; font-weight: 500; color: var(--text); }
 
 /* ==========================================================================
    3. Premium Sliding Drawers (Fixed Pure Solid Non-Transparent Background)
@@ -221,6 +236,47 @@ section { padding: 90px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; color: var(--text); margin-bottom: 30px; letter-spacing: 0.5px; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px 20px; }
 
+/* AI Product Search & Predictive Suggestions Interface */
+.search-ai-dock {
+    position: relative;
+    width: 280px;
+}
+.search-ai-input {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 13px;
+    background: var(--glass-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--text);
+    outline: none;
+    margin-top: 0 !important;
+}
+.search-ai-suggestions {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    z-index: 50;
+    max-height: 220px;
+    overflow-y: auto;
+    display: none;
+}
+.suggestion-node {
+    padding: 10px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text);
+    transition: background 0.2s;
+}
+.suggestion-node:hover {
+    background: rgba(17,17,17,0.04);
+}
+
 /* Product Cards UI */
 .card { border: none !important; overflow: hidden; background: transparent; position: relative; }
 .card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 16px; background: rgba(0,0,0,0.02); }
@@ -254,8 +310,9 @@ input, textarea { width: 100%; }
 .marquee-track span { white-space: nowrap; padding: 12px 40px; font-size: 12px; letter-spacing: 2px; color: var(--text); opacity: 0.7; text-transform: uppercase; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; gap: 15px; }
-#priceFilter { width: 180px; }
+.collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; gap: 20px; flex-wrap: wrap; }
+.controls-right-dock { display: flex; align-items: center; gap: 15px; }
+#priceFilter, #collectionFilter { width: 180px; }
 
 .payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
 
@@ -270,18 +327,18 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    5. Tablet and iPad Specific Layout Core Framework Patch
    ========================================================================== */
 @media(max-width: 1024px) {
- header { padding: 16px 4% !important; height: 75px; }
- .logo-box img { height: 44px !important; } /* Upgraded and bold viewport layout size for iPads */
- .logo-text strong { font-size: 28px !important; }
+ header { padding: 16px 4% !important; height: 90px; }
+ .logo-box img { height: 58px !important; } 
+ .logo-text strong { font-size: 34px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
  .grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* Compact Mobile Devices Specific Layout Patch */
 @media(max-width: 768px) {
- header { padding: 12px 16px !important; height: 68px; }
- .logo-box img { height: 35px !important; } /* Balanced clean prominent size for small phone structures */
- .logo-text strong { font-size: 23px !important; }
+ header { padding: 12px 16px !important; height: 75px; }
+ .logo-box img { height: 44px !important; } 
+ .logo-text strong { font-size: 26px !important; }
  .theme-switcher { margin-top: 2px !important; gap: 5px !important; }
  .theme-dot { width: 12px !important; height: 12px !important; }
  .header-right { gap: 14px !important; }
@@ -291,6 +348,10 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 25px 12px !important; }
  .hero h1 { font-size: 2.8rem; }
  .title { font-size: 2rem; }
+ .search-ai-dock { width: 100%; }
+ .collection-header { flex-direction: column; align-items: flex-start; }
+ .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 10px; }
+ #priceFilter, #collectionFilter { width: 100%; }
 }
 </style>
 </head>
@@ -370,7 +431,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 </div>
 
 <header>
- <!-- Dynamic Touch-Interceptor anchor brand area added below -->
  <div class="logo-box" onclick="handleSmoothScrollToTop(event)">
    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
    <div class="logo-text">
@@ -421,14 +481,32 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
      <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
    </div>
  </div>
+ 
  <div class="collection-header">
    <div class="title">Collection</div>
-   <select id="priceFilter" onchange="filterProducts()">
-     <option value="all">All Prices</option>
-     <option value="0-499">₹0 - ₹499</option>
-     <option value="500-999">₹500 - ₹999</option>
-     <option value="1500">₹1500+</option>
-   </select>
+   
+   <div class="controls-right-dock">
+       <div class="search-ai-dock">
+           <input type="text" id="productSearchInput" class="search-ai-input" placeholder="Search parameters via AI..." oninput="handleAiSearchInput(this.value)">
+           <div id="searchSuggestionsTray" class="search-ai-suggestions"></div>
+       </div>
+
+       <select id="collectionFilter" onchange="filterProducts()">
+         <option value="all">All Collections</option>
+         <option value="T-shirt">T-shirts</option>
+         <option value="Hoodies">Hoodies</option>
+         <option value="Oversize T-shirt">Oversize T-shirts</option>
+         <option value="Shorts">Shorts</option>
+         <option value="Sweatpants">Sweatpants</option>
+       </select>
+       
+       <select id="priceFilter" onchange="filterProducts()">
+         <option value="all">All Prices</option>
+         <option value="0-499">₹0 - ₹499</option>
+         <option value="500-999">₹500 - ₹999</option>
+         <option value="1500">₹1500+</option>
+       </select>
+   </div>
  </div>
  <div class="grid" id="grid"></div>
 </section>
@@ -436,7 +514,20 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 <section id="reviews-section" style="padding-top:20px;">
   <div class="review-roller-container">
      <div class="review-roller-title">Customer Remarks</div>
-     <div class="review-roller" id="reviewsRollerDisplay"></div>
+     <div class="review-roller" id="reviewsRollerDisplay">
+         <div class="roller-card">
+             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"The absolute pinnacle of minimalism. The quality matches top tier craftsmanship tiers cleanly."</p>
+             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Raghav M.</h5>
+         </div>
+         <div class="roller-card">
+             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"Stunning aesthetics. Delivery coordinates locked accurately, product texture feels elite."</p>
+             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Ishaan K.</h5>
+         </div>
+         <div class="roller-card">
+             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"Pure old money luxury vibe. Exceeded my high product cinematography standard expectations."</p>
+             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Aarav S.</h5>
+         </div>
+     </div>
   </div>
 </section>
 
@@ -546,7 +637,6 @@ let products = [], currentProducts = [], qty = [];
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
-// Smooth scroll-to-top handler system integration
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
     window.scrollTo({
@@ -554,6 +644,45 @@ window.handleSmoothScrollToTop = function(event) {
         behavior: 'smooth'
     });
 };
+
+window.handleAiSearchInput = function(queryStr) {
+    const tray = document.getElementById("searchSuggestionsTray");
+    const cleanQuery = queryStr.trim().toLowerCase();
+    
+    if(!cleanQuery) {
+        tray.style.display = "none";
+        // Reset collection layout to respect current active selector blocks
+        executeUnifiedFiltering();
+        return;
+    }
+    
+    const filteredSuggestions = products.filter(p => p.product.toLowerCase().includes(cleanQuery));
+    
+    if(filteredSuggestions.length === 0) {
+        tray.innerHTML = `<div class="suggestion-node" style="opacity:0.5; cursor:default;">No matches synced.</div>`;
+    } else {
+        tray.innerHTML = "";
+        filteredSuggestions.slice(0, 5).forEach(p => {
+            const node = document.createElement("div");
+            node.className = "suggestion-node";
+            node.innerText = p.product;
+            node.onclick = () => {
+                document.getElementById("productSearchInput").value = p.product;
+                tray.style.display = "none";
+                displayProducts([p]);
+            };
+            tray.appendChild(node);
+        });
+    }
+    tray.style.display = "block";
+    displayProducts(filteredSuggestions);
+};
+
+document.addEventListener("click", (e) => {
+    if(!e.target.closest(".search-ai-dock")) {
+        document.getElementById("searchSuggestionsTray").style.display = "none";
+    }
+});
 
 function toggleAccountDrawer(openState) {
     if(openState) toggleCartDrawer(false); 
@@ -698,14 +827,38 @@ function loadSavedAddressToPanel() {
     document.getElementById("panel_state").value = addr.state || "";
 }
 
-function filterProducts(){
- const val = document.getElementById("priceFilter").value;
- let f = [...products];
- if(val !== "all"){
-   if(val === "1500") f = products.filter(p => Number(p.price) >= 1500);
-   else { const [min,max] = val.split("-"); f = products.filter(p => Number(p.price) >= Number(min) && Number(p.price) <= Number(max)); }
- }
- displayProducts(f);
+// INTEGRATED UNIFIED FILTER ENGINE (Combines Price & Category Criteria Safely)
+function filterProducts() {
+    document.getElementById("productSearchInput").value = ""; 
+    executeUnifiedFiltering();
+}
+
+function executeUnifiedFiltering() {
+    const priceVal = document.getElementById("priceFilter").value;
+    const collectionVal = document.getElementById("collectionFilter").value;
+    
+    let compiledList = [...products];
+
+    // 1. Process Structural Collection Filter Subsets
+    if (collectionVal !== "all") {
+        compiledList = compiledList.filter(p => {
+            // Evaluates text configurations safely (matches category parameters tags seamlessly)
+            const productType = p.category || p.type || "";
+            return productType.toLowerCase() === collectionVal.toLowerCase();
+        });
+    }
+
+    // 2. Process Remittance Price Range Subsets
+    if (priceVal !== "all") {
+        if (priceVal === "1500") {
+            compiledList = compiledList.filter(p => Number(p.price) >= 1500);
+        } else {
+            const [rangeMin, rangeMax] = priceVal.split("-");
+            compiledList = compiledList.filter(p => Number(p.price) >= Number(rangeMin) && Number(p.price) <= Number(rangeMax));
+        }
+    }
+
+    displayProducts(compiledList);
 }
 
 window.addEventListener("DOMContentLoaded", loadProducts);
