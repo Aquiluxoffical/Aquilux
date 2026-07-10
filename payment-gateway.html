@@ -49,6 +49,7 @@ body {
     font-size: 32px;
     font-weight: 400;
     letter-spacing: 2px;
+    text-transform: capitalize;
     color: #f5f5f5;
 }
 
@@ -85,7 +86,7 @@ body {
 .total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
 
 /* ==========================================================================
-   4. Active Deep Linking Apps Router Grids
+   4. Active Deep Linking Apps Router Grids (With Custom SVGs)
    ========================================================================== */
 .apps-routing-grid {
     display: flex;
@@ -111,8 +112,10 @@ body {
     border-color: rgba(255, 255, 255, 0.15);
 }
 .app-info-side { display: flex; align-items: center; gap: 12px; }
-.app-icon { height: 20px; width: 20px; object-fit: contain; filter: grayscale(0.2); }
-.app-name { font-size: 13px; font-weight: 500; letter-spacing: 0.3px; }
+.app-icon { height: 20px; width: auto; max-width: 40px; object-fit: contain; }
+
+/* Subtle Old Money text adjustment */
+.app-name { font-size: 13px; font-weight: 400; letter-spacing: 0.3px; color: #e5e5e5; }
 .pay-action-arrow { font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 1px; }
 
 .universal-intent-btn {
@@ -177,33 +180,38 @@ body {
         <h3>Select Premium Payment Mode</h3>
         
         <div class="apps-routing-grid">
+            <!-- 1. Google Pay App Link Redirector Router (Custom SVG) -->
             <button class="app-pay-btn" onclick="triggerAppPayment('gpay')">
                 <div class="app-info-side">
-                    <img class="app-icon" src="https://images.squarespace-cdn.com/content/v1/5be0dbf6365f02bc1fef1316/1583234907921-AF77A0F1WURW0Q1X3Y4G/GPay+Logo.png">
-                     <span class="app-name">Google Pay</span>
+                    <img class="app-icon" src="images/gpay.svg" alt="Google Pay">
+                    <span class="app-name">Google Pay</span>
                 </div>
                 <span class="pay-action-arrow">Pay Via →</span>
             </button>
 
+            <!-- 2. PhonePe App Link Redirector Router (Custom SVG) -->
             <button class="app-pay-btn" onclick="triggerAppPayment('phonepe')">
                 <div class="app-info-side">
-                    <img class="app-icon" src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/phonepe-logo-icon.png">
-                     <span class="app-name">PhonePe</span>
+                    <img class="app-icon" src="images/PhonePe_Logo.svg" alt="PhonePe">
+                    <span class="app-name">PhonePe</span>
                 </div>
                 <span class="pay-action-arrow">Pay Via →</span>
             </button>
 
+            <!-- 3. BHIM UPI App Link Redirector Router (Custom SVG) -->
             <button class="app-pay-btn" onclick="triggerAppPayment('bhim')">
                 <div class="app-info-side">
-                    <img class="app-icon" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/BHIM_logo.svg/1200px-BHIM_logo.svg.png">
-                     <span class="app-name">BHIM UPI</span>
+                    <img class="app-icon" src="images/Bhim.svg" alt="BHIM UPI">
+                    <span class="app-name">BHIM UPI</span>
                 </div>
                 <span class="pay-action-arrow">Pay Via →</span>
             </button>
         </div>
 
+        <!-- Universal Open All Intent Option Trigger -->
         <button class="universal-intent-btn" onclick="triggerAppPayment('universal')">✨ Auto-Open Any UPI App</button>
 
+        <!-- UTR Entry Code Block Elements Box -->
         <div class="utr-wrapper">
             <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; text-align:center; line-height:1.4;">Payment done hone ke baad bank statement ya app se 12-digit UTR No. yahan enter karein:</p>
             <input type="text" id="utrNumber" class="utr-input" placeholder="Enter 12-Digit Transaction UTR No." autocomplete="off" maxlength="12">
@@ -269,23 +277,21 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// Deep Linking Routing Intention Logic Core
+// Deep Linking Routing Intention Logic Core with Verified Merchant IDs
 window.triggerAppPayment = function(targetKey) {
     const amount = order.total || 0;
     const name = encodeURIComponent("Aquilux Luxury Store");
     
-    // Configured Mapping IDs arrays parameters
     const ids = {
         gpay: "yashojhaoffical1982@oksbi",
         phonepe: "yashojha.13@ybl",
         bhim: "9558039135@upi",
-        universal: "yashojhaoffical1982@oksbi" // Uses gpay standard VPA as universal anchor base
+        universal: "yashojhaoffical1982@oksbi"
     };
     
     const targetVpa = ids[targetKey];
     const standardUpiUrl = `upi://pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
     
-    // Platform scheme specific adjustments for strict redirecting rules
     let finalIntentUrl = standardUpiUrl;
     if(targetKey === 'gpay') {
         finalIntentUrl = `gpay://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
@@ -293,10 +299,8 @@ window.triggerAppPayment = function(targetKey) {
         finalIntentUrl = `phonepe://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
     }
 
-    // Attempting live browser intent firing route execution loop
     window.location.href = finalIntentUrl;
 
-    // Fallback security timing logic to direct store if application is uninstalled
     setTimeout(() => {
         if (confirm("Agar payment app direct khul nahi raha hai, kya aap ise install karne ke liye App Store par jaana chahte hain?")) {
             const storeLinks = {
@@ -308,3 +312,34 @@ window.triggerAppPayment = function(targetKey) {
             window.open(storeLinks[targetKey], "_blank");
         }
     }, 1500);
+};
+
+window.placeOrderFinal = async function() {
+    const utrVal = document.getElementById("utrNumber").value.trim();
+    if(utrVal === "" || utrVal.length < 12) { alert("Please input a valid 12-digit payment reference UTR number!"); return; }
+
+    const orderNo = "AQ" + Date.now();
+    order.orderNumber = orderNo;
+    order.paymentStatus = "Pending Verification";
+    order.orderStatus = "Pending";
+    order.utrReference = utrVal;
+    order.createdAt = new Date().toISOString();
+    order.userId = currentUserId;
+
+    document.getElementById("paymentDoneBox").style.display = "flex";
+
+    try {
+        await addDoc(collection(db, "orders"), order);
+        localStorage.removeItem("aquilux_cart");
+        localStorage.removeItem("pendingOrder");
+    } catch(err) { console.error(err); }
+
+    const message = `🛍️ Aquilux Verified Order Manifest\n\nOrder Token: ${orderNo}\nCustomer Name: ${order.receiverName}\nContact Number: ${order.phone}\n\nTotal Remittance Liability: ₹${order.total}\n----------------------------------------\n💳 Payment Tracking UTR No: ${utrVal}`;
+    setTimeout(() => { window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank"); }, 1200);
+};
+
+window.closePopupAndHome = function() { window.location.href = "payment.html"; };
+renderUI();
+</script>
+</body>
+</html>
