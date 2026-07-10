@@ -30,7 +30,7 @@ body {
 }
 
 /* ==========================================================================
-   2. Header & Navigation (Minimal Fixed Bar)
+   2. Header & Navigation (Optimized Responsive Layout Framework)
    ========================================================================== */
 header {
  position: fixed;
@@ -46,13 +46,40 @@ header {
  border-bottom: 1px solid var(--line);
  z-index: 100;
 }
-header img { height: 34px; transition: filter 0.3s; }
+
+/* Premium Branding Group Layout Fixes */
+.logo-box { 
+ display: flex; 
+ align-items: center; 
+ gap: 14px; 
+ cursor: pointer;
+ text-decoration: none;
+ color: inherit;
+ user-select: none;
+}
+
+.logo-box img { 
+ height: 38px; /* Increased size for prominent premium visibility */
+ width: auto;
+ object-fit: contain;
+ transition: filter 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.logo-box:hover img {
+ transform: scale(1.05);
+}
+
 html[data-theme="dark"] header img { filter: invert(0); }
 html[data-theme="light"] header img { filter: invert(1); }
 html[data-theme="olive"] header img { filter: invert(1); }
 
-.logo-box { display: flex; align-items: center; gap: 12px; }
-.logo-text strong { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; letter-spacing: 0.5px; }
+.logo-text strong { 
+ font-family: 'Cormorant Garamond', serif; 
+ font-size: 26px; /* Enhanced luxury typography balance */
+ font-weight: 600; 
+ letter-spacing: 1px; 
+ line-height: 1;
+}
+
 .header-right { display: flex; align-items: center; gap: 24px; flex-wrap: nowrap; }
 
 .cart-title {
@@ -79,7 +106,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 #userImg:hover { transform: scale(1.05); }
 
 /* ==========================================================================
-   3. Premium Sliding Drawers (FIXED Pure Solid Non-Transparent Background)
+   3. Premium Sliding Drawers (Fixed Pure Solid Non-Transparent Background)
    ========================================================================== */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
@@ -87,12 +114,9 @@ html[data-theme="olive"] header img { filter: invert(1); }
  width: 450px;
  height: 100vh;
  height: 100dvh;
- 
- /* Fixed invalid background layout glitch to absolute solid view rules */
  background: var(--bg) !important; 
  backdrop-filter: none !important;
  -webkit-backdrop-filter: none !important;
-
  border-left: 1px solid var(--line);
  z-index: 200005;
  padding: 30px 24px;
@@ -139,17 +163,8 @@ html[data-theme="olive"] header img { filter: invert(1); }
  outline: none;
  transition: border-color 0.2s ease, background 0.2s ease;
 }
-
-.panel-address-grid input:focus {
- background: rgba(var(--text), 0.02); 
- border-color: var(--text);
-}
-
-.panel-address-grid .row-split { 
- display: grid; 
- grid-template-columns: 1fr 1fr; 
- gap: 8px; 
-}
+.panel-address-grid input:focus { background: rgba(var(--text), 0.02); border-color: var(--text); }
+.panel-address-grid .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 .save-address-btn-style { width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
 .logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
@@ -199,7 +214,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 
 .review-roller-container { margin-bottom: 40px; width: 100%; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
 .review-roller-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: var(--text); margin-bottom: 15px; }
-.review-roller; { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
+.review-roller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
 .roller-card { flex: 0 0 280px; scroll-snap-align: start; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 
 section { padding: 90px 6%; }
@@ -251,15 +266,22 @@ input, textarea { width: 100%; }
 
 footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
 
-/* Mobile & Tablet Optimization Framework Patch */
+/* ==========================================================================
+   5. Tablet and iPad Specific Layout Core Framework Patch
+   ========================================================================== */
 @media(max-width: 1024px) {
+ header { padding: 16px 4% !important; height: 75px; }
+ .logo-box img { height: 44px !important; } /* Upgraded and bold viewport layout size for iPads */
+ .logo-text strong { font-size: 28px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
  .grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* Compact Mobile Devices Specific Layout Patch */
 @media(max-width: 768px) {
- header { padding: 12px 16px !important; height: 64px; }
- .logo-box img { height: 26px !important; }
- .logo-text strong { font-size: 17px !important; }
+ header { padding: 12px 16px !important; height: 68px; }
+ .logo-box img { height: 35px !important; } /* Balanced clean prominent size for small phone structures */
+ .logo-text strong { font-size: 23px !important; }
  .theme-switcher { margin-top: 2px !important; gap: 5px !important; }
  .theme-dot { width: 12px !important; height: 12px !important; }
  .header-right { gap: 14px !important; }
@@ -348,14 +370,15 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 </div>
 
 <header>
- <div class="logo-box">
+ <!-- Dynamic Touch-Interceptor anchor brand area added below -->
+ <div class="logo-box" onclick="handleSmoothScrollToTop(event)">
    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
    <div class="logo-text">
      <strong>Aquilux</strong>
      <div class="theme-switcher">
-        <button onclick="setTheme('light')" class="theme-dot light"></button>
-        <button onclick="setTheme('olive')" class="theme-dot olive"></button>
-        <button onclick="setTheme('dark')" class="theme-dot dark"></button>
+        <button onclick="event.stopPropagation(); setTheme('light')" class="theme-dot light"></button>
+        <button onclick="event.stopPropagation(); setTheme('olive')" class="theme-dot olive"></button>
+        <button onclick="event.stopPropagation(); setTheme('dark')" class="theme-dot dark"></button>
      </div>
    </div>
  </div>
@@ -483,7 +506,6 @@ window.fetchPanelOrders = async function(uid) {
                 badgeStyle = "cancelled"; displayStatusText = "Your Order is Cancelled";
             }
 
-            // Products list dynamic mapping mapping loops logic
             let productsHtml = "";
             const targetCart = ord.cart || ord.items || [];
             targetCart.forEach(item => {
@@ -513,7 +535,7 @@ window.fetchPanelOrders = async function(uid) {
                </div>
             </div>`;
         });
-    } catch(e) { pContainer.innerHTML = "<small style='color:red;'>Failed to pool logs</small>"; }
+    } catch(e) { pContainer.innerHTML = "<p style='color:red;'>Failed to pool logs</p>"; }
 }
 </script>
 
@@ -523,6 +545,15 @@ let products = [], currentProducts = [], qty = [];
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
+
+// Smooth scroll-to-top handler system integration
+window.handleSmoothScrollToTop = function(event) {
+    if(event) event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+};
 
 function toggleAccountDrawer(openState) {
     if(openState) toggleCartDrawer(false); 
