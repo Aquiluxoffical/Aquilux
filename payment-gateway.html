@@ -525,10 +525,29 @@ function updateTotal(){
    localStorage.setItem("pendingOrder", JSON.stringify(order));
 }
 
+// Highly Optimized Single Action Combination Hook (Database Push + Combined WhatsApp Redirect)
 window.paymentDone = async function(){
   const orderNo = "AQ" + Date.now();
-  const message = `🛍️ Aquilux Order\n\nOrder No: ${orderNo}\n\nCustomer: ${order.receiverName}\n\nPhone: ${order.phone}\n\nAddress:\n${order.flat}\n${order.road}\n${order.landmark || ""}\n${order.city}, ${order.state} - ${order.pincode}\n\nTotal: ₹${order.total}`;
+  
+  // Single comprehensive summary statement mapped to WhatsApp parameters
+  const message = `🛍️ Aquilux Order
 
+Order No: ${orderNo}
+Customer: ${order.receiverName}
+Phone: ${order.phone}
+
+Address:
+${order.flat}
+${order.road}
+${order.landmark || ""}
+${order.city}, ${order.state} - ${order.pincode}
+
+Total Amount: ₹${order.total}
+
+----------------------------------------
+📸 Please attach your Payment Screenshot below this message for quick verification!`;
+
+  // Fires open context to WhatsApp app instantly
   window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank");
  
   order.orderNumber = orderNo;
