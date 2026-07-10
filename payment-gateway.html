@@ -182,15 +182,15 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// 2-IN-1 TRANSACTION METHOD (Fires Apps Selector Sheet + Saves Order Info + Redirects instantly)
-window.triggerAppPaymentAndRedirect = async function() {
+// 100% FIX: Instant App Drawer Trigger + Background Sync + Success Redirect
+window.triggerAppPaymentAndRedirect = function() {
     const amount = order.total || 0;
     const name = encodeURIComponent("Aquilux Luxury Store");
     
     const targetVpa = "yashojhaoffical1982@oksbi";
     const standardUpiUrl = `upi://pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
 
-    // 1. Generate Order Tracking Number & Save Configurations
+    // 1. Instantly generate parameters state logs for payment.html to read reference
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -198,26 +198,25 @@ window.triggerAppPaymentAndRedirect = async function() {
     order.createdAt = new Date().toISOString();
     order.userId = currentUserId;
 
-    // payment.html ko read reference dene ke liye details memory state me map kijiye
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // 2. Push Database Telemetry Logs directly to Firebase
-    try {
-        await addDoc(collection(db, "orders"), order);
-        localStorage.removeItem("aquilux_cart"); // Primary cart clear kijiye order lock hone par
-    } catch(err) { 
-        console.error("Database log sync failed:", err); 
-    }
-
-    // 3. Fire Native Mobile UPI Apps App-Selector Intent Channel
+    // 2. CRITICAL UI ACCURACY: Fire standard device app handshake link first before any async block delay
     window.location.href = standardUpiUrl;
 
-    // 4. Smooth Context Redirect Loop to Success Screen (payment.html)
-    // 800ms ka buffer delay lagaya hai taaki device application prioritize selection sequence break na ho
+    // 3. Parallel Async Background Pipeline: Sync data tokens directly to Firestore cloud database
+    addDoc(collection(db, "orders"), order)
+        .then(() => {
+            localStorage.removeItem("aquilux_cart"); // Lock primary cart data store
+        })
+        .catch((err) => {
+            console.error("Database cloud compilation trace error:", err);
+        });
+
+    // 4. Smooth context routing to payment.html success template page dashboard
     setTimeout(() => {
         window.location.href = "payment.html";
-    }, 800);
+    }, 1200);
 };
 
 renderUI();
