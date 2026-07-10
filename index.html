@@ -198,7 +198,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
  border-bottom: 1px solid rgba(17,17,17,0.05);
  font-size: 13px;
 }
-.panel-item-row img { width: 40px; aspect-ratio: 3/4; object-fit: cover; border-radius: 2px; }
+.panel-item-row img { width: 45px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
 .panel-item-row-info { flex: 1; }
 .panel-item-row-info h5 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
 .panel-item-row-info p { font-size: 11px; opacity: 0.6; }
@@ -236,6 +236,12 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .cart-items-scroll-area { flex: 1; overflow-y: auto; margin-bottom: 15px; }
 .cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 15px; }
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
+
+/* Mini Qty Counter inside Sidebar Drawer */
+.mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; background: rgba(17,17,17,0.02); }
+.mini-qty-box button { padding: 2px 10px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; font-weight: 600; }
+.mini-qty-box button:hover { background: rgba(17,17,17,0.05); }
+.mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
 
 /* ==========================================================================
    4. Hero, Product Cards, and Layout Frameworks
@@ -289,11 +295,6 @@ section { padding: 90px 6%; }
 .qty { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 12px 0; }
 .qty button { width: 30px; height: 30px; background: var(--glass-bg); border: 1px solid var(--line); color: var(--text); border-radius: 4px !important; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .qty span { min-width: 15px; text-align: center; font-size: 13px; font-weight: 500; }
-
-/* Mini Qty Counter inside Sidebar Drawer */
-.mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; }
-.mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; }
-.mini-qty-box span { padding: 0 6px; font-size: 11px; font-weight: 600; }
 
 button, input, textarea { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
 input, textarea { width: 100%; }
@@ -396,9 +397,9 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    <div class="cart-footer-calculation-dock">
        <div class="cart-panel-total-row">
            <span>Total Remittance</span>
-           <span>An ₹<span id="drawerCartTotal">0</span></span>
+           <span>₹<span id="drawerCartTotal">0</span></span>
        </div>
-       <button class="payment-btn" onclick="goToGateway()">Proceed To Payment</button>
+       <button class="payment-btn" onclick="goToGateway()">Proceed To Checkout</button>
    </div>
 </div>
 
@@ -552,10 +553,14 @@ async function fetchPanelOrders(uid) {
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
-let products = [], currentProducts = [], qty = [], cart = [], wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
+let products = [], currentProducts = [], qty = [];
+
+// Bug Fix: Initialization extracts direct arrays from persistent localStorage blocks
+let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
+let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 function toggleAccountDrawer(openState) {
-    if(openState) toggleCartDrawer(false); // Closes counter overlays if any active
+    if(openState) toggleCartDrawer(false); 
     document.getElementById("accountDrawer").classList.toggle("active", openState);
 }
 
@@ -583,7 +588,9 @@ function setupReviewRoller() {
 
 async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
- setupReviewRoller(); renderWishlistPanel();
+ setupReviewRoller(); 
+ draw(); // Retain cart rows immediately on page refresh initialization
+ renderWishlistPanel();
  try {
    const res = await fetch(API_URL); products = await res.json(); currentProducts = [...products];
    qty = Array(products.length).fill(0); displayProducts(currentProducts);
@@ -683,13 +690,12 @@ function addToCart(i){
  let item = cart.find(x => x.n == product.product && x.s == size);
  if(item) { item.q += quantity; } 
  else { cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
- draw(); qty[i] = 0; document.getElementById("q"+i).textContent = 0;
  
- // Opens cart automatically inside header when item is added
- toggleCartDrawer(true);
+ qty[i] = 0; document.getElementById("q"+i).textContent = 0;
+ draw();
+ toggleCartDrawer(true); // Open Sidebar Drawer overlay natively
 }
 
-// Fixed mini cart increment/decrement triggers inside Sidebar Drawer view container
 window.changeDrawerQty = function(index, change) {
     if(cart[index].q + change < 1) return;
     cart[index].q += change;
@@ -719,6 +725,9 @@ function draw(){
  });
  
  if(cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
+ 
+ // Fixed: Always lock changes array back to persistent memory cache blocks
+ localStorage.setItem("aquilux_cart", JSON.stringify(cart));
  
  document.getElementById("drawerCartContainer").innerHTML = h; 
  document.getElementById("drawerCartTotal").textContent = t;
