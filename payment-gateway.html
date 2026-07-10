@@ -5,581 +5,379 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aquilux Payment Gateway</title>
 <style>
-/* ==========================================================================
-   1. Design Archetype & Typography Reset (Matches Timeluxe Aesthetics)
-   ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
-
-* {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
- font-family: 'Inter', Arial, sans-serif;
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+body{background:#0a0a0a;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+.card{
+max-width:720px;
+width:100%;
+background:#111;
+border:1px solid #2b2b2b;
+border-radius:24px;
+padding:30px;
+box-shadow:0 30px 80px rgba(0,0,0,.45);
 }
 
-body {
- background: #ffffff; /* Premium minimal editorial white background */
- color: #111111;
- display: flex;
- justify-content: center;
- align-items: center;
- min-height: 100vh;
- padding: 40px 20px;
- -webkit-font-smoothing: antialiased;
- transition: background 0.4s ease, color 0.4s ease;
+.pay{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
 }
 
-/* Base Theme Color Adaptations mapped to data attributes */
-html[data-theme="dark"] body { background: #111111; color: #ffffff; }
-html[data-theme="olive"] body { background: #d7d9cf; color: #2c3525; }
+.pay-logo{\n    width:28px;\n    height:28px;\n    object-fit:contain;\n}
 
-/* Wrapper Form Shell */
-.card {
- max-width: 680px;
- width: 100%;
- background: transparent;
- border: none;
- padding: 0;
+.summary{
+margin:25px 0;
+padding:22px;
+background:#181818;
+border:1px solid #2a2a2a;
+border-radius:18px;
 }
 
-.logo {
- width: 75px;
- display: block;
- margin: 0 auto 20px;
- transition: filter 0.3s;
-}
-html[data-theme="light"] .logo, html[data-theme="olive"] .logo { filter: invert(1); }
-html[data-theme="dark"] .logo { filter: invert(0); }
-
-h1 {
- font-family: 'Cormorant Garamond', serif;
- font-size: 2.5rem;
- font-weight: 400;
- text-align: center;
- margin-bottom: 6px;
- letter-spacing: 0.5px;
+.summary h3{
+margin-bottom:18px;
+font-size:16px;
+letter-spacing:0.5px;
+text-transform:uppercase;
+opacity:0.8;
 }
 
-.subtitle {
- text-align: center;
- color: inherit;
- opacity: 0.6;
- font-size: 14px;
- margin-bottom: 40px;
- letter-spacing: 0.5px;
+.summary strong{
+font-size:15px;
 }
 
-/* Sleek Frosted Glass Component Blocks */
-.box {
- background: rgba(255, 255, 255, 0.45);
- backdrop-filter: blur(12px);
- -webkit-backdrop-filter: blur(12px);
- border: 1px solid rgba(17, 17, 17, 0.08);
- padding: 25px;
- border-radius: 8px;
- margin-bottom: 25px;
- box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+/* Items Row Styling */
+.item-row {
+display: flex;
+align-items: center;
+gap: 15px;
+padding: 12px 0;
+border-bottom: 1px solid #2a2a2a;
 }
-html[data-theme="dark"] .box {
- background: rgba(255, 255, 255, 0.04);
- border-color: rgba(255, 255, 255, 0.08);
+.item-row:last-child {
+border-bottom: none;
 }
-html[data-theme="olive"] .box {
- background: rgba(255, 255, 255, 0.35);
- border-color: rgba(44, 53, 37, 0.1);
+.item-row img {
+width: 50px;
+aspect-ratio: 3/4;
+object-fit: cover;
+border-radius: 6px;
+background: #222;
 }
-
-.box h2 {
- font-family: 'Cormorant Garamond', serif;
- font-size: 1.6rem;
- font-weight: 400;
- margin-bottom: 18px;
- letter-spacing: 0.3px;
+.item-details {
+flex: 1;
 }
-
-.changeBtn, .remove-btn {
- background: transparent;
- color: inherit;
- border: 1px solid rgba(17, 17, 17, 0.15);
- padding: 8px 16px;
- border-radius: 4px;
- font-size: 12px;
- font-weight: 500;
- cursor: pointer;
- margin-top: 12px;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- transition: all 0.2s ease;
+.item-details h4 {
+font-size: 14px;
+font-weight: 500;
+margin-bottom: 3px;
 }
-html[data-theme="dark"] .changeBtn, html[data-theme="dark"] .remove-btn {
- border-color: rgba(255, 255, 255, 0.2);
+.item-details p {
+font-size: 12px;
+color: #888;
 }
-.changeBtn:hover, .remove-btn:hover {
- background: rgba(17, 17, 17, 0.05);
- border-color: currentColor;
+.item-price-block {
+text-align: right;
+font-size: 14px;
+font-weight: 600;
 }
 
-.total {
- display: flex;
- justify-content: space-between;
- font-size: 20px;
- font-weight: 600;
- margin-top: 20px;
- padding-top: 20px;
- border-top: 1px solid rgba(17, 17, 17, 0.08);
+/* Qty Adjustment Triggers inside gateway */
+.gateway-qty-ctrl {
+display: inline-flex;
+align-items: center;
+border: 1px solid #333;
+border-radius: 4px;
+margin-top: 6px;
+background: #111;
+overflow: hidden;
 }
-html[data-theme="dark"] .total {
- border-top-color: rgba(255, 255, 255, 0.08);
+.gateway-qty-ctrl button {
+padding: 2px 8px;
+background: transparent;
+border: none;
+color: #fff;
+cursor: pointer;
+font-size: 12px;
 }
-
-/* UPI App Buttons Grid */
-.paymentGrid {
- display: grid;
- grid-template-columns: repeat(3, 1fr);
- gap: 15px;
+.gateway-qty-ctrl button:hover {
+background: #222;
 }
-
-.payBtn {
- background: rgba(255, 255, 255, 0.6);
- backdrop-filter: blur(8px);
- border: 1px solid rgba(17, 17, 17, 0.08);
- color: inherit;
- padding: 20px 10px;
- border-radius: 6px;
- cursor: pointer;
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
- gap: 10px;
- transition: all 0.3s ease;
+.gateway-qty-ctrl span {
+padding: 0 4px;
+font-size: 11px;
+min-width: 14px;
+text-align: center;
 }
-html[data-theme="dark"] .payBtn {
- background: rgba(255, 255, 255, 0.02);
- border-color: rgba(255, 255, 255, 0.06);
+.remove-gateway-item {
+background: none;
+border: none;
+color: #ff4a4a;
+font-size: 16px;
+cursor: pointer;
+margin-left: 10px;
+opacity: 0.7;
 }
-.payBtn:hover {
- background: #ffffff;
- border-color: rgba(17, 17, 17, 0.8);
- transform: translateY(-1px);
-}
-html[data-theme="dark"] .payBtn:hover {
- background: rgba(255,255,255,0.06);
- border-color: #ffffff;
+.remove-gateway-item:hover {
+opacity: 1;
 }
 
-.payBtn img {
- width: 44px;
- height: 44px;
- object-fit: contain;
- border-radius: 8px;
-}
-.payBtn span {
- font-size: 12px;
- font-weight: 500;
- letter-spacing: 0.3px;
-}
-
-.qty-mini-control {
- display: inline-flex;
- align-items: center;
- border: 1px solid rgba(17, 17, 17, 0.1);
- border-radius: 4px;
- margin-top: 8px;
- overflow: hidden;
- background: rgba(255,255,255,0.3);
-}
-html[data-theme="dark"] .qty-mini-control {
- border-color: rgba(255, 255, 255, 0.1);
-}
-.qty-mini-control button {
- padding: 4px 10px;
- background: transparent;
- border: none;
- color: inherit;
- font-size: 14px;
- cursor: pointer;
-}
-.qty-mini-control button:hover {
- background: rgba(17,17,17,0.05);
-}
-.qty-mini-control span {
- padding: 0 8px;
- font-size: 12px;
- font-weight: 500;
+/* Total Box & Checkout Trigger Layout Button */
+.total-box {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-top: 20px;
+padding-top: 15px;
+border-top: 1px dashed #333;
+font-size: 18px;
+font-weight: 600;
 }
 
-.note {
- margin-top: 20px;
- padding: 15px;
- background: rgba(var(--text), 0.02);
- border-radius: 6px;
- color: inherit;
- opacity: 0.65;
- font-size: 12px;
- line-height: 1.6;
+.payment-action-btn-layout {
+width: 100%;
+padding: 16px;
+background: #ffffff;
+color: #000000;
+border: none;
+border-radius: 12px;
+font-weight: 600;
+font-size: 14px;
+letter-spacing: 1px;
+text-transform: uppercase;
+cursor: pointer;
+margin-top: 25px;
+transition: background 0.2s, transform 0.2s;
+}
+.payment-action-btn-layout:hover {
+background: #e5e5e5;
+transform: translateY(-1px);
+}
+.payment-action-btn-layout:active {
+transform: translateY(0);
 }
 
-/* Universal Animation Block for Verification Modal */
 #paymentDoneBox {
- display: block; 
- opacity: 0;
- max-height: 0;
- overflow: hidden;
- transform: scale(0.95);
- transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
- margin-bottom: 0;
- padding: 0;
- border: none;
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.85);
+backdrop-filter: blur(10px);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 99999;
 }
-#paymentDoneBox.triggered {
- opacity: 1;
- max-height: 500px;
- padding: 25px;
- margin-bottom: 25px;
- border: 1px solid rgba(17, 17, 17, 0.08);
- transform: scale(1);
+.popup-inner {
+background: #111;
+border: 1px solid #2b2b2b;
+padding: 40px;
+border-radius: 24px;
+text-align: center;
+max-width: 400px;
+width: 90%;
 }
-html[data-theme="dark"] #paymentDoneBox.triggered {
- border-color: rgba(255, 255, 255, 0.08);
+.popup-inner h2 {
+color: #148f43;
+margin-bottom: 10px;
 }
-#paymentDoneBox p {
- margin: 10px 0 20px;
- opacity: 0.7;
- font-size: 14px;
- text-align: center;
+.popup-inner p {
+font-size: 14px;
+color: #aaa;
+margin-bottom: 25px;
+line-height: 1.5;
 }
-
-.success, .cancel {
- width: 100%;
- padding: 14px;
- border: 1px solid transparent;
- border-radius: 4px;
- margin-top: 10px;
- font-weight: 500;
- font-size: 13px;
- letter-spacing: 1px;
- text-transform: uppercase;
- cursor: pointer;
+.popup-close-btn {
+padding: 10px 24px;
+background: #fff;
+color: #000;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
 }
-
-.success {
- background: #111111;
- color: #ffffff;
- border-color: #111111;
-}
-html[data-theme="dark"] .success {
- background: #ffffff;
- color: #111111;
- border-color: #ffffff;
-}
-.success:hover {
- opacity: 0.85;
-}
-
-.cancel {
- background: transparent;
- color: inherit;
- border-color: rgba(17, 17, 17, 0.2);
-}
-html[data-theme="dark"] .cancel {
- border-color: rgba(255, 255, 255, 0.2);
-}
-.cancel:hover {
- background: rgba(17, 17, 17, 0.04);
-}
-
-@media(max-width: 768px) {
- body { padding: 20px 15px; }
- h1 { font-size: 2rem; }
- .box { padding: 18px; }
- .paymentGrid { gap: 10px; }
- .payBtn { padding: 15px 5px; }
- .payBtn img { width: 38px; height: 38px; }
- .total { font-size: 18px; }
-}
-</style> 
+</style>
 </head>
 <body>
+
 <div class="card">
+   <div class="pay">
+       <img class="pay-logo" src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Logo">
+       <h2>Aquilux Checkout Ledger</h2>
+   </div>
 
-<img class="logo" src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
-<h1>Secure Checkout</h1>
-<p class="subtitle">Complete your Aquilux order</p>
+   <div class="summary" id="addressSummaryBlock">
+       <h3>Shipping Coordinates</h3>
+       <p id="addressText">Loading parameters logs...</p>
+   </div>
 
-<!-- Verification Modal Banner Container -->
+   <div class="summary">
+       <h3>Items Summary</h3>
+       <div id="checkoutItemsList">
+           <p style="opacity:0.5; font-size:13px;">No active items synced.</p>
+       </div>
+       
+       <div class="total-box">
+           <span>Total Remittance</span>
+           <span>₹<span id="totalAmount">0</span></span>
+       </div>
+   </div>
+
+   <button class="payment-action-btn-layout" onclick="paymentDone()">Confirm & Place Order</button>
+</div>
+
 <div id="paymentDoneBox">
- <h2>Payment Completed?</h2>
- <p>Did you successfully complete the payment transaction inside your app?</p>
- <button class="success" onclick="paymentDone()">Yes, Payment Done</button>
- <button class="cancel" onclick="hidePaymentDone()">Not Yet</button>
+    <div class="popup-inner">
+        <h2>Order Request Sent!</h2>
+        <p>Aapka order successfully register ho gaya hai. Final verification ke liye aapko WhatsApp link par redirect kiya ja raha hai.</p>
+        <button class="popup-close-btn" onclick="hidePaymentDone()">Okay</button>
+    </div>
 </div>
 
-<div class="box">
- <h2>Delivery Address</h2>
- <div style="margin-bottom:12px; font-size:14px; line-height:1.5;">
-   <strong style="font-weight:600;">Customer:</strong> <span id="customerName"></span>
- </div>
- <div id="deliveryDetails" style="font-size:14px; line-height:1.6; opacity:0.85;"></div>
- <button class="changeBtn" onclick="window.location.href='index.html#cart'">Change Address</button>
-</div>
-
-<div class="box">
- <h2>Order Summary</h2>
- <div id="orderItems"></div>
- <div class="total">
-   <span>Total</span>
-   <span>₹<span id="totalAmount">0</span></span>
- </div>
-</div>
-
-<div class="box">
- <h2>Choose Payment Method</h2>
- <div class="paymentGrid">
-   <button class="payBtn" onclick="pay('gpay')">
-     <!-- Permanent High-Res Logo Fix -->
-     <img src="https://img.icons8.com/color/144/google-pay.png" alt="GPay">
-     <span>Google Pay</span>
-   </button>
-   <button class="payBtn" onclick="pay('phonepe')">
-     <img src="https://img.icons8.com/color/144/phonepe.png" alt="PhonePe">
-     <span>PhonePe</span>
-   </button>
-   <button class="payBtn" onclick="pay('paytm')">
-     <img src="https://img.icons8.com/color/144/paytm.png" alt="Paytm">
-     <span>Paytm</span>
-   </button>
- </div>
- <div class="note">
-   ✔ Secure UPI Payment Gateway Engine<br>
-   ✔ Cross-Device Smart Redirection Tracking Fix<br>
-   ✔ Desktop/Tablet Manual Validation System
- </div>
-</div>
-
-</div>
-
-<!-- Core System Application Engine Logic -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
-  authDomain: "aquilux-5b489.firebaseapp.com",
-  projectId: "aquilux-5b489",
-  storageBucket: "aquilux-5b489.firebasestorage.app",
-  messagingSenderId: "93678277046",
-  appId: "1:93678277046:web:22a1904a3d8a9112edf117"
+ apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+ authDomain: "aquilux-5b489.firebaseapp.com",
+ projectId: "aquilux-5b489",
+ storageBucket: "aquilux-5b489.firebasestorage.app",
+ messagingSenderId: "93678277046",
+ appId: "1:93678277046:web:22a1904a3d8a9112edf117"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const activeTheme = localStorage.getItem("theme") || "light";
-document.documentElement.setAttribute("data-theme", activeTheme);
+let currentUserId = null;
 
-const order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
-
-document.getElementById("customerName").textContent = order.receiverName || "-";
-document.getElementById("deliveryDetails").innerHTML = `
- ${order.flat || ""}<br>
- ${order.road || ""}<br>
- ${order.landmark ? order.landmark + '<br>' : ''}
- ${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
- <span style="display:inline-block; margin-top:5px;">📞 ${order.phone || ""}</span>
-`;
-
-renderCart();
-
-function renderCart(){
-   let html = "";
-   (order.cart || []).forEach((item, index)=>{
-       html += `
-       <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid rgba(17,17,17,0.06);">
-           <div style="flex:1;">
-               <b style="font-size:14px; font-weight:500;">${item.n}</b><br>
-               <small style="font-size:12px; opacity:0.6;">Size : ${item.s}</small><br>
-               <div class="qty-mini-control">
-                   <button onclick="changeQty(${index},-1)">−</button>
-                   <span id="qty${index}">${item.q}</span>
-                   <button onclick="changeQty(${index},1)">+</button>
-               </div>
-           </div>
-           <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end;">
-               <div id="price${index}" style="font-size:14px; font-weight:500;">₹${item.p * item.q}</div>
-               <button class="remove-btn" onclick="removeItem(${index})" style="padding:4px 8px; font-size:10px; margin-top:6px;">Remove</button>
-           </div>
-       </div>
-       `;
-   });
-   document.getElementById("orderItems").innerHTML = html || "<p style='padding:15px 0; opacity:0.5;'>No items in order manifest</p>";
-   updateTotal();
-}
-
-function getMobileOS() {
-  const ua = navigator.userAgent || navigator.vendor || window.opera;
-  if (/android/i.test(ua)) return "android";
-  if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return "ios";
-  return "desktop";
-}
-
-// Universal Smart Routing Payment Router with Direct URI Call Fix
-window.pay = function(appChoice) {
-   const upiId = "Yashojhaoffical1982@oksbi";
-   const amount = order.total;
-   const note = encodeURIComponent("Aquilux Order Payment");
-   const os = getMobileOS();
-
-   // Sabhi apps ke liye universal direct target deep link patterns
-   let targetUrl = `upi://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
-   let storeUrl = "";
-
-   const storeLinks = {
-     android: {
-       gpay: "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user",
-       phonepe: "https://play.google.com/store/apps/details?id=com.phonepe.app",
-       paytm: "https://play.google.com/store/apps/details?id=net.one97.paytm"
-     },
-     ios: {
-       gpay: "https://apps.apple.com/in/app/google-pay-save-and-pay/id1193357041",
-       phonepe: "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170032521",
-       paytm: "https://apps.apple.com/in/app/paytm-secure-upi-payments/id473941634"
-     }
-   };
-
-   // Streamlined cross-platform fallback handling bugs fix
-   if (os === "android") {
-     if (appChoice === "gpay") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
-     if (appChoice === "phonepe") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.phonepe.app;end`;
-     if (appChoice === "paytm") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=net.one97.paytm;end`;
-     storeUrl = storeLinks.android[appChoice];
-   } else if (os === "ios") {
-     if (appChoice === "gpay") targetUrl = `gpay://upi/pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
-     if (appChoice === "phonepe") targetUrl = `phonepe://upi/pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
-     if (appChoice === "paytm") targetUrl = `paytmmp://upi/pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
-     storeUrl = storeLinks.ios[appChoice];
-   }
-
-   localStorage.setItem("paymentStarted", "true");
-
-   if (os !== "desktop") {
-     let appOpened = false;
-
-     const preventRedirect = function() {
-         appOpened = true;
-         window.removeEventListener("pagehide", preventRedirect);
-         window.removeEventListener("blur", preventRedirect);
-     };
-
-     window.addEventListener("pagehide", preventRedirect);
-     window.addEventListener("blur", preventRedirect);
-
-     // Try opening the deep link app
-     window.location.href = targetUrl;
-
-     setTimeout(() => {
-       if (!appOpened && !document.hidden) {
-         window.location.href = storeUrl;
-       } else {
-         showPaymentDoneBox();
-       }
-     }, 2500);
-
-   } else {
-     alert(`Desktop Mode (Mac/Windows) detected.\n\nPlease scan or send exactly ₹${amount} to UPI ID: ${upiId}.\n\nVerification details panel enabled below.`);
-     showPaymentDoneBox();
-   }
-}
-
-function showPaymentDoneBox() {
-  const box = document.getElementById("paymentDoneBox");
-  box.classList.add("triggered");
-  box.scrollIntoView({ behavior: 'smooth' });
-}
-
-window.addEventListener("focus", () => {
-   if(localStorage.getItem("paymentStarted") === "true"){
-       showPaymentDoneBox();
-   }
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        currentUserId = user.uid;
+    } else {
+        currentUserId = "GUEST_USER";
+    }
 });
 
-window.hidePaymentDone = function(){
-   const box = document.getElementById("paymentDoneBox");
-   box.classList.remove("triggered");
-   localStorage.removeItem("paymentStarted");
+let order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
+
+if (!order.cart || order.cart.length === 0) {
+    alert("Your checkout state is empty! Redirecting to dashboard store.");
+    window.location.href = "index.html";
 }
 
-window.changeQty = function(index, change){
-   if(order.cart[index].q + change < 1) return;
-   order.cart[index].q += change;
-   renderCart();
+function renderCart() {
+    const container = document.getElementById("checkoutItemsList");
+    container.innerHTML = "";
+    
+    order.cart.forEach((item, index) => {
+        container.innerHTML += `
+        <div class="item-row">
+            <img src="${item.img || ''}" onerror="this.style.display='none'">
+            <div class="item-details">
+                <h4>${item.n}</h4>
+                <p>Size: ${item.s} · Base: ₹${item.p}</p>
+                <div class="gateway-qty-ctrl">
+                    <button onclick="changeQty(${index},-1)">−</button>
+                    <span>${item.q}</span>
+                    <button onclick="changeQty(${index},1)">+</button>
+                </div>
+                <button class="remove-gateway-item" onclick="removeItem(${index})">×</button>
+            </div>
+            <div class="item-price-block">
+                ₹${item.p * item.q}
+            </div>
+        </div>`;
+    });
+    
+    updateTotal();
 }
 
-window.removeItem = function(index){
-   order.cart.splice(index, 1);
-   renderCart();
+window.changeQty = function(index, change) {
+    if (order.cart[index].q + change < 1) return;
+    order.cart[index].q += change;
+    localStorage.setItem("pendingOrder", JSON.stringify(order));
+    renderCart();
+};
+
+window.removeItem = function(index) {
+    order.cart.splice(index, 1);
+    localStorage.setItem("pendingOrder", JSON.stringify(order));
+    if(order.cart.length === 0) {
+        localStorage.removeItem("aquilux_cart");
+        window.location.href = "index.html";
+    } else {
+        renderCart();
+    }
+};
+
+function updateTotal() {
+    let total = 0;
+    order.cart.forEach(item => {
+        total += item.p * item.q;
+    });
+    order.total = total;
+    document.getElementById("totalAmount").textContent = total;
+    localStorage.setItem("pendingOrder", JSON.stringify(order));
+    
+    // Also sync updates back to main shop index page cart structure matrix 
+    localStorage.setItem("aquilux_cart", JSON.stringify(order.cart));
 }
 
-function updateTotal(){
-   let total = 0;
-   (order.cart || []).forEach(item => { total += item.p * item.q; });
-   order.total = total;
-   document.getElementById("totalAmount").textContent = total;
-   localStorage.setItem("pendingOrder", JSON.stringify(order));
+function renderAddress() {
+    document.getElementById("addressText").innerHTML = `
+        <strong>Receiver Name:</strong> ${order.receiverName || 'N/A'}<br>
+        <strong>Contact:</strong> ${order.phone || 'N/A'}<br>
+        <strong>Space Coordinates:</strong> ${order.flat || ''}, ${order.road || ''} ${order.landmark ? '(Landmark: '+order.landmark+')' : ''}<br>
+        <strong>Engine Zone:</strong> ${order.city || 'N/A'}, ${order.state || 'N/A'} - <span style="letter-spacing:0.5px;font-weight:600;">${order.pincode || 'N/A'}</span>
+    `;
 }
+
+window.hidePaymentDone = function() {
+    document.getElementById("paymentDoneBox").style.display = "none";
+    window.location.href = "index.html";
+};
 
 window.paymentDone = async function() {
-  const orderNo = "AQ" + Date.now();
-  const user = auth.currentUser;
-  
-  if (user) {
-    order.userId = user.uid; 
-  } else {
-    order.userId = "Guest_" + Date.now();
-  }
+    const orderNo = "AQ" + Date.now();
+    const message = `🛍️ Aquilux Order Request\n\nOrder No: ${orderNo}\n\nCustomer: ${order.receiverName}\n\nPhone: ${order.phone}\n\nAddress:\n${order.flat || ''}\n${order.road || ''}\n${order.city}, ${order.state} - ${order.pincode}\n\nTotal Liability: ₹${order.total}`;
+    
+    document.getElementById("paymentDoneBox").style.display = "flex";
 
-  order.orderNumber = orderNo;
-  order.paymentStatus = "Pending Verification";
-  order.orderStatus = "Pending";
-  order.createdAt = serverTimestamp();
-  
-  try {
-    await addDoc(collection(db, "orders"), order);
-    console.log("Database Sync Successful for order:", orderNo);
-  } catch(e) {
-    console.error("Firebase Database Insertion Error:", e);
-    alert("Database connection delayed. Please click verify again.");
-    return;
-  }
+    // Format operational arrays logs for database pipeline insertion mapping
+    const structuredItems = order.cart.map(x => ({
+        productName: x.n,
+        price: x.p,
+        size: x.s,
+        quantity: x.q
+    }));
 
-  const message = `🛍️ Aquilux Order
+    order.orderNumber = orderNo;
+    order.paymentStatus = "Pending Verification";
+    order.orderStatus = "Pending";
+    order.createdAt = new Date().toISOString();
+    order.userId = currentUserId || "GUEST_USER";
+    order.items = structuredItems;
 
-Order No: ${orderNo}
-Customer: ${order.receiverName}
-Phone: ${order.phone}
+    try {
+        await addDoc(collection(db, "orders"), order);
+        // Clear permanent cart cache memory space after order deployment sync success
+        localStorage.removeItem("aquilux_cart");
+        localStorage.removeItem("pendingOrder");
+    } catch(e) {
+        console.error("Firestore submission anomaly traced:", e);
+    }
 
-Address:
-${order.flat}
-${order.road}
-${order.landmark || ""}
-${order.city}, ${order.state} - ${order.pincode}
-
-Total Amount: ₹${order.total}
-
-----------------------------------------
-📸 Please attach your Payment Screenshot below this message for quick verification!`;
-
-  window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank");
- 
-  localStorage.setItem("lastOrderNumber", orderNo);
-  localStorage.removeItem("paymentStarted");
-  localStorage.removeItem("aquilux_cart");
-  
-  window.location.href = "payment.html";
+    setTimeout(() => {
+        window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank");
+    }, 1200);
 };
+
+// Fire Engines
+renderCart();
+renderAddress();
 </script>
 </body>
 </html>
