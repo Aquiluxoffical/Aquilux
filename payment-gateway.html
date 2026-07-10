@@ -143,6 +143,8 @@ body {
     </div>
 </div>
 
+<a id="secureNativeUpiLink" style="display:none;" href="#">UPI Node</a>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -191,7 +193,7 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// MULTI-APP INTELLIGENT ROUTER SYSTEM (Pure Financial Payment Apps Redirection Mode)
+// BULLETPROOF HARDWARE-LEVEL ANCHOR INTERCEPTOR SYSTEM
 window.triggerAppPaymentAndRedirect = async function() {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -199,18 +201,16 @@ window.triggerAppPaymentAndRedirect = async function() {
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
-    // Strict VPA Priority allocation route parameters mapping (No WhatsApp redirection)
-    let targetVpa = "yashojhaoffical1982@oksbi"; // GPay Default preferred path anchor
+    let targetVpa = "yashojhaoffical1982@oksbi"; // GPay Preferred Anchor
     if (isIOS) {
-        targetVpa = "yashojha.13@ybl"; // PhonePe Core alignment rule target for iOS
+        targetVpa = "yashojha.13@ybl"; // PhonePe preferred route for iOS
     } else if (/Android/i.test(userAgentStr)) {
-        targetVpa = "9558039135@upi"; // BHIM UPI core target mapping for Android
+        targetVpa = "9558039135@upi"; // BHIM preferred route for Android
     }
 
-    // Native payment app tray trigger protocol
     const universalUpiString = `upi://pay?pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
 
-    // Compile dynamic token logs instantly
+    // Compile state parameters token logs instantly
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -221,36 +221,24 @@ window.triggerAppPaymentAndRedirect = async function() {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // Execute direct hardware application payment handshake sheet instantly
-    window.location.href = universalUpiString;
+    // Dynamic structural fix: Update invisible anchor reference path context safely
+    const nativeLinkElement = document.getElementById("secureNativeUpiLink");
+    nativeLinkElement.href = universalUpiString;
 
-    // App Store / Google Play Store target fallbacks setup if no responsive payment native app catches framework focus
-    let appStoreFallbackTimer = setTimeout(() => {
-        const storeLinks = isIOS 
-            ? "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563"
-            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
-        window.location.replace(storeLinks);
-    }, 2500);
-
-    // Cancel fallback redirect triggers smoothly if user successfully launches a native payment choice app tray
-    const clearFallbackTimers = () => {
-        clearTimeout(appStoreFallbackTimer);
-        window.removeEventListener("blur", clearFallbackTimers);
-        document.removeEventListener("visibilitychange", clearFallbackTimers);
-    };
-    window.addEventListener("blur", clearFallbackTimers);
-    document.addEventListener("visibilitychange", clearFallbackTimers);
+    // Trigger direct hardware intent protocol loop execution
+    nativeLinkElement.click();
 
     try {
-        // Synchronous pipeline background Firestore storage
+        // Run network pipeline data storage
         await addDoc(collection(db, "orders"), order);
         localStorage.removeItem("aquilux_cart");
         
+        // Smoothly proceed to message submission sheet layer
         setTimeout(() => {
             window.location.href = "payment.html";
-        }, 1000);
+        }, 800);
     } catch (err) {
-        console.error("Cloud data registry sync error:", err);
+        console.error("Cloud tracking compilation exception logged:", err);
         window.location.href = "payment.html";
     }
 };
