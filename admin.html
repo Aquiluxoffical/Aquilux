@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aquilux — Owner Console Dashboard</title>
+<style>
+/* ==========================================================================
+   1. Typography & Base Theme (Matches Premium Matte Layout)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght=0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
+ font-family: 'Inter', Arial, sans-serif;
+}
+
+body {
+ background: #ffffff; 
+ color: #111111;
+ padding: 40px 6%;
+ -webkit-font-smoothing: antialiased;
+}
+
+h1 {
+ font-family: 'Cormorant Garamond', serif;
+ font-size: 2.8rem;
+ font-weight: 400;
+ margin-bottom: 8px;
+ letter-spacing: 0.5px;
+}
+.subtitle {
+ font-size: 14px;
+ opacity: 0.6;
+ margin-bottom: 40px;
+ letter-spacing: 0.5px;
+ text-transform: uppercase;
+}
+
+/* ==========================================================================
+   2. Admin Control Metrics Grid Table Layout
+   ========================================================================== */
+.admin-table-wrapper {
+ width: 100%;
+ overflow-x: auto;
+ border: 1px solid rgba(17, 17, 17, 0.08);
+ border-radius: 8px;
+ background: rgba(255, 255, 255, 0.45);
+ backdrop-filter: blur(12px);
+ margin-bottom: 40px;
+}
+
+.admin-table {
+ width: 100%;
+ border-collapse: collapse;
+ text-align: left;
+ font-size: 14px;
+}
+
+.admin-table th {
+ background: rgba(17, 17, 17, 0.02);
+ padding: 16px;
+ font-weight: 500;
+ text-transform: uppercase;
+ font-size: 12px;
+ letter-spacing: 0.5px;
+ border-bottom: 1px solid rgba(17, 17, 17, 0.08);
+}
+
+.admin-table td {
+ padding: 18px 16px;
+ border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+ vertical-align: top;
+}
+
+/* Dynamic Badge Colors */
+.badge {
+ display: inline-block;
+ font-size: 11px;
+ font-weight: 600;
+ text-transform: uppercase;
+ padding: 4px 10px;
+ border-radius: 12px;
+ letter-spacing: 0.5px;
+}
+.badge.pending { background: rgba(255, 191, 0, 0.1); color: #d49b00; }
+.badge.approved { background: rgba(24, 183, 90, 0.1); color: #148f43; }
+.badge.rejected { background: rgba(255, 74, 74, 0.1); color: #c22d2d; }
+
+/* Item breakdown list styles inside row */
+.nested-items-list {
+ margin-top: 8px;
+ display: flex;
+ flex-direction: column;
+ gap: 10px;
+}
+.nested-item-row {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ background: rgba(17,17,17,0.01);
+ padding: 6px;
+ border-radius: 4px;
+ border: 1px solid rgba(17,17,17,0.03);
+}
+.nested-item-row img {
+ width: 40px;
+ aspect-ratio: 3/4;
+ object-fit: cover;
+ border-radius: 2px;
+}
+
+/* Control Action Action Buttons */
+.action-btn {
+ padding: 8px 14px;
+ border-radius: 4px;
+ font-size: 11px;
+ font-weight: 600;
+ letter-spacing: 0.5px;
+ text-transform: uppercase;
+ cursor: pointer;
+ border: 1px solid transparent;
+ transition: all 0.2s;
+ margin-right: 5px;
+}
+.action-btn.approve {
+ background: #18b75a;
+ color: #fff;
+ border-color: #18b75a;
+}
+.action-btn.approve:hover {
+ background: transparent;
+ color: #18b75a;
+}
+.action-btn.reject {
+ background: transparent;
+ color: #888;
+ border-color: rgba(17, 17, 17, 0.15);
+}
+.action-btn.reject:hover {
+ color: #ff4a4a;
+ border-color: #ff4a4a;
+ background: rgba(255, 74, 74, 0.02);
+}
+
+@media(max-width: 768px) {
+ h1 { font-size: 2rem; }
+ .admin-table th, .admin-table td { padding: 12px 10px; font-size: 13px; }
+ .action-btn { padding: 6px 10px; font-size: 10px; display: block; width: 100%; margin-bottom: 5px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<h1>Owner Console</h1>
+<p class="subtitle">Aquilux Database Order Registry</p>
+
+<div class="admin-table-wrapper">
+ <table class="admin-table">
+   <thead>
+     <tr>
+       <th>Order Details</th>
+       <th>Customer & Shipping Address</th>
+       <th>Products Breakdown</th>
+       <th>Total</th>
+       <th>Status</th>
+       <th>Actions</th>
+     </tr>
+   </thead>
+   <tbody id="adminOrdersContainer">
+     <tr>
+       <td colspan="6" style="text-align:center; opacity:0.5; padding:40px;">Syncing with Firebase secure node database...</td>
+     </tr>
+   </tbody>
+ </table>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+ apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+ authDomain: "aquilux-5b489.firebaseapp.com",
+ projectId: "aquilux-5b489",
+ storageBucket: "aquilux-5b489.firebasestorage.app",
+ messagingSenderId: "93678277046",
+ appId: "1:93678277046:web:22a1904a3d8a9112edf117"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadOwnerDashboard() {
+   const container = document.getElementById("adminOrdersContainer");
+   
+   try {
+       const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
+       const snapshot = await getDocs(q);
+       
+       if(snapshot.empty) {
+           container.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:40px; opacity:0.5;">No orders logged inside database yet.</td></tr>`;
+           return;
+       }
+       
+       container.innerHTML = "";
+       
+       snapshot.forEach(docSnap => {
+           const order = docSnap.data();
+           const docId = docSnap.id; // Unique document document identification key
+           
+           // Humanize timestamp calendars
+           let dateText = "N/A";
+           if(order.createdAt) {
+               const d = order.createdAt.toMillis ? new Date(order.createdAt.toMillis()) : new Date(order.createdAt.seconds * 1000);
+               dateText = d.toLocaleString('en-IN', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'});
+           }
+
+           // Nested Products Parser Logic
+           let nestedProductsHtml = `<div class="nested-items-list">`;
+           if(Array.isArray(order.cart)) {
+               order.cart.forEach(item => {
+                   nestedProductsHtml += `
+                   <div class="nested-item-row">
+                      <img src="${item.img || ''}" onerror="this.style.display='none'">
+                      <div>
+                         <span style="font-weight:500; font-size:13px;">${item.n || 'Apparel Item'}</span><br>
+                         <small style="opacity:0.6; font-size:11px;">Size: ${item.s || 'M'} · Qty: ${item.q || 1}</small>
+                      </div>
+                   </div>`;
+               });
+           }
+           nestedProductsHtml += `</div>`;
+
+           // Setup conditional styling elements for status badges
+           let statusLabel = order.paymentStatus || "Pending Verification";
+           let badgeClass = "pending";
+           if(statusLabel.toLowerCase() === "approved" || statusLabel.toLowerCase() === "success") badgeClass = "approved";
+           if(statusLabel.toLowerCase() === "rejected") badgeClass = "rejected";
+
+           container.innerHTML += `
+           <tr>
+              <td>
+                 <strong style="font-size:14px; letter-spacing:0.3px;">${order.orderNumber || 'N/A'}</strong><br>
+                 <span style="font-size:12px; opacity:0.5; display:inline-block; margin-top:4px;">${dateText}</span>
+              </td>
+              <td style="font-size:13px; line-height:1.5;">
+                 <b style="font-weight:600;">${order.receiverName || 'Guest User'}</b><br>
+                 <span style="opacity:0.8;">
+                   ${order.flat || ""}, ${order.road || ""}<br>
+                   ${order.landmark ? order.landmark + '<br>' : ''}
+                   ${order.city || ""}, ${order.state || ""} - ${order.pincode || ""}<br>
+                 </span>
+                 <span style="display:inline-block; margin-top:4px; font-weight:500;">📞 ${order.phone || "-"}</span>
+              </td>
+              <td>${nestedProductsHtml}</td>
+              <td style="font-weight:600; font-size:15px;">₹${order.total || 0}</td>
+              <td><span class="badge ${badgeClass}">${statusLabel}</span></td>
+              <td>
+                 <button class="action-btn approve" onclick="updateOrderStatus('${docId}', 'Approved')">Approve</button>
+                 <button class="action-btn reject" onclick="updateOrderStatus('${docId}', 'Rejected')">Reject</button>
+              </td>
+           </tr>
+           `;
+       });
+       
+   } catch(e) {
+       console.error("Owner Board Crash Matrix:", e);
+       container.innerHTML = `<tr><td colspan="6" style="text-align:center; color:red; padding:20px;">Failed to trace pipeline data nodes: ${e.message}</tr>`;
+   }
+}
+
+// Global execution wrapper method to update live records on firebase securely
+window.updateOrderStatus = async function(docRefId, targetStatusState) {
+    const confirmation = confirm(`Are you sure you want to set status to "${targetStatusState}" for this order reference?`);
+    if(!confirmation) return;
+    
+    try {
+        const orderDocumentReference = doc(db, "orders", docRefId);
+        await updateDoc(orderDocumentReference, {
+            paymentStatus: targetStatusState,
+            orderStatus: targetStatusState
+        });
+        
+        alert(`Order reference safely updated to "${targetStatusState}" state!`);
+        loadOwnerDashboard(); // Hard reload interface matrix elements
+    } catch(err) {
+        console.error("Database Update Action Exception:", err);
+        alert("Operation execution timed out: " + err.message);
+    }
+}
+
+window.addEventListener("DOMContentLoaded", loadOwnerDashboard);
+</script>
+</body>
+</html>
