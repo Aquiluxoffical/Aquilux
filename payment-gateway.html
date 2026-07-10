@@ -85,60 +85,22 @@ body {
 .total-label { font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
 .total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
 
-/* ==========================================================================
-   4. Active Deep Linking Apps Router Grids (With Custom SVGs)
-   ========================================================================== */
-.apps-routing-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 10px;
-}
-.app-pay-btn {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 14px 18px;
-    background: #161616;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 8px;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.app-pay-btn:hover {
-    background: #1c1616;
-    border-color: rgba(255, 255, 255, 0.15);
-}
-.app-info-side { display: flex; align-items: center; gap: 12px; }
-.app-icon { height: 20px; width: auto; max-width: 40px; object-fit: contain; }
-
-.app-name { font-size: 13px; font-weight: 400; letter-spacing: 0.3px; color: #e5e5e5; }
-.pay-action-arrow { font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 1px; }
-
 .universal-intent-btn {
     width: 100%;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.03);
-    color: #ffffff;
-    border: 1px dashed rgba(255, 255, 255, 0.2);
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
     border-radius: 8px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 5px;
+    transition: all 0.2s ease;
 }
-.universal-intent-btn:hover { background: #fff; color: #000; border-style: solid; }
-
-.utr-wrapper { margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 20px; }
-.utr-input {
-    width: 100%; padding: 14px; background: #161616; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px;
-    color: #ffffff; font-size: 13px; outline: none; text-align: center; letter-spacing: 1px;
-}
-.utr-input:focus { border-color: rgba(255, 255, 255, 0.25); }
+.universal-intent-btn:hover { background: rgba(255, 255, 255, 0.9); }
 
 .confirm-btn {
     width: 100%; padding: 16px; background: #ffffff; color: #000000; border: none; border-radius: 8px;
@@ -177,52 +139,10 @@ body {
 
     <div class="summary-card">
         <h3>Select Premium Payment Mode</h3>
-        
-<div class="summary-card">
-    <h3>Select Premium Payment Mode</h3>
-    
-    <!-- Sirf yeh ek universal button rahega -->
-    <button class="universal-intent-btn" onclick="triggerAppPayment('universal')" style="background: #ffffff; color: #000000; font-size: 13px; padding: 16px; border-style: solid;">
-        Pay through UPI
-    </button>
-
-    <!-- UTR Entry Code Block Elements Box -->
-    <div class="utr-wrapper">
-        <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; text-align:center; line-is-not-empty:1.4;">Payment done hone ke baad bank statement ya app se 12-digit UTR No. yahan enter karein:</p>
-        <input type="text" id="utrNumber" class="utr-input" placeholder="Enter 12-Digit Transaction UTR No." autocomplete="off" maxlength="12">
-    </div>
-</div>
-
-                <span class="pay-action-arrow">Pay Via →</span>
-            </button>
-
-            <!-- 2. PhonePe App Link Redirector Router -->
-            <button class="app-pay-btn" onclick="triggerAppPayment('phonepe')">
-                <div class="app-info-side">
-                    <img class="app-icon" src="images/PhonePe_Logo.svg" alt="PhonePe">
-                    <span class="app-name">PhonePe</span>
-                </div>
-                <span class="pay-action-arrow">Pay Via →</span>
-            </button>
-
-            <!-- 3. BHIM UPI App Link Redirector Router -->
-            <button class="app-pay-btn" onclick="triggerAppPayment('bhim')">
-                <div class="app-info-side">
-                    <img class="app-icon" src="images/Bhim.svg" alt="BHIM UPI">
-                    <span class="app-name">BHIM UPI</span>
-                </div>
-                <span class="pay-action-arrow">Pay Via →</span>
-            </button>
-        </div>
-
-        <!-- Universal Open All Intent Option Trigger -->
-        <button class="universal-intent-btn" onclick="triggerAppPayment('universal')">✨ Auto-Open Any UPI App</button>
-
-        <!-- UTR Entry Code Block Elements Box -->
-        <div class="utr-wrapper">
-            <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; text-align:center; line-height:1.4;">Payment done hone ke baad bank statement ya app se 12-digit UTR No. yahan enter karein:</p>
-            <input type="text" id="utrNumber" class="utr-input" placeholder="Enter 12-Digit Transaction UTR No." autocomplete="off" maxlength="12">
-        </div>
+        <!-- Clean Single Universal UPI Action Button -->
+        <button class="universal-intent-btn" onclick="triggerAppPayment('universal')">
+            Pay through UPI
+        </button>
     </div>
 
     <button class="confirm-btn" onclick="placeOrderFinal()">Confirm & Place Order</button>
@@ -284,49 +204,22 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// PURE UPI INTENT ROUTER (Direct Device Handshake)
+// DIRECT UPI INTENT ENGINE (Triggers Device App Selection Drawer Automatically)
 window.triggerAppPayment = function(targetKey) {
     const amount = order.total || 0;
     const name = encodeURIComponent("Aquilux Luxury Store");
     
-    // Aapka common UPI VPA address aur standard merchant format
     const targetVpa = "yashojhaoffical1982@oksbi";
     const standardUpiUrl = `upi://pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
 
-    // Seedhe device ka default intent call karein
-    // Android aur iOS dono is link par phone me installed saare UPI apps auto-detect karke popup open kar denge
     window.location.href = standardUpiUrl;
 };
 
-
-    // 2. Firing Intent Direct URL
-    window.location.href = finalIntentUrl;
-
-    // 3. Fallback Trigger Controller Loop 
-    let fallbackTimeout = setTimeout(() => {
-        window.location.replace(storeLinks[targetKey]);
-    }, 2000);
-
-    // 4. CRITICAL ACCURACY FIX: Clear background loops if application takes window context priority focus
-    const freezeFallbackEngine = () => {
-        clearTimeout(fallbackTimeout);
-        window.removeEventListener("blur", freezeFallbackEngine);
-        document.removeEventListener("visibilitychange", freezeFallbackEngine);
-    };
-
-    window.addEventListener("blur", freezeFallbackEngine);
-    document.addEventListener("visibilitychange", freezeFallbackEngine);
-};
-
 window.placeOrderFinal = async function() {
-    const utrVal = document.getElementById("utrNumber").value.trim();
-    if(utrVal === "" || utrVal.length < 12) { alert("Please input a valid 12-digit payment reference UTR number!"); return; }
-
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
     order.orderStatus = "Pending";
-    order.utrReference = utrVal;
     order.createdAt = new Date().toISOString();
     order.userId = currentUserId;
 
@@ -338,7 +231,7 @@ window.placeOrderFinal = async function() {
         localStorage.removeItem("pendingOrder");
     } catch(err) { console.error(err); }
 
-    const message = `🛍️ Aquilux Verified Order Manifest\n\nOrder Token: ${orderNo}\nCustomer Name: ${order.receiverName}\nContact Number: ${order.phone}\n\nTotal Remittance Liability: ₹${order.total}\n----------------------------------------\n💳 Payment Tracking UTR No: ${utrVal}`;
+    const message = `🛍️ Aquilux Verified Order Manifest\n\nOrder Token: ${orderNo}\nCustomer Name: ${order.receiverName}\nContact Number: ${order.phone}\n\nTotal Remittance Liability: ₹${order.total}`;
     setTimeout(() => { window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank"); }, 1200);
 };
 
