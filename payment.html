@@ -18,24 +18,22 @@
 }
 
 body {
- background: #ffffff; /* Matches your updated index theme */
+ background: #ffffff; 
  color: #111111;
  display: flex;
  justify-content: center;
  align-items: center;
  min-height: 100vh;
- padding: 20px;
+ padding: 40px 20px;
  -webkit-font-smoothing: antialiased;
  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* Base Theme Color Adaptations for active dynamic state variables */
 html[data-theme="dark"] body { background: #111111; color: #ffffff; }
 html[data-theme="olive"] body { background: #d7d9cf; color: #2c3525; }
 
-/* Wrapper Container Block */
 .success-card {
- max-width: 460px;
+ max-width: 480px;
  width: 100%;
  text-align: center;
  padding: 40px 30px;
@@ -46,25 +44,18 @@ html[data-theme="olive"] body { background: #d7d9cf; color: #2c3525; }
  border-radius: 12px;
  box-shadow: 0 10px 40px rgba(0,0,0,0.02);
 }
-html[data-theme="dark"] .success-card {
- background: rgba(255, 255, 255, 0.04);
- border-color: rgba(255, 255, 255, 0.08);
-}
-html[data-theme="olive"] .success-card {
- background: rgba(255, 255, 255, 0.35);
- border-color: rgba(44, 53, 37, 0.1);
-}
+html[data-theme="dark"] .success-card { background: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.08); }
+html[data-theme="olive"] .success-card { background: rgba(255, 255, 255, 0.35); border-color: rgba(44, 53, 37, 0.1); }
 
-/* Elegant SVG Checked Animation Placement */
 .success-icon-wrapper {
- margin-bottom: 25px;
+ margin-bottom: 20px;
  display: flex;
  justify-content: center;
 }
 .success-icon-wrapper svg {
- width: 64px;
+ width: 54px;
  height: 64px;
- stroke: var(--text);
+ stroke: currentColor;
  fill: none;
 }
 
@@ -77,70 +68,111 @@ h1 {
 }
 
 .message-desc {
- font-size: 14px;
+ font-size: 13px;
  opacity: 0.7;
  line-height: 1.6;
- margin-bottom: 30px;
- padding: 0 10px;
+ margin-bottom: 25px;
 }
 
-/* Minimal Luxury Order Sheet Meta Box */
 .order-id-box {
  background: rgba(17, 17, 17, 0.02);
  border: 1px dashed rgba(17, 17, 17, 0.15);
- padding: 18px;
+ padding: 15px;
  border-radius: 6px;
- margin-bottom: 35px;
+ margin-bottom: 25px;
 }
-html[data-theme="dark"] .order-id-box {
- background: rgba(255, 255, 255, 0.02);
- border-color: rgba(255, 255, 255, 0.2);
-}
+html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.2); }
 .order-id-box small {
  font-size: 11px;
  text-transform: uppercase;
  letter-spacing: 1.5px;
  opacity: 0.5;
  display: block;
- margin-bottom: 6px;
+ margin-bottom: 4px;
 }
 .order-id-box strong {
- font-size: 18px;
+ font-size: 17px;
  font-weight: 600;
  letter-spacing: 1px;
  display: block;
 }
 
-/* Single Action Dynamic Navigation Button Layout */
-.primary-action-btn {
+/* ==========================================================================
+   2. Premium Proof Uploader Dropzone Element
+   ========================================================================== */
+.proof-upload-wrapper {
+ border: 1px solid var(--line);
+ background: rgba(var(--text), 0.01);
+ padding: 20px;
+ border-radius: 6px;
+ margin-bottom: 25px;
+ text-align: left;
+}
+.proof-upload-wrapper label {
+ font-size: 12px;
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ display: block;
+ margin-bottom: 8px;
+ opacity: 0.8;
+}
+.file-input-styled {
+ width: 100%;
+ padding: 10px;
+ background: rgba(255,255,255,0.5);
+ border: 1px solid var(--line);
+ border-radius: 4px;
+ font-size: 13px;
+ outline: none;
+ cursor: pointer;
+}
+
+/* Operational Buttons */
+.whatsapp-submit-btn {
  display: block;
  width: 100%;
- padding: 15px;
- background: #111111;
+ padding: 14px;
+ background: #25d366; /* Standard official WhatsApp verification green */
  color: #ffffff;
  text-decoration: none;
- border: 1px solid #111111;
+ border: 1px solid #25d366;
  border-radius: 4px;
  font-size: 13px;
  font-weight: 500;
- letter-spacing: 1.5px;
+ letter-spacing: 1px;
  text-transform: uppercase;
- transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+ cursor: pointer;
+ transition: all 0.3s;
+ margin-bottom: 12px;
 }
-html[data-theme="dark"] .primary-action-btn {
- background: #ffffff;
- color: #111111;
- border-color: #ffffff;
+.whatsapp-submit-btn:hover {
+ background: transparent;
+ color: #25d366;
 }
-.primary-action-btn:hover {
+
+.secondary-history-btn {
+ display: block;
+ width: 100%;
+ padding: 14px;
  background: transparent;
  color: inherit;
- border-color: currentColor;
- transform: translateY(-1px);
+ border: 1px solid var(--text);
+ text-decoration: none;
+ border-radius: 4px;
+ font-size: 13px;
+ font-weight: 500;
+ letter-spacing: 1px;
+ text-transform: uppercase;
+ transition: all 0.3s;
+}
+.secondary-history-btn:hover {
+ background: var(--text);
+ color: var(--bg);
 }
 
 .footer-brand {
- margin-top: 35px;
+ margin-top: 30px;
  font-size: 11px;
  opacity: 0.4;
  letter-spacing: 1px;
@@ -151,8 +183,6 @@ html[data-theme="dark"] .primary-action-btn {
 <body>
 
 <div class="success-card">
-  
-  <!-- Minimal Checkmark SVG Vector -->
   <div class="success-icon-wrapper">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -161,33 +191,70 @@ html[data-theme="dark"] .primary-action-btn {
   </div>
 
   <h1>Order Submitted</h1>
-  <p class="message-desc">
-    Your request has been successfully registered in our logs. The details and receipt request tracking configurations have been synchronized with WhatsApp.
-  </p>
+  <p class="message-desc">Your order configuration sheet is ready. Please sync the screen capture receipt below to active the tracking code metrics securely.</p>
 
-  <!-- Dynamic Receipt Token Display Box -->
   <div class="order-id-box">
     <small>Registry Reference Token</small>
     <strong id="displayOrderNumber">AQ-Retrieving...</strong>
   </div>
 
-  <!-- Direct Premium Redirection Button -->
-  <a href="my-orders.html" class="primary-action-btn">Go To My Orders</a>
+  <!-- Dynamic Proof Verification Block Interface Module -->
+  <div class="proof-upload-wrapper">
+     <label>Attach Payment Screenshot *</label>
+     <input type="file" id="screenshotFile" class="file-input-styled" accept="image/*">
+  </div>
+
+  <!-- Unified WhatsApp Sync Trigger Button -->
+  <button class="whatsapp-submit-btn" onclick="shareManifestWithProof()">Sync Details & Open WhatsApp</button>
+  
+  <a href="my-orders.html" class="secondary-history-btn">View My Orders</a>
 
   <div class="footer-brand">Aquilux · Own. Your. Altitude.</div>
 </div>
 
 <script>
-// Dynamic Interface Synchronization Configs
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
 
-// Pull system order number from storage manifest context
-window.addEventListener("DOMContentLoaded", () => {
-    const fallbackToken = "AQ" + Date.now();
-    const resolvedOrderNumber = localStorage.getItem("lastOrderNumber") || fallbackToken;
-    document.getElementById("displayOrderNumber").textContent = resolvedOrderNumber;
-});
+const pendingOrderData = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
+const resolvedOrderNumber = localStorage.getItem("lastOrderNumber") || ("AQ" + Date.now());
+
+document.getElementById("displayOrderNumber").textContent = resolvedOrderNumber;
+
+// Process controller logic block
+window.shareManifestWithProof = function() {
+   const fileInput = document.getElementById("screenshotFile");
+   
+   if(fileInput.files.length === 0) {
+      alert("Please upload your payment screenshot first to trace the AQ validation token!");
+      return;
+   }
+
+   // Format clean explicit text values from order object layers
+   let itemDetailsText = "";
+   if(Array.isArray(pendingOrderData.cart)) {
+      pendingOrderData.cart.forEach(item => {
+         itemDetailsText += `• ${item.n} (Size: ${item.s}, Qty: ${item.q})\n`;
+      });
+   }
+
+   const whatsappMsg = `🛍️ Aquilux Verified Order Manifest
+
+Order Token: ${resolvedOrderNumber}
+Customer Name: ${pendingOrderData.receiverName || "User"}
+Phone Tracker: ${pendingOrderData.phone || "-"}
+
+Items Ordered:
+${itemDetailsText || "Premium Drops Card Info"}
+Total Remittance: ₹${pendingOrderData.total || 0}
+
+----------------------------------------
+✅ I have attached my payment receipt screenshot proof directly below this line:`;
+
+   // Launcher tracking string URL execution redirect
+   const finalWhatsAppLink = "https://wa.me/919558039135?text=" + encodeURIComponent(whatsappMsg);
+   window.open(finalWhatsAppLink, "_blank");
+}
 </script>
 
 </body>
