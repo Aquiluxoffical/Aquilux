@@ -13,7 +13,7 @@
 :root {
  --bg: #ffffff;             
  --text: #111111;           
- --line: rgba(17, 17, 17, 0.08); /* Transparent thin line for crisp glass boundaries */
+ --line: rgba(17, 17, 17, 0.08); 
  --glass-bg: rgba(255, 255, 255, 0.45);
  --glass-blur: 12px;
 }
@@ -55,7 +55,6 @@ header img {
  height: 34px;
  transition: filter 0.3s;
 }
-/* Auto adjusting logo color based on active themes */
 html[data-theme="dark"] header img { filter: invert(0); }
 html[data-theme="light"] header img { filter: invert(1); }
 html[data-theme="olive"] header img { filter: invert(1); }
@@ -88,9 +87,7 @@ nav a, .cart-title {
  gap: 6px;
  cursor: pointer;
 }
-.cart-title:hover {
- opacity: 0.7;
-}
+.cart-title:hover { opacity: 0.7; }
 #cartCount {
  width: 22px;
  height: 22px;
@@ -120,15 +117,13 @@ nav a, .cart-title {
  cursor: pointer;
  transition: transform 0.2s ease;
 }
-.theme-dot:hover {
- transform: scale(1.25);
-}
+.theme-dot:hover { transform: scale(1.25); }
 .theme-dot.light { background: #ffffff; }
 .theme-dot.olive { background: #d7d9cf; }
 .theme-dot.dark { background: #111111; }
 
 /* ==========================================================================
-   4. Hero Section & Background Setup
+   4. Hero Section
    ========================================================================== */
 .hero {
  height: 100vh;
@@ -196,48 +191,66 @@ html[data-theme="dark"] .hero::before {
 }
 
 /* ==========================================================================
-   5. New Premium Luxury Floating Review UI Setup
+   5. New Manual Scroll Review Roller (Positioned elegantly near Cart)
    ========================================================================== */
-.holo-layer {
- position: absolute;
- inset: 0;
- pointer-events: none;
- z-index: 3;
+.review-roller-container {
+ margin-bottom: 40px;
+ width: 100%;
 }
-.holo-review {
- position: absolute;
- min-width: 200px;
- max-width: 250px;
- padding: 14px 18px;
- border: 1px solid var(--line);
- border-radius: 12px;
- background: var(--glass-bg);
- backdrop-filter: blur(14px);
- -webkit-backdrop-filter: blur(14px);
+.review-roller-title {
+ font-family: 'Cormorant Garamond', serif;
+ font-size: 1.8rem;
+ font-weight: 400;
  color: var(--text);
- box-shadow: 0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.2);
- opacity: 0;
- transform: scale(.9) translateY(10px);
- transition: all .6s cubic-bezier(0.25, 1, 0.5, 1);
- font-family: 'Inter', sans-serif;
- font-size: 13px;
- line-height: 1.4;
+ margin-bottom: 15px;
 }
-.holo-review.show {
- opacity: 1;
- transform: scale(1) translateY(0);
+.review-roller {
+ display: flex;
+ gap: 20px;
+ overflow-x: auto;
+ padding: 10px 5px 25px 5px;
+ scroll-snap-type: x mandatory;
+ scrollbar-width: thin;
+ -webkit-overflow-scrolling: touch;
 }
-.holo-review strong {
+/* Premium subtle scrollbar adjustment */
+.review-roller::-webkit-scrollbar {
+ height: 4px;
+}
+.review-roller::-webkit-scrollbar-track {
+ background: transparent;
+}
+.review-roller::-webkit-scrollbar-thumb {
+ background: var(--line);
+ border-radius: 10px;
+}
+.roller-card {
+ flex: 0 0 280px;
+ scroll-snap-align: start;
+ padding: 20px;
+ border: 1px solid var(--line);
+ border-radius: 8px;
+ background: var(--glass-bg);
+ backdrop-filter: blur(var(--glass-blur));
+ -webkit-backdrop-filter: blur(var(--glass-blur));
+ box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+ transition: border-color 0.3s;
+}
+.roller-card:hover {
+ border-color: var(--text);
+}
+.roller-card strong {
  display: block;
- font-size: 12px;
- letter-spacing: 0.3px;
- margin-bottom: 4px;
+ font-size: 13px;
  font-weight: 600;
  color: var(--text);
+ margin-bottom: 5px;
 }
-.holo-review div {
+.roller-card p {
+ font-size: 13px;
+ color: var(--text);
  opacity: 0.85;
- font-weight: 400;
+ line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -272,7 +285,7 @@ section {
 .card-img-wrapper {
  position: relative;
  width: 100%;
- aspect-ratio: 3 / 4 !important; /* Perfect apparel framing proportions */
+ aspect-ratio: 3 / 4 !important; 
  overflow: hidden;
  margin-bottom: 16px;
  background: rgba(0,0,0,0.02);
@@ -294,9 +307,7 @@ section {
  opacity: 1;
  z-index: 2;
 }
-.card:hover .primary-img {
- opacity: 0;
-}
+.card:hover .primary-img { opacity: 0; }
 .card:hover .hover-img {
  opacity: 1;
  transform: scale(1.04);
@@ -421,9 +432,7 @@ button, input, textarea {
  outline: none;
  transition: all 0.3s;
 }
-input, textarea {
- width: 100%; 
-}
+input, textarea { width: 100%; }
 input:focus, textarea:focus {
  border-color: var(--text);
  background: var(--bg);
@@ -467,9 +476,7 @@ input:focus, textarea:focus {
  margin-bottom: 35px;
  gap: 15px;
 }
-#priceFilter {
- width: 180px;
-}
+#priceFilter { width: 180px; }
 
 /* ==========================================================================
    10. User Auth Session & Checkout Elements
@@ -493,9 +500,7 @@ input:focus, textarea:focus {
  font-size: 13px;
  font-weight: 500;
 }
-.google-btn:hover {
- border-color: var(--text);
-}
+.google-btn:hover { border-color: var(--text); }
 .google-btn img {
  width: 18px;
  height: 18px;
@@ -543,9 +548,7 @@ input:focus, textarea:focus {
  cursor: pointer;
  margin-top: 0 !important;
 }
-.logout-btn:hover {
- color: #ff4a4a !important;
-}
+.logout-btn:hover { color: #ff4a4a !important; }
 
 .cart-table {
  width: 100%;
@@ -732,7 +735,7 @@ footer p:last-of-type {
  .cart-table th, .cart-table td { padding: 10px 6px; font-size: 12px; }
  .total-price { font-size: 22px; }
  .title { font-size: 2rem; }
- .holo-review { min-width: 150px; font-size: 11px; padding: 10px 12px; }
+ .roller-card { flex: 0 0 230px; padding: 15px; }
 }
 </style>
 </head>
@@ -799,8 +802,6 @@ footer p:last-of-type {
 </header>
  
 <section class="hero">
-  <!-- Restored Floating Review Layer Inside Hero Section -->
-  <div id="holoLayer" class="holo-layer"></div>
   <div class="wrap">
     <h1>Aquilux</h1>
     <div class="type">Own. Your. Altitude.</div>
@@ -831,6 +832,14 @@ footer p:last-of-type {
 </section>
 
 <section id="cart">
+  <!-- Brand New Manual Scroll Review Roller Added Right inside Cart Area -->
+  <div class="review-roller-container">
+     <div class="review-roller-title">Customer Remarks</div>
+     <div class="review-roller" id="reviewsRollerDisplay">
+        <!-- Injected Dynamically by JavaScript -->
+     </div>
+  </div>
+
   <div class="title">Cart</div>
   <div id="items"></div>
   <div class="total-box">
@@ -911,7 +920,7 @@ onAuthStateChanged(auth, (user) => {
 </script> 
 
 <!-- ==========================================================================
-     14. Core Logic Engine & Dynamic Floating Reviews Handler
+     14. Core Logic Engine & Dynamic Manual Slider Setup
      ========================================================================== -->
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
@@ -921,7 +930,6 @@ let currentProducts = [];
 let qty = [];
 let cart = [];
 
-// Dynamic Theme Swapping Engine using Variables Injector
 function setTheme(theme){
  document.documentElement.setAttribute("data-theme", theme);
  if(theme === "dark"){
@@ -935,7 +943,6 @@ function setTheme(theme){
    document.documentElement.style.setProperty('--line', 'rgba(44, 53, 37, 0.1)');
    document.documentElement.style.setProperty('--glass-bg', 'rgba(255, 255, 255, 0.35)');
  } else {
-   // Light Premium Blueprint Mode
    document.documentElement.style.setProperty('--bg', '#ffffff');
    document.documentElement.style.setProperty('--text', '#111111');
    document.documentElement.style.setProperty('--line', 'rgba(17, 17, 17, 0.08)');
@@ -944,52 +951,38 @@ function setTheme(theme){
  localStorage.setItem("theme", theme);
 }
 
-// Check for Saved User Theme Configurations at Start
 const savedTheme = localStorage.getItem("theme") || "light";
 setTheme(savedTheme);
 
-// --- Restored Floating Review Engine & Logic ---
-const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."],["⭐⭐⭐⭐","Neha","Amazing fit."],["⭐⭐⭐⭐","Rohan","Fast delivery."],["⭐⭐⭐⭐","vikas"," Best quality and fast delivery."],["⭐⭐⭐⭐","Aayushi","100% original and best crop top."],["⭐⭐⭐","Karan 💀","Best products evey good prints."]];
-const holo=document.getElementById('holoLayer');const active=[];
-function bad(x,y){const w=220,h=90,cx=window.innerWidth/2-220,cy=window.innerHeight/2-170,cw=440,ch=340;if(x<cx+cw&&x+w>cx&&y<cy+ch&&y+h>cy)return true;for(const a of active){if(x<a.x+w&&x+w>a.x&&y<a.y+h&&y+h>a.y)return true;}return false;}
-function makeHolo(){
- const isMobile = window.innerWidth <= 768;
- let x,y,t=0;
- do {
-   if(isMobile){
-     if(Math.random() < 0.5){ x = 8; }else{ x = window.innerWidth - 170; }
-     y = 120 + Math.random() * (window.innerHeight - 300);
-   } else {
-     x = 20 + Math.random() * (window.innerWidth - 260);
-     y = 30 + Math.random() * (window.innerHeight - 140);
-   }
-   t++;
- } while(bad(x,y) && t < 40);
+// --- Fixed Reviews Dataset & Manual Rendering ---
+const holoReviews=[
+  ["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],
+  ["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],
+  ["⭐⭐⭐⭐","Aarav","Worth every rupee."],
+  ["⭐⭐⭐⭐","Neha","Amazing fit."],
+  ["⭐⭐⭐⭐","Rohan","Fast delivery."],
+  ["⭐⭐⭐⭐","Vikas","Best quality and fast delivery."],
+  ["⭐⭐⭐⭐","Aayushi","100% original and best crop top."],
+  ["⭐⭐⭐","Karan 💀","Best products very good prints."]
+];
 
- const d = document.createElement("div");
- d.className = "holo-review";
- const r = holoReviews[Math.floor(Math.random()*holoReviews.length)];
- d.innerHTML = `<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;
- d.style.left = x + "px";
- d.style.top = y + "px";
- holo.appendChild(d);
- active.push({el:d,x,y});
- requestAnimationFrame(()=>d.classList.add("show"));
-
- setTimeout(()=>{
-   d.style.opacity="0";
-   d.style.filter="blur(10px)";
-   setTimeout(()=>{
-     const i=active.findIndex(v=>v.el===d);
-     if(i>-1) active.splice(i,1);
-     d.remove();
-   },600);
- },1800+Math.random()*1200);
+function setupReviewRoller() {
+  const roller = document.getElementById("reviewsRollerDisplay");
+  roller.innerHTML = "";
+  
+  holoReviews.forEach(r => {
+    roller.innerHTML += `
+      <div class="roller-card">
+        <strong>${r[0]} ${r[1]} ✓</strong>
+        <p>${r[2]}</p>
+      </div>
+    `;
+  });
 }
-setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTimeout(makeHolo,i*500);},3000);setTimeout(makeHolo,800);
 
 async function loadProducts() {
  showLoader();
+ setupReviewRoller(); /* Renders layout once safely */
  try {
    const res = await fetch(API_URL);
    products = await res.json();
@@ -1160,7 +1153,7 @@ function showLoader(){
 
 function hideLoader(){
  const loader = document.getElementById("menuLoader");
- setTimeout(() => { loader.classList.remove("remove"); loader.classList.remove("show"); }, 500);
+ setTimeout(() => { loader.classList.remove("show"); }, 500);
 }
 
 async function lookupPin(){
