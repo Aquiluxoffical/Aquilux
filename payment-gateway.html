@@ -1,4 +1,197 @@
-// MULTI-APP INTELLIGENT ROUTER SYSTEM (Pure Payment Apps Preference)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Aquilux — Checkout Ledger</title>
+<style>
+/* ==========================================================================
+   1. Luxury Old Money Typography & Reset
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background: #090909;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding: 50px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.checkout-container {
+    max-width: 480px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.brand-hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.brand-hero img {
+    width: 130px;
+    opacity: 0.45;
+    filter: grayscale(1) brightness(1.3);
+    margin-bottom: 12px;
+}
+.brand-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: capitalize;
+    color: #f5f5f5;
+}
+
+.summary-card {
+    background: #111111;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.summary-card h3 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 18px;
+    font-weight: 600;
+}
+
+.address-details { font-size: 13px; line-height: 1.6; color: #b5b5b5; }
+.address-details strong { color: #ffffff; font-weight: 500; }
+
+.item-row { display: flex; align-items: center; gap: 15px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.item-row:last-of-type { border-bottom: none; }
+.item-thumb { width: 48px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; background: #1a1a1a; }
+.item-meta { flex: 1; }
+.item-meta h4 { font-size: 13px; font-weight: 400; color: #ffffff; letter-spacing: 0.3px; }
+.item-meta p { font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 3px; }
+.item-price { font-size: 13px; font-weight: 500; color: #ffffff; }
+
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, 0.1); }
+.total-label { font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
+.total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+
+.universal-intent-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 16px;
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    margin-top: 5px;
+    transition: all 0.2s ease;
+}
+.universal-intent-btn:hover { background: rgba(255, 255, 255, 0.9); }
+.universal-intent-btn img {
+    height: 18px;
+    width: auto;
+    object-fit: contain;
+}
+</style>
+</head>
+<body>
+
+<div class="checkout-container">
+    <div class="brand-hero">
+        <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Aquilux Emblem">
+        <div class="brand-title">Aquilux Checkout Ledger</div>
+    </div>
+
+    <div class="summary-card">
+        <h3>Shipping Coordinates</h3>
+        <div class="address-details" id="addressText">Tracing shipping records...</div>
+    </div>
+
+    <div class="summary-card">
+        <h3>Items Summary</h3>
+        <div id="checkoutItemsList"></div>
+        <div class="total-row">
+            <span class="total-label">Total Remittance</span>
+            <span class="total-amount">₹<span id="totalAmount">0</span></span>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <h3>Select Premium Payment Mode</h3>
+        <button class="universal-intent-btn" onclick="triggerAppPaymentAndRedirect()">
+            <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Logo">
+            Pay through UPI
+        </button>
+    </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+ apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+ authDomain: "aquilux-5b489.firebaseapp.com",
+ projectId: "aquilux-5b489",
+ storageBucket: "aquilux-5b489.firebasestorage.app",
+ messagingSenderId: "93678277046",
+ appId: "1:93678277046:web:22a1904a3d8a9112edf117"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let currentUserId = "GUEST_USER";
+onAuthStateChanged(auth, (user) => { if(user) currentUserId = user.uid; });
+
+let order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
+if (!order.cart || order.cart.length === 0) { window.location.href = "index.html"; }
+
+function renderUI() {
+    document.getElementById("addressText").innerHTML = `
+        <strong>Receiver Name:</strong> ${order.receiverName || 'N/A'}<br>
+        <strong>Contact No:</strong> ${order.phone || 'N/A'}<br>
+        <strong>Address Coordinates:</strong> ${order.flat || ''}, ${order.road || ''}<br>
+        <strong>Zone parameters:</strong> ${order.city || 'N/A'}, ${order.state || 'N/A'} - ${order.pincode || 'N/A'}
+    `;
+
+    const list = document.getElementById("checkoutItemsList");
+    list.innerHTML = "";
+    order.cart.forEach(item => {
+        list.innerHTML += `
+        <div class="item-row">
+            <img src="${item.img || ''}" class="item-thumb" onerror="this.style.display='none'">
+            <div class="item-meta">
+                <h4>${item.n}</h4>
+                <p>Size: ${item.s} · Quantity: ${item.q}</p>
+            </div>
+            <div class="item-price">₹${item.p * item.q}</div>
+        </div>`;
+    });
+    document.getElementById("totalAmount").textContent = order.total;
+}
+
+// MULTI-APP INTELLIGENT ROUTER SYSTEM (Pure Financial Payment Apps Redirection Mode)
 window.triggerAppPaymentAndRedirect = async function() {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -6,18 +199,18 @@ window.triggerAppPaymentAndRedirect = async function() {
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
-    // Preferred UPI IDs standard structure
-    let targetVpa = "yashojhaoffical1982@oksbi"; // Gpay Preferred Anchor
+    // Strict VPA Priority allocation route parameters mapping (No WhatsApp redirection)
+    let targetVpa = "yashojhaoffical1982@oksbi"; // GPay Default preferred path anchor
     if (isIOS) {
-        targetVpa = "yashojha.13@ybl"; // PhonePe Preferred Target for iOS
+        targetVpa = "yashojha.13@ybl"; // PhonePe Core alignment rule target for iOS
     } else if (/Android/i.test(userAgentStr)) {
-        targetVpa = "9558039135@upi"; // BHIM Preferred Target for Android
+        targetVpa = "9558039135@upi"; // BHIM UPI core target mapping for Android
     }
 
-    // Universal standard deep-link protocol (Opens GPay, PhonePe, BHIM, Paytm popup natively)
+    // Native payment app tray trigger protocol
     const universalUpiString = `upi://pay?pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
 
-    // Compile token logs database structures
+    // Compile dynamic token logs instantly
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -28,18 +221,18 @@ window.triggerAppPaymentAndRedirect = async function() {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // Force trigger direct payment app handshake sheet instantly
+    // Execute direct hardware application payment handshake sheet instantly
     window.location.href = universalUpiString;
 
-    // Strict App Store / Play Store Preference Fallback if no payment app responds
+    // App Store / Google Play Store target fallbacks setup if no responsive payment native app catches framework focus
     let appStoreFallbackTimer = setTimeout(() => {
         const storeLinks = isIOS 
-            ? "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563" // PhonePe iOS
-            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user"; // GPay Android
+            ? "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563"
+            : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
         window.location.replace(storeLinks);
     }, 2500);
 
-    // Cancel fallback redirection if any preference app successfully gains priority focus
+    // Cancel fallback redirect triggers smoothly if user successfully launches a native payment choice app tray
     const clearFallbackTimers = () => {
         clearTimeout(appStoreFallbackTimer);
         window.removeEventListener("blur", clearFallbackTimers);
@@ -49,11 +242,10 @@ window.triggerAppPaymentAndRedirect = async function() {
     document.addEventListener("visibilitychange", clearFallbackTimers);
 
     try {
-        // Safe asynchronous background cloud processing
+        // Synchronous pipeline background Firestore storage
         await addDoc(collection(db, "orders"), order);
         localStorage.removeItem("aquilux_cart");
         
-        // Final transition layout trigger
         setTimeout(() => {
             window.location.href = "payment.html";
         }, 1000);
@@ -62,3 +254,8 @@ window.triggerAppPaymentAndRedirect = async function() {
         window.location.href = "payment.html";
     }
 };
+
+renderUI();
+</script>
+</body>
+</html>
