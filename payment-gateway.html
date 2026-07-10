@@ -6,7 +6,7 @@
 <title>Aquilux Payment Gateway</title>
 <style>
 /* ==========================================================================
-   1. Design Archetype & Typography Reset (Matches Timeluxe Aesthetics)
+   1. Universal Grid & Typography Setup (Cross-Device Optimization)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -18,7 +18,7 @@
 }
 
 body {
- background: #ffffff; /* Premium minimal editorial white background */
+ background: #ffffff; 
  color: #111111;
  display: flex;
  justify-content: center;
@@ -29,18 +29,15 @@ body {
  transition: background 0.4s ease, color 0.4s ease;
 }
 
-/* Base Theme Color Adaptations mapped to data attributes */
 html[data-theme="dark"] body { background: #111111; color: #ffffff; }
 html[data-theme="olive"] body { background: #d7d9cf; color: #2c3525; }
 
-/* Wrapper Form Shell */
 .card {
  max-width: 680px;
  width: 100%;
  background: transparent;
  border: none;
  padding: 0;
- box-shadow: none;
 }
 
 .logo {
@@ -70,9 +67,6 @@ h1 {
  letter-spacing: 0.5px;
 }
 
-/* ==========================================================================
-   2. Sleek Frosted Glass Component Blocks
-   ========================================================================== */
 .box {
  background: rgba(255, 255, 255, 0.45);
  backdrop-filter: blur(12px);
@@ -100,7 +94,6 @@ html[data-theme="olive"] .box {
  letter-spacing: 0.3px;
 }
 
-/* Operational Internal Panels */
 .changeBtn, .remove-btn {
  background: transparent;
  color: inherit;
@@ -113,10 +106,6 @@ html[data-theme="olive"] .box {
  margin-top: 12px;
  text-transform: uppercase;
  letter-spacing: 0.5px;
- transition: all 0.2s ease;
-}
-html[data-theme="dark"] .changeBtn, html[data-theme="dark"] .remove-btn {
- border-color: rgba(255, 255, 255, 0.2);
 }
 .changeBtn:hover, .remove-btn:hover {
  background: rgba(17, 17, 17, 0.05);
@@ -132,13 +121,8 @@ html[data-theme="dark"] .changeBtn, html[data-theme="dark"] .remove-btn {
  padding-top: 20px;
  border-top: 1px solid rgba(17, 17, 17, 0.08);
 }
-html[data-theme="dark"] .total {
- border-top-color: rgba(255, 255, 255, 0.08);
-}
+html[data-theme="dark"] .total { border-top-color: rgba(255, 255, 255, 0.08); }
 
-/* ==========================================================================
-   3. UPI App Buttons Grid
-   ========================================================================== */
 .paymentGrid {
  display: grid;
  grid-template-columns: repeat(3, 1fr);
@@ -167,7 +151,6 @@ html[data-theme="dark"] .payBtn {
 .payBtn:hover {
  background: #ffffff;
  border-color: rgba(17, 17, 17, 0.8);
- box-shadow: 0 6px 15px rgba(0,0,0,0.03);
  transform: translateY(-1px);
 }
 html[data-theme="dark"] .payBtn:hover {
@@ -183,10 +166,8 @@ html[data-theme="dark"] .payBtn:hover {
 .payBtn span {
  font-size: 12px;
  font-weight: 500;
- letter-spacing: 0.3px;
 }
 
-/* Quantity Inline Adjusters */
 .qty-mini-control {
  display: inline-flex;
  align-items: center;
@@ -196,9 +177,6 @@ html[data-theme="dark"] .payBtn:hover {
  overflow: hidden;
  background: rgba(255,255,255,0.3);
 }
-html[data-theme="dark"] .qty-mini-control {
- border-color: rgba(255,255,255,0.1);
-}
 .qty-mini-control button {
  padding: 4px 10px;
  background: transparent;
@@ -206,9 +184,6 @@ html[data-theme="dark"] .qty-mini-control {
  color: inherit;
  font-size: 14px;
  cursor: pointer;
-}
-.qty-mini-control button:hover {
- background: rgba(17,17,17,0.05);
 }
 .qty-mini-control span {
  padding: 0 8px;
@@ -225,26 +200,38 @@ html[data-theme="dark"] .qty-mini-control {
  opacity: 0.65;
  font-size: 12px;
  line-height: 1.6;
- letter-spacing: 0.2px;
 }
 
 /* ==========================================================================
-   4. Verification Modals
+   2. Universal Block for Verification (Ensures stability across Desktop/OS)
    ========================================================================== */
 #paymentDoneBox {
- display: none;
- margin-top: 25px;
- padding-top: 25px;
- border-top: 1px solid rgba(17, 17, 17, 0.08);
- text-align: center;
+ display: block; /* Kept block by default but hidden visually until trigger */
+ opacity: 0;
+ max-height: 0;
+ overflow: hidden;
+ transform: scale(0.95);
+ transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+ margin-bottom: 0;
+ padding: 0;
+ border: none;
 }
-html[data-theme="dark"] #paymentDoneBox {
- border-top-color: rgba(255, 255, 255, 0.08);
+#paymentDoneBox.triggered {
+ opacity: 1;
+ max-height: 500px;
+ padding: 25px;
+ margin-bottom: 25px;
+ border: 1px solid rgba(17, 17, 17, 0.08);
+ transform: scale(1);
+}
+html[data-theme="dark"] #paymentDoneBox.triggered {
+ border-color: rgba(255, 255, 255, 0.08);
 }
 #paymentDoneBox p {
  margin: 10px 0 20px;
  opacity: 0.7;
  font-size: 14px;
+ text-align: center;
 }
 
 .success, .cancel {
@@ -258,34 +245,11 @@ html[data-theme="dark"] #paymentDoneBox {
  letter-spacing: 1px;
  text-transform: uppercase;
  cursor: pointer;
- transition: all 0.3s;
 }
-
-.success {
- background: #111111;
- color: #ffffff;
- border-color: #111111;
-}
-html[data-theme="dark"] .success {
- background: #ffffff;
- color: #111111;
- border-color: #ffffff;
-}
-.success:hover {
- opacity: 0.85;
-}
-
-.cancel {
- background: transparent;
- color: inherit;
- border-color: rgba(17, 17, 17, 0.2);
-}
-html[data-theme="dark"] .cancel {
- border-color: rgba(255, 255, 255, 0.2);
-}
-.cancel:hover {
- background: rgba(17, 17, 17, 0.04);
-}
+.success { background: #111111; color: #ffffff; border-color: #111111; }
+html[data-theme="dark"] .success { background: #ffffff; color: #111111; border-color: #ffffff; }
+.cancel { background: transparent; color: inherit; border-color: rgba(17, 17, 17, 0.2); }
+html[data-theme="dark"] .cancel { border-color: rgba(255, 255, 255, 0.2); }
 
 @media(max-width: 768px) {
  body { padding: 20px 15px; }
@@ -293,7 +257,6 @@ html[data-theme="dark"] .cancel {
  .box { padding: 18px; }
  .paymentGrid { gap: 10px; }
  .payBtn { padding: 15px 5px; }
- .payBtn img { width: 32px; height: 32px; }
  .total { font-size: 18px; }
 }
 </style> 
@@ -304,6 +267,13 @@ html[data-theme="dark"] .cancel {
 <img class="logo" src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
 <h1>Secure Checkout</h1>
 <p class="subtitle">Complete your Aquilux order</p>
+
+<div id="paymentDoneBox">
+ <h2>Payment Completed?</h2>
+ <p>Did you successfully complete the payment transaction inside your app?</p>
+ <button class="success" onclick="paymentDone()">Yes, Payment Done</button>
+ <button class="cancel" onclick="hidePaymentDone()">Not Yet</button>
+</div>
 
 <div class="box">
  <h2>Delivery Address</h2>
@@ -341,16 +311,9 @@ html[data-theme="dark"] .cancel {
  </div>
  <div class="note">
    ✔ Secure UPI Payment Gateway Engine<br>
-   ✔ Instant Native Order Confirmation<br>
-   ✔ Payment Verified Manually within minutes
+   ✔ Cross-Device Smart Redirection (Android/iOS)<br>
+   ✔ Desktop Stable Manual Callback Box enabled
  </div>
-</div>
-
-<div id="paymentDoneBox" class="box">
- <h2>Payment Completed?</h2>
- <p>Did you successfully complete the payment transaction inside your app?</p>
- <button class="success" onclick="paymentDone()">Yes, Payment Done</button>
- <button class="cancel" onclick="hidePaymentDone()">Not Yet</button>
 </div>
 
 </div>
@@ -371,13 +334,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Dynamic Theme Synchronizer Core Injector
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
 
 const order = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
 
-// Setup Global Address parameters cleanly
 document.getElementById("customerName").textContent = order.receiverName || "-";
 document.getElementById("deliveryDetails").innerHTML = `
  ${order.flat || ""}<br>
@@ -414,34 +375,90 @@ function renderCart(){
    updateTotal();
 }
 
-// Global UPI Launcher Routine with Auto Safe Fallback URLs
+// OS Detect Engine for Smart Redirect Logic
+function getMobileOS() {
+  const ua = navigator.userAgent || navigator.vendor || window.opera;
+  if (/android/i.test(ua)) return "android";
+  if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return "ios";
+  return "desktop";
+}
+
+// Universal Smart Routing Payment Router with Stores Fallback Interceptor
 window.pay = function(appChoice) {
    const upiId = "Yashojhaoffical1982@oksbi";
    const amount = order.total;
    const note = encodeURIComponent("Aquilux Order Payment");
-   
-   // Formulating clean universal standard UPI string layout parameters
-   const upiString = `upi://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
-   
+   const os = getMobileOS();
+
+   // Base standard string configuration fallback
+   let targetUrl = `upi://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
+   let storeUrl = "";
+
+   // Device App store routers mappings configurations
+   const storeLinks = {
+     android: {
+       gpay: "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user",
+       phonepe: "https://play.google.com/store/apps/details?id=com.phonepe.app",
+       paytm: "https://play.google.com/store/apps/details?id=net.one97.paytm"
+     },
+     ios: {
+       gpay: "https://apps.apple.com/in/app/google-pay-save-and-pay/id1193357041",
+       phonepe: "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170032521",
+       paytm: "https://apps.apple.com/in/app/paytm-secure-upi-payments/id473941634"
+     }
+   };
+
+   // Injecting custom application package intent handlers for mobile structures
+   if (os === "android") {
+     if (appChoice === "gpay") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
+     if (appChoice === "phonepe") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.phonepe.app;end`;
+     if (appChoice === "paytm") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=net.one97.paytm;end`;
+     storeUrl = storeLinks.android[appChoice];
+   } else if (os === "ios") {
+     if (appChoice === "gpay") targetUrl = `gpay://upi/pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
+     if (appChoice === "phonepe") targetUrl = `phonepe://upi/pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
+     if (appChoice === "paytm") targetUrl = `paytmmp://upi/pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
+     storeUrl = storeLinks.ios[appChoice];
+   }
+
    localStorage.setItem("paymentStarted", "true");
-   
-   // Redirect window terminal natively to application hooks
-   window.location.href = upiString;
-   
-   // Fallback safety to prompt verification box manual check if intent delays inside window context
-   setTimeout(() => {
-     document.getElementById("paymentDoneBox").style.display = "block";
-   }, 2500);
+
+   // App-switching deep-linking mechanism with timeout listener check logic
+   if (os !== "desktop") {
+     const startTime = Date.now();
+     window.location.href = targetUrl;
+
+     // If the application doesn't open in 2 seconds, redirect smoothly to corresponding App Store
+     setTimeout(() => {
+       if (Date.now() - startTime < 2200) {
+         window.location.href = storeUrl;
+       }
+     }, 2000);
+   } else {
+     // Desktop fallback prompt notification alerts
+     alert(`Desktop Mode (Mac/Windows) detected.\n\nPlease scan or send exactly ₹${amount} to UPI ID: ${upiId}.\n\nVerification details panel enabled below.`);
+     showPaymentDoneBox();
+   }
+}
+
+// Optimized universal visibility processor rules
+function showPaymentDoneBox() {
+  const box = document.getElementById("paymentDoneBox");
+  box.classList.add("triggered");
+  // Smoothly scrolls screen focus directly to the verification block context
+  box.scrollIntoView({ behavior: 'smooth' });
 }
 
 window.addEventListener("focus", () => {
    if(localStorage.getItem("paymentStarted") === "true"){
-       document.getElementById("paymentDoneBox").style.setProperty("display", "block", "important");
+       showPaymentDoneBox();
    }
 });
 
 window.hidePaymentDone = function(){
-   document.getElementById("paymentDoneBox").style.display = "none";
+   const box = document.getElementById("paymentDoneBox");
+   box.classList.remove("triggered");
+   localStorage.removeItem("paymentStarted");
 }
 
 window.changeQty = function(index, change){
@@ -482,8 +499,6 @@ window.paymentDone = async function(){
   
   localStorage.setItem("lastOrderNumber", orderNo);
   localStorage.removeItem("paymentStarted");
-  
-  // Clean cart memory state data inside browser context post order registry
   localStorage.removeItem("aquilux_cart");
   
   window.location.href = "payment.html";
