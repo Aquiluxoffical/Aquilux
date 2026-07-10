@@ -123,7 +123,7 @@ nav a, .cart-title {
 .theme-dot.dark { background: #111111; }
 
 /* ==========================================================================
-   4. Hero Section
+   4. Hero Section & High-End Floating Background Layer
    ========================================================================== */
 .hero {
  height: 100vh;
@@ -133,18 +133,91 @@ nav a, .cart-title {
  position: relative;
  overflow: hidden;
 }
-.hero::before {
- content: '';
+
+/* Luxury Old-Money Abstract Animations Base */
+.hero-luxury-bg {
  position: absolute;
- width: 600px;
- height: 600px;
- background: radial-gradient(circle, rgba(17,17,17,0.03), transparent 70%);
- filter: blur(40px);
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ pointer-events: none;
  z-index: 1;
 }
-html[data-theme="dark"] .hero::before {
- background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%);
+
+/* Smooth Interactive Ambient Blur Shapes */
+.luxury-blur-orb {
+ position: absolute;
+ border-radius: 50%;
+ filter: blur(100px);
+ mix-blend-mode: multiply;
+ opacity: 0.08;
+ animation: slowFloat 24s ease-in-out infinite alternate;
 }
+.orb-1 {
+ width: 50vw;
+ height: 50vh;
+ top: -10%;
+ left: 10%;
+ background: radial-gradient(circle, var(--text) 0%, transparent 80%);
+}
+.orb-2 {
+ width: 45vw;
+ height: 45vh;
+ bottom: -5%;
+ right: 5%;
+ background: radial-gradient(circle, var(--text) 0%, transparent 80%);
+ animation-delay: -8s;
+}
+
+/* Fine-line Art Contours for Altitude Feel */
+.hero-luxury-bg svg {
+ position: absolute;
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ top: 0;
+ left: 0;
+ opacity: 0.12;
+}
+.kinetic-path {
+ fill: none;
+ stroke: var(--text);
+ stroke-width: 0.5;
+ stroke-dasharray: 6 6;
+ animation: slowDrift 40s linear infinite alternate;
+ transform-origin: center;
+}
+.kinetic-path:nth-child(2) { animation-duration: 55s; animation-delay: -10s; }
+.kinetic-path:nth-child(3) { animation-duration: 70s; stroke-width: 0.3; }
+
+/* Floating Premium Luxury Speckles */
+.luxury-dust {
+ position: absolute;
+ width: 2px;
+ height: 2px;
+ background: var(--text);
+ border-radius: 50%;
+ opacity: 0.15;
+ animation: dustFloat 12s linear infinite;
+}
+.luxury-dust:nth-child(4) { left: 20%; top: 40%; animation-duration: 16s; }
+.luxury-dust:nth-child(5) { left: 75%; top: 25%; animation-duration: 20s; animation-delay: -4s; }
+.luxury-dust:nth-child(6) { left: 45%; top: 70%; animation-duration: 14s; animation-delay: -2s; }
+
+@keyframes slowFloat {
+ 0% { transform: translate(0px, 0px) scale(1); }
+ 100% { transform: translate(50px, 30px) scale(1.1); }
+}
+@keyframes slowDrift {
+ 0% { transform: scale(1) rotate(0deg) translateY(0px); }
+ 100% { transform: scale(1.06) rotate(2deg) translateY(10px); }
+}
+@keyframes dustFloat {
+ 0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+ 50% { opacity: 0.3; }
+ 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
+
 .hero .wrap {
  text-align: center;
  max-width: 800px;
@@ -191,7 +264,7 @@ html[data-theme="dark"] .hero::before {
 }
 
 /* ==========================================================================
-   5. New Manual Scroll Review Roller (Positioned elegantly near Cart)
+   5. Manual Scroll Review Roller
    ========================================================================== */
 .review-roller-container {
  margin-bottom: 40px;
@@ -213,13 +286,8 @@ html[data-theme="dark"] .hero::before {
  scrollbar-width: thin;
  -webkit-overflow-scrolling: touch;
 }
-/* Premium subtle scrollbar adjustment */
-.review-roller::-webkit-scrollbar {
- height: 4px;
-}
-.review-roller::-webkit-scrollbar-track {
- background: transparent;
-}
+.review-roller::-webkit-scrollbar { height: 4px; }
+.review-roller::-webkit-scrollbar-track { background: transparent; }
 .review-roller::-webkit-scrollbar-thumb {
  background: var(--line);
  border-radius: 10px;
@@ -236,9 +304,7 @@ html[data-theme="dark"] .hero::before {
  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
  transition: border-color 0.3s;
 }
-.roller-card:hover {
- border-color: var(--text);
-}
+.roller-card:hover { border-color: var(--text); }
 .roller-card strong {
  display: block;
  font-size: 13px;
@@ -802,6 +868,20 @@ footer p:last-of-type {
 </header>
  
 <section class="hero">
+  <!-- New Luxury Full-Bleed Kinetic Background Art & Floating Orbs Layer -->
+  <div class="hero-luxury-bg">
+    <div class="luxury-blur-orb orb-1"></div>
+    <div class="luxury-blur-orb orb-2"></div>
+    <span class="luxury-dust"></span>
+    <span class="luxury-dust"></span>
+    <span class="luxury-dust"></span>
+    <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg">
+      <path class="kinetic-path" d="M -100,250 C 300,100 600,400 1000,150 C 1200,50 1400,300 1600,200" />
+      <path class="kinetic-path" d="M -100,400 C 400,250 500,600 950,300 C 1200,150 1350,450 1600,380" />
+      <path class="kinetic-path" d="M -100,550 C 350,450 700,650 1100,420 C 1300,300 1400,600 1600,520" />
+    </svg>
+  </div>
+  
   <div class="wrap">
     <h1>Aquilux</h1>
     <div class="type">Own. Your. Altitude.</div>
@@ -832,12 +912,9 @@ footer p:last-of-type {
 </section>
 
 <section id="cart">
-  <!-- Brand New Manual Scroll Review Roller Added Right inside Cart Area -->
   <div class="review-roller-container">
      <div class="review-roller-title">Customer Remarks</div>
-     <div class="review-roller" id="reviewsRollerDisplay">
-        <!-- Injected Dynamically by JavaScript -->
-     </div>
+     <div class="review-roller" id="reviewsRollerDisplay"></div>
   </div>
 
   <div class="title">Cart</div>
@@ -954,7 +1031,6 @@ function setTheme(theme){
 const savedTheme = localStorage.getItem("theme") || "light";
 setTheme(savedTheme);
 
-// --- Fixed Reviews Dataset & Manual Rendering ---
 const holoReviews=[
   ["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],
   ["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],
@@ -982,7 +1058,7 @@ function setupReviewRoller() {
 
 async function loadProducts() {
  showLoader();
- setupReviewRoller(); /* Renders layout once safely */
+ setupReviewRoller();
  try {
    const res = await fetch(API_URL);
    products = await res.json();
