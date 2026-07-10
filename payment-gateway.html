@@ -87,7 +87,7 @@ body {
 
 .universal-intent-btn {
     width: 100%;
-    padding: 16px;
+    padding: 15px;
     background: #ffffff;
     color: #000000;
     border: 1px solid #ffffff;
@@ -95,10 +95,9 @@ body {
     font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     cursor: pointer;
-    margin-top: 5px;
-    transition: all 0.2s ease;
+    margin-top: 15px;
 }
 .universal-intent-btn:hover { background: rgba(255, 255, 255, 0.9); }
 </style>
@@ -127,10 +126,8 @@ body {
 
     <div class="summary-card">
         <h3>Select Premium Payment Mode</h3>
-        <!-- Single unified trigger action point -->
-        <button class="universal-intent-btn" onclick="triggerAppPaymentAndRedirect()">
-            Pay through UPI
-        </button>
+        <!-- Keeping the exact working core component trigger mapping you provided -->
+        <button class="universal-intent-btn" onclick="triggerAppPayment('universal')">Pay through UPI</button>
     </div>
 </div>
 
@@ -182,15 +179,15 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// 100% FIX: Instant App Drawer Trigger + Background Sync + Success Redirect
-window.triggerAppPaymentAndRedirect = function() {
+// RESTORING EXACT WORKING NAME MAPPING WITH INTEGRATED REDIRECT PARAMETERS
+window.triggerAppPayment = function(targetKey) {
     const amount = order.total || 0;
     const name = encodeURIComponent("Aquilux Luxury Store");
     
     const targetVpa = "yashojhaoffical1982@oksbi";
     const standardUpiUrl = `upi://pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
 
-    // 1. Instantly generate parameters state logs for payment.html to read reference
+    // 1. Generate Order Tracking Number & Save local references instantly
     const orderNo = "AQ" + Date.now();
     order.orderNumber = orderNo;
     order.paymentStatus = "Pending Verification";
@@ -201,19 +198,19 @@ window.triggerAppPaymentAndRedirect = function() {
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // 2. CRITICAL UI ACCURACY: Fire standard device app handshake link first before any async block delay
+    // 2. Fire the working hardware link mapping
     window.location.href = standardUpiUrl;
 
-    // 3. Parallel Async Background Pipeline: Sync data tokens directly to Firestore cloud database
+    // 3. Parallel Silent Processing Pipeline (Firestore Logging)
     addDoc(collection(db, "orders"), order)
         .then(() => {
-            localStorage.removeItem("aquilux_cart"); // Lock primary cart data store
+            localStorage.removeItem("aquilux_cart");
         })
         .catch((err) => {
-            console.error("Database cloud compilation trace error:", err);
+            console.error("Database cloud trace error:", err);
         });
 
-    // 4. Smooth context routing to payment.html success template page dashboard
+    // 4. Fire immediate redirect handoff to payment.html success screen
     setTimeout(() => {
         window.location.href = "payment.html";
     }, 1200);
