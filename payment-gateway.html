@@ -143,7 +143,6 @@ body {
     </div>
 </div>
 
-<a id="secureNativeUpiLink" style="display:none;" href="#">UPI Node</a>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -201,14 +200,10 @@ window.triggerAppPaymentAndRedirect = async function() {
     const userAgentStr = navigator.userAgent || navigator.vendor || window.opera;
     const isIOS = /iPad|iPhone|iPod/.test(userAgentStr) && !window.MSStream;
 
-    let targetVpa = "yashojhaoffical1982@oksbi"; // GPay Preferred Anchor
-    if (isIOS) {
-        targetVpa = "yashojha.13@ybl"; // PhonePe preferred route for iOS
-    } else if (/Android/i.test(userAgentStr)) {
-        targetVpa = "9558039135@upi"; // BHIM preferred route for Android
-    }
-
-    const universalUpiString = `upi://pay?pa=${targetVpa}&pn=${merchantName}&am=${amount}&cu=INR`;
+    // Use one verified UPI ID across all devices
+    const targetVpa = "yashojhaoffical1982@oksbi";
+    const universalUpiString =
+        `upi://pay?pa=${targetVpa}&pn=${merchantName}&tn=${encodeURIComponent("Aquilux Order")}&am=${amount}&cu=INR`;
 
     // Compile state parameters token logs instantly
     const orderNo = "AQ" + Date.now();
