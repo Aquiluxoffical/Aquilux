@@ -351,7 +351,7 @@ html[data-theme="dark"] .cancel {
  <div class="note">
    ✔ Secure UPI Payment Gateway Engine<br>
    ✔ Cross-Device Smart Redirection Tracking Fix<br>
-   ✔ Desktop/Tablet Manual Validation System
+   ✔ Desktop/Tablet Manual Verification System
  </div>
 </div>
 
@@ -360,6 +360,7 @@ html[data-theme="dark"] .cancel {
 <!-- Core System Application Engine Logic -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -373,6 +374,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
@@ -526,10 +528,32 @@ function updateTotal(){
 }
 
 // Highly Optimized Single Action Combination Hook (Database Push + Combined WhatsApp Redirect)
-window.paymentDone = async function(){
+window.paymentDone = async function() {
   const orderNo = "AQ" + Date.now();
+  const user = auth.currentUser;
   
-  // Single comprehensive summary statement mapped to WhatsApp parameters
+  if (user) {
+    order.userId = user.uid; // Attaching User UID to fix index parsing leaks securely
+  } else {
+    order.userId = "Guest_" + Date.now();
+  }
+
+  order.orderNumber = orderNo;
+  order.paymentStatus = "Pending Verification";
+  order.orderStatus = "Pending";
+  order.createdAt = serverTimestamp();
+  
+  // Step A: Push to Firebase Database first to lock the data firmly
+  try {
+    await addDoc(collection(db, "orders"), order);
+    console.log("Database Sync Successful for order:", orderNo);
+  } catch(e) {
+    console.error("Firebase Database Insertion Error:", e);
+    alert("Database connection delayed. Please click verify again.");
+    return;
+  }
+
+  // Step B: Build comprehensive text payload strings
   const message = `🛍️ Aquilux Order
 
 Order No: ${orderNo}
@@ -547,20 +571,10 @@ Total Amount: ₹${order.total}
 ----------------------------------------
 📸 Please attach your Payment Screenshot below this message for quick verification!`;
 
-  // Fires open context to WhatsApp app instantly
+  // Opens official WhatsApp application directly
   window.open("https://wa.me/919558039135?text=" + encodeURIComponent(message), "_blank");
  
-  order.orderNumber = orderNo;
-  order.paymentStatus = "Pending Verification";
-  order.orderStatus = "Pending";
-  order.createdAt = serverTimestamp();
-  
-  try {
-    await addDoc(collection(db, "orders"), order);
-  } catch(e) {
-    console.error("Firebase Database Insertion Error:", e);
-  }
-  
+  // Step C: Cleanup transient memory fields safely
   localStorage.setItem("lastOrderNumber", orderNo);
   localStorage.removeItem("paymentStarted");
   localStorage.removeItem("aquilux_cart");
