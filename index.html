@@ -124,8 +124,30 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .saved-address-view-card { background: rgba(17,17,17,0.02); border: 1px dashed var(--line); padding: 14px; border-radius: 6px; font-size: 12px; line-height: 1.6; margin-bottom: 15px; }
 .saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
 
-.panel-address-grid input { width: 100%; padding: 8px 10px; font-size: 12px; margin-top: 6px; background: transparent; border: 1px solid var(--line); border-radius: 4px; }
-.panel-address-grid .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.panel-address-grid input { 
+ width: 100%; 
+ padding: 12px 14px; 
+ font-size: 13px; 
+ margin-top: 8px; 
+ background: var(--glass-bg); /* Muted solid background layer (transparent hataya) */
+ border: 1px solid var(--line); 
+ border-radius: 6px; 
+ color: var(--text);
+ outline: none;
+ transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.panel-address-grid input:focus {
+ background: rgba(var(--text), 0.02); /* Click karne par halke se high-contrast solid look */
+ border-color: var(--text);
+}
+
+.panel-address-grid .row-split { 
+ display: grid; 
+ grid-template-columns: 1fr 1fr; 
+ gap: 8px; 
+}
+
 
 .save-address-btn-style { width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
 .logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
