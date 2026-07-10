@@ -128,7 +128,7 @@ nav a, .cart-title {
 .theme-dot.dark { background: #111111; }
 
 /* ==========================================================================
-   4. Hero Section (Cinematic Editorial Vibe)
+   4. Hero Section & Background Setup
    ========================================================================== */
 .hero {
  height: 100vh;
@@ -138,7 +138,6 @@ nav a, .cart-title {
  position: relative;
  overflow: hidden;
 }
-/* Soft ambient backdrop glow behind hero */
 .hero::before {
  content: '';
  position: absolute;
@@ -197,7 +196,52 @@ html[data-theme="dark"] .hero::before {
 }
 
 /* ==========================================================================
-   5. Section & Structured Product Grid Layout
+   5. New Premium Luxury Floating Review UI Setup
+   ========================================================================== */
+.holo-layer {
+ position: absolute;
+ inset: 0;
+ pointer-events: none;
+ z-index: 3;
+}
+.holo-review {
+ position: absolute;
+ min-width: 200px;
+ max-width: 250px;
+ padding: 14px 18px;
+ border: 1px solid var(--line);
+ border-radius: 12px;
+ background: var(--glass-bg);
+ backdrop-filter: blur(14px);
+ -webkit-backdrop-filter: blur(14px);
+ color: var(--text);
+ box-shadow: 0 10px 30px rgba(0,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.2);
+ opacity: 0;
+ transform: scale(.9) translateY(10px);
+ transition: all .6s cubic-bezier(0.25, 1, 0.5, 1);
+ font-family: 'Inter', sans-serif;
+ font-size: 13px;
+ line-height: 1.4;
+}
+.holo-review.show {
+ opacity: 1;
+ transform: scale(1) translateY(0);
+}
+.holo-review strong {
+ display: block;
+ font-size: 12px;
+ letter-spacing: 0.3px;
+ margin-bottom: 4px;
+ font-weight: 600;
+ color: var(--text);
+}
+.holo-review div {
+ opacity: 0.85;
+ font-weight: 400;
+}
+
+/* ==========================================================================
+   6. Section & Structured Product Grid Layout
    ========================================================================== */
 section {
  padding: 90px 6%;
@@ -217,7 +261,7 @@ section {
 }
 
 /* ==========================================================================
-   6. Product Cards UI (Glass Effects & Dynamic Image Swap)
+   7. Product Cards UI (Glass Effects & Dynamic Image Swap)
    ========================================================================== */
 .card {
  border: none !important; 
@@ -242,7 +286,6 @@ section {
  left: 0;
  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
-/* Hover Image settings */
 .hover-img {
  opacity: 0;
  z-index: 1;
@@ -251,13 +294,12 @@ section {
  opacity: 1;
  z-index: 2;
 }
-/* Triggering dynamic actions on hover */
 .card:hover .primary-img {
  opacity: 0;
 }
 .card:hover .hover-img {
  opacity: 1;
- transform: scale(1.04); /* Smooth rich micro-motion zoom */
+ transform: scale(1.04);
 }
 
 .info {
@@ -280,7 +322,6 @@ section {
  margin-bottom: 14px;
 }
 
-/* Sleek Premium Glassmorphic Input Controls */
 .info select, select {
  width: 100%;
  padding: 11px;
@@ -289,7 +330,7 @@ section {
  -webkit-backdrop-filter: blur(var(--glass-blur));
  color: var(--text);
  border: 1px solid var(--line);
- border-radius: 4px !important; /* Elegant rounded edge for glass feel */
+ border-radius: 4px !important; 
  font-family: 'Inter', sans-serif;
  font-size: 13px;
  text-align-last: center;
@@ -306,7 +347,6 @@ section {
  color: var(--text);
 }
 
-/* Glass Action Button with smooth hover reflections */
 .glass-action-btn {
  width: 100%;
  padding: 13px;
@@ -332,7 +372,7 @@ section {
 }
 
 /* ==========================================================================
-   7. Quantity Controls & Global Input Boxes
+   8. Quantity Controls & Global Input Boxes
    ========================================================================== */
 .qty {
  display: flex;
@@ -390,7 +430,7 @@ input:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   8. Marquee Header Ticker & Main Filtering Area
+   9. Marquee Header Ticker & Main Filtering Area
    ========================================================================== */
 .marquee {
  width: 100%;
@@ -432,7 +472,7 @@ input:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   9. User Auth Session & Checkout Elements
+   10. User Auth Session & Checkout Elements
    ========================================================================== */
 .google-btn {
  display: inline-flex !important;
@@ -607,7 +647,7 @@ input:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   10. System Modern App Loader Setup
+   11. System Modern App Loader Setup
    ========================================================================== */
 #menuLoader {
  position: fixed;
@@ -668,7 +708,7 @@ footer p:last-of-type {
 }
 
 /* ==========================================================================
-   11. Combined Responsive Framework (Mobile Processing Screen Sizes)
+   12. Combined Responsive Framework
    ========================================================================== */
 @media(max-width: 1024px) {
  .grid { grid-template-columns: repeat(3, 1fr); }
@@ -692,8 +732,8 @@ footer p:last-of-type {
  .cart-table th, .cart-table td { padding: 10px 6px; font-size: 12px; }
  .total-price { font-size: 22px; }
  .title { font-size: 2rem; }
+ .holo-review { min-width: 150px; font-size: 11px; padding: 10px 12px; }
 }
-.holo-layer { display: none !important; }
 </style>
 </head>
 
@@ -708,7 +748,6 @@ footer p:last-of-type {
    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
    <div class="logo-text">
      <strong>Aquilux</strong>
-     <!-- Restored Sleek Integrated Theme Switcher Dots -->
      <div class="theme-switcher">
         <button onclick="setTheme('light')" class="theme-dot light" title="Light Theme"></button>
         <button onclick="setTheme('olive')" class="theme-dot olive" title="Olive Theme"></button>
@@ -760,6 +799,8 @@ footer p:last-of-type {
 </header>
  
 <section class="hero">
+  <!-- Restored Floating Review Layer Inside Hero Section -->
+  <div id="holoLayer" class="holo-layer"></div>
   <div class="wrap">
     <h1>Aquilux</h1>
     <div class="type">Own. Your. Altitude.</div>
@@ -821,7 +862,7 @@ footer p:last-of-type {
 </footer>
 
 <!-- ==========================================================================
-     12. Firebase Framework Integration Engine
+     13. Firebase Framework Integration Engine
      ========================================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
@@ -870,7 +911,7 @@ onAuthStateChanged(auth, (user) => {
 </script> 
 
 <!-- ==========================================================================
-     13. Dynamic Data Engines (Google Sheet Operations & System Handlers)
+     14. Core Logic Engine & Dynamic Floating Reviews Handler
      ========================================================================== -->
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
@@ -907,6 +948,46 @@ function setTheme(theme){
 const savedTheme = localStorage.getItem("theme") || "light";
 setTheme(savedTheme);
 
+// --- Restored Floating Review Engine & Logic ---
+const holoReviews=[["⭐⭐⭐⭐⭐","Yashvi","Premium quality."],["⭐⭐⭐⭐⭐","Priya","Luxury fabric."],["⭐⭐⭐⭐","Aarav","Worth every rupee."],["⭐⭐⭐⭐","Neha","Amazing fit."],["⭐⭐⭐⭐","Rohan","Fast delivery."],["⭐⭐⭐⭐","vikas"," Best quality and fast delivery."],["⭐⭐⭐⭐","Aayushi","100% original and best crop top."],["⭐⭐⭐","Karan 💀","Best products evey good prints."]];
+const holo=document.getElementById('holoLayer');const active=[];
+function bad(x,y){const w=220,h=90,cx=window.innerWidth/2-220,cy=window.innerHeight/2-170,cw=440,ch=340;if(x<cx+cw&&x+w>cx&&y<cy+ch&&y+h>cy)return true;for(const a of active){if(x<a.x+w&&x+w>a.x&&y<a.y+h&&y+h>a.y)return true;}return false;}
+function makeHolo(){
+ const isMobile = window.innerWidth <= 768;
+ let x,y,t=0;
+ do {
+   if(isMobile){
+     if(Math.random() < 0.5){ x = 8; }else{ x = window.innerWidth - 170; }
+     y = 120 + Math.random() * (window.innerHeight - 300);
+   } else {
+     x = 20 + Math.random() * (window.innerWidth - 260);
+     y = 30 + Math.random() * (window.innerHeight - 140);
+   }
+   t++;
+ } while(bad(x,y) && t < 40);
+
+ const d = document.createElement("div");
+ d.className = "holo-review";
+ const r = holoReviews[Math.floor(Math.random()*holoReviews.length)];
+ d.innerHTML = `<strong>${r[0]} ${r[1]} ✓</strong><div>${r[2]}</div>`;
+ d.style.left = x + "px";
+ d.style.top = y + "px";
+ holo.appendChild(d);
+ active.push({el:d,x,y});
+ requestAnimationFrame(()=>d.classList.add("show"));
+
+ setTimeout(()=>{
+   d.style.opacity="0";
+   d.style.filter="blur(10px)";
+   setTimeout(()=>{
+     const i=active.findIndex(v=>v.el===d);
+     if(i>-1) active.splice(i,1);
+     d.remove();
+   },600);
+ },1800+Math.random()*1200);
+}
+setInterval(()=>{let n=1+Math.floor(Math.random()*2);for(let i=0;i<n;i++)setTimeout(makeHolo,i*500);},3000);setTimeout(makeHolo,800);
+
 async function loadProducts() {
  showLoader();
  try {
@@ -922,7 +1003,6 @@ async function loadProducts() {
  hideLoader();
 }
 
-// Premium double hover card renderer engine
 function displayProducts(list = products) {
  currentProducts = list;
  const g = document.getElementById("grid");
@@ -931,8 +1011,6 @@ function displayProducts(list = products) {
  list.forEach((p, i) => {
    const sizesList = p.sizes && p.sizes.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
    const optionsHTML = sizesList.map(size => `<option>${size}</option>`).join('');
-
-   // If a second/hover image is missing from data sheet, it will auto-fallback to primary seamlessly
    const alternateImg = p.hover_image || p.image; 
 
    g.innerHTML += `<div class="card">
@@ -1082,7 +1160,7 @@ function showLoader(){
 
 function hideLoader(){
  const loader = document.getElementById("menuLoader");
- setTimeout(() => { loader.classList.remove("show"); }, 500);
+ setTimeout(() => { loader.classList.remove("remove"); loader.classList.remove("show"); }, 500);
 }
 
 async function lookupPin(){
