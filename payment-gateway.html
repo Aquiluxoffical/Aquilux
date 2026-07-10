@@ -114,7 +114,6 @@ body {
 .app-info-side { display: flex; align-items: center; gap: 12px; }
 .app-icon { height: 20px; width: auto; max-width: 40px; object-fit: contain; }
 
-/* Subtle Old Money text adjustment */
 .app-name { font-size: 13px; font-weight: 400; letter-spacing: 0.3px; color: #e5e5e5; }
 .pay-action-arrow { font-size: 11px; opacity: 0.4; text-transform: uppercase; letter-spacing: 1px; }
 
@@ -180,7 +179,7 @@ body {
         <h3>Select Premium Payment Mode</h3>
         
         <div class="apps-routing-grid">
-            <!-- 1. Google Pay App Link Redirector Router (Custom SVG) -->
+            <!-- 1. Google Pay App Link Redirector Router -->
             <button class="app-pay-btn" onclick="triggerAppPayment('gpay')">
                 <div class="app-info-side">
                     <img class="app-icon" src="images/gpay.svg" alt="Google Pay">
@@ -189,7 +188,7 @@ body {
                 <span class="pay-action-arrow">Pay Via →</span>
             </button>
 
-            <!-- 2. PhonePe App Link Redirector Router (Custom SVG) -->
+            <!-- 2. PhonePe App Link Redirector Router -->
             <button class="app-pay-btn" onclick="triggerAppPayment('phonepe')">
                 <div class="app-info-side">
                     <img class="app-icon" src="images/PhonePe_Logo.svg" alt="PhonePe">
@@ -198,7 +197,7 @@ body {
                 <span class="pay-action-arrow">Pay Via →</span>
             </button>
 
-            <!-- 3. BHIM UPI App Link Redirector Router (Custom SVG) -->
+            <!-- 3. BHIM UPI App Link Redirector Router -->
             <button class="app-pay-btn" onclick="triggerAppPayment('bhim')">
                 <div class="app-info-side">
                     <img class="app-icon" src="images/Bhim.svg" alt="BHIM UPI">
@@ -277,7 +276,7 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// Deep Linking Routing Intention Logic Core with Verified Merchant IDs
+// FIXED REDIRECTS: All popups, confirms, and prompt delays are completely removed
 window.triggerAppPayment = function(targetKey) {
     const amount = order.total || 0;
     const name = encodeURIComponent("Aquilux Luxury Store");
@@ -299,19 +298,19 @@ window.triggerAppPayment = function(targetKey) {
         finalIntentUrl = `phonepe://upi/pay?pa=${targetVpa}&pn=${name}&am=${amount}&cu=INR`;
     }
 
+    // Direct unconditional execution firing rule
     window.location.href = finalIntentUrl;
 
+    // Direct background redirection mapping fallback (Zero alerts)
     setTimeout(() => {
-        if (confirm("Agar payment app direct khul nahi raha hai, kya aap ise install karne ke liye App Store par jaana chahte hain?")) {
-            const storeLinks = {
-                gpay: "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041",
-                phonepe: "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563",
-                bhim: "https://apps.apple.com/in/app/bhim-making-india-digital/id1193138243",
-                universal: "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
-            };
-            window.open(storeLinks[targetKey], "_blank");
-        }
-    }, 1500);
+        const storeLinks = {
+            gpay: "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041",
+            phonepe: "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563",
+            bhim: "https://apps.apple.com/in/app/bhim-making-india-digital/id1193138243",
+            universal: "https://apps.apple.com/in/app/google-pay-save-pay-manage/id1193357041"
+        };
+        window.location.replace(storeLinks[targetKey]);
+    }, 2000);
 };
 
 window.placeOrderFinal = async function() {
