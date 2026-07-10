@@ -98,39 +98,17 @@ html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); b
 }
 
 /* ==========================================================================
-   2. Premium UTR Input Field (Replaced File Input)
+   2. Old Money English Notification Banner
    ========================================================================== */
-.proof-upload-wrapper {
- border: 1px solid var(--line);
- background: rgba(17, 17, 17, 0.01);
- padding: 20px;
- border-radius: 6px;
- margin-bottom: 25px;
- text-align: left;
-}
-.proof-upload-wrapper label {
- font-size: 12px;
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- display: block;
- margin-bottom: 8px;
- opacity: 0.8;
-}
-.utr-input-styled {
- width: 100%;
- padding: 12px;
- background: rgba(255, 255, 255, 0.6);
- border: 1px solid var(--line);
- border-radius: 4px;
- font-size: 14px;
+.whatsapp-notice-text {
+ font-size: 12.5px;
+ font-weight: 400;
+ line-height: 1.5;
  color: inherit;
- outline: none;
- transition: border-color 0.3s ease;
-}
-.utr-input-styled:focus {
- border-color: var(--text);
- background: rgba(255, 255, 255, 0.9);
+ opacity: 0.8;
+ margin-bottom: 16px;
+ padding: 0 5px;
+ text-align: center;
 }
 
 /* Operational Buttons */
@@ -144,12 +122,12 @@ html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); b
  border: 1px solid #25d366;
  border-radius: 4px;
  font-size: 13px;
- font-weight: 500;
+ font-weight: 600;
  letter-spacing: 1px;
  text-transform: uppercase;
  cursor: pointer;
  transition: all 0.3s;
- margin-bottom: 12px;
+ margin-bottom: 15px;
 }
 .whatsapp-submit-btn:hover {
  background: transparent;
@@ -162,7 +140,7 @@ html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); b
  padding: 14px;
  background: transparent;
  color: inherit;
- border: 1px solid var(--text);
+ border: 1px solid rgba(17, 17, 17, 0.2);
  text-decoration: none;
  border-radius: 4px;
  font-size: 13px;
@@ -171,9 +149,10 @@ html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); b
  text-transform: uppercase;
  transition: all 0.3s;
 }
+html[data-theme="dark"] .secondary-history-btn { border-color: rgba(255, 255, 255, 0.2); }
 .secondary-history-btn:hover {
- background: var(--text);
- color: var(--bg);
+ background: currentColor;
+ color: #fff;
 }
 
 .footer-brand {
@@ -196,23 +175,20 @@ html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); b
   </div>
 
   <h1>Order Submitted</h1>
-  <p class="message-desc">Your order configuration sheet is ready. Please enter your payment transaction UTR number below to activate the tracking code metrics securely.</p>
+  <p class="message-desc">Your order configuration sheet has been compiled and safely recorded within the server repository grid parameters.</p>
 
   <div class="order-id-box">
     <small>Registry Reference Token</small>
     <strong id="displayOrderNumber">AQ-Retrieving...</strong>
   </div>
 
-  <!-- Replaced Choose File with UTR Field -->
-  <div class="proof-upload-wrapper">
-     <label>Payment UTR / Transaction ID *</label>
-     <input type="text" id="utrNumber" class="utr-input-styled" placeholder="Enter 12-digit UTR or Txn ID" autocomplete="off">
-  </div>
+  <!-- English Instruction Note added smoothly above target button -->
+  <p class="whatsapp-notice-text">Please share these order details on the company's WhatsApp number so that your order can be processed as quickly as possible.</p>
 
-  <!-- Unified WhatsApp Sync Trigger Button -->
-  <button class="whatsapp-submit-btn" onclick="shareManifestWithProof()">Sync Details & Open WhatsApp</button>
+  <!-- Replaced Title to Share Order Details & Wiped out hard-dependent text inputs validations -->
+  <button class="whatsapp-submit-btn" onclick="shareManifestWithProof()">Share Order Details</button>
   
-  <a href="my-orders.html" class="secondary-history-btn">View My Orders</a>
+  <a href="index.html" class="secondary-history-btn">Return To Store</a>
 
   <div class="footer-brand">Aquilux · Own. Your. Altitude.</div>
 </div>
@@ -221,40 +197,36 @@ html[data-theme="dark"] .order-id-box { background: rgba(255, 255, 255, 0.02); b
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
 
+// Parsing order parameters logs from memory state references
 const pendingOrderData = JSON.parse(localStorage.getItem("pendingOrder") || "{}");
 const resolvedOrderNumber = localStorage.getItem("lastOrderNumber") || ("AQ" + Date.now());
 
 document.getElementById("displayOrderNumber").textContent = resolvedOrderNumber;
 
 window.shareManifestWithProof = function() {
-   const utrInput = document.getElementById("utrNumber").value.trim();
-   
-   if(utrInput === "") {
-      alert("Please enter your payment UTR / Transaction ID to verify the AQ validation token!");
-      return;
-   }
-
    let itemDetailsText = "";
    if(Array.isArray(pendingOrderData.cart)) {
       pendingOrderData.cart.forEach(item => {
+         itemDetailsText += `• ${item.n} (Size: ${item.s}, Qty: ${item.q || item.quantity})\n`;
+      });
+   } else if (Array.isArray(window.cart)) {
+      window.cart.forEach(item => {
          itemDetailsText += `• ${item.n} (Size: ${item.s}, Qty: ${item.q})\n`;
       });
    }
 
-   // Replaced screenshot references with clear UTR text tracks
    const whatsappMsg = `🛍️ Aquilux Verified Order Manifest
 
 Order Token: ${resolvedOrderNumber}
-Customer Name: ${pendingOrderData.receiverName || "User"}
+Customer Name: ${pendingOrderData.receiverName || "Premium User"}
 Phone Tracker: ${pendingOrderData.phone || "-"}
 
 Items Ordered:
 ${itemDetailsText || "Premium Drops Card Info"}
-Total Remittance: ₹${pendingOrderData.total || 0}
+Total Remittance Total: ₹${pendingOrderData.total || 0}
 
 ----------------------------------------
-💳 Payment Verified Via UTR Tracker
-UTR / Transaction ID: ${utrInput}`;
+Verified Order Framework Sync Signal Logs`;
 
    const finalWhatsAppLink = "https://wa.me/919558039135?text=" + encodeURIComponent(whatsappMsg);
    window.open(finalWhatsAppLink, "_blank");
