@@ -6,7 +6,7 @@
 <title>Aquilux Payment Gateway</title>
 <style>
 /* ==========================================================================
-   1. Universal Grid & Typography Setup (Cross-Device Optimization)
+   1. Design Archetype & Typography Reset (Matches Timeluxe Aesthetics)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -18,7 +18,7 @@
 }
 
 body {
- background: #ffffff; 
+ background: #ffffff; /* Premium minimal editorial white background */
  color: #111111;
  display: flex;
  justify-content: center;
@@ -29,9 +29,11 @@ body {
  transition: background 0.4s ease, color 0.4s ease;
 }
 
+/* Base Theme Color Adaptations mapped to data attributes */
 html[data-theme="dark"] body { background: #111111; color: #ffffff; }
 html[data-theme="olive"] body { background: #d7d9cf; color: #2c3525; }
 
+/* Wrapper Form Shell */
 .card {
  max-width: 680px;
  width: 100%;
@@ -67,6 +69,7 @@ h1 {
  letter-spacing: 0.5px;
 }
 
+/* Sleek Frosted Glass Component Blocks */
 .box {
  background: rgba(255, 255, 255, 0.45);
  backdrop-filter: blur(12px);
@@ -106,6 +109,10 @@ html[data-theme="olive"] .box {
  margin-top: 12px;
  text-transform: uppercase;
  letter-spacing: 0.5px;
+ transition: all 0.2s ease;
+}
+html[data-theme="dark"] .changeBtn, html[data-theme="dark"] .remove-btn {
+ border-color: rgba(255, 255, 255, 0.2);
 }
 .changeBtn:hover, .remove-btn:hover {
  background: rgba(17, 17, 17, 0.05);
@@ -121,8 +128,11 @@ html[data-theme="olive"] .box {
  padding-top: 20px;
  border-top: 1px solid rgba(17, 17, 17, 0.08);
 }
-html[data-theme="dark"] .total { border-top-color: rgba(255, 255, 255, 0.08); }
+html[data-theme="dark"] .total {
+ border-top-color: rgba(255, 255, 255, 0.08);
+}
 
+/* UPI App Buttons Grid */
 .paymentGrid {
  display: grid;
  grid-template-columns: repeat(3, 1fr);
@@ -166,6 +176,7 @@ html[data-theme="dark"] .payBtn:hover {
 .payBtn span {
  font-size: 12px;
  font-weight: 500;
+ letter-spacing: 0.3px;
 }
 
 .qty-mini-control {
@@ -177,6 +188,9 @@ html[data-theme="dark"] .payBtn:hover {
  overflow: hidden;
  background: rgba(255,255,255,0.3);
 }
+html[data-theme="dark"] .qty-mini-control {
+ border-color: rgba(255, 255, 255, 0.1);
+}
 .qty-mini-control button {
  padding: 4px 10px;
  background: transparent;
@@ -184,6 +198,9 @@ html[data-theme="dark"] .payBtn:hover {
  color: inherit;
  font-size: 14px;
  cursor: pointer;
+}
+.qty-mini-control button:hover {
+ background: rgba(17,17,17,0.05);
 }
 .qty-mini-control span {
  padding: 0 8px;
@@ -202,11 +219,9 @@ html[data-theme="dark"] .payBtn:hover {
  line-height: 1.6;
 }
 
-/* ==========================================================================
-   2. Universal Block for Verification (Ensures stability across Desktop/OS)
-   ========================================================================== */
+/* Universal Animation Block for Verification Modal */
 #paymentDoneBox {
- display: block; /* Kept block by default but hidden visually until trigger */
+ display: block; 
  opacity: 0;
  max-height: 0;
  overflow: hidden;
@@ -246,10 +261,32 @@ html[data-theme="dark"] #paymentDoneBox.triggered {
  text-transform: uppercase;
  cursor: pointer;
 }
-.success { background: #111111; color: #ffffff; border-color: #111111; }
-html[data-theme="dark"] .success { background: #ffffff; color: #111111; border-color: #ffffff; }
-.cancel { background: transparent; color: inherit; border-color: rgba(17, 17, 17, 0.2); }
-html[data-theme="dark"] .cancel { border-color: rgba(255, 255, 255, 0.2); }
+
+.success {
+ background: #111111;
+ color: #ffffff;
+ border-color: #111111;
+}
+html[data-theme="dark"] .success {
+ background: #ffffff;
+ color: #111111;
+ border-color: #ffffff;
+}
+.success:hover {
+ opacity: 0.85;
+}
+
+.cancel {
+ background: transparent;
+ color: inherit;
+ border-color: rgba(17, 17, 17, 0.2);
+}
+html[data-theme="dark"] .cancel {
+ border-color: rgba(255, 255, 255, 0.2);
+}
+.cancel:hover {
+ background: rgba(17, 17, 17, 0.04);
+}
 
 @media(max-width: 768px) {
  body { padding: 20px 15px; }
@@ -257,6 +294,7 @@ html[data-theme="dark"] .cancel { border-color: rgba(255, 255, 255, 0.2); }
  .box { padding: 18px; }
  .paymentGrid { gap: 10px; }
  .payBtn { padding: 15px 5px; }
+ .payBtn img { width: 32px; height: 32px; }
  .total { font-size: 18px; }
 }
 </style> 
@@ -268,6 +306,7 @@ html[data-theme="dark"] .cancel { border-color: rgba(255, 255, 255, 0.2); }
 <h1>Secure Checkout</h1>
 <p class="subtitle">Complete your Aquilux order</p>
 
+<!-- Verification Modal Banner Container -->
 <div id="paymentDoneBox">
  <h2>Payment Completed?</h2>
  <p>Did you successfully complete the payment transaction inside your app?</p>
@@ -311,13 +350,14 @@ html[data-theme="dark"] .cancel { border-color: rgba(255, 255, 255, 0.2); }
  </div>
  <div class="note">
    ✔ Secure UPI Payment Gateway Engine<br>
-   ✔ Cross-Device Smart Redirection (Android/iOS)<br>
-   ✔ Desktop Stable Manual Callback Box enabled
+   ✔ Cross-Device Smart Redirection Tracking Fix<br>
+   ✔ Desktop/Tablet Manual Validation System
  </div>
 </div>
 
 </div>
 
+<!-- Core System Application Engine Logic -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
@@ -375,7 +415,6 @@ function renderCart(){
    updateTotal();
 }
 
-// OS Detect Engine for Smart Redirect Logic
 function getMobileOS() {
   const ua = navigator.userAgent || navigator.vendor || window.opera;
   if (/android/i.test(ua)) return "android";
@@ -383,18 +422,16 @@ function getMobileOS() {
   return "desktop";
 }
 
-// Universal Smart Routing Payment Router with Stores Fallback Interceptor
+// Universal Smart Routing Payment Router with Focus Event Handlers
 window.pay = function(appChoice) {
    const upiId = "Yashojhaoffical1982@oksbi";
    const amount = order.total;
    const note = encodeURIComponent("Aquilux Order Payment");
    const os = getMobileOS();
 
-   // Base standard string configuration fallback
    let targetUrl = `upi://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}`;
    let storeUrl = "";
 
-   // Device App store routers mappings configurations
    const storeLinks = {
      android: {
        gpay: "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user",
@@ -408,7 +445,6 @@ window.pay = function(appChoice) {
      }
    };
 
-   // Injecting custom application package intent handlers for mobile structures
    if (os === "android") {
      if (appChoice === "gpay") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end`;
      if (appChoice === "phonepe") targetUrl = `intent://pay?pa=${upiId}&pn=Aquilux&am=${amount}&cu=INR&tn=${note}#Intent;scheme=upi;package=com.phonepe.app;end`;
@@ -423,29 +459,38 @@ window.pay = function(appChoice) {
 
    localStorage.setItem("paymentStarted", "true");
 
-   // App-switching deep-linking mechanism with timeout listener check logic
    if (os !== "desktop") {
-     const startTime = Date.now();
+     let appOpened = false;
+
+     const preventRedirect = function() {
+         appOpened = true;
+         window.removeEventListener("pagehide", preventRedirect);
+         window.removeEventListener("blur", preventRedirect);
+     };
+
+     window.addEventListener("pagehide", preventRedirect);
+     window.addEventListener("blur", preventRedirect);
+
      window.location.href = targetUrl;
 
-     // If the application doesn't open in 2 seconds, redirect smoothly to corresponding App Store
+     // Delay timer fallback executes strictly if browser focus remains uninterrupted
      setTimeout(() => {
-       if (Date.now() - startTime < 2200) {
+       if (!appOpened && !document.hidden) {
          window.location.href = storeUrl;
+       } else {
+         showPaymentDoneBox();
        }
-     }, 2000);
+     }, 2500);
+
    } else {
-     // Desktop fallback prompt notification alerts
      alert(`Desktop Mode (Mac/Windows) detected.\n\nPlease scan or send exactly ₹${amount} to UPI ID: ${upiId}.\n\nVerification details panel enabled below.`);
      showPaymentDoneBox();
    }
 }
 
-// Optimized universal visibility processor rules
 function showPaymentDoneBox() {
   const box = document.getElementById("paymentDoneBox");
   box.classList.add("triggered");
-  // Smoothly scrolls screen focus directly to the verification block context
   box.scrollIntoView({ behavior: 'smooth' });
 }
 
