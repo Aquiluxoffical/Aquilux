@@ -299,6 +299,15 @@ section { padding: 90px 6%; }
 }
 .wishlist-toggle-icon:hover { transform: scale(1.08); background: #ffffff; }
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
+.wishlist-toggle-icon svg{
+ width:17px;
+ height:17px;
+ transition:.25s ease;
+}
+.wishlist-toggle-icon.active svg{
+ fill:#111;
+ stroke:#111;
+}
 
 button, input, textarea { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
 input, textarea { width: 100%; }
@@ -758,7 +767,11 @@ function displayProducts(list = products) {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
-     <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">❤</button>
+     <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
+    </svg>
+</button>
      <div class="card-img-wrapper">
        <img src="${p.image}" class="primary-img"><img src="${p.hover_image || p.image}" class="hover-img">
      </div>
