@@ -18,15 +18,8 @@
  --glass-blur: 12px;
 }
 
-* {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
-}
-html {
- scroll-behavior: smooth;
- height: 100%;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; height: 100%; }
 body {
  font-family: 'Inter', Arial, sans-serif;
  background: var(--bg);
@@ -53,65 +46,28 @@ header {
  border-bottom: 1px solid var(--line);
  z-index: 100;
 }
-header img {
- height: 34px;
- transition: filter 0.3s;
-}
+header img { height: 34px; transition: filter 0.3s; }
 html[data-theme="dark"] header img { filter: invert(0); }
 html[data-theme="light"] header img { filter: invert(1); }
 html[data-theme="olive"] header img { filter: invert(1); }
 
-.logo-box {
- display: flex;
- align-items: center;
- gap: 12px;
-}
-.logo-text strong {
- font-family: 'Cormorant Garamond', serif;
- font-size: 24px;
- font-weight: 600;
- letter-spacing: 0.5px;
-}
-.header-right {
- display: flex;
- align-items: center;
- gap: 24px;
- flex-wrap: nowrap;
-}
+.logo-box { display: flex; align-items: center; gap: 12px; }
+.logo-text strong { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; letter-spacing: 0.5px; }
+.header-right { display: flex; align-items: center; gap: 24px; flex-wrap: nowrap; }
+
 .cart-title {
- color: var(--text) !important;
- text-decoration: none;
- font-size: 14px;
- font-weight: 400;
- letter-spacing: 0.5px;
- display: flex;
- align-items: center;
- gap: 6px;
- cursor: pointer;
- position: relative;
+ color: var(--text) !important; text-decoration: none; font-size: 14px; font-weight: 400; letter-spacing: 0.5px;
+ display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative;
 }
 .cart-title:hover { opacity: 0.7; }
 #cartCount {
- width: 20px;
- height: 18px;
- display: flex;
- align-items: center;
- justify-content: center;
- background: var(--text);
- color: var(--bg);
- border-radius: 50%;
- font-size: 10px;
- font-weight: 600;
+ width: 20px; height: 18px; display: flex; align-items: center; justify-content: center;
+ background: var(--text); color: var(--bg); border-radius: 50%; font-size: 10px; font-weight: 600;
 }
 
 .theme-switcher { display: flex; gap: 8px; margin-top: 6px; }
 .theme-dot {
- width: 14px;
- height: 14px;
- border-radius: 50%;
- border: 1px solid rgba(var(--text), 0.2);
- cursor: pointer;
- transition: transform 0.2s ease;
+ width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(var(--text), 0.2); cursor: pointer; transition: transform 0.2s ease;
 }
 .theme-dot:hover { transform: scale(1.25); }
 .theme-dot.light { background: #ffffff; }
@@ -119,14 +75,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .theme-dot.dark { background: #111111; }
 
 #userBox { display: flex; align-items: center; cursor: pointer; }
-#userImg {
- border-radius: 50%;
- border: 2px solid var(--text);
- object-fit: cover;
- width: 34px;
- height: 34px;
- transition: transform 0.3s ease;
-}
+#userImg { border-radius: 50%; border: 2px solid var(--text); object-fit: cover; width: 34px; height: 34px; transition: transform 0.3s ease; }
 #userImg:hover { transform: scale(1.05); }
 
 /* ==========================================================================
@@ -149,109 +98,94 @@ html[data-theme="olive"] header img { filter: invert(1); }
  box-shadow: -10px 0 40px rgba(0,0,0,0.08);
  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.account-sidebar-panel { right: -460px; overflow-y: auto; display: block; }
+.account-sidebar-panel { right: -460px; overflow-y: auto; }
 .account-sidebar-panel.active { right: 0; }
 
 .cart-sidebar-panel { right: -460px; }
 .cart-sidebar-panel.active { right: 0; }
 
-.panel-header {
- display: flex;
- justify-content: space-between;
- align-items: center;
- padding-bottom: 15px;
- border-bottom: 1px solid var(--line);
- flex-shrink: 0;
-}
+.panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
 .panel-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; }
 .close-panel-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text); opacity: 0.5; line-height: 1; }
 .close-panel-btn:hover { opacity: 1; }
 
-.profile-meta-card {
- display: flex;
- align-items: center;
- gap: 15px;
- background: var(--glass-bg);
- padding: 15px;
- border-radius: 6px;
- border: 1px solid var(--line);
- margin: 20px 0;
-}
-.profile-meta-card img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
-.profile-meta-card h4 { font-size: 15px; font-weight: 500; }
-.profile-meta-card p { font-size: 12px; opacity: 0.6; }
+.profile-meta-card { display: flex; align-items: center; gap: 15px; background: var(--glass-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--line); margin: 20px 0 15px 0; }
+.profile-meta-card img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+.profile-meta-card h4 { font-size: 14px; font-weight: 500; }
+.profile-meta-card p { font-size: 11px; opacity: 0.6; }
 
-.account-section-block { margin-bottom: 25px; }
-.account-section-block h3 {
- font-family: 'Cormorant Garamond', serif;
- font-size: 16px;
+/* Dynamic Menu Buttons Navigation Panel */
+.account-tabs-nav {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 8px;
+ margin-bottom: 20px;
+ border-bottom: 1px solid var(--line);
+ padding-bottom: 15px;
+}
+.tab-nav-btn {
+ padding: 10px 4px;
+ font-size: 11px;
  font-weight: 600;
- margin-bottom: 12px;
- border-bottom: 1px dashed var(--line);
- padding-bottom: 6px;
  text-transform: uppercase;
  letter-spacing: 0.5px;
+ background: var(--glass-bg);
+ color: var(--text);
+ border: 1px solid var(--line);
+ border-radius: 4px;
+ cursor: pointer;
+ transition: all 0.2s ease;
+ margin-top: 0;
+}
+.tab-nav-btn.active {
+ background: var(--text);
+ color: var(--bg);
+ border-color: var(--text);
 }
 
-/* Tab/List Row Styles */
-.panel-item-row {
- display: flex;
- align-items: center;
- gap: 12px;
- padding: 12px 0;
- border-bottom: 1px solid rgba(17,17,17,0.05);
- font-size: 13px;
+/* Individual Content Pages Panels Container */
+.account-page-content { display: none; }
+.account-page-content.active { display: block; }
+
+/* Saved Address Dashboard Box styling */
+.saved-address-view-card {
+ background: rgba(17,17,17,0.02);
+ border: 1px dashed var(--line);
+ padding: 14px;
+ border-radius: 6px;
+ font-size: 12px;
+ line-height: 1.6;
+ margin-bottom: 15px;
 }
+.saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
+
+.panel-address-grid input { width: 100%; padding: 8px 10px; font-size: 12px; margin-top: 6px; background: transparent; border: 1px solid var(--line); border-radius: 4px; }
+.panel-address-grid .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.save-address-btn-style { width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+.logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
+.logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
+
+/* Rows Configurations inside Tabs */
+.panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.05); font-size: 13px; }
 .panel-item-row img { width: 45px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
 .panel-item-row-info { flex: 1; }
 .panel-item-row-info h5 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
 .panel-item-row-info p { font-size: 11px; opacity: 0.6; }
 
-.panel-action-icon-btn {
- background: none; border: none; cursor: pointer; color: var(--text); opacity: 0.5; transition: opacity 0.2s;
-}
+.panel-action-icon-btn { background: none; border: none; cursor: pointer; color: var(--text); opacity: 0.5; transition: opacity 0.2s; }
 .panel-action-icon-btn:hover { opacity: 1; color: #ff4a4a; }
-
-/* Shipping Matrix Grid */
-.panel-address-grid input {
- width: 100%; padding: 8px 10px; font-size: 12px; margin-top: 6px; background: transparent; border: 1px solid var(--line); border-radius: 4px;
-}
-.panel-address-grid .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-.save-address-btn-style {
- width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;
-}
-.logout-sidebar-btn {
- width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 20px;
-}
-.logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
 
 .mini-status-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase; display: inline-block; }
 .mini-status-badge.pending { background: rgba(255,191,0,0.1); color: #b88600; }
 .mini-status-badge.approved { background: rgba(24,183,90,0.1); color: #148f43; }
-.mini-status-badge.cancelled { background: rgba(255,74,74,0.15); color: #ff4a4a; font-weight:600; }
+.mini-status-badge.cancelled { background: rgba(255,74,74,0.15); color: #ff4a4a; }
 
-/* Dynamic Header Drawer Scroll Isolation Setup */
-.cart-items-scroll-area { 
- flex: 1; 
- overflow-y: auto; 
- margin: 15px 0;
- padding-right: 5px;
- -webkit-overflow-scrolling: touch;
-}
-
-/* Rigid Floating Calculations Placement Dock */
-.cart-footer-calculation-dock { 
- border-top: 1px solid var(--line); 
- padding-top: 15px; 
- padding-bottom: max(15px, env(safe-area-inset-bottom));
- flex-shrink: 0;
- background: transparent;
- width: 100%;
-}
+/* Cart Layout elements */
+.cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; -webkit-overflow-scrolling: touch; }
+.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 15px; padding-bottom: max(15px, env(safe-area-inset-bottom)); flex-shrink: 0; background: transparent; width: 100%; }
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
 
-/* Mini Qty Counter inside Sidebar Drawer */
 .mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; background: rgba(17,17,17,0.02); }
 .mini-qty-box button { padding: 2px 10px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; font-weight: 600; }
 .mini-qty-box button:hover { background: rgba(17,17,17,0.05); }
@@ -359,7 +293,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <p>Welcome to aquilux</p>
 </div>
 
-<!-- Sliding Interactive Account Drawer Panel Matrix -->
 <div id="accountDrawer" class="account-sidebar-panel">
    <div class="panel-header">
        <h2>My Premium Space</h2>
@@ -374,10 +307,20 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
-   <!-- Sub-Block A: Address Profiles -->
-   <div class="account-section-block">
-       <h3>Saved Shipping Matrix</h3>
+   <div class="account-tabs-nav">
+       <button id="tabBtnAddress" class="tab-nav-btn active" onclick="switchAccountTab('address')">Address</button>
+       <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist</button>
+       <button id="tabBtnOrders" class="tab-nav-btn" onclick="switchAccountTab('orders')">My Orders</button>
+   </div>
+
+   <div id="accountPageAddress" class="account-page-content active">
+       <div class="saved-address-view-card">
+           <h4>Auto Saved Core Address</h4>
+           <div id="savedAddressSummaryDisplay">No parameters configured. Please deploy inputs below.</div>
+       </div>
+
        <div class="panel-address-grid">
+           <p style="font-size:11px; opacity:0.5; text-transform:uppercase; letter-spacing:0.5px;">Deploy New Shipping Parameters:</p>
            <input type="text" id="panel_receiverName" placeholder="Receiver Full Name">
            <input type="tel" id="panel_phone" maxlength="10" placeholder="Contact Tracker No">
            <input type="text" id="panel_flat" placeholder="Flat / Society Space Info">
@@ -388,33 +331,27 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
               <input type="text" id="panel_city" placeholder="City Engine" readonly>
            </div>
            <input type="text" id="panel_state" placeholder="State Zone" readonly>
-           <button class="save-address-btn-style" onclick="saveAddressToMemoryStore()">Save Shipping Layout</button>
+           <button class="save-address-btn-style" onclick="saveAddressToMemoryStore()">Save & Auto-Lock Address</button>
        </div>
    </div>
 
-   <!-- Sub-Block B: Absolute Live Wishlist Ledger Tracking -->
-   <div class="account-section-block">
-       <h3>My Wishlist Ledger</h3>
+   <div id="accountPageWishlist" class="account-page-content">
        <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
    </div>
 
-   <!-- Sub-Block C: Embedded Historical Core Tracking Timelines -->
-   <div class="account-section-block">
-       <h3>Real-Time Orders Trace</h3>
+   <div id="accountPageOrders" class="account-page-content">
        <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
    </div>
 
    <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
 </div>
 
-<!-- Premium Embedded Cart Header Overlay Dropdown Panel -->
 <div id="cartDrawer" class="cart-sidebar-panel">
    <div class="panel-header">
        <h2>Shopping Bag</h2>
        <button class="close-panel-btn" onclick="toggleCartDrawer(false)">×</button>
    </div>
    
-   <!-- Embedded Scroll Engine Area for real-time item rows mapping -->
    <div class="cart-items-scroll-area" id="drawerCartContainer">
        <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
    </div>
@@ -424,7 +361,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
            <span>Total Remittance</span>
            <span>₹<span id="drawerCartTotal">0</span></span>
        </div>
-       <!-- Premium Proceed to Checkout Button -->
        <button class="payment-btn" onclick="goToGateway()">Proceed To Checkout</button>
    </div>
 </div>
@@ -443,7 +379,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  </div>
 
  <div class="header-right">
-   <!-- Cart Action Target Pointer toggles right sidebar drawer overlay -->
    <div class="cart-title" onclick="toggleCartDrawer(true)">
      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
@@ -507,9 +442,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude.</p><p>aquilux.support@gmail.com</p>
 </footer>
 
-<!-- ==========================================================================
-     5. Firebase System Hub Modules 
-     ========================================================================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -532,9 +464,7 @@ const provider = new GoogleAuthProvider();
 window.googleLogin = async () => {
  try {
    await signInWithPopup(auth, provider);
- } catch (e) {
-   console.error(e);
- }
+ } catch (e) { console.error(e); }
 };
 window.googleLogout = () => { signOut(auth); toggleAccountDrawer(false); };
 
@@ -604,6 +534,31 @@ function toggleAccountDrawer(openState) {
 function toggleCartDrawer(openState) {
     if(openState) toggleAccountDrawer(false);
     document.getElementById("cartDrawer").classList.toggle("active", openState);
+}
+
+/* Tab Switching Layout Logic */
+function switchAccountTab(tabName) {
+    // Reset buttons active states
+    document.getElementById("tabBtnAddress").classList.remove("active");
+    document.getElementById("tabBtnWishlist").classList.remove("active");
+    document.getElementById("tabBtnOrders").classList.remove("active");
+    
+    // Reset content pages states
+    document.getElementById("accountPageAddress").classList.remove("active");
+    document.getElementById("accountPageWishlist").classList.remove("active");
+    document.getElementById("accountPageOrders").classList.remove("active");
+    
+    // Set targeted tab alive
+    if(tabName === 'address') {
+        document.getElementById("tabBtnAddress").classList.add("active");
+        document.getElementById("accountPageAddress").classList.add("active");
+    } else if(tabName === 'wishlist') {
+        document.getElementById("tabBtnWishlist").classList.add("active");
+        document.getElementById("accountPageWishlist").classList.add("active");
+    } else if(tabName === 'orders') {
+        document.getElementById("tabBtnOrders").classList.add("active");
+        document.getElementById("accountPageOrders").classList.add("active");
+    }
 }
 
 function setTheme(theme){
@@ -682,21 +637,42 @@ function renderWishlistPanel() {
 
 window.saveAddressToMemoryStore = function() {
     const addressBlock = {
-        receiverName: document.getElementById("panel_receiverName").value,
-        phone: document.getElementById("panel_phone").value,
-        flat: document.getElementById("panel_flat").value,
-        road: document.getElementById("panel_road").value,
-        landmark: document.getElementById("panel_landmark").value,
-        pincode: document.getElementById("panel_pincode").value,
+        receiverName: document.getElementById("panel_receiverName").value.trim(),
+        phone: document.getElementById("panel_phone").value.trim(),
+        flat: document.getElementById("panel_flat").value.trim(),
+        road: document.getElementById("panel_road").value.trim(),
+        landmark: document.getElementById("panel_landmark").value.trim(),
+        pincode: document.getElementById("panel_pincode").value.trim(),
         city: document.getElementById("panel_city").value,
         state: document.getElementById("panel_state").value
     };
+    
+    if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) {
+        alert("Please completely fill out Name, Contact, and Pincode components!");
+        return;
+    }
+    
     localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock));
-    alert("Shipping matrix metadata safely synced!");
+    alert("Shipping layout parameter locked & updated!");
+    renderAddressSummaryBlock(addressBlock);
+}
+
+function renderAddressSummaryBlock(addr) {
+    const display = document.getElementById("savedAddressSummaryDisplay");
+    if(!addr.receiverName) {
+        display.innerHTML = "No configured profiles active. Deploy using fields below.";
+        return;
+    }
+    display.innerHTML = `
+        <strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br>
+        <span>${addr.flat || ""}, ${addr.road || ""}</span><br>
+        <span>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>
+    `;
 }
 
 function loadSavedAddressToPanel() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
+    renderAddressSummaryBlock(addr);
     if(!addr.receiverName) return;
     document.getElementById("panel_receiverName").value = addr.receiverName || "";
     document.getElementById("panel_phone").value = addr.phone || "";
@@ -740,9 +716,7 @@ window.changeDrawerQty = function(index, change) {
 }
 
 function draw(){
- let t = 0;
- let h = "";
- 
+ let t = 0; let h = "";
  cart.forEach((c, i) => {
    t += c.p * c.q;
    h += `
@@ -760,46 +734,28 @@ function draw(){
         <button class="panel-action-icon-btn" onclick="cart.splice(${i},1);draw()">×</button>
     </div>`;
  });
- 
  if(cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
- 
  localStorage.setItem("aquilux_cart", JSON.stringify(cart));
- 
  document.getElementById("drawerCartContainer").innerHTML = h; 
  document.getElementById("drawerCartTotal").textContent = t;
- 
- let count = 0; 
- cart.forEach(x => { count += x.q; }); 
+ let count = 0; cart.forEach(x => { count += x.q; }); 
  document.getElementById("cartCount").textContent = count;
 }
 
 function goToGateway(){
- if(cart.length === 0) {
-     alert("Your shopping cart is empty!");
-     return;
- }
- 
+ if(cart.length === 0) { alert("Your shopping cart is empty!"); return; }
  const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
- 
  if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
-     alert("Please add and save your delivery address in your premium space first! (Opening Profile Menu)");
-     toggleAccountDrawer(true); 
+     alert("Please add and save your delivery address space parameter inside navigation portal first!");
+     toggleAccountDrawer(true); switchAccountTab('address');
      return;
  }
- 
  const orderData = {
-   cart: cart, 
-   total: Number(document.getElementById("drawerCartTotal").textContent),
-   receiverName: savedAddr.receiverName, 
-   phone: savedAddr.phone,
-   flat: savedAddr.flat || "", 
-   road: savedAddr.road || "",
-   landmark: savedAddr.landmark || "", 
-   city: savedAddr.city || "",
-   state: savedAddr.state || "", 
-   pincode: savedAddr.pincode
+   cart: cart, total: Number(document.getElementById("drawerCartTotal").textContent),
+   receiverName: savedAddr.receiverName, phone: savedAddr.phone,
+   flat: savedAddr.flat || "", road: savedAddr.road || "", landmark: savedAddr.landmark || "", 
+   city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
  };
- 
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
  window.location.href = "payment-gateway.html";
 }
