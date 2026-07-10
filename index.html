@@ -6,7 +6,7 @@
 <title>Aquilux — Own. Your. Altitude.</title>
 <style>
 /* ==========================================================================
-   1. Global Variables & Base Resets (Premium Glassmorphic Aesthetics)
+   1. Global Variables & Base Resets (Premium Aesthetics)
    ========================================================================== */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -79,7 +79,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 #userImg:hover { transform: scale(1.05); }
 
 /* ==========================================================================
-   3. Premium Sliding Drawers (Safari dvh & Hidden Framework State Fix)
+   3. Premium Sliding Drawers (FIXED Pure Solid Non-Transparent Background)
    ========================================================================== */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
@@ -87,14 +87,18 @@ html[data-theme="olive"] header img { filter: invert(1); }
  width: 450px;
  height: 100vh;
  height: 100dvh;
- background: solid;
+ 
+ /* Fixed invalid background layout glitch to absolute solid view rules */
+ background: var(--bg) !important; 
+ backdrop-filter: none !important;
+ -webkit-backdrop-filter: none !important;
 
  border-left: 1px solid var(--line);
  z-index: 200005;
  padding: 30px 24px;
  display: none; 
  flex-direction: column;
- box-shadow: -10px 0 40px rgba(0,0,0,0.08);
+ box-shadow: -15px 0 45px rgba(0,0,0,0.18);
  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .account-sidebar-panel { right: -460px; overflow-y: auto; }
@@ -128,7 +132,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
  padding: 12px 14px; 
  font-size: 13px; 
  margin-top: 8px; 
- background: var(--glass-bg); /* Muted solid background layer (transparent hataya) */
+ background: var(--glass-bg); 
  border: 1px solid var(--line); 
  border-radius: 6px; 
  color: var(--text);
@@ -137,7 +141,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 }
 
 .panel-address-grid input:focus {
- background: rgba(var(--text), 0.02); /* Click karne par halke se high-contrast solid look */
+ background: rgba(var(--text), 0.02); 
  border-color: var(--text);
 }
 
@@ -146,7 +150,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
  grid-template-columns: 1fr 1fr; 
  gap: 8px; 
 }
-
 
 .save-address-btn-style { width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
 .logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
@@ -196,7 +199,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 
 .review-roller-container { margin-bottom: 40px; width: 100%; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
 .review-roller-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: var(--text); margin-bottom: 15px; }
-.review-roller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
+.review-roller; { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
 .roller-card { flex: 0 0 280px; scroll-snap-align: start; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
 
 section { padding: 90px 6%; }
