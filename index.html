@@ -840,13 +840,12 @@ setTheme(localStorage.getItem("theme") || "light");
 
 async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
- renderWishlistPanel(); draw();
+ if(typeof renderWishlistPanel === "function") renderWishlistPanel(); 
+ if(typeof draw === "function") draw();
+ 
  try {
    const res = await fetch(API_URL); 
    products = await res.json(); 
-   
-   // LIVE MONITORING: Right-click karke Inspect -> Console mein check karo ye kya print kar raha hai
-   console.log("All Sheet Products Received:", products);
    
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
@@ -855,13 +854,12 @@ async function loadProducts() {
    upcomingContainer.innerHTML = "";
 
    products.forEach(p => {
-       // launchDate, launchdate ya launchDate string sabko cross check karega
        let rawLaunch = p.launchDate || p.launchdate || null;
        let launchTimestamp = null;
        
        if (rawLaunch) {
            let cleanDateStr = String(rawLaunch).trim();
-           // Slashes ko hyphens mein badlega aur spacing thik karega
+           // Slashes aur spaces ko transform karega standard structure mein
            cleanDateStr = cleanDateStr.replace(/\//g, '-');
            if(!cleanDateStr.includes('T') && cleanDateStr.includes(' ')) {
                cleanDateStr = cleanDateStr.replace(' ', 'T');
@@ -869,13 +867,14 @@ async function loadProducts() {
            launchTimestamp = Date.parse(cleanDateStr);
        }
 
+       // Core logic validation check
        if (launchTimestamp && launchTimestamp > nowTime) {
            upcomingHypeFound = true;
-           upcomingContainer.innerHTML += `
+           upcomingContainer.innerHTML = `
                <div class="hype-blurred-visual-card">
-                   <img src="${p.image}">
+                   <img src="${p.image || ''}">
                </div>
-               <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; text-transform:uppercase; margin-top:10px; font-weight:500;">${p.product}</h3>
+               <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; text-transform:uppercase; margin-top:10px; font-weight:500;">${p.product || 'Upcoming Drop'}</h3>
                <div class="countdown-clock-dock" id="timer_clock_node"></div>
            `;
            initiateMasterCountdown(launchTimestamp);
@@ -884,10 +883,10 @@ async function loadProducts() {
        }
    });
 
-   if (upcomingHypeFound) {
-       document.getElementById("upcoming").style.display = "block";
-   } else {
-       document.getElementById("upcoming").style.display = "none";
+   // Setup layout section blocks visibility toggles
+   const upcomingSection = document.getElementById("upcoming");
+   if (upcomingSection) {
+       upcomingSection.style.display = upcomingHypeFound ? "block" : "none";
    }
 
    currentProducts = [...activeMarketDisplayItems];
@@ -895,21 +894,23 @@ async function loadProducts() {
    displayProducts(currentProducts);
 
  } catch (e) { 
-     console.error("Layout Engine Crash Log:", e);
+     console.error("Hype Engine Debug Log:", e);
      document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
  }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
-
 function initiateMasterCountdown(targetTime) {
-    const clockLoop = setInterval(() => {
+    // Purane chal rahe intervals ko clean karne ke liye window scope protection
+    if(window.activeClockLoop) clearInterval(window.activeClockLoop);
+    
+    window.activeClockLoop = setInterval(() => {
         const now = new Date().getTime();
         const diff = targetTime - now;
         
         if (diff <= 0) {
-            clearInterval(clockLoop);
-            loadProducts(); 
+            clearInterval(window.activeClockLoop);
+            loadProducts(); // Automatically push back to grid once timer hits zero
             return;
         }
 
@@ -929,6 +930,7 @@ function initiateMasterCountdown(targetTime) {
         }
     }, 1000);
 }
+
 
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
