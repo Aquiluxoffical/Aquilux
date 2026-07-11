@@ -11,113 +11,56 @@
  --bg: #ffffff;             
  --text: #111111;           
  --line: rgba(17, 17, 17, 0.08); 
- --glass-bg: rgba(255, 255, 255, 0.45);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body {
- font-family: 'Inter', Arial, sans-serif;
- background: var(--bg);
- color: var(--text);
- -webkit-font-smoothing: antialiased;
- padding-top: 100px;
-}
+body { font-family: 'Inter', Arial, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; padding-top: 100px; }
 
 header {
- position: fixed;
- top: 0;
- width: 100%;
- padding: 18px 6%;
- display: flex;
- justify-content: space-between;
- align-items: center;
- background: rgba(255, 255, 255, 0.85);
- backdrop-filter: blur(16px);
- border-bottom: 1px solid var(--line);
- z-index: 100;
+ position: fixed; top: 0; width: 100%; padding: 18px 6%; display: flex; justify-content: space-between; align-items: center;
+ background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); z-index: 100;
 }
 .logo-box { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; cursor: pointer; text-decoration: none; color: inherit; }
 
-.product-container {
- display: flex;
- max-width: 1200px;
- margin: 40px auto;
- padding: 0 4%;
- gap: 60px;
- align-items: center;
-}
-.product-media { flex: 1.2; position: relative; }
+.product-container { display: flex; max-width: 1200px; margin: 40px auto; padding: 0 4%; gap: 60px; align-items: center; }
+.product-media { flex: 1.2; }
 .product-info-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
-.main-display-image {
- width: 100%;
- aspect-ratio: 3/4;
- object-fit: cover;
- background: #f9f9f9;
- border-radius: 4px;
- transition: filter 0.4s ease;
-}
-.main-display-image.blurred {
- filter: blur(25px) brightness(0.95);
- pointer-events: none;
-}
+.main-display-image { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #f9f9f9; border-radius: 4px; transition: filter 0.4s ease; }
+.main-display-image.blurred { filter: blur(25px) brightness(0.95); pointer-events: none; }
 
-h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; margin-bottom: 8px; text-transform: uppercase; }
 .price-tag { font-size: 1.4rem; font-weight: 500; margin-bottom: 35px; opacity: 0.9; }
 
 .selector-wrapper { margin-bottom: 30px; }
 .selector-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.4; margin-bottom: 12px; display: block; font-weight: 600; }
 
-/* Premium Capsule Buttons for Size Selector */
 .size-capsule-tray { display: flex; gap: 10px; flex-wrap: wrap; }
-.size-node-btn {
- padding: 12px 20px; font-size: 12px; font-weight: 500; background: transparent;
- border: 1px solid var(--line); border-radius: 4px; color: var(--text); cursor: pointer;
- transition: all 0.2s ease;
-}
-.size-node-btn:hover { border-color: var(--text); }
+.size-node-btn { padding: 12px 20px; font-size: 12px; font-weight: 500; background: transparent; border: 1px solid var(--line); border-radius: 4px; color: var(--text); cursor: pointer; }
 .size-node-btn.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-/* Quantity Layout Controls */
-.qty-control-dock { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 30px; background: rgba(17,17,17,0.01); }
-.qty-control-dock button { padding: 10px 18px; font-size: 16px; background: transparent; border: none; cursor: pointer; color: var(--text); transition: background 0.2s; }
-.qty-control-dock button:hover { background: rgba(17,17,17,0.04); }
-.qty-control-dock span { padding: 0 15px; font-size: 13px; font-weight: 600; min-width: 40px; text-align: center; user-select: none; }
+.qty-control-dock { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 30px; }
+.qty-control-dock button { padding: 10px 18px; font-size: 16px; background: transparent; border: none; cursor: pointer; color: var(--text); }
+.qty-control-dock span { padding: 0 15px; font-size: 13px; font-weight: 600; min-width: 40px; text-align: center; }
 
-/* Dual Action Button Architecture */
 .button-action-stack { display: flex; flex-direction: column; gap: 12px; width: 100%; }
-
-.action-btn {
- width: 100%;
- padding: 18px;
- font-size: 12px;
- font-weight: 600;
- letter-spacing: 2px;
- text-transform: uppercase;
- cursor: pointer;
- transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
- border-radius: 4px;
-}
+.action-btn { width: 100%; padding: 18px; font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
 .bag-btn { background: transparent; color: var(--text); border: 1px solid var(--text); }
 .bag-btn:hover { background: var(--text); color: var(--bg); }
-
 .buy-now-btn { background: var(--text); color: var(--bg); border: 1px solid var(--text); }
 .buy-now-btn:hover { background: transparent; color: var(--text); }
 
-.page-countdown-dock {
- margin-top: 30px; border: 1px dashed var(--line); padding: 25px;
- background: rgba(17,17,17,0.01); border-radius: 6px; text-align: center; display: none;
-}
+.page-countdown-dock { margin-top: 30px; border: 1px dashed var(--line); padding: 25px; text-align: center; display: none; }
 .countdown-grid { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
 .countdown-box { background: var(--text); color: var(--bg); padding: 12px 16px; min-width: 70px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
-.countdown-box span { display: block; font-size: 8px; opacity: 0.6; font-weight: 400; text-transform: uppercase; margin-top: 2px; }
+.countdown-box span { display: block; font-size: 8px; opacity: 0.6; text-transform: uppercase; margin-top: 2px; }
 
-@media (max-width: 768px) {
- .product-container { flex-direction: column; gap: 30px; }
- padding-top: 85px;
- h1 { font-size: 2.2rem; }
-}
+@media (max-width: 768px) { .product-container { flex-direction: column; gap: 30px; } h1 { font-size: 2.2rem; } }
 </style>
+<!-- Load standard external web scripts fallback handles -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 </head>
 <body>
 
@@ -126,21 +69,16 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 </header>
 
 <div class="product-container">
-    <div class="product-media">
-        <img id="productImage" class="main-display-image" src="" alt="Syncing asset logs...">
-    </div>
-    
+    <div class="product-media"><img id="productImage" class="main-display-image" src="" alt="Syncing..."></div>
     <div class="product-info-panel">
         <h1 id="productTitle">Loading Drop Parameters...</h1>
         <div class="price-tag" id="productPrice">₹0</div>
         
-        <!-- Highly Functional Controls Dock Area -->
         <div id="interactivePurchaseControls">
             <div class="selector-wrapper">
                 <span class="selector-label">Choose Size</span>
                 <div class="size-capsule-tray" id="sizeCapsuleTrayContainer"></div>
             </div>
-
             <div class="selector-wrapper" style="margin-bottom: 20px;">
                 <span class="selector-label">Quantity</span>
                 <div class="qty-control-dock">
@@ -149,15 +87,12 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
                     <button onclick="changePageQuantity(1)">+</button>
                 </div>
             </div>
-
-            <!-- Premium Dual Action Stack Layout -->
             <div class="button-action-stack">
                 <button class="action-btn buy-now-btn" id="buyNowBtn" onclick="handleInstantBuyNow()">Buy It Now</button>
                 <button class="action-btn bag-btn" id="addToBagBtn" onclick="handlePageAddToCart()">Add To Bag</button>
             </div>
         </div>
 
-        <!-- Dynamic Hype Clock Engine Container -->
         <div class="page-countdown-dock" id="pageCountdownModule">
             <span class="selector-label" style="opacity:0.8; font-weight:600;">Exclusive Drop Reveals In</span>
             <div class="countdown-grid" id="pageClockGrid"></div>
@@ -166,164 +101,114 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
-let targetProduct = null;
-let chosenSize = "";
-let selectedQty = 1;
+// Mirroring client instance initialization routines
+const firebaseConfig = {
+ apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
+ authDomain: "aquilux-5b489.firebaseapp.com",
+ projectId: "aquilux-5b489",
+ storageBucket: "aquilux-5b489.firebasestorage.app",
+ messagingSenderId: "93678277046",
+ appId: "1:93678277046:web:22a1904a3d8a9112edf117"
+};
+if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let targetProduct = null, chosenSize = "", selectedQty = 1, globalUserUid = null;
+
+auth.onAuthStateChanged(user => { if(user) globalUserUid = user.uid; });
 
 async function initProductPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-    
+    const productId = new URLSearchParams(window.location.search).get('id');
     if(!productId) { window.location.href = "index.html"; return; }
-
     try {
         const res = await fetch(API_URL + "?t=" + new Date().getTime());
         const products = await res.json();
-        
         targetProduct = products.find((p, i) => String(p.id || p.ID || i) === String(productId));
 
         if(!targetProduct) { document.getElementById("productTitle").innerText = "Product Not Found"; return; }
 
         document.getElementById("productTitle").innerText = targetProduct.product;
         document.getElementById("productPrice").innerText = "₹" + targetProduct.price;
-        const imgNode = document.getElementById("productImage");
-        imgNode.src = targetProduct.image;
+        document.getElementById("productImage").src = targetProduct.image;
 
-        // Render dynamic premium size capsule nodes
         const sizes = targetProduct.sizes?.length > 0 ? targetProduct.sizes : ['S', 'M', 'L', 'XL'];
         const tray = document.getElementById("sizeCapsuleTrayContainer");
-        tray.innerHTML = "";
-        
         sizes.forEach((s, idx) => {
-            const btn = document.createElement("button");
-            btn.className = `size-node-btn ${idx === 0 ? 'selected' : ''}`;
-            btn.innerText = s;
-            if(idx === 0) chosenSize = s; 
-            btn.onclick = () => {
-                document.querySelectorAll(".size-node-btn").forEach(b => b.classList.remove("selected"));
-                btn.classList.add("selected");
-                chosenSize = s;
-            };
+            const btn = document.createElement("button"); btn.className = `size-node-btn ${idx === 0 ? 'selected' : ''}`;
+            btn.innerText = s; if(idx === 0) chosenSize = s;
+            btn.onclick = () => { document.querySelectorAll(".size-node-btn").forEach(b => b.classList.remove("selected")); btn.classList.add("selected"); chosenSize = s; };
             tray.appendChild(btn);
         });
 
-        // Time constraints validation logic
-        let rawLaunch = targetProduct.launchDate || targetProduct.launchdate || null;
+        let rawLaunch = targetProduct.launchDate || targetProduct.launchdate;
         let launchTimestamp = null;
         if (rawLaunch) {
             let cleanStr = String(rawLaunch).trim().replace(/\//g, '-');
             if(!cleanStr.includes('T') && cleanStr.includes(' ')) cleanStr = cleanStr.replace(' ', 'T');
             launchTimestamp = Date.parse(cleanStr);
         }
-
-        const nowTime = new Date().getTime();
-        if(launchTimestamp && launchTimestamp > nowTime) {
-            imgNode.classList.add("blurred");
+        if(launchTimestamp && launchTimestamp > new Date().getTime()) {
+            document.getElementById("productImage").classList.add("blurred");
             document.getElementById("interactivePurchaseControls").style.display = "none";
             document.getElementById("pageCountdownModule").style.display = "block";
             startPageTimerLoop(launchTimestamp);
         }
-
-    } catch (e) { document.getElementById("productTitle").innerText = "Error Syncing Parameters"; }
+    } catch (e) { console.error(e); }
 }
 
-function changePageQuantity(amount) {
-    selectedQty += amount;
-    if(selectedQty < 1) selectedQty = 1;
-    document.getElementById("pageQuantityDisplay").innerText = selectedQty;
-}
+function changePageQuantity(amount) { selectedQty += amount; if(selectedQty < 1) selectedQty = 1; document.getElementById("pageQuantityDisplay").innerText = selectedQty; }
 
 function startPageTimerLoop(targetTime) {
     const loop = setInterval(() => {
-        const now = new Date().getTime();
-        const diff = targetTime - now;
-
-        if(diff <= 0) {
-            clearInterval(loop);
-            document.getElementById("productImage").classList.remove("blurred");
-            document.getElementById("interactivePurchaseControls").style.display = "block";
-            document.getElementById("pageCountdownModule").style.display = "none";
-            return;
-        }
-
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById("pageClockGrid").innerHTML = `
-            <div class="countdown-box">${d}<span>Days</span></div>
-            <div class="countdown-box">${String(h).padStart(2, '0')}<span>Hrs</span></div>
-            <div class="countdown-box">${String(m).padStart(2, '0')}<span>Min</span></div>
-            <div class="countdown-box">${String(s).padStart(2, '0')}<span>Sec</span></div>
-        `;
+        const diff = targetTime - new Date().getTime();
+        if(diff <= 0) { clearInterval(loop); document.getElementById("productImage").classList.remove("blurred"); document.getElementById("interactivePurchaseControls").style.display = "block"; document.getElementById("pageCountdownModule").style.display = "none"; return; }
+        const d = Math.floor(diff / 86400000), h = Math.floor((diff % 86400000) / 3600000), m = Math.floor((diff % 3600000) / 60000), s = Math.floor((diff % 60000) / 1000);
+        document.getElementById("pageClockGrid").innerHTML = `<div class="countdown-box">${d}<span>Days</span></div><div class="countdown-box">${String(h).padStart(2,'0')}<span>Hrs</span></div><div class="countdown-box">${String(m).padStart(2,'0')}<span>Min</span></div><div class="countdown-box">${String(s).padStart(2,'0')}<span>Sec</span></div>`;
     }, 1000);
 }
 
-function handlePageAddToCart() {
-    if(!targetProduct) return;
-    let localCart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
-
-    let existingItem = localCart.find(x => x.n === targetProduct.product && x.s === chosenSize);
-    if(existingItem) {
-        existingItem.q += selectedQty;
-    } else {
-        localCart.push({
-            n: targetProduct.product,
-            p: Number(targetProduct.price),
-            s: chosenSize,
-            q: selectedQty,
-            img: targetProduct.image
-        });
-    }
-
-    localStorage.setItem("aquilux_cart", JSON.stringify(localCart));
-    alert(`${selectedQty} Item(s) successfully secured inside Shopping Bag!`);
-    window.location.href = "index.html"; 
-}
-
 /* ==========================================================================
-   INSTANT DEPLOY BUY NOW LOGIC (DIRECT BYPASS TO GATEWAY)
+   DYNAMIC AUTOMATIC COUPLING LOGIC FOR INSTANT DIRECT BUY BUTTON
    ========================================================================== */
-function handleInstantBuyNow() {
+async function handleInstantBuyNow() {
     if(!targetProduct) return;
-    
-    // Check if delivery parameters exist in user profile
     const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
-    if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
-        alert("Please setup your Shipping Address parameters inside Account Space first!");
-        window.location.href = "index.html"; 
-        return;
-    }
+    if(!savedAddr.receiverName) { alert("Setup Shipping Profile params first!"); return; }
 
-    // Direct checkout payload build injection
-    const singleProductCartPayload = [{
-        n: targetProduct.product,
-        p: Number(targetProduct.price),
-        s: chosenSize,
-        q: selectedQty,
-        img: targetProduct.image
-    }];
+    let subTotal = Number(targetProduct.price) * selectedQty;
+    let finalDiscountValue = 0;
+
+    if(globalUserUid) {
+        try {
+            const snapshot = await db.collection("orders")
+                .where("userId", "==", globalUserUid)
+                .where("paymentStatus", "==", "Approved")
+                .get();
+            if(snapshot.empty) {
+                finalDiscountValue = Math.round(subTotal * 0.10);
+                alert(`🎉 Promo Log: First-purchase verified. ₹${finalDiscountValue} auto-deducted cleanly.`);
+            }
+        } catch(e) { console.error(e); }
+    } else {
+        alert("Tip: Login with your profile to trigger the automatic 10% first-buyer discount!");
+    }
 
     const orderData = {
-        cart: singleProductCartPayload,
-        total: Number(targetProduct.price) * selectedQty,
-        receiverName: savedAddr.receiverName,
-        phone: savedAddr.phone,
-        flat: savedAddr.flat || "",
-        road: savedAddr.road || "",
-        landmark: savedAddr.landmark || "", 
-        city: savedAddr.city || "",
-        state: savedAddr.state || "",
-        pincode: savedAddr.pincode
+        cart: [{ n: targetProduct.product, p: Number(targetProduct.price), s: chosenSize, q: selectedQty, img: targetProduct.image }],
+        total: subTotal - finalDiscountValue, discountApplied: finalDiscountValue,
+        receiverName: savedAddr.receiverName, phone: savedAddr.phone, flat: savedAddr.flat, road: savedAddr.road, city: savedAddr.city, state: savedAddr.state, pincode: savedAddr.pincode
     };
-
-    // Lock dynamic state to transfer parameters to gateway window frame
-    localStorage.setItem("pendingOrder", JSON.stringify(orderData));
-    window.location.href = "payment-gateway.html";
+    localStorage.setItem("pendingOrder", JSON.stringify(orderData)); window.location.href = "payment-gateway.html";
 }
 
+function handlePageAddToCart() {
+    let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
+    let match = cart.find(x => x.n === targetProduct.product && x.s === chosenSize);
+    if(match) match.q += selectedQty;
+    else cart.push({ n: targetProduct.product, p: Number(targetProduct.price), s: chosenSize, q: selectedQty, img: targetProduct.image });
+    localStorage.setItem("aquilux_cart", JSON.stringify(cart)); alert("Added to Bag!"); window.location.href = "index.html";
+}
 window.addEventListener("DOMContentLoaded", initProductPage);
 </script>
 </body>
