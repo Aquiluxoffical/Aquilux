@@ -535,6 +535,8 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
          <option value="Oversize T-shirt">Oversize T-shirts</option>
          <option value="Shorts">Shorts</option>
          <option value="Sweatpants">Sweatpants</option>
+         <option value="Crop Tee">Crop Tee</option>
+          
        </select>
        
        <select id="priceFilter" onchange="filterProducts()">
@@ -906,7 +908,7 @@ function executeUnifiedFiltering() {
             if (collectionVal === "Oversize T-shirt") return cat.includes("oversize");
             if (collectionVal === "Shorts") return cat.includes("shorts");
             if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
-            if (collectionVal === "Crop Tees") return cat.includes("croptees");
+            if (collectionVal === "Crop Tee") return cat.includes("croptee");
 
            
             
