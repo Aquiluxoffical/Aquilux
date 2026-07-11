@@ -361,6 +361,67 @@ input, textarea { width: 100%; }
 footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
 
 /* ==========================================================================
+   4b. Upcoming Hype Countdown Section Elements
+   ========================================================================== */
+.upcoming-section-wrapper { 
+ border-top: 1px dashed var(--line);
+ margin-top: 60px;
+ background: rgba(17,17,17,0.01);
+ text-align: center;
+}
+.upcoming-product-showcase-engine { 
+ display: flex; 
+ flex-direction: column; 
+ align-items: center; 
+ gap: 20px; 
+ margin-top: 30px; 
+}
+.hype-blurred-visual-card { 
+ position: relative;
+ width: 280px; 
+ aspect-ratio: 3/4;
+ border-radius: 8px;
+ overflow: hidden;
+ filter: blur(22px) brightness(0.95); /* High Premium Hype Blur */
+ pointer-events: none; 
+ box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+ transition: filter 0.5s ease;
+}
+.hype-blurred-visual-card img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+}
+.countdown-clock-dock { 
+ display: flex; 
+ justify-content: center; 
+ gap: 12px; 
+ margin-top: 24px; 
+ flex-wrap: nowrap;
+}
+.countdown-segment-node { 
+ background: var(--text); 
+ color: var(--bg); 
+ padding: 12px 18px; 
+ font-family: 'Inter', sans-serif;
+ font-size: 14px; 
+ font-weight: 600; 
+ text-align: center; 
+ min-width: 76px; 
+ border-radius: 4px;
+ box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+.countdown-segment-node span {
+ display: block;
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ opacity: 0.6;
+ margin-top: 2px;
+ font-weight: 400;
+}
+
+/* ==========================================================================
    5. Tablet and iPad Specific Layout Core Framework Patch
    ========================================================================== */
 @media(max-width: 1024px) {
@@ -536,7 +597,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
          <option value="Shorts">Shorts</option>
          <option value="Sweatpants">Sweatpants</option>
          <option value="Crop Tee">Crop Tee</option>
-          
        </select>
        
        <select id="priceFilter" onchange="filterProducts()">
@@ -548,6 +608,14 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    </div>
  </div>
  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ==========================================================================
+     4c. Dynamic Upcoming Product Hype Engine Dock
+     ========================================================================== */ -->
+<section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
+  <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem;">Reveals In</div>
+  <div id="upcomingProductContainer" class="upcoming-product-showcase-engine"></div>
 </section>
 
 <section id="reviews-section" style="padding-top:20px;">
@@ -778,15 +846,84 @@ async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
  renderWishlistPanel(); draw();
  try {
-   const res = await fetch(API_URL); products = await res.json(); currentProducts = [...products];
-   qty = Array(products.length).fill(0); displayProducts(currentProducts);
+   const res = await fetch(API_URL); products = await res.json(); 
+   
+   // Hype Countdown Automation Engine Logic
+   const nowTime = new Date().getTime();
+   let activeMarketDisplayItems = [];
+   let upcomingHypeFound = false;
+   const upcomingContainer = document.getElementById("upcomingProductContainer");
+   upcomingContainer.innerHTML = "";
+
+   products.forEach(p => {
+       // Check mapping variables parameter
+       let launchTimestamp = null;
+       if (p.launchDate) {
+           launchTimestamp = new Date(p.launchDate).getTime();
+       }
+
+       if (launchTimestamp && launchTimestamp > nowTime) {
+           // Target is in future -> Deploy blurred layout variant card
+           upcomingHypeFound = true;
+           upcomingContainer.innerHTML += `
+               <div class="hype-blurred-visual-card">
+                   <img src="${p.image}">
+               </div>
+               <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; text-transform:uppercase; margin-top:10px; font-weight:500;">${p.product}</h3>
+               <div class="countdown-clock-dock" id="timer_clock_node"></div>
+           `;
+           initiateMasterCountdown(launchTimestamp);
+       } else {
+           // Normal or expired launch parameters -> send to direct store display
+           activeMarketDisplayItems.push(p);
+       }
+   });
+
+   if (upcomingHypeFound) {
+       document.getElementById("upcoming").style.display = "block";
+   } else {
+       document.getElementById("upcoming").style.display = "none";
+   }
+
+   currentProducts = [...activeMarketDisplayItems];
+   qty = Array(currentProducts.length).fill(0); 
+   displayProducts(currentProducts);
+
  } catch (e) { document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
+function initiateMasterCountdown(targetTime) {
+    const clockLoop = setInterval(() => {
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+        
+        if (diff <= 0) {
+            clearInterval(clockLoop);
+            loadProducts(); // Soft reboot layout logic engine once item drops live
+            return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        const clockTargetNode = document.getElementById("timer_clock_node");
+        if (clockTargetNode) {
+            clockTargetNode.innerHTML = `
+                <div class="countdown-segment-node">${d}<span>Days</span></div>
+                <div class="countdown-segment-node">${String(h).padStart(2, '0')}<span>Hours</span></div>
+                <div class="countdown-segment-node">${String(m).padStart(2, '0')}<span>Minutes</span></div>
+                <div class="countdown-segment-node">${String(s).padStart(2, '0')}<span>Seconds</span></div>
+            `;
+        }
+    }, 1000);
+}
+
 /* HIGH-END MINIMALIST OLD MONEY DRAFT ARCHITECTURE GENERATOR ENGINE */
 function displayProducts(list = products) {
- currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
+ const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
    const sizes = p.sizes?.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
    const sizesHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
@@ -794,10 +931,10 @@ function displayProducts(list = products) {
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
-    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
-    </svg>
-</button>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
+        </svg>
+     </button>
      <div class="card-img-wrapper">
        <img src="${p.image}" class="primary-img"><img src="${p.hover_image || p.image}" class="hover-img">
      </div>
@@ -890,25 +1027,28 @@ function filterProducts() {
     executeUnifiedFiltering();
 }
 
-// UPDATED FILTERING ENGINE - Data ke hisaab se match karega
+// UPDATED FILTERING ENGINE - Flexible Category Spaces Handled Perfectly
 function executeUnifiedFiltering() {
     const priceVal = document.getElementById("priceFilter").value;
     const collectionVal = document.getElementById("collectionFilter").value;
     
-    let compiledList = [...products];
+    let compiledList = products.filter(p => {
+        const nowTime = new Date().getTime();
+        let launchTimestamp = p.launchDate ? new Date(p.launchDate).getTime() : null;
+        return !launchTimestamp || launchTimestamp <= nowTime;
+    });
 
     // 1. Updated Category Matching Logic
     if (collectionVal !== "all") {
         compiledList = compiledList.filter(p => {
             const cat = (p.category || "").toLowerCase();
             
-            // Logic: Agar dropdown mein "T-shirt" chuna hai, toh sheet ke "T-shirts" ko pakdega
             if (collectionVal === "T-shirt") return cat.includes("t-shirt");
             if (collectionVal === "Hoodies") return cat.includes("hoodie");
             if (collectionVal === "Oversize T-shirt") return cat.includes("oversize");
-            if (collectionVal === "Shorts") return cat.includes("shorts");
+            if (collectionVal === "Shorts") return cat.includes("shorts") || cat.includes("sweatshorts");
             if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
-            if (collectionVal === "CropTee") return cat.includes("croptee");
+            if (collectionVal === "Crop Tee") return cat.includes("crop tee") || cat.includes("croptee");
 
             return cat === collectionVal.toLowerCase();
         });
@@ -926,7 +1066,6 @@ function executeUnifiedFiltering() {
 
     displayProducts(compiledList);
 }
-
 
 window.addEventListener("DOMContentLoaded", loadProducts);
 function changeQty(i, c){ qty[i] += c; if(qty[i] < 0) qty[i] = 0; document.getElementById("q"+i).textContent = qty[i]; }
