@@ -864,19 +864,33 @@ function filterProducts() {
     executeUnifiedFiltering();
 }
 
+// UPDATED FILTERING ENGINE - Data ke hisaab se match karega
 function executeUnifiedFiltering() {
     const priceVal = document.getElementById("priceFilter").value;
     const collectionVal = document.getElementById("collectionFilter").value;
     
     let compiledList = [...products];
 
+    // 1. Updated Category Matching Logic
     if (collectionVal !== "all") {
         compiledList = compiledList.filter(p => {
-            const productType = p.category || p.type || "";
-            return productType.toLowerCase() === collectionVal.toLowerCase();
+            const cat = (p.category || "").toLowerCase();
+            
+            // Logic: Agar dropdown mein "T-shirt" chuna hai, toh sheet ke "T-shirts" ko pakdega
+            if (collectionVal === "T-shirt") return cat.includes("t-shirt");
+            if (collectionVal === "Hoodies") return cat.includes("hoodie");
+            if (collectionVal === "Oversize T-shirt") return cat.includes("oversize");
+            if (collectionVal === "Shorts") return cat.includes("shorts");
+            if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
+            if (collectionVal === "Crop Tees") return cat.includes("croptees");
+
+           
+            
+            return cat === collectionVal.toLowerCase();
         });
     }
 
+    // 2. Process Price Range
     if (priceVal !== "all") {
         if (priceVal === "1500") {
             compiledList = compiledList.filter(p => Number(p.price) >= 1500);
@@ -888,6 +902,7 @@ function executeUnifiedFiltering() {
 
     displayProducts(compiledList);
 }
+
 
 window.addEventListener("DOMContentLoaded", loadProducts);
 function changeQty(i, c){ qty[i] += c; if(qty[i] < 0) qty[i] = 0; document.getElementById("q"+i).textContent = qty[i]; }
