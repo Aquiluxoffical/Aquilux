@@ -608,7 +608,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="grid" id="grid"></div>
 </section>
 
-<!-- Dynamic Upcoming Hype Section -->
+<!-- Dynamic Upcoming Hype Section Element -->
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
   <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-product-showcase-engine"></div>
@@ -734,7 +734,8 @@ window.fetchPanelOrders = async function(uid) {
 </script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyKgEvh2sZj1lfhs8m-yB4ly6bLyMcKM0IcDsX2ZGk1ZrB5dLWYl9knHdobiX23MVWt/exec";
+// Naya correct verified API link set kar diya hai
+const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
 let products = [], currentProducts = [], qty = [];
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
@@ -840,16 +841,12 @@ setTheme(localStorage.getItem("theme") || "light");
 
 async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
- if(typeof renderWishlistPanel === "function") renderWishlistPanel(); 
- if(typeof draw === "function") draw();
- 
+ renderWishlistPanel(); draw();
  try {
-   // Anti-Cache Bypass Trick: Timestamp parameter force-fetches fresh data from Sheet
-   const freshUrl = API_URL + "?t=" + new Date().getTime();
-   const res = await fetch(freshUrl); 
+   // Anti-Cache Bypass URL generation logic
+   const antiCacheTokenUrl = API_URL + "?t=" + new Date().getTime();
+   const res = await fetch(antiCacheTokenUrl); 
    products = await res.json(); 
-   
-   console.log("🔥 Fresh Verified Sheet Data:", products);
    
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
@@ -863,17 +860,16 @@ async function loadProducts() {
        
        if (rawLaunch) {
            let cleanDateStr = String(rawLaunch).trim();
-           cleanDateStr = cleanDateStr.replace(/\/+/g, '-');
+           cleanDateStr = cleanDateStr.replace(/\//g, '-');
            if(!cleanDateStr.includes('T') && cleanDateStr.includes(' ')) {
                cleanDateStr = cleanDateStr.replace(' ', 'T');
            }
            launchTimestamp = Date.parse(cleanDateStr);
        }
 
-       // Core logic check for upcoming releases
        if (launchTimestamp && launchTimestamp > nowTime) {
            upcomingHypeFound = true;
-           upcomingContainer.innerHTML = `
+           upcomingContainer.innerHTML += `
                <div class="hype-blurred-visual-card">
                    <img src="${p.image || ''}">
                </div>
@@ -896,15 +892,12 @@ async function loadProducts() {
    displayProducts(currentProducts);
 
  } catch (e) { 
-     console.error("Layout Engine Crash Log:", e);
      document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
  }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
-
 function initiateMasterCountdown(targetTime) {
-    // Purane chal rahe intervals ko clean karne ke liye window scope protection
     if(window.activeClockLoop) clearInterval(window.activeClockLoop);
     
     window.activeClockLoop = setInterval(() => {
@@ -913,7 +906,7 @@ function initiateMasterCountdown(targetTime) {
         
         if (diff <= 0) {
             clearInterval(window.activeClockLoop);
-            loadProducts(); // Automatically push back to grid once timer hits zero
+            loadProducts(); 
             return;
         }
 
@@ -933,7 +926,6 @@ function initiateMasterCountdown(targetTime) {
         }
     }, 1000);
 }
-
 
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
