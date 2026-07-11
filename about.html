@@ -147,7 +147,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 }
 
 /* ==========================================================================
-   4. Interactive Expandable Pillars Grid UI
+   4. Interactive Expandable Pillars Grid UI (Fixed Flow Architecture)
    ========================================================================== */
 .pillars-section {
  padding: 20px 6% 60px 6%;
@@ -164,12 +164,14 @@ html[data-theme="olive"] header img { filter: invert(1); }
  backdrop-filter: blur(var(--glass-blur));
  -webkit-backdrop-filter: blur(var(--glass-blur));
  border: 1px solid var(--line);
- padding: 40px 25px;
+ padding: 40px 25px 20px 25px; /* Added spacing buffer at bottom */
  border-radius: 6px;
  text-align: center;
  transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
  cursor: pointer;
- overflow: hidden;
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
 }
 .pillar-card:hover {
  border-color: var(--text);
@@ -215,50 +217,60 @@ html[data-theme="olive"] header img { filter: invert(1); }
  color: var(--text);
  opacity: 0.65;
  line-height: 1.6;
+ margin-bottom: 10px;
 }
 
 /* Dynamic Hidden Expansion Canvas */
 .expanded-content {
  max-height: 0;
  opacity: 0;
- transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, margin-top 0.4s ease;
+ visibility: hidden;
+ transition: max-height 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, visibility 0.3s;
  text-align: left;
  background: rgba(var(--text), 0.03);
  border-radius: 4px;
  font-size: 12px;
  color: var(--text);
- opacity: 0.8;
 }
 .expanded-content p {
  padding: 15px;
  line-height: 1.7;
  border-top: 1px dashed var(--line);
+ opacity: 0.85;
 }
 
-/* Active State Styles triggered via JS */
+/* Fixed Layout Placement Tag (No Overlap) */
+.interactive-hint {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ opacity: 0.3;
+ padding-top: 15px;
+ border-top: 1px solid var(--line);
+ margin-top: auto;
+ width: 100%;
+ text-align: center;
+ transition: opacity 0.3s ease, color 0.3s ease;
+}
+.pillar-card:hover .interactive-hint {
+ opacity: 0.7;
+}
+
+/* Active Expansive Engine Injectors */
 .pillar-card.is-expanded {
  border-color: var(--text);
  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
  transform: translateY(0);
 }
 .pillar-card.is-expanded .expanded-content {
- max-height: 300px; /* High boundary for smooth calculation */
+ max-height: 300px;
  opacity: 1;
- margin-top: 15px;
-}
-.interactive-hint {
- font-size: 9px;
- text-transform: uppercase;
- letter-spacing: 1px;
- opacity: 0.3;
- margin-top: 15px;
- transition: opacity 0.3s;
-}
-.pillar-card:hover .interactive-hint {
- opacity: 0.6;
+ visibility: visible;
+ margin-bottom: 15px;
 }
 .pillar-card.is-expanded .interactive-hint {
- display: none;
+ color: var(--text);
+ opacity: 0.8;
 }
 
 /* ==========================================================================
@@ -346,33 +358,39 @@ footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center
   <div class="pillars-grid">
       <!-- Card 1 -->
       <div class="pillar-card" onclick="toggleCardExpansion(this)">
-          <div class="pillar-index">// 01</div>
-          <div class="pillar-title">HD Aesthetics</div>
-          <div class="pillar-desc">Clean structures and sharp silhouettes designed to give you a cinematic, screen-ready presence from every single angle.</div>
-          <div class="expanded-content">
-              <p>Our pieces look elite under any lens. We build clothes with structural gravity, engineered for content creators and leaders who stand bold in every frame. No slouching cuts, just high-definition styling parameters.</p>
+          <div>
+              <div class="pillar-index">// 01</div>
+              <div class="pillar-title">HD Aesthetics</div>
+              <div class="pillar-desc">Clean structures and sharp silhouettes designed to give you a cinematic, screen-ready presence from every single angle.</div>
+              <div class="expanded-content">
+                  <p>Our pieces look elite under any lens. We build clothes with structural gravity, engineered for content creators and leaders who stand bold in every frame. No slouching cuts, just high-definition styling parameters.</p>
+              </div>
           </div>
           <div class="interactive-hint">✦ Click to Expand Details</div>
       </div>
       
       <!-- Card 2 -->
       <div class="pillar-card" onclick="toggleCardExpansion(this)">
-          <div class="pillar-index">// 02</div>
-          <div class="pillar-title">Premium Build</div>
-          <div class="pillar-desc">Absolute precision weaves combined with heavy-duty luxury textures. We make zero compromises on execution.</div>
-          <div class="expanded-content">
-              <p>Every fabric drop undergoes rigorous tracking. We utilize heavy-density textiles that maintain form over time, ensuring that the luxury weight and raw premium texture feel superior the instant you put it on.</p>
+          <div>
+              <div class="pillar-index">// 02</div>
+              <div class="pillar-title">Premium Build</div>
+              <div class="pillar-desc">Absolute precision weaves combined with heavy-duty luxury textures. We make zero compromises on execution.</div>
+              <div class="expanded-content">
+                  <p>Every fabric drop undergoes rigorous tracking. We utilize heavy-density textiles that maintain form over time, ensuring that the luxury weight and raw premium texture feel superior the instant you put it on.</p>
+              </div>
           </div>
           <div class="interactive-hint">✦ Click to Expand Details</div>
       </div>
       
       <!-- Card 3 (Highlight Focus) -->
       <div class="pillar-card alpha-highlight" onclick="toggleCardExpansion(this)">
-          <div class="pillar-index">// 03</div>
-          <div class="pillar-title">Alpha Energy</div>
-          <div class="pillar-desc">Crafted explicitly for the visionaries, leaders, and creators who hustle with standalone status and pure class.</div>
-          <div class="expanded-content">
-              <p>Aquilux is an armor for the high-achiever. Tailored for absolute dominance, this pillar represents the unyielding mindset of individuals who don't wait for trends—they set the benchmark. Own your altitude.</p>
+          <div>
+              <div class="pillar-index">// 03</div>
+              <div class="pillar-title">Alpha Energy</div>
+              <div class="pillar-desc">Crafted explicitly for the visionaries, leaders, and creators who hustle with standalone status and pure class.</div>
+              <div class="expanded-content">
+                  <p>Aquilux is an armor for the high-achiever. Tailored for absolute dominance, this pillar represents the unyielding mindset of individuals who don't wait for trends—they set the benchmark. Own your altitude.</p>
+              </div>
           </div>
           <div class="interactive-hint">✦ Click to Expand Details</div>
       </div>
@@ -389,18 +407,22 @@ footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center
 </footer>
 
 <script>
-// Toggle Function to handle smooth micro-expansions without shifting pages
 function toggleCardExpansion(cardElement) {
     const checkActive = cardElement.classList.contains('is-expanded');
+    const hintText = cardElement.querySelector('.interactive-hint');
     
-    // Close other expanded elements first for crisp layout alignment
+    // Close other expanded elements first and reset their text markers
     document.querySelectorAll('.pillar-card').forEach(card => {
         card.classList.remove('is-expanded');
+        card.querySelector('.interactive-hint').innerText = "✦ Click to Expand Details";
     });
     
-    // Toggle current target state
+    // Toggle current target state and text frame mapping
     if (!checkActive) {
         cardElement.classList.add('is-expanded');
+        hintText.innerText = "▲ Click to Collapse Details";
+    } else {
+        hintText.innerText = "✦ Click to Expand Details";
     }
 }
 
