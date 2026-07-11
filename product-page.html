@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aquilux — Product Details</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+:root {
+ --bg: #ffffff;             
+ --text: #111111;           
+ --line: rgba(17, 17, 17, 0.08); 
+ --glass-bg: rgba(255, 255, 255, 0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+ font-family: 'Inter', Arial, sans-serif;
+ background: var(--bg);
+ color: var(--text);
+ -webkit-font-smoothing: antialiased;
+ padding-top: 100px;
+}
+
+header {
+ position: fixed;
+ top: 0;
+ width: 100%;
+ padding: 18px 6%;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ background: rgba(255, 255, 255, 0.85);
+ backdrop-filter: blur(16px);
+ border-bottom: 1px solid var(--line);
+ z-index: 100;
+}
+.logo-box { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; cursor: pointer; text-decoration: none; color: inherit; }
+
+.product-container {
+ display: flex;
+ max-width: 1200px;
+ margin: 40px auto;
+ padding: 0 4%;
+ gap: 50px;
+}
+.product-media { flex: 1; position: relative; }
+.product-info-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.main-display-image {
+ width: 100%;
+ aspect-ratio: 3/4;
+ object-fit: cover;
+ background: #f9f9f9;
+ border-radius: 4px;
+ transition: filter 0.4s ease;
+}
+
+/* Premium Blur State */
+.main-display-image.blurred {
+ filter: blur(25px) brightness(0.95);
+ pointer-events: none;
+}
+
+h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 10px; text-transform: uppercase; }
+.price-tag { font-size: 1.3rem; font-weight: 500; margin-bottom: 30px; opacity: 0.8; }
+
+.selector-wrapper { margin-bottom: 25px; }
+.selector-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 8px; display: block; }
+select { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--line); border-radius: 4px; font-family: 'Inter', sans-serif; outline: none; cursor: pointer; }
+
+.action-btn {
+ width: 100%;
+ padding: 16px;
+ background: var(--text);
+ color: var(--bg);
+ border: 1px solid var(--text);
+ font-size: 13px;
+ font-weight: 500;
+ letter-spacing: 1.5px;
+ text-transform: uppercase;
+ cursor: pointer;
+ transition: all 0.3s;
+ border-radius: 4px;
+ margin-top: 15px;
+}
+.action-btn:hover { background: transparent; color: var(--text); }
+.action-btn:disabled { background: #cccccc; border-color: #cccccc; color: #666666; cursor: not-allowed; }
+
+/* Countdown Styling inside Page */
+.page-countdown-dock {
+ margin-top: 30px;
+ border: 1px dashed var(--line);
+ padding: 20px;
+ background: rgba(17,17,17,0.01);
+ border-radius: 6px;
+ text-align: center;
+ display: none;
+}
+.countdown-grid { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+.countdown-box { background: var(--text); color: var(--bg); padding: 10px 14px; min-width: 65px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
+.countdown-box span { display: block; font-size: 8px; opacity: 0.6; font-weight: 400; text-transform: uppercase; margin-top: 2px; }
+
+@media (max-width: 768px) {
+ .product-container { flex-direction: column; gap: 30px; }
+ padding-top: 85px;
+ h1 { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+ <a href="index.html" class="logo-box">Aquilux</a>
+</header>
+
+<div class="product-container">
+    <div class="product-media">
+        <img id="productImage" class="main-display-image" src="" alt="Loading...">
+    </div>
+    
+    <div class="product-info-panel">
+        <h1 id="productTitle">Loading Product...</h1>
+        <div class="price-tag" id="productPrice">₹0</div>
+        
+        <div id="interactivePurchaseControls">
+            <div class="selector-wrapper">
+                <span class="selector-label">Select Size</span>
+                <select id="sizeSelector"></select>
+            </div>
+            <button class="action-btn" id="addToBagBtn" onclick="handlePageAddToCart()">Add To Bag</button>
+        </div>
+
+        <!-- Dynamic Page Countdown Reveal Box -->
+        <div class="page-countdown-dock" id="pageCountdownModule">
+            <span class="selector-label" style="opacity: 0.8; font-weight: 600;">Exclusive Drop Launching In</span>
+            <div class="countdown-grid" id="pageClockGrid"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
+let targetProduct = null;
+
+async function initProductPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if(!productId) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    try {
+        const res = await fetch(API_URL + "?t=" + new Date().getTime());
+        const products = await res.json();
+        
+        // Find matching product either by direct index or ID matching string
+        targetProduct = products.find((p, i) => String(p.id || p.ID || i) === String(productId));
+
+        if(!targetProduct) {
+            document.getElementById("productTitle").innerText = "Product Not Found";
+            return;
+        }
+
+        // Render standard meta values
+        document.getElementById("productTitle").innerText = targetProduct.product;
+        document.getElementById("productPrice").innerText = "₹" + targetProduct.price;
+        const imgNode = document.getElementById("productImage");
+        imgNode.src = targetProduct.image;
+
+        // Populate dynamic size allocations
+        const sizes = targetProduct.sizes?.length > 0 ? targetProduct.sizes : ['S', 'M', 'L', 'XL'];
+        const selector = document.getElementById("sizeSelector");
+        selector.innerHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+
+        // Hype evaluation validation logic rules
+        let rawLaunch = targetProduct.launchDate || targetProduct.launchdate || null;
+        let launchTimestamp = null;
+        if (rawLaunch) {
+            let cleanStr = String(rawLaunch).trim().replace(/\//g, '-');
+            if(!cleanStr.includes('T') && cleanStr.includes(' ')) cleanStr = cleanStr.replace(' ', 'T');
+            launchTimestamp = Date.parse(cleanStr);
+        }
+
+        const nowTime = new Date().getTime();
+        if(launchTimestamp && launchTimestamp > nowTime) {
+            // Drop is upcoming -> Engage system lockout variants
+            imgNode.classList.add("blurred");
+            document.getElementById("interactivePurchaseControls").style.display = "none";
+            document.getElementById("pageCountdownModule").style.display = "block";
+            startPageTimerLoop(launchTimestamp);
+        }
+
+    } catch (e) {
+        document.getElementById("productTitle").innerText = "Error Loading Details";
+    }
+}
+
+function startPageTimerLoop(targetTime) {
+    const loop = setInterval(() => {
+        const now = new Date().getTime();
+        const diff = targetTime - now;
+
+        if(diff <= 0) {
+            clearInterval(loop);
+            // Soft-reboot parameters to restore interface buy rules instantly
+            document.getElementById("productImage").classList.remove("blurred");
+            document.getElementById("interactivePurchaseControls").style.display = "block";
+            document.getElementById("pageCountdownModule").style.display = "none";
+            return;
+        }
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById("pageClockGrid").innerHTML = `
+            <div class="countdown-box">${d}<span>Days</span></div>
+            <div class="countdown-box">${String(h).padStart(2, '0')}<span>Hrs</span></div>
+            <div class="countdown-box">${String(m).padStart(2, '0')}<span>Min</span></div>
+            <div class="countdown-box">${String(s).padStart(2, '0')}<span>Sec</span></div>
+        `;
+    }, 1000);
+}
+
+function handlePageAddToCart() {
+    if(!targetProduct) return;
+    let localCart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
+    let selectedSize = document.getElementById("sizeSelector").value;
+
+    let existingItem = localCart.find(x => x.n === targetProduct.product && x.s === selectedSize);
+    if(existingItem) {
+        existingItem.q += 1;
+    } else {
+        localCart.push({
+            n: targetProduct.product,
+            p: Number(targetProduct.price),
+            s: selectedSize,
+            q: 1,
+            img: targetProduct.image
+        });
+    }
+
+    localStorage.setItem("aquilux_cart", JSON.stringify(localCart));
+    alert("Added to Shopping Bag successfully!");
+    window.location.href = "index.html"; // Returns user safely to main store layout frame
+}
+
+window.addEventListener("DOMContentLoaded", initProductPage);
+</script>
+</body>
+</html>
