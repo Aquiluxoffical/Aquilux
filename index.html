@@ -844,8 +844,12 @@ async function loadProducts() {
  if(typeof draw === "function") draw();
  
  try {
-   const res = await fetch(API_URL); 
+   // Anti-Cache Bypass Trick: Timestamp parameter force-fetches fresh data from Sheet
+   const freshUrl = API_URL + "?t=" + new Date().getTime();
+   const res = await fetch(freshUrl); 
    products = await res.json(); 
+   
+   console.log("🔥 Fresh Verified Sheet Data:", products);
    
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
@@ -859,15 +863,14 @@ async function loadProducts() {
        
        if (rawLaunch) {
            let cleanDateStr = String(rawLaunch).trim();
-           // Slashes aur spaces ko transform karega standard structure mein
-           cleanDateStr = cleanDateStr.replace(/\//g, '-');
+           cleanDateStr = cleanDateStr.replace(/\/+/g, '-');
            if(!cleanDateStr.includes('T') && cleanDateStr.includes(' ')) {
                cleanDateStr = cleanDateStr.replace(' ', 'T');
            }
            launchTimestamp = Date.parse(cleanDateStr);
        }
 
-       // Core logic validation check
+       // Core logic check for upcoming releases
        if (launchTimestamp && launchTimestamp > nowTime) {
            upcomingHypeFound = true;
            upcomingContainer.innerHTML = `
@@ -883,7 +886,6 @@ async function loadProducts() {
        }
    });
 
-   // Setup layout section blocks visibility toggles
    const upcomingSection = document.getElementById("upcoming");
    if (upcomingSection) {
        upcomingSection.style.display = upcomingHypeFound ? "block" : "none";
@@ -894,11 +896,12 @@ async function loadProducts() {
    displayProducts(currentProducts);
 
  } catch (e) { 
-     console.error("Hype Engine Debug Log:", e);
+     console.error("Layout Engine Crash Log:", e);
      document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
  }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
+
 
 function initiateMasterCountdown(targetTime) {
     // Purane chal rahe intervals ko clean karne ke liye window scope protection
