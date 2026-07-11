@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Aquilux — Product Details</title>
+<title>Aquilux — Product Detail Engine</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -43,9 +43,10 @@ header {
  max-width: 1200px;
  margin: 40px auto;
  padding: 0 4%;
- gap: 50px;
+ gap: 60px;
+ align-items: center;
 }
-.product-media { flex: 1; position: relative; }
+.product-media { flex: 1.2; position: relative; }
 .product-info-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; }
 
 .main-display-image {
@@ -56,56 +57,65 @@ header {
  border-radius: 4px;
  transition: filter 0.4s ease;
 }
-
-/* Premium Blur State */
 .main-display-image.blurred {
  filter: blur(25px) brightness(0.95);
  pointer-events: none;
 }
 
-h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; margin-bottom: 10px; text-transform: uppercase; }
-.price-tag { font-size: 1.3rem; font-weight: 500; margin-bottom: 30px; opacity: 0.8; }
+h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.price-tag { font-size: 1.4rem; font-weight: 500; margin-bottom: 35px; opacity: 0.9; }
 
-.selector-wrapper { margin-bottom: 25px; }
-.selector-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 8px; display: block; }
-select { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--line); border-radius: 4px; font-family: 'Inter', sans-serif; outline: none; cursor: pointer; }
+.selector-wrapper { margin-bottom: 30px; }
+.selector-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.4; margin-bottom: 12px; display: block; font-weight: 600; }
+
+/* Premium Capsule Buttons for Size Selector */
+.size-capsule-tray { display: flex; gap: 10px; flex-wrap: wrap; }
+.size-node-btn {
+ padding: 12px 20px; font-size: 12px; font-weight: 500; background: transparent;
+ border: 1px solid var(--line); border-radius: 4px; color: var(--text); cursor: pointer;
+ transition: all 0.2s ease;
+}
+.size-node-btn:hover { border-color: var(--text); }
+.size-node-btn.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
+
+/* Quantity Layout Controls */
+.qty-control-dock { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 30px; background: rgba(17,17,17,0.01); }
+.qty-control-dock button { padding: 10px 18px; font-size: 16px; background: transparent; border: none; cursor: pointer; color: var(--text); transition: background 0.2s; }
+.qty-control-dock button:hover { background: rgba(17,17,17,0.04); }
+.qty-control-dock span { padding: 0 15px; font-size: 13px; font-weight: 600; min-width: 40px; text-align: center; user-select: none; }
+
+/* Dual Action Button Architecture */
+.button-action-stack { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 
 .action-btn {
  width: 100%;
- padding: 16px;
- background: var(--text);
- color: var(--bg);
- border: 1px solid var(--text);
- font-size: 13px;
- font-weight: 500;
- letter-spacing: 1.5px;
+ padding: 18px;
+ font-size: 12px;
+ font-weight: 600;
+ letter-spacing: 2px;
  text-transform: uppercase;
  cursor: pointer;
- transition: all 0.3s;
+ transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
  border-radius: 4px;
- margin-top: 15px;
 }
-.action-btn:hover { background: transparent; color: var(--text); }
-.action-btn:disabled { background: #cccccc; border-color: #cccccc; color: #666666; cursor: not-allowed; }
+.bag-btn { background: transparent; color: var(--text); border: 1px solid var(--text); }
+.bag-btn:hover { background: var(--text); color: var(--bg); }
 
-/* Countdown Styling inside Page */
+.buy-now-btn { background: var(--text); color: var(--bg); border: 1px solid var(--text); }
+.buy-now-btn:hover { background: transparent; color: var(--text); }
+
 .page-countdown-dock {
- margin-top: 30px;
- border: 1px dashed var(--line);
- padding: 20px;
- background: rgba(17,17,17,0.01);
- border-radius: 6px;
- text-align: center;
- display: none;
+ margin-top: 30px; border: 1px dashed var(--line); padding: 25px;
+ background: rgba(17,17,17,0.01); border-radius: 6px; text-align: center; display: none;
 }
 .countdown-grid { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
-.countdown-box { background: var(--text); color: var(--bg); padding: 10px 14px; min-width: 65px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
+.countdown-box { background: var(--text); color: var(--bg); padding: 12px 16px; min-width: 70px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
 .countdown-box span { display: block; font-size: 8px; opacity: 0.6; font-weight: 400; text-transform: uppercase; margin-top: 2px; }
 
 @media (max-width: 768px) {
  .product-container { flex-direction: column; gap: 30px; }
  padding-top: 85px;
- h1 { font-size: 2rem; }
+ h1 { font-size: 2.2rem; }
 }
 </style>
 </head>
@@ -117,24 +127,39 @@ select { width: 100%; padding: 12px; background: transparent; border: 1px solid 
 
 <div class="product-container">
     <div class="product-media">
-        <img id="productImage" class="main-display-image" src="" alt="Loading...">
+        <img id="productImage" class="main-display-image" src="" alt="Syncing asset logs...">
     </div>
     
     <div class="product-info-panel">
-        <h1 id="productTitle">Loading Product...</h1>
+        <h1 id="productTitle">Loading Drop Parameters...</h1>
         <div class="price-tag" id="productPrice">₹0</div>
         
+        <!-- Highly Functional Controls Dock Area -->
         <div id="interactivePurchaseControls">
             <div class="selector-wrapper">
-                <span class="selector-label">Select Size</span>
-                <select id="sizeSelector"></select>
+                <span class="selector-label">Choose Size</span>
+                <div class="size-capsule-tray" id="sizeCapsuleTrayContainer"></div>
             </div>
-            <button class="action-btn" id="addToBagBtn" onclick="handlePageAddToCart()">Add To Bag</button>
+
+            <div class="selector-wrapper" style="margin-bottom: 20px;">
+                <span class="selector-label">Quantity</span>
+                <div class="qty-control-dock">
+                    <button onclick="changePageQuantity(-1)">−</button>
+                    <span id="pageQuantityDisplay">1</span>
+                    <button onclick="changePageQuantity(1)">+</button>
+                </div>
+            </div>
+
+            <!-- Premium Dual Action Stack Layout -->
+            <div class="button-action-stack">
+                <button class="action-btn buy-now-btn" id="buyNowBtn" onclick="handleInstantBuyNow()">Buy It Now</button>
+                <button class="action-btn bag-btn" id="addToBagBtn" onclick="handlePageAddToCart()">Add To Bag</button>
+            </div>
         </div>
 
-        <!-- Dynamic Page Countdown Reveal Box -->
+        <!-- Dynamic Hype Clock Engine Container -->
         <div class="page-countdown-dock" id="pageCountdownModule">
-            <span class="selector-label" style="opacity: 0.8; font-weight: 600;">Exclusive Drop Launching In</span>
+            <span class="selector-label" style="opacity:0.8; font-weight:600;">Exclusive Drop Reveals In</span>
             <div class="countdown-grid" id="pageClockGrid"></div>
         </div>
     </div>
@@ -143,40 +168,47 @@ select { width: 100%; padding: 12px; background: transparent; border: 1px solid 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
 let targetProduct = null;
+let chosenSize = "";
+let selectedQty = 1;
 
 async function initProductPage() {
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
     
-    if(!productId) {
-        window.location.href = "index.html";
-        return;
-    }
+    if(!productId) { window.location.href = "index.html"; return; }
 
     try {
         const res = await fetch(API_URL + "?t=" + new Date().getTime());
         const products = await res.json();
         
-        // Find matching product either by direct index or ID matching string
         targetProduct = products.find((p, i) => String(p.id || p.ID || i) === String(productId));
 
-        if(!targetProduct) {
-            document.getElementById("productTitle").innerText = "Product Not Found";
-            return;
-        }
+        if(!targetProduct) { document.getElementById("productTitle").innerText = "Product Not Found"; return; }
 
-        // Render standard meta values
         document.getElementById("productTitle").innerText = targetProduct.product;
         document.getElementById("productPrice").innerText = "₹" + targetProduct.price;
         const imgNode = document.getElementById("productImage");
         imgNode.src = targetProduct.image;
 
-        // Populate dynamic size allocations
+        // Render dynamic premium size capsule nodes
         const sizes = targetProduct.sizes?.length > 0 ? targetProduct.sizes : ['S', 'M', 'L', 'XL'];
-        const selector = document.getElementById("sizeSelector");
-        selector.innerHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
+        const tray = document.getElementById("sizeCapsuleTrayContainer");
+        tray.innerHTML = "";
+        
+        sizes.forEach((s, idx) => {
+            const btn = document.createElement("button");
+            btn.className = `size-node-btn ${idx === 0 ? 'selected' : ''}`;
+            btn.innerText = s;
+            if(idx === 0) chosenSize = s; 
+            btn.onclick = () => {
+                document.querySelectorAll(".size-node-btn").forEach(b => b.classList.remove("selected"));
+                btn.classList.add("selected");
+                chosenSize = s;
+            };
+            tray.appendChild(btn);
+        });
 
-        // Hype evaluation validation logic rules
+        // Time constraints validation logic
         let rawLaunch = targetProduct.launchDate || targetProduct.launchdate || null;
         let launchTimestamp = null;
         if (rawLaunch) {
@@ -187,16 +219,19 @@ async function initProductPage() {
 
         const nowTime = new Date().getTime();
         if(launchTimestamp && launchTimestamp > nowTime) {
-            // Drop is upcoming -> Engage system lockout variants
             imgNode.classList.add("blurred");
             document.getElementById("interactivePurchaseControls").style.display = "none";
             document.getElementById("pageCountdownModule").style.display = "block";
             startPageTimerLoop(launchTimestamp);
         }
 
-    } catch (e) {
-        document.getElementById("productTitle").innerText = "Error Loading Details";
-    }
+    } catch (e) { document.getElementById("productTitle").innerText = "Error Syncing Parameters"; }
+}
+
+function changePageQuantity(amount) {
+    selectedQty += amount;
+    if(selectedQty < 1) selectedQty = 1;
+    document.getElementById("pageQuantityDisplay").innerText = selectedQty;
 }
 
 function startPageTimerLoop(targetTime) {
@@ -206,7 +241,6 @@ function startPageTimerLoop(targetTime) {
 
         if(diff <= 0) {
             clearInterval(loop);
-            // Soft-reboot parameters to restore interface buy rules instantly
             document.getElementById("productImage").classList.remove("blurred");
             document.getElementById("interactivePurchaseControls").style.display = "block";
             document.getElementById("pageCountdownModule").style.display = "none";
@@ -230,24 +264,64 @@ function startPageTimerLoop(targetTime) {
 function handlePageAddToCart() {
     if(!targetProduct) return;
     let localCart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
-    let selectedSize = document.getElementById("sizeSelector").value;
 
-    let existingItem = localCart.find(x => x.n === targetProduct.product && x.s === selectedSize);
+    let existingItem = localCart.find(x => x.n === targetProduct.product && x.s === chosenSize);
     if(existingItem) {
-        existingItem.q += 1;
+        existingItem.q += selectedQty;
     } else {
         localCart.push({
             n: targetProduct.product,
             p: Number(targetProduct.price),
-            s: selectedSize,
-            q: 1,
+            s: chosenSize,
+            q: selectedQty,
             img: targetProduct.image
         });
     }
 
     localStorage.setItem("aquilux_cart", JSON.stringify(localCart));
-    alert("Added to Shopping Bag successfully!");
-    window.location.href = "index.html"; // Returns user safely to main store layout frame
+    alert(`${selectedQty} Item(s) successfully secured inside Shopping Bag!`);
+    window.location.href = "index.html"; 
+}
+
+/* ==========================================================================
+   INSTANT DEPLOY BUY NOW LOGIC (DIRECT BYPASS TO GATEWAY)
+   ========================================================================== */
+function handleInstantBuyNow() {
+    if(!targetProduct) return;
+    
+    // Check if delivery parameters exist in user profile
+    const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
+    if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
+        alert("Please setup your Shipping Address parameters inside Account Space first!");
+        window.location.href = "index.html"; 
+        return;
+    }
+
+    // Direct checkout payload build injection
+    const singleProductCartPayload = [{
+        n: targetProduct.product,
+        p: Number(targetProduct.price),
+        s: chosenSize,
+        q: selectedQty,
+        img: targetProduct.image
+    }];
+
+    const orderData = {
+        cart: singleProductCartPayload,
+        total: Number(targetProduct.price) * selectedQty,
+        receiverName: savedAddr.receiverName,
+        phone: savedAddr.phone,
+        flat: savedAddr.flat || "",
+        road: savedAddr.road || "",
+        landmark: savedAddr.landmark || "", 
+        city: savedAddr.city || "",
+        state: savedAddr.state || "",
+        pincode: savedAddr.pincode
+    };
+
+    // Lock dynamic state to transfer parameters to gateway window frame
+    localStorage.setItem("pendingOrder", JSON.stringify(orderData));
+    window.location.href = "payment-gateway.html";
 }
 
 window.addEventListener("DOMContentLoaded", initProductPage);
