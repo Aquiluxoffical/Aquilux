@@ -211,7 +211,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 /* ==========================================================================
    4. Hero, Product Cards, and Layout Frameworks
    ========================================================================== */
-/* Updated Kinetic Luxury Background - Mobile Optimized & Glowing */
 .hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 
@@ -221,7 +220,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 
 .hero-luxury-bg svg { position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; opacity: 0.12; animation: rotateBg 60s linear infinite; }
 
-/* Lines ab glow dengi aur mobile par dikhengi */
 .kinetic-path { 
  fill: none; 
  stroke: var(--text); 
@@ -610,9 +608,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="grid" id="grid"></div>
 </section>
 
-<!-- ==========================================================================
-     4c. Dynamic Upcoming Product Hype Engine Dock
-     ========================================================================== */ -->
+<!-- Dynamic Upcoming Hype Section -->
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
   <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-product-showcase-engine"></div>
@@ -848,7 +844,6 @@ async function loadProducts() {
  try {
    const res = await fetch(API_URL); products = await res.json(); 
    
-   // Hype Countdown Automation Engine Logic
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
    let upcomingHypeFound = false;
@@ -856,14 +851,22 @@ async function loadProducts() {
    upcomingContainer.innerHTML = "";
 
    products.forEach(p => {
-       // Check mapping variables parameter
+       let rawLaunch = p.launchDate || p.launchdate || null;
        let launchTimestamp = null;
-       if (p.launchDate) {
-           launchTimestamp = new Date(p.launchDate).getTime();
+       
+       if (rawLaunch) {
+           // Agar date string mein slashes hain (15/07/2026), to convert to standard dash format
+           if (typeof rawLaunch === 'string' && rawLaunch.includes('/')) {
+               const parts = rawLaunch.split(' ');
+               const dateParts = parts[0].split('/');
+               const standardDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}${parts[1] ? 'T' + parts[1] : ''}`;
+               launchTimestamp = Date.parse(standardDateStr);
+           } else {
+               launchTimestamp = Date.parse(rawLaunch);
+           }
        }
 
        if (launchTimestamp && launchTimestamp > nowTime) {
-           // Target is in future -> Deploy blurred layout variant card
            upcomingHypeFound = true;
            upcomingContainer.innerHTML += `
                <div class="hype-blurred-visual-card">
@@ -874,7 +877,6 @@ async function loadProducts() {
            `;
            initiateMasterCountdown(launchTimestamp);
        } else {
-           // Normal or expired launch parameters -> send to direct store display
            activeMarketDisplayItems.push(p);
        }
    });
@@ -900,7 +902,7 @@ function initiateMasterCountdown(targetTime) {
         
         if (diff <= 0) {
             clearInterval(clockLoop);
-            loadProducts(); // Soft reboot layout logic engine once item drops live
+            loadProducts(); 
             return;
         }
 
@@ -921,9 +923,8 @@ function initiateMasterCountdown(targetTime) {
     }, 1000);
 }
 
-/* HIGH-END MINIMALIST OLD MONEY DRAFT ARCHITECTURE GENERATOR ENGINE */
 function displayProducts(list = products) {
- const g = document.getElementById("grid"); g.innerHTML = "";
+ currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
    const sizes = p.sizes?.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
    const sizesHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
@@ -1027,34 +1028,29 @@ function filterProducts() {
     executeUnifiedFiltering();
 }
 
-// UPDATED FILTERING ENGINE - Flexible Category Spaces Handled Perfectly
 function executeUnifiedFiltering() {
     const priceVal = document.getElementById("priceFilter").value;
     const collectionVal = document.getElementById("collectionFilter").value;
     
     let compiledList = products.filter(p => {
         const nowTime = new Date().getTime();
-        let launchTimestamp = p.launchDate ? new Date(p.launchDate).getTime() : null;
+        let launchTimestamp = p.launchDate || p.launchdate ? Date.parse(p.launchDate || p.launchdate) : null;
         return !launchTimestamp || launchTimestamp <= nowTime;
     });
 
-    // 1. Updated Category Matching Logic
     if (collectionVal !== "all") {
         compiledList = compiledList.filter(p => {
             const cat = (p.category || "").toLowerCase();
-            
             if (collectionVal === "T-shirt") return cat.includes("t-shirt");
             if (collectionVal === "Hoodies") return cat.includes("hoodie");
             if (collectionVal === "Oversize T-shirt") return cat.includes("oversize");
             if (collectionVal === "Shorts") return cat.includes("shorts") || cat.includes("sweatshorts");
             if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
             if (collectionVal === "Crop Tee") return cat.includes("crop tee") || cat.includes("croptee");
-
             return cat === collectionVal.toLowerCase();
         });
     }
 
-    // 2. Process Price Range
     if (priceVal !== "all") {
         if (priceVal === "1500") {
             compiledList = compiledList.filter(p => Number(p.price) >= 1500);
