@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQUILUX - About Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #030303;
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .nav-placeholder {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #141414;
+            margin-bottom: 60px;
+        }
+        .nav-logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            color: #ffffff;
+        }
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .hero-title {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #d4af37; /* Premium Gold Accent */
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .hero-main {
+            font-size: 42px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            line-height: 1.2;
+            color: #ffffff;
+        }
+        .story-text {
+            font-size: 15px;
+            color: #cccccc;
+            text-align: center;
+            max-width: 680px;
+            margin: 35px auto;
+            letter-spacing: 0.5px;
+            line-height: 1.8;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 50px 0;
+        }
+        .feature-card {
+            background-color: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .feature-card.highlighted {
+            border: 1px solid #ffffff;
+            background-color: #0f0f0f;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+        }
+        .card-icon {
+            font-size: 13px;
+            color: #888888;
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .feature-card.highlighted .card-icon {
+            color: #d4af37;
+        }
+        .card-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .card-desc {
+            font-size: 12px;
+            color: #777777;
+            line-height: 1.6;
+        }
+        .feature-card.highlighted .card-desc {
+            color: #aaaaaa;
+        }
+        .cta-wrapper {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #141414;
+        }
+        .shop-btn {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 18px 50px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .shop-btn:hover {
+            background-color: #cccccc;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .hero-main {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Minimal Header -->
+        <div class="nav-placeholder">
+            <div class="nav-logo">AQUILUX</div>
+        </div>
+
+        <!-- Hero Identity -->
+        <div class="hero-section">
+            <div class="hero-title">The Alpha Vanguard</div>
+            <div class="hero-main">RISE ABOVE.<br>DOMINATE THE SPACE.</div>
+            <p class="story-text">
+                Aquilux is far more than a clothing label—it is a movement forged for those destined to dominate from the top. Born from a vision of elite execution, we blend high-end luxury streetwear with raw, high-octane energy. We don’t follow mass culture; we dictate it.
+            </p>
+        </div>
+
+        <!-- Brand Pillars Grid -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="card-icon">// 01</div>
+                <div class="card-title">HD Aesthetics</div>
+                <div class="card-desc">Clean structures and sharp silhouettes designed to give you a cinematic, screen-ready look from every angle.</div>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">// 02</div>
+                <div class="card-title">Premium Build</div>
+                <div class="card-desc">Absolute precision weaves combined with heavy-duty luxury textures. Zero compromises on execution.</div>
+            </div>
+            <div class="feature-card highlighted">
+                <div class="card-icon">// 03 FOCUS</div>
+                <div class="card-title">Alpha Energy</div>
+                <div class="card-desc">Crafted explicitly for the visionaries, leaders, and creators who hustle with standalone status and pure class.</div>
+            </div>
+        </div>
+
+        <!-- Bottom Action Button Loop -->
+        <div class="cta-wrapper">
+            <a href="index.html" class="shop-btn">Explore Collection</a>
+        </div>
+    </div>
+
+</body>
+</html>
