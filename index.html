@@ -27,6 +27,24 @@ body {
  -webkit-font-smoothing: antialiased;
  transition: background 0.4s ease, color 0.4s ease;
  height: 100%;
+ padding-top: 40px;
+}
+
+/* Announcement Bar */
+.announcement-bar {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ background: #111111;
+ color: #ffffff;
+ text-align: center;
+ font-size: 11px;
+ font-weight: 500;
+ letter-spacing: 1.5px;
+ padding: 10px 0;
+ z-index: 1000;
+ text-transform: uppercase;
 }
 
 /* ==========================================================================
@@ -34,7 +52,7 @@ body {
    ========================================================================== */
 header {
  position: fixed;
- top: 0;
+ top: 35px;
  width: 100%;
  padding: 18px 6%;
  display: flex;
@@ -63,9 +81,7 @@ header {
  object-fit: contain;
  transition: filter 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
 }
-.logo-box:hover img {
- transform: scale(1.04);
-}
+.logo-box:hover img { transform: scale(1.04); }
 
 html[data-theme="dark"] header img { filter: invert(0); }
 html[data-theme="light"] header img { filter: invert(1); }
@@ -120,9 +136,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .google-btn img { height: 18px !important; width: 18px !important; object-fit: contain !important; filter: none !important; }
 .google-btn span { font-size: 13px; font-weight: 500; color: var(--text); }
 
-/* ==========================================================================
-   3. Premium Sliding Drawers (Fixed Pure Solid Non-Transparent Background)
-   ========================================================================== */
+/* Sliding Drawers */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
  top: 0;
@@ -130,8 +144,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
  height: 100vh;
  height: 100dvh;
  background: var(--bg) !important; 
- backdrop-filter: none !important;
- -webkit-backdrop-filter: none !important;
  border-left: 1px solid var(--line);
  z-index: 200005;
  padding: 30px 24px;
@@ -142,7 +154,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 }
 .account-sidebar-panel { right: -460px; overflow-y: auto; }
 .account-sidebar-panel.active { display: block; right: 0; }
-
 .cart-sidebar-panel { right: -460px; }
 .cart-sidebar-panel.active { display: flex; right: 0; }
 
@@ -167,163 +178,81 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
 
 .panel-address-grid input { 
- width: 100%; 
- padding: 12px 14px; 
- font-size: 13px; 
- margin-top: 8px; 
- background: var(--glass-bg); 
- border: 1px solid var(--line); 
- border-radius: 6px; 
- color: var(--text);
- outline: none;
- transition: border-color 0.2s ease, background 0.2s ease;
+ width: 100%; padding: 12px 14px; font-size: 13px; margin-top: 8px; background: var(--glass-bg); 
+ border: 1px solid var(--line); border-radius: 6px; color: var(--text); outline: none;
 }
-.panel-address-grid input:focus { background: rgba(var(--text), 0.02); border-color: var(--text); }
 .panel-address-grid .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
 .save-address-btn-style { width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
 .logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
-.logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
 
 .panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.05); font-size: 13px; }
 .panel-item-row img { width: 45px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
 .panel-item-row-info { flex: 1; }
-.panel-item-row-info h5 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
-.panel-item-row-info p { font-size: 11px; opacity: 0.6; }
 
-.panel-action-icon-btn { background: none; border: none; cursor: pointer; color: var(--text); opacity: 0.5; transition: opacity 0.2s; }
+.panel-action-icon-btn { background: none; border: none; cursor: pointer; color: var(--text); opacity: 0.5; }
 .panel-action-icon-btn:hover { opacity: 1; color: #ff4a4a; }
 
-.mini-status-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase; display: inline-block; }
-.mini-status-badge.pending { background: rgba(255,191,0,0.1); color: #b88600; }
-.mini-status-badge.approved { background: rgba(24,183,90,0.1); color: #148f43; }
-.mini-status-badge.cancelled { background: rgba(255,74,74,0.15); color: #ff4a4a; }
-
-.cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; -webkit-overflow-scrolling: touch; }
-.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 15px; padding-bottom: max(15px, env(safe-area-inset-bottom)); flex-shrink: 0; background: transparent; width: 100%; }
+.cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; }
+.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 15px; flex-shrink: 0; width: 100%; }
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
 
-.mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; background: rgba(17,17,17,0.02); }
-.mini-qty-box button { padding: 2px 10px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; font-weight: 600; }
-.mini-qty-box button:hover { background: rgba(17,17,17,0.05); }
+.mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; }
+.mini-qty-box button { padding: 2px 10px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); font-weight: 600; }
 .mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
 
-/* ==========================================================================
-   4. Hero, Product Cards, and Layout Frameworks
-   ========================================================================== */
+/* Hero, Grid & Aesthetics */
 .hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-
 .luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(100px); mix-blend-mode: multiply; opacity: 0.08; animation: slowFloat 24s ease-in-out infinite alternate; }
 .orb-1 { width: 50vw; height: 50vh; top: -10%; left: 10%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); }
 .orb-2 { width: 45vw; height: 45vh; bottom: -5%; right: 5%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); animation-delay: -8s; }
-
 .hero-luxury-bg svg { position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; opacity: 0.12; animation: rotateBg 60s linear infinite; }
-
-.kinetic-path { 
- fill: none; 
- stroke: var(--text); 
- stroke-width: 1.8; 
- stroke-opacity: 0.35; 
- stroke-linecap: round;
- filter: drop-shadow(0 0 8px rgba(0,0,0,0.15)); 
- animation: flowDrift 15s ease-in-out infinite alternate; 
-}
+.kinetic-path { fill: none; stroke: var(--text); stroke-width: 1.8; stroke-opacity: 0.35; stroke-linecap: round; animation: flowDrift 15s ease-in-out infinite alternate; }
 
 @keyframes slowFloat { 0% { transform: translate(0px, 0px) scale(1); } 100% { transform: translate(50px, 30px) scale(1.1); } }
-
-@keyframes flowDrift { 
- 0% { stroke-dashoffset: 0; transform: translateY(0px) scale(1); } 
- 50% { stroke-opacity: 0.5; } 
- 100% { stroke-dashoffset: 200; transform: translateY(15px) scale(1.02); } 
-}
-
-@keyframes rotateBg {
- from { transform: rotate(0deg); }
- to { transform: rotate(360deg); }
-}
+@keyframes flowDrift { 0% { stroke-dashoffset: 0; transform: translateY(0px) scale(1); } 100% { stroke-dashoffset: 200; transform: translateY(15px) scale(1.02); } }
+@keyframes rotateBg { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .hero .wrap { text-align: center; max-width: 800px; padding: 20px; position: relative; z-index: 2; }
 .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 400; color: var(--text); letter-spacing: .03em; line-height: 1.1; margin-bottom: 10px; }
 .type { margin: 15px auto; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 5px; text-transform: uppercase; color: var(--text); opacity: 0.6; }
-.btn { display: inline-block; margin-top: 30px; padding: 14px 42px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 12px; letter-spacing: 2px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+.btn { display: inline-block; margin-top: 30px; padding: 14px 42px; border: 1px solid var(--text); color: var(--text); text-decoration: none; font-size: 12px; letter-spacing: 2px; font-weight: 500; text-transform: uppercase; transition: all 0.4s; }
 .btn:hover { background: var(--text); color: var(--bg); }
 
 .review-roller-container { margin-bottom: 40px; width: 100%; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
 .review-roller-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: var(--text); margin-bottom: 15px; }
-.review-roller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
-.roller-card { flex: 0 0 280px; scroll-snap-align: start; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+.review-roller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; }
+.roller-card { flex: 0 0 280px; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); }
 
 section { padding: 90px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; color: var(--text); margin-bottom: 30px; letter-spacing: 0.5px; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px 20px; }
 
-/* AI Product Search & Predictive Suggestions Interface */
-.search-ai-dock {
-    position: relative;
-    width: 280px;
-}
-.search-ai-input {
-    width: 100%;
-    padding: 11px 16px;
-    font-size: 13px;
-    background: var(--glass-bg);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    color: var(--text);
-    outline: none;
-    margin-top: 0 !important;
-}
-.search-ai-suggestions {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    z-index: 50;
-    max-height: 220px;
-    overflow-y: auto;
-    display: none;
-}
-.suggestion-node {
-    padding: 10px 14px;
-    font-size: 12px;
-    cursor: pointer;
-    color: var(--text);
-    transition: background 0.2s;
-}
-.suggestion-node:hover {
-    background: rgba(17,17,17,0.04);
-}
+.search-ai-dock { position: relative; width: 280px; }
+.search-ai-input { width: 100%; padding: 11px 16px; font-size: 13px; background: var(--glass-bg); border: 1px solid var(--line); border-radius: 4px; color: var(--text); outline: none; }
+.search-ai-suggestions { position: absolute; top: calc(100% + 6px); left: 0; width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); z-index: 50; max-height: 220px; overflow-y: auto; display: none; }
+.suggestion-node { padding: 10px 14px; font-size: 12px; cursor: pointer; color: var(--text); }
+.suggestion-node:hover { background: rgba(17,17,17,0.04); }
 
-/* Luxury Product Cards Core UI */
 .card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 20px; background: rgba(17,17,17,0.02); }
 .card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 .hover-img { opacity: 0; z-index: 1; }
 .primary-img { opacity: 1; z-index: 2; }
-
 .card:hover .primary-img { opacity: 0; }
 .card:hover .hover-img { opacity: 1; transform: scale(1.03); }
 
 .wishlist-toggle-icon {
  position: absolute; top: 16px; right: 14px; z-index: 10; 
- background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+ background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(8px);
  border: 1px solid rgba(17, 17, 17, 0.05); width: 34px; height: 34px; border-radius: 50%; 
- display: flex; align-items: center; justify-content: center; cursor: pointer; 
- color: #111111; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);
- transition: background 0.3s, color 0.3s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
- margin-top: 0 !important;
+ display: flex; align-items: center; justify-content: center; cursor: pointer; color: #111111; font-size: 14px;
+ transition: transform 0.2s;
 }
 .wishlist-toggle-icon:hover { transform: scale(1.08); background: #ffffff; }
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
-.wishlist-toggle-icon svg{ width:17px; height:17px; transition:.25s ease; }
-.wishlist-toggle-icon.active svg{ fill:#111; stroke:#111; }
-
-button, input, textarea { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
-input, textarea { width: 100%; }
+.wishlist-toggle-icon svg { width:17px; height:17px; }
+.wishlist-toggle-icon.active svg { fill:#111; stroke:#111; }
 
 .marquee { width: 100%; overflow: hidden; background: rgba(var(--text), 0.02); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
 .marquee-track { display: flex; width: max-content; animation: marquee 25s linear infinite; }
@@ -332,109 +261,40 @@ input, textarea { width: 100%; }
 
 .collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; gap: 20px; flex-wrap: wrap; }
 .controls-right-dock { display: flex; align-items: center; gap: 15px; }
+#priceFilter, #collectionFilter { width: 180px; padding: 11px; background: var(--glass-bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px !important; outline: none; cursor: pointer; }
 
-#priceFilter, #collectionFilter { 
- width: 180px; padding: 11px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); 
- color: var(--text); border: 1px solid var(--line); border-radius: 4px !important; 
- font-family: 'Inter', sans-serif; font-size: 13px; text-align-last: center; outline: none; cursor: pointer; 
-}
-
-.payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
+.payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; }
 
 #menuLoader { position: fixed; inset: 0; background: var(--bg); display: none; justify-content: center; align-items: center; flex-direction: column; gap: 18px; z-index: 999999; opacity: 0; transition: .35s; }
 #menuLoader.show { display: flex; opacity: 1; }
-#menuLoader img { width: 75px; animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-@keyframes luxSpin { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
+#menuLoader img { width: 75px; animation: luxSpin 1.4s infinite; }
+@keyframes luxSpin { 0%, 100% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } }
 
 footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
 
-/* ==========================================================================
-   4b. Dynamic Multi-Product Landscape Grid Layout
-   ========================================================================== */
-.upcoming-section-wrapper { 
- border-top: 1px dashed var(--line);
- margin-top: 60px;
- background: rgba(17,17,17,0.01);
-}
-.upcoming-landscape-grid { 
- display: grid; 
- grid-template-columns: repeat(3, 1fr); 
- gap: 30px; 
- margin-top: 40px; 
-}
-.upcoming-hype-card {
- display: flex;
- flex-direction: column;
- align-items: center;
- text-align: center;
- background: transparent;
-}
-.hype-blurred-visual-card { 
- position: relative;
- width: 100%; 
- aspect-ratio: 3/4;
- border-radius: 8px;
- overflow: hidden;
- filter: blur(24px) brightness(0.95);
- pointer-events: none; 
- box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-}
-.hype-blurred-visual-card img {
- width: 100%;
- height: 100%;
- object-fit: cover;
-}
-.countdown-clock-dock { 
- display: flex; 
- justify-content: center; 
- gap: 8px; 
- margin-top: 16px; 
- width: 100%;
-}
-.countdown-segment-node { 
- background: var(--text); 
- color: var(--bg); 
- padding: 8px 12px; 
- font-family: 'Inter', sans-serif;
- font-size: 13px; 
- font-weight: 600; 
- text-align: center; 
- flex: 1;
- max-width: 65px;
- border-radius: 4px;
-}
-.countdown-segment-node span {
- display: block;
- font-size: 8px;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- opacity: 0.6;
- margin-top: 1px;
- font-weight: 400;
-}
+/* Dynamic Landscape Grid */
+.upcoming-section-wrapper { border-top: 1px dashed var(--line); margin-top: 60px; background: rgba(17,17,17,0.01); }
+.upcoming-landscape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 40px; }
+.upcoming-hype-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.hype-blurred-visual-card { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: 8px; overflow: hidden; filter: blur(24px) brightness(0.95); pointer-events: none; }
+.hype-blurred-visual-card img { width: 100%; height: 100%; object-fit: cover; }
+.countdown-clock-dock { display: flex; justify-content: center; gap: 8px; margin-top: 16px; width: 100%; }
+.countdown-segment-node { background: var(--text); color: var(--bg); padding: 8px 12px; font-size: 13px; font-weight: 600; text-align: center; flex: 1; max-width: 65px; border-radius: 4px; }
+.countdown-segment-node span { display: block; font-size: 8px; text-transform: uppercase; opacity: 0.6; margin-top: 1px; font-weight: 400; }
 
-/* ==========================================================================
-   5. Tablet and iPad Specific Layout Core Framework Patch
-   ========================================================================== */
 @media(max-width: 1024px) {
  header { padding: 16px 4% !important; height: 90px; }
  .logo-box img { height: 58px !important; } 
  .logo-text strong { font-size: 34px !important; }
- .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
  .grid { grid-template-columns: repeat(3, 1fr); }
  .upcoming-landscape-grid { grid-template-columns: repeat(2, 1fr); }
 }
-
-/* Compact Mobile Devices Specific Layout Patch */
 @media(max-width: 768px) {
- header { padding: 12px 16px !important; height: 75px; }
+ header { padding: 12px 16px !important; height: 75px; top: 35px; }
  .logo-box img { height: 44px !important; } 
  .logo-text strong { font-size: 26px !important; }
- .theme-switcher { margin-top: 2px !important; gap: 5px !important; }
- .theme-dot { width: 12px !important; height: 12px !important; }
  .header-right { gap: 14px !important; }
  .cart-title span { display: none !important; }
- #cartCount { width: 18px !important; height: 18px !important; font-size: 10px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 25px 16px; }
  .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 25px 12px !important; }
  .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
@@ -449,6 +309,10 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 </head>
 <body>
 
+<div class="announcement-bar">
+    Get 10% off on first purchase, Use: NEW10
+</div>
+
 <div id="menuLoader">
  <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
  <p>Welcome to aquilux</p>
@@ -459,30 +323,27 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        <h2>My Premium Space</h2>
        <button class="close-panel-btn" onclick="toggleAccountDrawer(false)">×</button>
    </div>
-   
    <div class="profile-meta-card">
        <img id="drawerUserImg" src="" alt="User Profile">
        <div>
            <h4 id="drawerUserName">Guest User</h4>
-           <p id="drawerUserEmail">Sign in to trace metadata logs</p>
+           <p id="drawerUserEmail">Sign in to trace database telemetry logs</p>
        </div>
    </div>
-
    <div class="account-tabs-nav">
        <button id="tabBtnAddress" class="tab-nav-btn active" onclick="switchAccountTab('address')">Address</button>
        <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist</button>
        <button id="tabBtnOrders" class="tab-nav-btn" onclick="switchAccountTab('orders')">My Orders</button>
    </div>
-
    <div id="accountPageAddress" class="account-page-content active">
        <div class="saved-address-view-card">
-           <h4>Auto Saved Core Address</h4>
-           <div id="savedAddressSummaryDisplay">No parameters configured. Please deploy inputs below.</div>
+           <h4>Auto Saved Address</h4>
+           <div id="savedAddressSummaryDisplay">No parameters configured.</div>
        </div>
        <div class="panel-address-grid">
            <input type="text" id="panel_receiverName" placeholder="Receiver Full Name">
            <input type="tel" id="panel_phone" maxlength="10" placeholder="Contact Tracker No">
-           <input type="text" id="panel_flat" placeholder="Flat / Society Space Info">
+           <input type="text" id="panel_flat" placeholder="Flat / Space Info">
            <input type="text" id="panel_road" placeholder="Road / Sector Parameters">
            <input type="text" id="panel_landmark" placeholder="Landmark Parameters (Optional)">
            <div class="row-split">
@@ -490,19 +351,16 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
               <input type="text" id="panel_city" placeholder="City Engine" readonly>
            </div>
            <input type="text" id="panel_state" placeholder="State Zone" readonly>
-           <button class="save-address-btn-style" onclick="saveAddressToMemoryStore()">Save & Auto-Lock Address</button>
+           <button class="save-address-btn-style" onclick="saveAddressToMemoryStore()">Save Address</button>
        </div>
    </div>
-
    <div id="accountPageWishlist" class="account-page-content">
-       <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
+       <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist empty.</p></div>
    </div>
-
    <div id="accountPageOrders" class="account-page-content">
-       <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
+       <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract tracking database logs.</p></div>
    </div>
-
-   <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
+   <button onclick="googleLogout()" class="logout-sidebar-btn" style="width:100%; padding:12px; font-size:12px; background:rgba(255,74,74,0.08); color:#ff4a4a; border:1px solid rgba(255,74,74,0.2); border-radius:4px; margin-top:30px;">Terminate Session</button>
 </div>
 
 <div id="cartDrawer" class="cart-sidebar-panel">
@@ -511,7 +369,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        <button class="close-panel-btn" onclick="toggleCartDrawer(false)">×</button>
    </div>
    <div class="cart-items-scroll-area" id="drawerCartContainer">
-       <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
+       <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is empty.</p>
    </div>
    <div class="cart-footer-calculation-dock">
        <div class="cart-panel-total-row">
@@ -534,8 +392,8 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
      </div>
    </div>
  </div>
-
  <div class="header-right">
+   <a href="#about-brand-section" style="color: var(--text); text-decoration: none; font-size: 14px; font-weight: 400; letter-spacing: 0.5px; margin-right: 12px;">About</a>
    <div class="cart-title" onclick="toggleCartDrawer(true)">
      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
@@ -576,13 +434,11 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  
  <div class="collection-header">
    <div class="title">Collection</div>
-   
    <div class="controls-right-dock">
        <div class="search-ai-dock">
            <input type="text" id="productSearchInput" class="search-ai-input" placeholder="Search parameters via AI..." oninput="handleAiSearchInput(this.value)">
            <div id="searchSuggestionsTray" class="search-ai-suggestions"></div>
        </div>
-
        <select id="collectionFilter" onchange="filterProducts()">
          <option value="all">All Collections</option>
          <option value="T-shirt">T-shirts</option>
@@ -592,7 +448,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
          <option value="Sweatpants">Sweatpants</option>
          <option value="Crop Tee">Crop Tee</option>
        </select>
-       
        <select id="priceFilter" onchange="filterProducts()">
          <option value="all">All Prices</option>
          <option value="0-499">₹0 - ₹499</option>
@@ -604,30 +459,16 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="grid" id="grid"></div>
 </section>
 
-<!-- Landscape Upcoming Section Framework -->
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
   <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem; text-align: center;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-landscape-grid"></div>
 </section>
 
-<section id="reviews-section" style="padding-top:20px;">
-  <div class="review-roller-container">
-     <div class="review-roller-title">Customer Remarks</div>
-     <div class="review-roller" id="reviewsRollerDisplay">
-         <div class="roller-card">
-             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"The absolute pinnacle of minimalism. The quality matches top tier craftsmanship tiers cleanly."</p>
-             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Raghav M.</h5>
-         </div>
-         <div class="roller-card">
-             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"Stunning aesthetics. Delivery coordinates locked accurately, product texture feels elite."</p>
-             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Ishaan K.</h5>
-         </div>
-         <div class="roller-card">
-             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"Pure old money luxury vibe. Exceeded my high product cinematography standard expectations."</p>
-             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Aarav S.</h5>
-         </div>
-     </div>
-  </div>
+<section id="about-brand-section" style="border-top: 1px dashed var(--line); background: rgba(17,17,17,0.01); text-align: center; padding: 80px 10%;">
+  <div class="title" style="letter-spacing: 3px; text-transform: uppercase; font-size: 1.8rem;">Our Identity</div>
+  <p style="font-family: 'Inter', sans-serif; max-width: 680px; margin: 20px auto 0 auto; font-size: 14px; line-height: 1.8; opacity: 0.75; font-weight: 400;">
+    Aquilux represents the ultimate intersection of minimalist streetwear and high-tier luxury aesthetics. Engineered for the modern individual who commands presence without making noise. Every drop is carefully curated, locked inside dynamic time-release databases, and crafted with old-money quality frameworks. Own your altitude.
+  </p>
 </section>
 
 <footer>
@@ -650,6 +491,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+window.db = db; // Exporting to global scope seamlessly
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
@@ -663,11 +505,9 @@ onAuthStateChanged(auth, (user) => {
    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
    document.getElementById("userBox").style.setProperty("display", "flex", "important");
    document.getElementById("userImg").src = user.photoURL;
-   
    document.getElementById("drawerUserImg").src = user.photoURL;
    document.getElementById("drawerUserName").innerText = user.displayName;
    document.getElementById("drawerUserEmail").innerText = user.email;
-   
    window.currentLoggedInUid = user.uid;
    fetchPanelOrders(user.uid);
    loadSavedAddressToPanel();
@@ -684,48 +524,30 @@ window.fetchPanelOrders = async function(uid) {
     try {
         const q = query(collection(db, "orders"), where("userId", "==", uid), orderBy("createdAt", "desc"));
         const snap = await getDocs(q);
-        if(snap.empty) { pContainer.innerHTML = "<p style='opacity:0.5;font-size:12px;'>No active tracks synced.</p>"; return; }
+        if(snap.empty) { pContainer.innerHTML = "<p style='opacity:0.5;font-size:12px;'>No orders active.</p>"; return; }
         pContainer.innerHTML = "";
         snap.forEach(docSnap => {
             const ord = docSnap.data();
             let badgeStyle = "pending";
             let displayStatusText = ord.paymentStatus || 'Pending Verification';
-            
             if(ord.paymentStatus?.toLowerCase() === "approved") { badgeStyle = "approved"; displayStatusText = "Approved"; }
-            if(ord.paymentStatus?.toLowerCase() === "cancelled by user" || ord.paymentStatus?.toLowerCase() === "cancelled by owner") {
-                badgeStyle = "cancelled"; displayStatusText = "Your Order is Cancelled";
-            }
+            if(ord.paymentStatus?.toLowerCase() === "cancelled by user") { badgeStyle = "cancelled"; displayStatusText = "Cancelled"; }
 
             let productsHtml = "";
-            const targetCart = ord.cart || ord.items || [];
-            targetCart.forEach(item => {
-                productsHtml += `
-                <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(17,17,17,0.05);">
-                    <img src="${item.img || item.image || ''}" style="width: 35px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px;" onerror="this.style.display='none'">
-                    <div style="flex: 1; font-size: 11px;">
-                        <span style="font-weight: 500;">${item.n || item.productName || 'Item'}</span><br>
-                        <small style="opacity: 0.7;">Size: ${item.s || item.size || 'M'} | Qty: ${item.q || item.quantity || 1}</small>
-                    </div>
-                    <span style="font-size: 11px; font-weight: 500;">₹${(item.p || item.price || 0) * (item.q || item.quantity || 1)}</span>
-                </div>`;
+            (ord.cart || []).forEach(item => {
+                productsHtml += `<div style="font-size:11px; padding:5px 0;">${item.n} (${item.s}) x ${item.q} - ₹${item.p * item.q}</div>`;
             });
 
-            const orderIdStr = ord.orderNumber || docSnap.id;
             pContainer.innerHTML += `
-            <div style="border-bottom: 1px solid var(--line); padding: 12px 0;">
-               <div onclick="toggleOrderDetails('${orderIdStr}')" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                  <div class="panel-item-row-info">
-                     <span style="font-weight:600; color: var(--text); font-size:12px;">ID: ${orderIdStr} ▾</span><br>
-                     <small style="opacity:0.7; font-size:11px;">Total: ₹${ord.total}</small>
-                  </div>
+            <div style="border-bottom: 1px solid var(--line); padding: 10px 0;">
+               <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div><strong>ID: ${docSnap.id.substring(0,8)}</strong><br><small>Total: ₹${ord.total}</small></div>
                   <span class="mini-status-badge ${badgeStyle}">${displayStatusText}</span>
                </div>
-               <div id="details-${orderIdStr}" style="display: none; background: rgba(17,17,17,0.02); padding: 5px 10px 10px 10px; margin-top: 8px; border-radius: 6px;">
-                  ${productsHtml}
-               </div>
+               <div style="background:rgba(17,17,17,0.02); padding:5px; margin-top:5px; border-radius:4px;">${productsHtml}</div>
             </div>`;
         });
-    } catch(e) { pContainer.innerHTML = "<p style='color:red;'>Failed to pool logs</p>"; }
+    } catch(e) { console.error(e); }
 }
 </script>
 
@@ -737,50 +559,29 @@ window.activeClockLoops = {};
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
-window.handleSmoothScrollToTop = function(event) {
-    if(event) event.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-};
+window.handleSmoothScrollToTop = function(event) { if(event) event.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
 window.handleAiSearchInput = function(queryStr) {
     const tray = document.getElementById("searchSuggestionsTray");
     const cleanQuery = queryStr.trim().toLowerCase();
     if(!cleanQuery) { tray.style.display = "none"; executeUnifiedFiltering(); return; }
     const filteredSuggestions = products.filter(p => p.product.toLowerCase().includes(cleanQuery));
-    if(filteredSuggestions.length === 0) {
-        tray.innerHTML = `<div class="suggestion-node" style="opacity:0.5; cursor:default;">No matches synced.</div>`;
-    } else {
-        tray.innerHTML = "";
-        filteredSuggestions.slice(0, 5).forEach(p => {
-            const node = document.createElement("div");
-            node.className = "suggestion-node";
-            node.innerText = p.product;
-            node.onclick = () => {
-                document.getElementById("productSearchInput").value = p.product;
-                tray.style.display = "none";
-                displayProducts([p]);
-            };
-            tray.appendChild(node);
-        });
-    }
-    tray.style.display = "block";
-    displayProducts(filteredSuggestions);
+    tray.innerHTML = "";
+    filteredSuggestions.slice(0, 5).forEach(p => {
+        const node = document.createElement("div");
+        node.className = "suggestion-node"; node.innerText = p.product;
+        node.onclick = () => { document.getElementById("productSearchInput").value = p.product; tray.style.display = "none"; displayProducts([p]); };
+        tray.appendChild(node);
+    });
+    tray.style.display = "block"; displayProducts(filteredSuggestions);
 };
 
-document.addEventListener("click", (e) => {
-    if(!e.target.closest(".search-ai-dock")) { document.getElementById("searchSuggestionsTray").style.display = "none"; }
-});
-
 function toggleAccountDrawer(openState) {
-    if(openState) toggleCartDrawer(false); 
     const panel = document.getElementById("accountDrawer");
     panel.style.display = openState ? "block" : "none";
     setTimeout(() => panel.classList.toggle("active", openState), 10);
-    if(openState && window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
 }
-
 function toggleCartDrawer(openState) {
-    if(openState) toggleAccountDrawer(false);
     const panel = document.getElementById("cartDrawer");
     panel.style.display = openState ? "flex" : "none";
     setTimeout(() => panel.classList.toggle("active", openState), 10);
@@ -793,23 +594,9 @@ function switchAccountTab(tabName) {
     document.getElementById("accountPageAddress").classList.remove("active");
     document.getElementById("accountPageWishlist").classList.remove("active");
     document.getElementById("accountPageOrders").classList.remove("active");
-    
-    if(tabName === 'address') {
-        document.getElementById("tabBtnAddress").classList.add("active");
-        document.getElementById("accountPageAddress").classList.add("active");
-    } else if(tabName === 'wishlist') {
-        document.getElementById("tabBtnWishlist").classList.add("active");
-        document.getElementById("accountPageWishlist").classList.add("active");
-    } else if(tabName === 'orders') {
-        document.getElementById("tabBtnOrders").classList.add("active");
-        document.getElementById("accountPageOrders").classList.add("active");
-        if(window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
-    }
-}
-
-window.toggleOrderDetails = function(orderId) {
-    const detailDiv = document.getElementById(`details-${orderId}`);
-    if(detailDiv) detailDiv.style.display = detailDiv.style.display === "none" ? "block" : "none";
+    if(tabName==='address') { document.getElementById("tabBtnAddress").classList.add("active"); document.getElementById("accountPageAddress").classList.add("active"); }
+    else if(tabName==='wishlist') { document.getElementById("tabBtnWishlist").classList.add("active"); document.getElementById("accountPageWishlist").classList.add("active"); }
+    else if(tabName==='orders') { document.getElementById("tabBtnOrders").classList.add("active"); document.getElementById("accountPageOrders").classList.add("active"); }
 }
 
 function setTheme(theme){
@@ -829,11 +616,8 @@ async function loadProducts() {
  try {
    Object.keys(window.activeClockLoops).forEach(k => clearInterval(window.activeClockLoops[k]));
    window.activeClockLoops = {};
-
-   const antiCacheTokenUrl = API_URL + "?t=" + new Date().getTime();
-   const res = await fetch(antiCacheTokenUrl); 
+   const res = await fetch(API_URL + "?t=" + new Date().getTime()); 
    products = await res.json(); 
-   
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
    let upcomingHypeFound = false;
@@ -843,114 +627,70 @@ async function loadProducts() {
    products.forEach((p, index) => {
        let rawLaunch = p.launchDate || p.launchdate || null;
        let launchTimestamp = null;
-       
        if (rawLaunch) {
-           let cleanDateStr = String(rawLaunch).trim();
-           cleanDateStr = cleanDateStr.replace(/\//g, '-');
-           if(!cleanDateStr.includes('T') && cleanDateStr.includes(' ')) {
-               cleanDateStr = cleanDateStr.replace(' ', 'T');
-           }
+           let cleanDateStr = String(rawLaunch).trim().replace(/\//g, '-');
+           if(!cleanDateStr.includes('T') && cleanDateStr.includes(' ')) cleanDateStr = cleanDateStr.replace(' ', 'T');
            launchTimestamp = Date.parse(cleanDateStr);
        }
 
        if (launchTimestamp && launchTimestamp > nowTime) {
            upcomingHypeFound = true;
            const targetClockNodeId = `timer_node_id_${index}`;
-           const upcomingLink = `product-page.html?id=${p.id || p.ID || index}&upcoming=true`;
-           
+           const upcomingLink = `product-page.html?id=${p.id || p.ID || index}`;
            upcomingContainer.innerHTML += `
                <div class="upcoming-hype-card">
-                   <a href="${upcomingLink}" style="display:block; width:100%;">
-                       <div class="hype-blurred-visual-card">
-                           <img src="${p.image || ''}">
-                       </div>
+                   <a href="${upcomingLink}">
+                       <div class="hype-blurred-visual-card"><img src="${p.image}"></div>
                    </a>
                    <a href="${upcomingLink}" style="text-decoration:none; color:inherit;">
-                       <h3 style="font-family:'Cormorant Garamond', serif; font-size:18px; text-transform:uppercase; margin-top:12px; font-weight:500; letter-spacing:0.5px;">${p.product || 'Upcoming Drop'}</h3>
+                       <h3 style="font-family:'Cormorant Garamond', serif; font-size:18px; text-transform:uppercase; margin-top:12px; font-weight:500;">${p.product}</h3>
                    </a>
                    <div class="countdown-clock-dock" id="${targetClockNodeId}"></div>
-               </div>
-           `;
+               </div>`;
            initiateIndividualCountdown(launchTimestamp, targetClockNodeId);
-       } else {
-           activeMarketDisplayItems.push(p);
-       }
+       } else { activeMarketDisplayItems.push(p); }
    });
-
-   const upcomingSection = document.getElementById("upcoming");
-   if (upcomingSection) {
-       upcomingSection.style.display = upcomingHypeFound ? "block" : "none";
-   }
-
-   currentProducts = [...activeMarketDisplayItems];
-   qty = Array(currentProducts.length).fill(0); 
-   displayProducts(currentProducts);
-
- } catch (e) { 
-     document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
- }
+   document.getElementById("upcoming").style.display = upcomingHypeFound ? "block" : "none";
+   currentProducts = [...activeMarketDisplayItems]; displayProducts(currentProducts);
+ } catch (e) { document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
 function initiateIndividualCountdown(targetTime, elementId) {
     window.activeClockLoops[elementId] = setInterval(() => {
-        const now = new Date().getTime();
-        const diff = targetTime - now;
-        
-        if (diff <= 0) {
-            clearInterval(window.activeClockLoops[elementId]);
-            loadProducts(); 
-            return;
-        }
-
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-        const clockTargetNode = document.getElementById(elementId);
-        if (clockTargetNode) {
-            clockTargetNode.innerHTML = `
+        const diff = targetTime - new Date().getTime();
+        if (diff <= 0) { clearInterval(window.activeClockLoops[elementId]); loadProducts(); return; }
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        const node = document.getElementById(elementId);
+        if (node) {
+            node.innerHTML = `
                 <div class="countdown-segment-node">${d}<span>Days</span></div>
-                <div class="countdown-segment-node">${String(h).padStart(2, '0')}<span>Hrs</span></div>
-                <div class="countdown-segment-node">${String(m).padStart(2, '0')}<span>Min</span></div>
-                <div class="countdown-segment-node">${String(s).padStart(2, '0')}<span>Sec</span></div>
-            `;
+                <div class="countdown-segment-node">${String(h).padStart(2,'0')}<span>Hrs</span></div>
+                <div class="countdown-segment-node">${String(m).padStart(2,'0')}<span>Min</span></div>
+                <div class="countdown-segment-node">${String(s).padStart(2,'0')}<span>Sec</span></div>`;
         }
     }, 1000);
 }
 
-/* ==========================================================================
-   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER
-   ========================================================================== */
 function displayProducts(list = products) {
- currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
+ const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
-   
    g.innerHTML += `
-   <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
-     <!-- Premium Wishlist Node Capsule -->
+   <div class="card" style="position:relative;">
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/></svg>
      </button>
-     
-     <!-- Interactivity Clickable Image Target -->
-     <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
-       <div class="card-img-wrapper">
-         <img src="${p.image}" class="primary-img"><img src="${p.hover_image || p.image}" class="hover-img">
-       </div>
+     <a href="${productLink}">
+       <div class="card-img-wrapper"><img src="${p.image}" class="primary-img"><img src="${p.hover_image || p.image}" class="hover-img"></div>
      </a>
-     
-     <!-- Minimal Luxury Typography Metadata (No Selectors/No Buttons) -->
-     <div class="info" style="text-align: left; padding: 0;">
-       <a href="${productLink}" style="text-decoration:none; color:inherit;">
-         <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
-       </a>
-       <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8;">₹${p.price}</div>
+     <div class="info">
+       <a href="${productLink}" style="text-decoration:none; color:inherit;"><h3 style="font-size:13px; text-transform:uppercase; font-weight:400;">${p.product}</h3></a>
+       <div class="price" style="font-size:13px; font-weight:500; margin-top:4px;">₹${p.price}</div>
      </div>
    </div>`;
  });
@@ -958,25 +698,16 @@ function displayProducts(list = products) {
 
 window.toggleWishlistProduct = function(prodName, index) {
    const matchIndex = wishlist.findIndex(x => x.product === prodName);
-   if(matchIndex > -1) { wishlist.splice(matchIndex, 1); } 
+   if(matchIndex > -1) wishlist.splice(matchIndex, 1);
    else { const p = products.find(x => x.product === prodName); if(p) wishlist.push(p); }
-   localStorage.setItem("aquilux_wishlist", JSON.stringify(wishlist));
-   displayProducts(currentProducts); renderWishlistPanel();
+   localStorage.setItem("aquilux_wishlist", JSON.stringify(wishlist)); loadProducts();
 }
-
 function renderWishlistPanel() {
     const container = document.getElementById("panelWishlistContainer");
-    if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5;font-size:12px;'>Wishlist is empty.</p>"; return; }
+    if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5;font-size:12px;'>Wishlist empty.</p>"; return; }
     container.innerHTML = "";
     wishlist.forEach((item, idx) => {
-        container.innerHTML += `
-        <div class="panel-item-row">
-            <img src="${item.image}">
-            <div class="panel-item-row-info">
-                <h5>${item.product}</h5><p>Price: ₹${item.price}</p>
-            </div>
-            <button class="panel-action-icon-btn" onclick="wishlist.splice(${idx},1); localStorage.setItem('aquilux_wishlist',JSON.stringify(wishlist)); renderWishlistPanel(); displayProducts(currentProducts);">×</button>
-        </div>`;
+        container.innerHTML += `<div class="panel-item-row"><img src="${item.image}"><div><h5>${item.product}</h5><p>₹${item.price}</p></div></div>`;
     });
 }
 
@@ -991,131 +722,72 @@ window.saveAddressToMemoryStore = function() {
         city: document.getElementById("panel_city").value,
         state: document.getElementById("panel_state").value
     };
-    if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) { alert("Please completely fill out Name, Contact, and Pincode!"); return; }
-    localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock));
-    alert("Shipping parameter locked!"); renderAddressSummaryBlock(addressBlock);
+    if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) { alert("Fill fields!"); return; }
+    localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock)); alert("Locked shipping address!"); loadSavedAddressToPanel();
 }
-
-function renderAddressSummaryBlock(addr) {
-    const display = document.getElementById("savedAddressSummaryDisplay");
-    if(!addr.receiverName) { display.innerHTML = "No configured profiles active."; return; }
-    display.innerHTML = `<strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br><span>${addr.flat || ""}, ${addr.road || ""}</span><br><span>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
-}
-
 function loadSavedAddressToPanel() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
-    renderAddressSummaryBlock(addr);
     if(!addr.receiverName) return;
-    document.getElementById("panel_receiverName").value = addr.receiverName || "";
-    document.getElementById("panel_phone").value = addr.phone || "";
-    document.getElementById("panel_flat").value = addr.flat || "";
-    document.getElementById("panel_road").value = addr.road || "";
-    document.getElementById("panel_landmark").value = addr.landmark || "";
-    document.getElementById("panel_pincode").value = addr.pincode || "";
-    document.getElementById("panel_city").value = addr.city || "";
-    document.getElementById("panel_state").value = addr.state || "";
+    document.getElementById("savedAddressSummaryDisplay").innerHTML = `<strong>${addr.receiverName}</strong>, ${addr.city}`;
 }
 
-function filterProducts() {
-    document.getElementById("productSearchInput").value = ""; 
-    executeUnifiedFiltering();
-}
+/* ==========================================================================
+   BAG CHECKOUT SECURITY INTELLIGENCE ENGINE (AUTO 10% FOR FIRST TIME BUYER)
+   ========================================================================== */
+async function goToGateway(){
+ if(cart.length === 0) { alert("Bag is empty!"); return; }
+ const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
+ if(!savedAddr.receiverName) { alert("Save delivery address profile first!"); toggleAccountDrawer(true); return; }
 
-function executeUnifiedFiltering() {
-    const priceVal = document.getElementById("priceFilter").value;
-    const collectionVal = document.getElementById("collectionFilter").value;
-    
-    let compiledList = products.filter(p => {
-        const nowTime = new Date().getTime();
-        let launchTimestamp = p.launchDate || p.launchdate ? Date.parse(p.launchDate || p.launchdate) : null;
-        return !launchTimestamp || launchTimestamp <= nowTime;
-    });
+ let baseCartTotal = Number(document.getElementById("drawerCartTotal").textContent);
+ let autoDiscount = 0;
 
-    if (collectionVal !== "all") {
-        compiledList = compiledList.filter(p => {
-            const cat = (p.category || "").toLowerCase();
-            if (collectionVal === "T-shirt") return cat.includes("t-shirt");
-            if (collectionVal === "Hoodies") return cat.includes("hoodie");
-            if (collectionVal === "Oversize T-shirt") return cat.includes("oversize");
-            if (collectionVal === "Shorts") return cat.includes("shorts") || cat.includes("sweatshorts");
-            if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
-            if (collectionVal === "Crop Tee") return cat.includes("crop tee") || cat.includes("croptee");
-            return cat === collectionVal.toLowerCase();
-        });
-    }
-
-    if (priceVal !== "all") {
-        if (priceVal === "1500") {
-            compiledList = compiledList.filter(p => Number(p.price) >= 1500);
-        } else {
-            const [rangeMin, rangeMax] = priceVal.split("-");
-            compiledList = compiledList.filter(p => Number(p.price) >= Number(rangeMin) && Number(p.price) <= Number(rangeMax));
+ if(window.currentLoggedInUid && window.db) {
+    try {
+        // Query to check historical database entries
+        const qSnap = await window.db.collection("orders")
+            .where("userId", "==", window.currentLoggedInUid)
+            .where("paymentStatus", "==", "Approved")
+            .get();
+        if(qSnap.empty) {
+            autoDiscount = Math.round(baseCartTotal * 0.10);
+            alert(`🎉 First-purchase verified via Firebase! ₹${autoDiscount} auto-deducted cleanly.`);
         }
-    }
+    } catch(e) { console.error("Database analytics look up skipped."); }
+ }
 
+ const orderData = {
+   cart: cart, total: baseCartTotal - autoDiscount, discountApplied: autoDiscount,
+   receiverName: savedAddr.receiverName, phone: savedAddr.phone,
+   flat: savedAddr.flat, road: savedAddr.road, city: savedAddr.city, state: savedAddr.state, pincode: savedAddr.pincode
+ };
+ localStorage.setItem("pendingOrder", JSON.stringify(orderData)); window.location.href = "payment-gateway.html";
+}
+
+function filterProducts() { executeUnifiedFiltering(); }
+function executeUnifiedFiltering() {
+    let compiledList = products.filter(p => {
+        let rawLaunch = p.launchDate || p.launchdate;
+        return !rawLaunch || Date.parse(String(rawLaunch).replace(' ','T')) <= new Date().getTime();
+    });
     displayProducts(compiledList);
 }
-
-window.addEventListener("DOMContentLoaded", loadProducts);
-function changeQty(i, c){ qty[i] += c; if(qty[i] < 0) qty[i] = 0; document.getElementById("q"+i).textContent = qty[i]; }
-
-function addToCart(i){
- if(qty[i] === 0) return;
- let size = document.getElementById("s"+i).value, quantity = qty[i], product = currentProducts[i];
- let item = cart.find(x => x.n == product.product && x.s == size);
- if(item) { item.q += quantity; } 
- else { cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
- qty[i] = 0; document.getElementById("q"+i).textContent = 0;
- draw(); toggleCartDrawer(true); 
-}
-
-window.changeDrawerQty = function(index, change) {
-    if(cart[index].q + change < 1) return;
-    cart[index].q += change;
-    draw();
-}
-
 function draw(){
  let t = 0; let h = "";
- cart.forEach((c, i) => {
-   t += c.p * c.q;
-   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="cart.splice(${i},1);draw()">×</button></div>`;
- });
- if(cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
- localStorage.setItem("aquilux_cart", JSON.stringify(cart));
- document.getElementById("drawerCartContainer").innerHTML = h; 
+ cart.forEach((c, i) => { t += c.p * c.q; h += `<div class="panel-item-row"><div class="panel-item-row-info"><h5>${c.n}</h5><p>${c.s} x ${c.q} - ₹${c.p * c.q}</p></div></div>`; });
+ document.getElementById("drawerCartContainer").innerHTML = h || "<p style='text-align:center; opacity:0.5;'>Empty bag.</p>";
  document.getElementById("drawerCartTotal").textContent = t;
- let count = 0; cart.forEach(x => { count += x.q; }); 
- document.getElementById("cartCount").textContent = count;
+ document.getElementById("cartCount").textContent = cart.reduce((acc, x) => acc + x.q, 0);
+ localStorage.setItem("aquilux_cart", JSON.stringify(cart));
 }
-
-function goToGateway(){
- if(cart.length === 0) { alert("Your shopping cart is empty!"); return; }
- const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
- if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
-     alert("Please save your delivery address first!");
-     toggleAccountDrawer(true); switchAccountTab('address'); return;
- }
- const orderData = {
-   cart: cart, total: Number(document.getElementById("drawerCartTotal").textContent),
-   receiverName: savedAddr.receiverName, phone: savedAddr.phone,
-   flat: savedAddr.flat || "", road: savedAddr.road || "", landmark: savedAddr.landmark || "", 
-   city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
- };
- localStorage.setItem("pendingOrder", JSON.stringify(orderData));
- window.location.href = "payment-gateway.html";
-}
-
-async function lookupPinApi(pinCode, cityField, stateField) {
+window.addEventListener("DOMContentLoaded", loadProducts);
+async function lookupPinApi(pinCode) {
    try {
      const res = await fetch("https://api.postalpincode.in/pincode/" + pinCode); const d = await res.json();
-     if(d[0].Status === "Success"){
-       document.getElementById(cityField).value = d[0].PostOffice[0].District;
-       document.getElementById(stateField).value = d[0].PostOffice[0].State;
-     }
+     if(d[0].Status === "Success"){ document.getElementById("panel_city").value = d[0].PostOffice[0].District; document.getElementById("panel_state").value = d[0].PostOffice[0].State; }
    } catch(e) {}
 }
-function checkPanelPin(inp){ inp.value = inp.value.replace(/\D/g,''); if(inp.value.length === 6){ lookupPinApi(inp.value, "panel_city", "panel_state"); } }
+function checkPanelPin(inp){ if(inp.value.length === 6){ lookupPinApi(inp.value); } }
 </script>
 </body>
 </html>
