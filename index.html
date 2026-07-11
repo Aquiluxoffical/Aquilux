@@ -249,6 +249,22 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .btn { display: inline-block; margin-top: 30px; padding: 14px 42px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 12px; letter-spacing: 2px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
 .btn:hover { background: var(--text); color: var(--bg); }
 
+/* Custom Luxury About Link Framework */
+.about-link-hero {
+ display: inline-block;
+ color: var(--text);
+ text-decoration: none;
+ font-size: 11px;
+ letter-spacing: 3px;
+ font-weight: 500;
+ opacity: 0.5;
+ transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.about-link-hero:hover {
+ opacity: 1;
+ transform: translateY(-2px);
+}
+
 .review-roller-container { margin-bottom: 40px; width: 100%; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
 .review-roller-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: var(--text); margin-bottom: 15px; }
 .review-roller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
@@ -564,6 +580,9 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
   <div class="wrap">
     <h1>Aquilux</h1><div class="type">Own. Your. Altitude.</div>
     <a href="#shop" class="btn">SHOP NOW</a>
+    <div style="margin-top: 25px;">
+      <a href="about.html" class="about-link-hero">ABOUT US</a>
+    </div>
   </div>
 </section>
 
@@ -732,7 +751,7 @@ window.fetchPanelOrders = async function(uid) {
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
 let products = [], currentProducts = [], qty = [];
-window.activeClockLoops = {}; // Multi-Clock Trackers Object
+window.activeClockLoops = {}; 
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
@@ -827,7 +846,6 @@ async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
  renderWishlistPanel(); draw();
  try {
-   // Clear all active intervals before reconstruction loops
    Object.keys(window.activeClockLoops).forEach(k => clearInterval(window.activeClockLoops[k]));
    window.activeClockLoops = {};
 
@@ -858,7 +876,6 @@ async function loadProducts() {
            upcomingHypeFound = true;
            const targetClockNodeId = `timer_node_id_${index}`;
            
-           // Landscape Matrix Card Generator Loop Injection
            upcomingContainer.innerHTML += `
                <div class="upcoming-hype-card">
                    <div class="hype-blurred-visual-card">
@@ -869,7 +886,6 @@ async function loadProducts() {
                </div>
            `;
            
-           // Initiate Multi-threaded safe loop reference trackers
            initiateIndividualCountdown(launchTimestamp, targetClockNodeId);
        } else {
            activeMarketDisplayItems.push(p);
