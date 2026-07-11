@@ -147,7 +147,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 }
 
 /* ==========================================================================
-   4. The Clickable Alpha Pillars Grid UI (Updated to Anchors)
+   4. Interactive Expandable Pillars Grid UI
    ========================================================================== */
 .pillars-section {
  padding: 20px 6% 60px 6%;
@@ -159,9 +159,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
  max-width: 1000px;
  margin: 0 auto;
 }
-.pillar-link-card {
- text-decoration: none;
- display: block;
+.pillar-card {
  background: var(--glass-bg);
  backdrop-filter: blur(var(--glass-blur));
  -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -170,20 +168,19 @@ html[data-theme="olive"] header img { filter: invert(1); }
  border-radius: 6px;
  text-align: center;
  transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
- color: var(--text);
  cursor: pointer;
+ overflow: hidden;
 }
-.pillar-link-card:hover {
+.pillar-card:hover {
  border-color: var(--text);
- transform: translateY(-4px);
- box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+ transform: translateY(-2px);
 }
-.pillar-link-card.alpha-highlight {
+.pillar-card.alpha-highlight {
  border: 1px solid var(--text);
  background: rgba(var(--text), 0.02);
  position: relative;
 }
-.pillar-link-card.alpha-highlight::before {
+.pillar-card.alpha-highlight::before {
  content: "CORE FOCUS";
  position: absolute;
  top: -10px;
@@ -204,10 +201,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
  margin-bottom: 15px;
  letter-spacing: 1px;
 }
-.pillar-link-card.alpha-highlight .pillar-index {
- opacity: 0.9;
- color: var(--text);
-}
 .pillar-title {
  font-family: 'Cormorant Garamond', serif;
  font-size: 22px;
@@ -222,6 +215,50 @@ html[data-theme="olive"] header img { filter: invert(1); }
  color: var(--text);
  opacity: 0.65;
  line-height: 1.6;
+}
+
+/* Dynamic Hidden Expansion Canvas */
+.expanded-content {
+ max-height: 0;
+ opacity: 0;
+ transition: max-height 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, margin-top 0.4s ease;
+ text-align: left;
+ background: rgba(var(--text), 0.03);
+ border-radius: 4px;
+ font-size: 12px;
+ color: var(--text);
+ opacity: 0.8;
+}
+.expanded-content p {
+ padding: 15px;
+ line-height: 1.7;
+ border-top: 1px dashed var(--line);
+}
+
+/* Active State Styles triggered via JS */
+.pillar-card.is-expanded {
+ border-color: var(--text);
+ box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
+ transform: translateY(0);
+}
+.pillar-card.is-expanded .expanded-content {
+ max-height: 300px; /* High boundary for smooth calculation */
+ opacity: 1;
+ margin-top: 15px;
+}
+.interactive-hint {
+ font-size: 9px;
+ text-transform: uppercase;
+ letter-spacing: 1px;
+ opacity: 0.3;
+ margin-top: 15px;
+ transition: opacity 0.3s;
+}
+.pillar-card:hover .interactive-hint {
+ opacity: 0.6;
+}
+.pillar-card.is-expanded .interactive-hint {
+ display: none;
 }
 
 /* ==========================================================================
@@ -262,7 +299,7 @@ footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center
 @media(max-width: 1024px) {
  body { padding-top: 130px; }
  .pillars-grid { grid-template-columns: repeat(2, 1fr); }
- .pillar-link-card.alpha-highlight { grid-column: span 2; }
+ .pillar-card.alpha-highlight { grid-column: span 2; }
 }
 @media(max-width: 768px) {
  body { padding-top: 105px; }
@@ -271,7 +308,7 @@ footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center
  .logo-text strong { font-size: 26px !important; }
  .about-hero h1 { font-size: 2.2rem; }
  .pillars-grid { grid-template-columns: 1fr; gap: 20px; }
- .pillar-link-card.alpha-highlight { grid-column: span 1; }
+ .pillar-card.alpha-highlight { grid-column: span 1; }
  .cta-btn { width: 100%; padding: 16px 20px; text-align: center; }
 }
 </style>
@@ -307,30 +344,42 @@ footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center
 
 <section class="pillars-section">
   <div class="pillars-grid">
-      <!-- Clickable Card 1 (Redirects to Shop Grid) -->
-      <a href="index.html#shop" class="pillar-link-card">
+      <!-- Card 1 -->
+      <div class="pillar-card" onclick="toggleCardExpansion(this)">
           <div class="pillar-index">// 01</div>
           <div class="pillar-title">HD Aesthetics</div>
           <div class="pillar-desc">Clean structures and sharp silhouettes designed to give you a cinematic, screen-ready presence from every single angle.</div>
-      </a>
+          <div class="expanded-content">
+              <p>Our pieces look elite under any lens. We build clothes with structural gravity, engineered for content creators and leaders who stand bold in every frame. No slouching cuts, just high-definition styling parameters.</p>
+          </div>
+          <div class="interactive-hint">✦ Click to Expand Details</div>
+      </div>
       
-      <!-- Clickable Card 2 (Redirects to Shop Grid) -->
-      <a href="index.html#shop" class="pillar-link-card">
+      <!-- Card 2 -->
+      <div class="pillar-card" onclick="toggleCardExpansion(this)">
           <div class="pillar-index">// 02</div>
           <div class="pillar-title">Premium Build</div>
           <div class="pillar-desc">Absolute precision weaves combined with heavy-duty luxury textures. We make zero compromises on execution.</div>
-      </a>
+          <div class="expanded-content">
+              <p>Every fabric drop undergoes rigorous tracking. We utilize heavy-density textiles that maintain form over time, ensuring that the luxury weight and raw premium texture feel superior the instant you put it on.</p>
+          </div>
+          <div class="interactive-hint">✦ Click to Expand Details</div>
+      </div>
       
-      <!-- Clickable Card 3 (Redirects to Shop Grid) -->
-      <a href="index.html#shop" class="pillar-link-card alpha-highlight">
+      <!-- Card 3 (Highlight Focus) -->
+      <div class="pillar-card alpha-highlight" onclick="toggleCardExpansion(this)">
           <div class="pillar-index">// 03</div>
           <div class="pillar-title">Alpha Energy</div>
           <div class="pillar-desc">Crafted explicitly for the visionaries, leaders, and creators who hustle with standalone status and pure class.</div>
-      </a>
+          <div class="expanded-content">
+              <p>Aquilux is an armor for the high-achiever. Tailored for absolute dominance, this pillar represents the unyielding mindset of individuals who don't wait for trends—they set the benchmark. Own your altitude.</p>
+          </div>
+          <div class="interactive-hint">✦ Click to Expand Details</div>
+      </div>
   </div>
 </section>
 
-<!-- Shop Action Terminal (Absolute Bottom Link) -->
+<!-- Shop Action Terminal (Stays at the absolute bottom) -->
 <section class="cta-dock">
   <a href="index.html#shop" class="cta-btn">Explore The Collection</a>
 </section>
@@ -340,6 +389,21 @@ footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center
 </footer>
 
 <script>
+// Toggle Function to handle smooth micro-expansions without shifting pages
+function toggleCardExpansion(cardElement) {
+    const checkActive = cardElement.classList.contains('is-expanded');
+    
+    // Close other expanded elements first for crisp layout alignment
+    document.querySelectorAll('.pillar-card').forEach(card => {
+        card.classList.remove('is-expanded');
+    });
+    
+    // Toggle current target state
+    if (!checkActive) {
+        cardElement.classList.add('is-expanded');
+    }
+}
+
 function setTheme(theme){
  document.documentElement.setAttribute("data-theme", theme);
  const isDark = theme === "dark", isOlive = theme === "olive";
