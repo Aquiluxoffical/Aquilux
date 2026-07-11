@@ -920,49 +920,37 @@ function initiateIndividualCountdown(targetTime, elementId) {
     }, 1000);
 }
 
+/* ==========================================================================
+   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER
+   ========================================================================== */
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
-   const sizes = p.sizes?.length > 0 ? p.sizes : ['S', 'M', 'L', 'XL'];
-   const sizesHTML = sizes.map(s => `<option value="${s}">${s}</option>`).join('');
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
    
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
+     <!-- Premium Wishlist Node Capsule -->
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
         </svg>
      </button>
      
+     <!-- Interactivity Clickable Image Target -->
      <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
        <div class="card-img-wrapper">
          <img src="${p.image}" class="primary-img"><img src="${p.hover_image || p.image}" class="hover-img">
        </div>
      </a>
      
+     <!-- Minimal Luxury Typography Metadata (No Selectors/No Buttons) -->
      <div class="info" style="text-align: left; padding: 0;">
        <a href="${productLink}" style="text-decoration:none; color:inherit;">
          <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
        </a>
-       <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8; margin-bottom:16px;">₹${p.price}</div>
-       <div style="display:flex; align-items:center; justify-content:between; border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:16px;">
-         <div style="display:flex; align-items:center; gap:6px;">
-           <span style="font-size:10px; text-transform:uppercase; letter-spacing:1px; opacity:0.4;">Size</span>
-           <select id="s${i}" style="width:auto; padding:0 4px; background:transparent; color:var(--text); border:none; font-size:11px; font-weight:600; text-align-last:left; outline:none; cursor:pointer; margin-top:0;">
-             ${sizesHTML}
-           </select>
-         </div>
-         <div class="qty" style="display:flex; align-items:center; gap:10px; margin:0; padding:0; justify-content:flex-end; flex:1;">
-           <button onclick="changeQty(${i},-1)" style="background:transparent; border:none; color:var(--text); font-size:14px; cursor:pointer; padding:0 4px; opacity:0.5; margin-top:0;">−</button>
-           <span id="q${i}" style="font-size:12px; font-weight:500; min-width:12px; text-align:center;">0</span>
-           <button onclick="changeQty(${i},1)" style="background:transparent; border:none; color:var(--text); font-size:14px; cursor:pointer; padding:0 4px; opacity:0.5; margin-top:0;">+</button>
-         </div>
-       </div>
-       <button class="glass-action-btn" onclick="addToCart(${i})" style="width:100%; padding:0; background:transparent; color:var(--text); border:none; border-bottom:1px solid var(--text); border-radius:0px !important; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; text-align:center; cursor:pointer; padding-bottom:6px; margin-top:5px; transition: opacity 0.2s ease;">
-         Add To Bag
-       </button>
+       <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8;">₹${p.price}</div>
      </div>
    </div>`;
  });
