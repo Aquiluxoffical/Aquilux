@@ -211,15 +211,39 @@ html[data-theme="olive"] header img { filter: invert(1); }
 /* ==========================================================================
    4. Hero, Product Cards, and Layout Frameworks
    ========================================================================== */
+/* Updated Kinetic Luxury Background - Mobile Optimized & Glowing */
 .hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
 .luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(100px); mix-blend-mode: multiply; opacity: 0.08; animation: slowFloat 24s ease-in-out infinite alternate; }
 .orb-1 { width: 50vw; height: 50vh; top: -10%; left: 10%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); }
 .orb-2 { width: 45vw; height: 45vh; bottom: -5%; right: 5%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); animation-delay: -8s; }
-.hero-luxury-bg svg { position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; opacity: 0.12; }
-.kinetic-path { fill: none; stroke: var(--text); stroke-width: 0.5; stroke-dasharray: 6 6; animation: slowDrift 40s linear infinite alternate; transform-origin: center; }
+
+.hero-luxury-bg svg { position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; opacity: 0.12; animation: rotateBg 60s linear infinite; }
+
+/* Lines ab glow dengi aur mobile par dikhengi */
+.kinetic-path { 
+ fill: none; 
+ stroke: var(--text); 
+ stroke-width: 1.8; 
+ stroke-opacity: 0.35; 
+ stroke-linecap: round;
+ filter: drop-shadow(0 0 8px rgba(0,0,0,0.15)); 
+ animation: flowDrift 15s ease-in-out infinite alternate; 
+}
+
 @keyframes slowFloat { 0% { transform: translate(0px, 0px) scale(1); } 100% { transform: translate(50px, 30px) scale(1.1); } }
-@keyframes slowDrift { 0% { transform: scale(1) rotate(0deg) translateY(0px); } 100% { transform: scale(1.06) rotate(2deg) translateY(10px); } }
+
+@keyframes flowDrift { 
+ 0% { stroke-dashoffset: 0; transform: translateY(0px) scale(1); } 
+ 50% { stroke-opacity: 0.5; } 
+ 100% { stroke-dashoffset: 200; transform: translateY(15px) scale(1.02); } 
+}
+
+@keyframes rotateBg {
+ from { transform: rotate(0deg); }
+ to { transform: rotate(360deg); }
+}
 
 .hero .wrap { text-align: center; max-width: 800px; padding: 20px; position: relative; z-index: 2; }
 .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 400; color: var(--text); letter-spacing: .03em; line-height: 1.1; margin-bottom: 10px; }
