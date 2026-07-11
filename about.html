@@ -1,188 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AQUILUX - About Us</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #030303;
-            color: #ffffff;
-            line-height: 1.6;
-            padding: 40px 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .nav-placeholder {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #141414;
-            margin-bottom: 60px;
-        }
-        .nav-logo {
-            font-size: 28px;
-            font-weight: 900;
-            letter-spacing: 12px;
-            text-transform: uppercase;
-            color: #ffffff;
-        }
-        .hero-section {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        .hero-title {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            color: #d4af37; /* Premium Gold Accent */
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-        .hero-main {
-            font-size: 42px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            line-height: 1.2;
-            color: #ffffff;
-        }
-        .story-text {
-            font-size: 15px;
-            color: #cccccc;
-            text-align: center;
-            max-width: 680px;
-            margin: 35px auto;
-            letter-spacing: 0.5px;
-            line-height: 1.8;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 50px 0;
-        }
-        .feature-card {
-            background-color: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            padding: 35px 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .feature-card.highlighted {
-            border: 1px solid #ffffff;
-            background-color: #0f0f0f;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-        }
-        .card-icon {
-            font-size: 13px;
-            color: #888888;
-            margin-bottom: 15px;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .feature-card.highlighted .card-icon {
-            color: #d4af37;
-        }
-        .card-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            color: #ffffff;
-            font-weight: bold;
-        }
-        .card-desc {
-            font-size: 12px;
-            color: #777777;
-            line-height: 1.6;
-        }
-        .feature-card.highlighted .card-desc {
-            color: #aaaaaa;
-        }
-        .cta-wrapper {
-            text-align: center;
-            margin-top: 60px;
-            padding-top: 40px;
-            border-top: 1px solid #141414;
-        }
-        .shop-btn {
-            display: inline-block;
-            background-color: #ffffff;
-            color: #000000;
-            padding: 18px 50px;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .shop-btn:hover {
-            background-color: #cccccc;
-            transform: translateY(-2px);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aquilux — The Alpha Vanguard</title>
+<style>
+/* ==========================================================================
+   1. Global Variables & Base Resets (Direct Sync with Homepage)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
-        /* Mobile Optimization */
-        @media (max-width: 768px) {
-            .features-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .hero-main {
-                font-size: 32px;
-            }
-        }
-    </style>
+:root {
+ --bg: #ffffff;             
+ --text: #111111;           
+ --line: rgba(17, 17, 17, 0.08); 
+ --glass-bg: rgba(255, 255, 255, 0.45);
+ --glass-blur: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; height: 100%; }
+body {
+ font-family: 'Inter', Arial, sans-serif;
+ background: var(--bg);
+ color: var(--text);
+ -webkit-font-smoothing: antialiased;
+ transition: background 0.4s ease, color 0.4s ease;
+ min-height: 100%;
+ padding-top: 120px;
+}
+
+/* ==========================================================================
+   2. Header & Navigation Framework
+   ========================================================================== */
+header {
+ position: fixed;
+ top: 0;
+ width: 100%;
+ padding: 18px 6%;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ background: rgba(var(--bg), 0.85);
+ backdrop-filter: blur(16px);
+ -webkit-backdrop-filter: blur(16px);
+ border-bottom: 1px solid var(--line);
+ z-index: 100;
+}
+
+.logo-box { 
+ display: flex; 
+ align-items: center; 
+ gap: 16px; 
+ cursor: pointer;
+ text-decoration: none;
+ color: inherit;
+ user-select: none;
+}
+
+.logo-box img { 
+ height: 48px; 
+ width: auto;
+ object-fit: contain;
+ transition: filter 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+}
+.logo-box:hover img {
+ transform: scale(1.04);
+}
+
+html[data-theme="dark"] header img { filter: invert(0); }
+html[data-theme="light"] header img { filter: invert(1); }
+html[data-theme="olive"] header img { filter: invert(1); }
+
+.logo-text strong { 
+ font-family: 'Cormorant Garamond', serif; 
+ font-size: 30px; 
+ font-weight: 600; 
+ letter-spacing: 1.5px; 
+ line-height: 1;
+}
+
+.theme-switcher { display: flex; gap: 8px; margin-top: 6px; }
+.theme-dot {
+ width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(var(--text), 0.2); cursor: pointer; transition: transform 0.2s ease;
+}
+.theme-dot:hover { transform: scale(1.25); }
+.theme-dot.light { background: #ffffff; }
+.theme-dot.olive { background: #d7d9cf; }
+.theme-dot.dark { background: #111111; }
+
+.header-right { display: flex; align-items: center; gap: 24px; }
+.home-link {
+ color: var(--text);
+ text-decoration: none;
+ font-size: 13px;
+ font-weight: 500;
+ letter-spacing: 1px;
+ text-transform: uppercase;
+ opacity: 0.8;
+ transition: opacity 0.2s;
+}
+.home-link:hover { opacity: 1; }
+
+/* ==========================================================================
+   3. Content Framework & Hero Core Canvas
+   ========================================================================== */
+.about-hero {
+ position: relative;
+ text-align: center;
+ padding: 60px 6%;
+ overflow: hidden;
+}
+.luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(100px); mix-blend-mode: multiply; opacity: 0.08; animation: slowFloat 24s ease-in-out infinite alternate; pointer-events: none; }
+.orb-1 { width: 40vw; height: 40vh; top: -10%; left: 15%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); }
+@keyframes slowFloat { 0% { transform: translate(0px, 0px) scale(1); } 100% { transform: translate(30px, 20px) scale(1.05); } }
+
+.about-hero h1 {
+ font-family: 'Cormorant Garamond', serif;
+ font-size: clamp(2.5rem, 6vw, 4.5rem);
+ font-weight: 400;
+ color: var(--text);
+ letter-spacing: 0.02em;
+ line-height: 1.2;
+ margin-bottom: 15px;
+ text-transform: uppercase;
+}
+.manifesto-tag {
+ font-size: 11px;
+ font-weight: 600;
+ letter-spacing: 6px;
+ text-transform: uppercase;
+ color: var(--text);
+ opacity: 0.5;
+ margin-bottom: 30px;
+}
+.story-narrative {
+ font-size: 15px;
+ color: var(--text);
+ opacity: 0.85;
+ max-width: 720px;
+ margin: 0 auto 50px auto;
+ line-height: 1.8;
+ text-align: justify;
+ text-align-last: center;
+ letter-spacing: 0.3px;
+}
+
+/* ==========================================================================
+   4. The Clickable Alpha Pillars Grid UI (Updated to Anchors)
+   ========================================================================== */
+.pillars-section {
+ padding: 20px 6% 60px 6%;
+}
+.pillars-grid {
+ display: grid;
+ grid-template-columns: repeat(3, 1fr);
+ gap: 30px;
+ max-width: 1000px;
+ margin: 0 auto;
+}
+.pillar-link-card {
+ text-decoration: none;
+ display: block;
+ background: var(--glass-bg);
+ backdrop-filter: blur(var(--glass-blur));
+ -webkit-backdrop-filter: blur(var(--glass-blur));
+ border: 1px solid var(--line);
+ padding: 40px 25px;
+ border-radius: 6px;
+ text-align: center;
+ transition: border-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+ color: var(--text);
+ cursor: pointer;
+}
+.pillar-link-card:hover {
+ border-color: var(--text);
+ transform: translateY(-4px);
+ box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+.pillar-link-card.alpha-highlight {
+ border: 1px solid var(--text);
+ background: rgba(var(--text), 0.02);
+ position: relative;
+}
+.pillar-link-card.alpha-highlight::before {
+ content: "CORE FOCUS";
+ position: absolute;
+ top: -10px;
+ left: 50%;
+ transform: translateX(-50%);
+ background: var(--text);
+ color: var(--bg);
+ font-size: 8px;
+ font-weight: 600;
+ letter-spacing: 1px;
+ padding: 2px 10px;
+ border-radius: 20px;
+}
+.pillar-index {
+ font-size: 12px;
+ font-weight: bold;
+ opacity: 0.4;
+ margin-bottom: 15px;
+ letter-spacing: 1px;
+}
+.pillar-link-card.alpha-highlight .pillar-index {
+ opacity: 0.9;
+ color: var(--text);
+}
+.pillar-title {
+ font-family: 'Cormorant Garamond', serif;
+ font-size: 22px;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 1.5px;
+ margin-bottom: 15px;
+ color: var(--text);
+}
+.pillar-desc {
+ font-size: 12.5px;
+ color: var(--text);
+ opacity: 0.65;
+ line-height: 1.6;
+}
+
+/* ==========================================================================
+   5. Shop Action Terminal Dock
+   ========================================================================== */
+.cta-dock {
+ text-align: center;
+ padding: 60px 6% 90px 6%;
+ border-top: 1px dashed var(--line);
+ max-width: 800px;
+ margin: 40px auto 0 auto;
+}
+.cta-btn {
+ display: inline-block;
+ padding: 16px 50px;
+ border: 1px solid var(--text);
+ color: var(--text);
+ background: transparent;
+ text-decoration: none;
+ font-size: 12px;
+ letter-spacing: 3px;
+ font-weight: 600;
+ text-transform: uppercase;
+ transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+ border-radius: 4px;
+}
+.cta-btn:hover {
+ background: var(--text);
+ color: var(--bg);
+ transform: scale(1.02);
+}
+
+footer { padding: 40px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 12px; opacity: 0.7; }
+
+/* ==========================================================================
+   6. Cross-Platform Adaptability Matrices
+   ========================================================================== */
+@media(max-width: 1024px) {
+ body { padding-top: 130px; }
+ .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+ .pillar-link-card.alpha-highlight { grid-column: span 2; }
+}
+@media(max-width: 768px) {
+ body { padding-top: 105px; }
+ header { padding: 12px 16px !important; }
+ .logo-box img { height: 44px !important; } 
+ .logo-text strong { font-size: 26px !important; }
+ .about-hero h1 { font-size: 2.2rem; }
+ .pillars-grid { grid-template-columns: 1fr; gap: 20px; }
+ .pillar-link-card.alpha-highlight { grid-column: span 1; }
+ .cta-btn { width: 100%; padding: 16px 20px; text-align: center; }
+}
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Minimal Header -->
-        <div class="nav-placeholder">
-            <div class="nav-logo">AQUILUX</div>
-        </div>
+<header>
+ <a class="logo-box" href="index.html">
+   <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+   <div class="logo-text">
+     <strong>Aquilux</strong>
+     <div class="theme-switcher">
+        <button onclick="event.stopPropagation(); setTheme('light')" class="theme-dot light"></button>
+        <button onclick="event.stopPropagation(); setTheme('olive')" class="theme-dot olive"></button>
+        <button onclick="event.stopPropagation(); setTheme('dark')" class="theme-dot dark"></button>
+     </div>
+   </div>
+ </a>
 
-        <!-- Hero Identity -->
-        <div class="hero-section">
-            <div class="hero-title">The Alpha Vanguard</div>
-            <div class="hero-main">RISE ABOVE.<br>DOMINATE THE SPACE.</div>
-            <p class="story-text">
-                Aquilux is far more than a clothing label—it is a movement forged for those destined to dominate from the top. Born from a vision of elite execution, we blend high-end luxury streetwear with raw, high-octane energy. We don’t follow mass culture; we dictate it.
-            </p>
-        </div>
+ <div class="header-right">
+   <a href="index.html" class="home-link">Home</a>
+ </div>
+</header>
 
-        <!-- Brand Pillars Grid -->
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="card-icon">// 01</div>
-                <div class="card-title">HD Aesthetics</div>
-                <div class="card-desc">Clean structures and sharp silhouettes designed to give you a cinematic, screen-ready look from every angle.</div>
-            </div>
-            <div class="feature-card">
-                <div class="card-icon">// 02</div>
-                <div class="card-title">Premium Build</div>
-                <div class="card-desc">Absolute precision weaves combined with heavy-duty luxury textures. Zero compromises on execution.</div>
-            </div>
-            <div class="feature-card highlighted">
-                <div class="card-icon">// 03 FOCUS</div>
-                <div class="card-title">Alpha Energy</div>
-                <div class="card-desc">Crafted explicitly for the visionaries, leaders, and creators who hustle with standalone status and pure class.</div>
-            </div>
-        </div>
+<section class="about-hero">
+  <div class="luxury-blur-orb orb-1"></div>
+  <div class="manifesto-tag">The Alpha Vanguard</div>
+  <h1>Rise Above.<br>Dominate The Space.</h1>
+  <p class="story-text story-narrative">
+    Aquilux is far more than a clothing label—it is a movement forged for those destined to dominate from the top. Born from a vision of elite execution, we blend high-end luxury streetwear with raw, high-octane energy. We don’t follow mass culture; we dictate it.
+  </p>
+</section>
 
-        <!-- Bottom Action Button Loop -->
-        <div class="cta-wrapper">
-            <a href="index.html" class="shop-btn">Explore Collection</a>
-        </div>
-    </div>
+<section class="pillars-section">
+  <div class="pillars-grid">
+      <!-- Clickable Card 1 (Redirects to Shop Grid) -->
+      <a href="index.html#shop" class="pillar-link-card">
+          <div class="pillar-index">// 01</div>
+          <div class="pillar-title">HD Aesthetics</div>
+          <div class="pillar-desc">Clean structures and sharp silhouettes designed to give you a cinematic, screen-ready presence from every single angle.</div>
+      </a>
+      
+      <!-- Clickable Card 2 (Redirects to Shop Grid) -->
+      <a href="index.html#shop" class="pillar-link-card">
+          <div class="pillar-index">// 02</div>
+          <div class="pillar-title">Premium Build</div>
+          <div class="pillar-desc">Absolute precision weaves combined with heavy-duty luxury textures. We make zero compromises on execution.</div>
+      </a>
+      
+      <!-- Clickable Card 3 (Redirects to Shop Grid) -->
+      <a href="index.html#shop" class="pillar-link-card alpha-highlight">
+          <div class="pillar-index">// 03</div>
+          <div class="pillar-title">Alpha Energy</div>
+          <div class="pillar-desc">Crafted explicitly for the visionaries, leaders, and creators who hustle with standalone status and pure class.</div>
+      </a>
+  </div>
+</section>
 
+<!-- Shop Action Terminal (Absolute Bottom Link) -->
+<section class="cta-dock">
+  <a href="index.html#shop" class="cta-btn">Explore The Collection</a>
+</section>
+
+<footer>
+  <p>Own. Your. Altitude.</p>
+</footer>
+
+<script>
+function setTheme(theme){
+ document.documentElement.setAttribute("data-theme", theme);
+ const isDark = theme === "dark", isOlive = theme === "olive";
+ document.documentElement.style.setProperty('--bg', isDark ? '#111111' : (isOlive ? '#d7d9cf' : '#ffffff'));
+ document.documentElement.style.setProperty('--text', isDark ? '#ffffff' : (isOlive ? '#2c3525' : '#111111'));
+ document.documentElement.style.setProperty('--line', isDark ? 'rgba(255,255,255,0.08)' : 'rgba(17,17,17,0.08)');
+ document.documentElement.style.setProperty('--glass-bg', isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.45)');
+ localStorage.setItem("theme", theme);
+}
+setTheme(localStorage.getItem("theme") || "light");
+</script>
 </body>
 </html>
