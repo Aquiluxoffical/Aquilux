@@ -305,11 +305,9 @@ section { padding: 90px 6%; }
 .hover-img { opacity: 0; z-index: 1; }
 .primary-img { opacity: 1; z-index: 2; }
 
-/* Refined True Interactive Hover Controls */
 .card:hover .primary-img { opacity: 0; }
 .card:hover .hover-img { opacity: 1; transform: scale(1.03); }
 
-/* Premium Glassmorphic Minimal Wishlist Capsule Look */
 .wishlist-toggle-icon {
  position: absolute; top: 16px; right: 14px; z-index: 10; 
  background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -321,15 +319,8 @@ section { padding: 90px 6%; }
 }
 .wishlist-toggle-icon:hover { transform: scale(1.08); background: #ffffff; }
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
-.wishlist-toggle-icon svg{
- width:17px;
- height:17px;
- transition:.25s ease;
-}
-.wishlist-toggle-icon.active svg{
- fill:#111;
- stroke:#111;
-}
+.wishlist-toggle-icon svg{ width:17px; height:17px; transition:.25s ease; }
+.wishlist-toggle-icon.active svg{ fill:#111; stroke:#111; }
 
 button, input, textarea { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
 input, textarea { width: 100%; }
@@ -342,7 +333,6 @@ input, textarea { width: 100%; }
 .collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; gap: 20px; flex-wrap: wrap; }
 .controls-right-dock { display: flex; align-items: center; gap: 15px; }
 
-/* Inline Selector Fields Style rules */
 #priceFilter, #collectionFilter { 
  width: 180px; padding: 11px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); 
  color: var(--text); border: 1px solid var(--line); border-radius: 4px !important; 
@@ -359,31 +349,35 @@ input, textarea { width: 100%; }
 footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
 
 /* ==========================================================================
-   4b. Upcoming Hype Countdown Section Elements
+   4b. Dynamic Multi-Product Landscape Grid Layout
    ========================================================================== */
 .upcoming-section-wrapper { 
  border-top: 1px dashed var(--line);
  margin-top: 60px;
  background: rgba(17,17,17,0.01);
- text-align: center;
 }
-.upcoming-product-showcase-engine { 
- display: flex; 
- flex-direction: column; 
- align-items: center; 
- gap: 20px; 
- margin-top: 30px; 
+.upcoming-landscape-grid { 
+ display: grid; 
+ grid-template-columns: repeat(3, 1fr); /* Responsive Landscape Rows */
+ gap: 30px; 
+ margin-top: 40px; 
+}
+.upcoming-hype-card {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ text-align: center;
+ background: transparent;
 }
 .hype-blurred-visual-card { 
  position: relative;
- width: 280px; 
+ width: 100%; 
  aspect-ratio: 3/4;
  border-radius: 8px;
  overflow: hidden;
- filter: blur(22px) brightness(0.95); /* High Premium Hype Blur */
+ filter: blur(24px) brightness(0.95);
  pointer-events: none; 
- box-shadow: 0 10px 40px rgba(0,0,0,0.05);
- transition: filter 0.5s ease;
+ box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 .hype-blurred-visual-card img {
  width: 100%;
@@ -393,29 +387,29 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 .countdown-clock-dock { 
  display: flex; 
  justify-content: center; 
- gap: 12px; 
- margin-top: 24px; 
- flex-wrap: nowrap;
+ gap: 8px; 
+ margin-top: 16px; 
+ width: 100%;
 }
 .countdown-segment-node { 
  background: var(--text); 
  color: var(--bg); 
- padding: 12px 18px; 
+ padding: 8px 12px; 
  font-family: 'Inter', sans-serif;
- font-size: 14px; 
+ font-size: 13px; 
  font-weight: 600; 
  text-align: center; 
- min-width: 76px; 
+ flex: 1;
+ max-width: 65px;
  border-radius: 4px;
- box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 .countdown-segment-node span {
  display: block;
- font-size: 9px;
+ font-size: 8px;
  text-transform: uppercase;
- letter-spacing: 1px;
+ letter-spacing: 0.5px;
  opacity: 0.6;
- margin-top: 2px;
+ margin-top: 1px;
  font-weight: 400;
 }
 
@@ -428,6 +422,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  .logo-text strong { font-size: 34px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
  .grid { grid-template-columns: repeat(3, 1fr); }
+ .upcoming-landscape-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* Compact Mobile Devices Specific Layout Patch */
@@ -442,6 +437,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  #cartCount { width: 18px !important; height: 18px !important; font-size: 10px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 25px 16px; }
  .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 25px 12px !important; }
+ .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
  .hero h1 { font-size: 2.8rem; }
  .title { font-size: 2rem; }
  .search-ai-dock { width: 100%; }
@@ -608,10 +604,10 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="grid" id="grid"></div>
 </section>
 
-<!-- Dynamic Upcoming Hype Section Element -->
+<!-- Landscape Upcoming Section Framework -->
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
-  <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem;">Reveals In</div>
-  <div id="upcomingProductContainer" class="upcoming-product-showcase-engine"></div>
+  <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem; text-align: center;">Reveals In</div>
+  <div id="upcomingProductContainer" class="upcoming-landscape-grid"></div>
 </section>
 
 <section id="reviews-section" style="padding-top:20px;">
@@ -734,33 +730,23 @@ window.fetchPanelOrders = async function(uid) {
 </script>
 
 <script>
-// Naya correct verified API link set kar diya hai
 const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
 let products = [], currentProducts = [], qty = [];
+window.activeClockLoops = {}; // Multi-Clock Trackers Object
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
 window.handleAiSearchInput = function(queryStr) {
     const tray = document.getElementById("searchSuggestionsTray");
     const cleanQuery = queryStr.trim().toLowerCase();
-    
-    if(!cleanQuery) {
-        tray.style.display = "none";
-        executeUnifiedFiltering();
-        return;
-    }
-    
+    if(!cleanQuery) { tray.style.display = "none"; executeUnifiedFiltering(); return; }
     const filteredSuggestions = products.filter(p => p.product.toLowerCase().includes(cleanQuery));
-    
     if(filteredSuggestions.length === 0) {
         tray.innerHTML = `<div class="suggestion-node" style="opacity:0.5; cursor:default;">No matches synced.</div>`;
     } else {
@@ -782,9 +768,7 @@ window.handleAiSearchInput = function(queryStr) {
 };
 
 document.addEventListener("click", (e) => {
-    if(!e.target.closest(".search-ai-dock")) {
-        document.getElementById("searchSuggestionsTray").style.display = "none";
-    }
+    if(!e.target.closest(".search-ai-dock")) { document.getElementById("searchSuggestionsTray").style.display = "none"; }
 });
 
 function toggleAccountDrawer(openState) {
@@ -843,7 +827,10 @@ async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
  renderWishlistPanel(); draw();
  try {
-   // Anti-Cache Bypass URL generation logic
+   // Clear all active intervals before reconstruction loops
+   Object.keys(window.activeClockLoops).forEach(k => clearInterval(window.activeClockLoops[k]));
+   window.activeClockLoops = {};
+
    const antiCacheTokenUrl = API_URL + "?t=" + new Date().getTime();
    const res = await fetch(antiCacheTokenUrl); 
    products = await res.json(); 
@@ -854,7 +841,7 @@ async function loadProducts() {
    const upcomingContainer = document.getElementById("upcomingProductContainer");
    upcomingContainer.innerHTML = "";
 
-   products.forEach(p => {
+   products.forEach((p, index) => {
        let rawLaunch = p.launchDate || p.launchdate || null;
        let launchTimestamp = null;
        
@@ -869,14 +856,21 @@ async function loadProducts() {
 
        if (launchTimestamp && launchTimestamp > nowTime) {
            upcomingHypeFound = true;
+           const targetClockNodeId = `timer_node_id_${index}`;
+           
+           // Landscape Matrix Card Generator Loop Injection
            upcomingContainer.innerHTML += `
-               <div class="hype-blurred-visual-card">
-                   <img src="${p.image || ''}">
+               <div class="upcoming-hype-card">
+                   <div class="hype-blurred-visual-card">
+                       <img src="${p.image || ''}">
+                   </div>
+                   <h3 style="font-family:'Cormorant Garamond', serif; font-size:18px; text-transform:uppercase; margin-top:12px; font-weight:500; letter-spacing:0.5px;">${p.product || 'Upcoming Drop'}</h3>
+                   <div class="countdown-clock-dock" id="${targetClockNodeId}"></div>
                </div>
-               <h3 style="font-family:'Cormorant Garamond', serif; font-size:24px; text-transform:uppercase; margin-top:10px; font-weight:500;">${p.product || 'Upcoming Drop'}</h3>
-               <div class="countdown-clock-dock" id="timer_clock_node"></div>
            `;
-           initiateMasterCountdown(launchTimestamp);
+           
+           // Initiate Multi-threaded safe loop reference trackers
+           initiateIndividualCountdown(launchTimestamp, targetClockNodeId);
        } else {
            activeMarketDisplayItems.push(p);
        }
@@ -897,15 +891,13 @@ async function loadProducts() {
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
-function initiateMasterCountdown(targetTime) {
-    if(window.activeClockLoop) clearInterval(window.activeClockLoop);
-    
-    window.activeClockLoop = setInterval(() => {
+function initiateIndividualCountdown(targetTime, elementId) {
+    window.activeClockLoops[elementId] = setInterval(() => {
         const now = new Date().getTime();
         const diff = targetTime - now;
         
         if (diff <= 0) {
-            clearInterval(window.activeClockLoop);
+            clearInterval(window.activeClockLoops[elementId]);
             loadProducts(); 
             return;
         }
@@ -915,13 +907,13 @@ function initiateMasterCountdown(targetTime) {
         const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const s = Math.floor((diff % (1000 * 60)) / 1000);
 
-        const clockTargetNode = document.getElementById("timer_clock_node");
+        const clockTargetNode = document.getElementById(elementId);
         if (clockTargetNode) {
             clockTargetNode.innerHTML = `
                 <div class="countdown-segment-node">${d}<span>Days</span></div>
-                <div class="countdown-segment-node">${String(h).padStart(2, '0')}<span>Hours</span></div>
-                <div class="countdown-segment-node">${String(m).padStart(2, '0')}<span>Minutes</span></div>
-                <div class="countdown-segment-node">${String(s).padStart(2, '0')}<span>Seconds</span></div>
+                <div class="countdown-segment-node">${String(h).padStart(2, '0')}<span>Hrs</span></div>
+                <div class="countdown-segment-node">${String(m).padStart(2, '0')}<span>Min</span></div>
+                <div class="countdown-segment-node">${String(s).padStart(2, '0')}<span>Sec</span></div>
             `;
         }
     }, 1000);
