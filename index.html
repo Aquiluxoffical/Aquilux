@@ -535,7 +535,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
          <option value="Oversize T-shirt">Oversize T-shirts</option>
          <option value="Shorts">Shorts</option>
          <option value="Sweatpants">Sweatpants</option>
-         <option value="CropTee">CropTee</option>
+         <option value="Crop Tee">Crop Tee</option>
           
        </select>
        
@@ -908,10 +908,8 @@ function executeUnifiedFiltering() {
             if (collectionVal === "Oversize T-shirt") return cat.includes("oversize");
             if (collectionVal === "Shorts") return cat.includes("shorts");
             if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
-            if (collectionVal === "CropTee") return cat.includes("CropTee");
+            if (collectionVal === "CropTee") return cat.includes("croptee");
 
-           
-            
             return cat === collectionVal.toLowerCase();
         });
     }
