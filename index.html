@@ -842,7 +842,11 @@ async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
  renderWishlistPanel(); draw();
  try {
-   const res = await fetch(API_URL); products = await res.json(); 
+   const res = await fetch(API_URL); 
+   products = await res.json(); 
+   
+   // LIVE MONITORING: Right-click karke Inspect -> Console mein check karo ye kya print kar raha hai
+   console.log("All Sheet Products Received:", products);
    
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
@@ -851,19 +855,18 @@ async function loadProducts() {
    upcomingContainer.innerHTML = "";
 
    products.forEach(p => {
+       // launchDate, launchdate ya launchDate string sabko cross check karega
        let rawLaunch = p.launchDate || p.launchdate || null;
        let launchTimestamp = null;
        
        if (rawLaunch) {
-           // Agar date string mein slashes hain (15/07/2026), to convert to standard dash format
-           if (typeof rawLaunch === 'string' && rawLaunch.includes('/')) {
-               const parts = rawLaunch.split(' ');
-               const dateParts = parts[0].split('/');
-               const standardDateStr = `${dateParts[2]}-${dateParts[1]}-${dateParts[0]}${parts[1] ? 'T' + parts[1] : ''}`;
-               launchTimestamp = Date.parse(standardDateStr);
-           } else {
-               launchTimestamp = Date.parse(rawLaunch);
+           let cleanDateStr = String(rawLaunch).trim();
+           // Slashes ko hyphens mein badlega aur spacing thik karega
+           cleanDateStr = cleanDateStr.replace(/\//g, '-');
+           if(!cleanDateStr.includes('T') && cleanDateStr.includes(' ')) {
+               cleanDateStr = cleanDateStr.replace(' ', 'T');
            }
+           launchTimestamp = Date.parse(cleanDateStr);
        }
 
        if (launchTimestamp && launchTimestamp > nowTime) {
@@ -891,9 +894,13 @@ async function loadProducts() {
    qty = Array(currentProducts.length).fill(0); 
    displayProducts(currentProducts);
 
- } catch (e) { document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; }
+ } catch (e) { 
+     console.error("Layout Engine Crash Log:", e);
+     document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
+ }
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
+
 
 function initiateMasterCountdown(targetTime) {
     const clockLoop = setInterval(() => {
