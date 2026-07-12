@@ -32,6 +32,8 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     padding-bottom: 24px;
     margin-bottom: 35px;
+    flex-wrap: wrap;
+    gap: 15px;
 }
 
 .admin-brand h1 {
@@ -175,6 +177,66 @@ tr:hover td { background: rgba(255,255,255,0.01); }
     font-size: 12px;
     outline: none;
     cursor: pointer;
+    width: 100%;
+}
+
+/* ==========================================================================
+   3. Advanced Pure Responsive Mobile Interface Engine Patches
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    body { padding: 20px 4%; }
+    .admin-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .control-actions-hub { width: 100%; justify-content: space-between; }
+    .delete-all-btn, .logout-btn { padding: 10px 16px; flex: 1; text-align: center; }
+
+    /* Force Table Elements to act like pure layout cards */
+    .table-wrapper { background: transparent; border: none; box-shadow: none; overflow: visible; }
+    table, thead, tbody, th, td, tr { display: block; }
+    thead tr { position: absolute; top: -9999px; left: -9999px; } /* Hide Header safely */
+    
+    tr {
+        background: #111111;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        margin-bottom: 20px;
+        padding: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    td {
+        border: none;
+        padding: 10px 0;
+        position: relative;
+        padding-left: 35%; /* Left alignment boundary for pseudo fields */
+        font-size: 13px;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
+    }
+    td:last-child { border-bottom: none; }
+
+    /* Dynamic Labels Injection Framework for Cards */
+    td::before {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 30%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.4);
+        letter-spacing: 0.5px;
+    }
+
+    td:nth-of-type(1)::before { content: "Order Stamp"; }
+    td:nth-of-type(2)::before { content: "Client Info"; }
+    td:nth-of-type(3)::before { content: "Manifest"; }
+    td:nth-of-type(4)::before { content: "Remittance"; }
+    td:nth-of-type(5)::before { content: "Action Control"; }
+
+    /* Adjust alignment resets within generated card parameters */
+    td, td strong, .ord-id, .items-list-box { text-align: left; }
+    .action-select-styled { margin-top: 5px; }
 }
 
 /* Security Crypt-Lock Overlays */
@@ -294,11 +356,8 @@ window.terminateAdminSession = function() {
 // Security Realtime Gatekeeper Loop
 onAuthStateChanged(auth, (user) => {
     if (user && user.email && AUTHORIZED_ADMINISTRATORS.includes(user.email.toLowerCase())) {
-        // Clear Gatekeeper overlay and enable UI engine
         document.getElementById("securityGatekeeperMessage").style.setProperty("display", "none", "important");
         document.getElementById("adminMainControlDashboard").style.display = "block";
-        
-        // Initiate Live Registry Channel Pipeline
         listenToOrderTelemetryLogs();
     } else {
         alert("ACCESS DENIED: Internal server registry locks rejected these credentials.");
@@ -306,7 +365,6 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// Dynamic Listener Engine to feed live streams tracking orders table matrices
 function listenToOrderTelemetryLogs() {
     const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
     
@@ -363,7 +421,7 @@ function listenToOrderTelemetryLogs() {
                 <td>
                     <strong>${data.receiverName || 'N/A'}</strong><br>
                     <span style="font-size:11px; opacity:0.7;">📞 ${data.phone || '-'}</span><br>
-                    <span style="font-size:11px; opacity:0.6;">${data.flat || ''}, ${data.road || ''}, ${data.city || ''}</span>
+                    <span style="font-size:11px; opacity:0.6; display:block; margin-top:2px;">${data.flat || ''}, ${data.road || ''}, ${data.city || ''}</span>
                 </td>
                 <td><div class="items-list-box">${itemsMarkup || 'Card drop tracking metadata empty.'}</div></td>
                 <td>
@@ -381,7 +439,6 @@ function listenToOrderTelemetryLogs() {
             </tr>`;
         });
         
-        // Sync operational panel counters
         document.getElementById("metricTotalOrders").innerText = totalCount;
         document.getElementById("metricPendingOrders").innerText = pendingCount;
         document.getElementById("metricApprovedOrders").innerText = approvedCount;
@@ -390,20 +447,15 @@ function listenToOrderTelemetryLogs() {
     });
 }
 
-// Single order field state modifier handler
 window.updateOrderStatusRegistry = async function(docId, selectedStatus) {
     try {
         const targetRef = doc(db, "orders", docId);
         await updateDoc(targetRef, { paymentStatus: selectedStatus });
     } catch(err) {
         console.error("Status modify loop anomaly:", err);
-        alert("Status update sync failed securely.");
     }
 };
 
-// ==========================================================================
-/* DANGER SYSTEM HUB: BULLETPROOF ALL ORDERS ERASURE ENGINE */
-// ==========================================================================
 window.deleteAllOrdersFromDatabase = async function() {
     if (!confirm("🚨 WARNING: Kya aap sach mein saare orders database se hamesha ke liye delete karna chahte hain? Yeh process reverse nahi ho sakta!")) {
         return;
@@ -430,9 +482,9 @@ window.deleteAllOrdersFromDatabase = async function() {
         
     } catch (err) {
         console.error("Purge system drop track error:", err);
-        alert("Wipe operation failed securely.");
     }
 };
 </script>
 </body>
 </html>
+p
