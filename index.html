@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -765,7 +765,7 @@ window.fetchPanelOrders = async function(uid) {
 </script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxyihaeB4hLfxAL-9XdQDlRfDjg1oWcuiy0JlhiapCI9MGckg3eWGGqBXWNhubsaF2A/exec";
 let products = [], currentProducts = [], qty = [];
 window.activeClockLoops = {}; 
 
@@ -984,8 +984,7 @@ function displayProducts(list = products) {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
    
-   // Direct dynamic allocation using 'modelImage' parameter securely mapped from GS
-   // If try view is on but column has no value, fallback safety locks back to default main asset[span_3](start_span)[span_3](end_span).
+   // Allocation logic mapped directly from GS variables
    const primaryViewSrc = (currentViewMode === "try" && p.modelImage && p.modelImage.trim() !== "") ? p.modelImage : p.image;
    const hoverViewSrc = (currentViewMode === "try" && p.modelImage && p.modelImage.trim() !== "") ? p.image : (p.hover_image || p.image);
    
