@@ -339,6 +339,32 @@ input, textarea { width: 100%; }
  font-family: 'Inter', sans-serif; font-size: 13px; text-align-last: center; outline: none; cursor: pointer; 
 }
 
+/* Premium Perspective Mode Switcher Framework */
+.perspective-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 16px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: var(--glass-bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 0 !important;
+}
+.perspective-toggle-btn:hover {
+    border-color: var(--text);
+}
+.perspective-toggle-btn.mode-try {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+}
+
 .payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
 
 #menuLoader { position: fixed; inset: 0; background: var(--bg); display: none; justify-content: center; align-items: center; flex-direction: column; gap: 18px; z-index: 999999; opacity: 0; transition: .35s; }
@@ -578,6 +604,15 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    <div class="title">Collection</div>
    
    <div class="controls-right-dock">
+       <!-- Dynamic View Switcher Engine Button -->
+       <button id="perspectiveToggleBtn" class="perspective-toggle-btn" onclick="togglePerspectiveViewMode()">
+           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:2px; vertical-align:middle;">
+               <rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect>
+               <rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect>
+           </svg>
+           <span id="perspectiveToggleText">Default View</span>
+       </button>
+
        <div class="search-ai-dock">
            <input type="text" id="productSearchInput" class="search-ai-input" placeholder="Search parameters via AI..." oninput="handleAiSearchInput(this.value)">
            <div id="searchSuggestionsTray" class="search-ai-suggestions"></div>
@@ -734,12 +769,32 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS
 let products = [], currentProducts = [], qty = [];
 window.activeClockLoops = {}; 
 
+// Perspective Control State Tracking
+let currentViewMode = "default"; // "default" or "try"
+
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+// View Mode Switching Engine Logic
+window.togglePerspectiveViewMode = function() {
+    const btn = document.getElementById("perspectiveToggleBtn");
+    const label = document.getElementById("perspectiveToggleText");
+    
+    if (currentViewMode === "default") {
+        currentViewMode = "try";
+        label.innerText = "Try View";
+        btn.classList.add("mode-try");
+    } else {
+        currentViewMode = "default";
+        label.innerText = "Default View";
+        btn.classList.remove("mode-try");
+    }
+    displayProducts(currentProducts);
 };
 
 window.handleAiSearchInput = function(queryStr) {
@@ -921,13 +976,18 @@ function initiateIndividualCountdown(targetTime, elementId) {
 }
 
 /* ==========================================================================
-   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER
+   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER (ADAPTED FOR INTERCHANGEABLE CHANNELS)
    ========================================================================== */
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
+   
+   // Determine Active Media Asset Layers Based on Current Perspective Toggle State
+   // Google Sheet headers specify 'model_image'. Fallback uses hover_image or original asset safely.
+   const primaryViewSrc = (currentViewMode === "try") ? (p.model_image || p.hover_image || p.image) : p.image;
+   const hoverViewSrc = (currentViewMode === "try") ? (p.image) : (p.hover_image || p.image);
    
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
@@ -941,7 +1001,7 @@ function displayProducts(list = products) {
      <!-- Interactivity Clickable Image Target -->
      <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
        <div class="card-img-wrapper">
-         <img src="${p.image}" class="primary-img"><img src="${p.hover_image || p.image}" class="hover-img">
+         <img src="${primaryViewSrc}" class="primary-img"><img src="${hoverViewSrc}" class="hover-img">
        </div>
      </a>
      
