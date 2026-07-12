@@ -77,6 +77,40 @@ body {
     transform: translateY(-1px);
 }
 
+.logout-btn {
+    padding: 12px 24px;
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.logout-btn:hover {
+    background: #ffffff;
+    color: #090909;
+}
+
+/* Analytics Dashboard Overview Panels */
+.metrics-grid {
+ display: grid;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+ gap: 20px;
+ margin-bottom: 35px;
+}
+.metric-card {
+ background: #111111;
+ border: 1px solid rgba(255,255,255,0.05);
+ padding: 20px;
+ border-radius: 8px;
+}
+.metric-card h3 { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
+.metric-card p { font-size: 26px; font-weight: 600; }
+
 /* ==========================================================================
    2. Data Tables & Matrix Containers Look
    ========================================================================== */
@@ -120,6 +154,7 @@ tr:hover td { background: rgba(255,255,255,0.01); }
 .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 .badge.pending { background: rgba(255, 191, 0, 0.1); color: #b88600; }
 .badge.approved { background: rgba(24, 183, 90, 0.1); color: #148f43; }
+.badge.cancelled { background: rgba(255, 74, 74, 0.15); color: #ff4a4a; }
 
 .items-list-box {
     display: flex;
@@ -141,38 +176,93 @@ tr:hover td { background: rgba(255,255,255,0.01); }
     outline: none;
     cursor: pointer;
 }
+
+/* Security Crypt-Lock Overlays */
+#securityGatekeeperMessage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background: #090909;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+}
+.spinner {
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    margin-bottom: 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
 
-<div class="admin-header">
-    <div class="admin-brand">
-        <h1>Aquilux Operational Console</h1>
-        <p>Live Cloud Remittance & Order Registry Tracker</p>
-    </div>
-    <div class="control-actions-hub">
-        <button class="delete-all-btn" onclick="deleteAllOrdersFromDatabase()">⚠️ Delete All Entries</button>
-    </div>
+<!-- SECURITY CLOUD GATEKEEPER OVERLAY -->
+<div id="securityGatekeeperMessage">
+    <div class="spinner"></div>
+    <h3 style="font-weight: 400; letter-spacing: 1px;">Verifying System Tokens...</h3>
+    <p style="font-size: 11px; color: rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-top: 8px;">Aquilux Cloud Firewalls Active</p>
 </div>
 
-<div class="table-wrapper">
-    <table>
-        <thead>
-            <tr>
-                <th>Order Stamp Reference</th>
-                <th>Client Coordinates</th>
-                <th>Manifest Itemization</th>
-                <th>Remittance Target</th>
-                <th>Registry Operational Controls</th>
-            </tr>
-        </thead>
-        <tbody id="adminOrdersTargetTable">
+<!-- CONTAINER CENTER DASHBOARD -->
+<div id="adminMainControlDashboard" style="display: none;">
+    <div class="admin-header">
+        <div class="admin-brand">
+            <h1>Aquilux Operational Console</h1>
+            <p>Live Cloud Remittance & Order Registry Tracker</p>
+        </div>
+        <div class="control-actions-hub">
+            <button class="delete-all-btn" onclick="deleteAllOrdersFromDatabase()">⚠️ Delete All Entries</button>
+            <button class="logout-btn" onclick="terminateAdminSession()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Live Track Counters -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <h3>Registry Log Stream</h3>
+            <p id="metricTotalOrders">0</p>
+        </div>
+        <div class="metric-card">
+            <h3>Verification Holds</h3>
+            <p id="metricPendingOrders" style="color: #b88600;">0</p>
+        </div>
+        <div class="metric-card">
+            <h3>Settled Transfers</h3>
+            <p id="metricApprovedOrders" style="color: #148f43;">0</p>
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Order Stamp Reference</th>
+                    <th>Client Coordinates</th>
+                    <th>Manifest Itemization</th>
+                    <th>Remittance Target</th>
+                    <th>Registry Operational Controls</th>
+                </tr>
+            </thead>
+            <tbody id="adminOrdersTargetTable">
+                <tr>
+                    <td colspan="5" style="text-align: center; opacity: 0.4; padding: 40px;">Streaming telemetry channels...</td>
+                </tr>
             </tbody>
-    </table>
+        </table>
+    </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -186,6 +276,35 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Strict Whitelist Authorization Configuration
+const AUTHORIZED_ADMINISTRATORS = [
+    "aquilux.support@gmail.com",
+    "yashojhaoffical1982@gmail.com"
+];
+
+// Session Closer
+window.terminateAdminSession = function() {
+    signOut(auth).then(() => {
+        window.location.href = "index.html";
+    });
+};
+
+// Security Realtime Gatekeeper Loop
+onAuthStateChanged(auth, (user) => {
+    if (user && user.email && AUTHORIZED_ADMINISTRATORS.includes(user.email.toLowerCase())) {
+        // Clear Gatekeeper overlay and enable UI engine
+        document.getElementById("securityGatekeeperMessage").style.setProperty("display", "none", "important");
+        document.getElementById("adminMainControlDashboard").style.display = "block";
+        
+        // Initiate Live Registry Channel Pipeline
+        listenToOrderTelemetryLogs();
+    } else {
+        alert("ACCESS DENIED: Internal server registry locks rejected these credentials.");
+        window.location.href = "index.html";
+    }
+});
 
 // Dynamic Listener Engine to feed live streams tracking orders table matrices
 function listenToOrderTelemetryLogs() {
@@ -195,28 +314,50 @@ function listenToOrderTelemetryLogs() {
         const tableBody = document.getElementById("adminOrdersTargetTable");
         if (snapshot.empty) {
             tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; opacity:0.4; padding:40px;">No telemetry records deployed within database.</td></tr>`;
+            document.getElementById("metricTotalOrders").innerText = "0";
+            document.getElementById("metricPendingOrders").innerText = "0";
+            document.getElementById("metricApprovedOrders").innerText = "0";
             return;
         }
         
-        tableBody.innerHTML = "";
+        let totalCount = 0, pendingCount = 0, approvedCount = 0;
+        let htmlRowsBuffer = "";
+        
         snapshot.forEach((docSnap) => {
             const data = docSnap.data();
             const docId = docSnap.id;
             
-            let statusBadgeClass = data.paymentStatus?.toLowerCase() === 'approved' ? 'approved' : 'pending';
-            let formattedDate = data.createdAt ? new Date(data.createdAt).toLocaleString('en-IN') : 'N/A';
+            totalCount++;
+            let statusBadgeClass = 'pending';
+            const currentStatus = String(data.paymentStatus || 'Pending Verification').toLowerCase();
+
+            if (currentStatus === 'approved') {
+                statusBadgeClass = 'approved';
+                approvedCount++;
+            } else if (currentStatus.includes('cancelled')) {
+                statusBadgeClass = 'cancelled';
+            } else {
+                pendingCount++;
+            }
+            
+            let formattedDate = "N/A Logs";
+            if (data.createdAt) {
+                const dateObj = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+                formattedDate = dateObj.toLocaleString('en-IN');
+            }
 
             let itemsMarkup = "";
-            if (Array.isArray(data.cart)) {
-                data.cart.forEach(item => {
-                    itemsMarkup += `<div class="item-entry-row">· ${item.n} (Size: ${item.s} | Qty: ${item.q})</div>`;
+            const cartItems = data.cart || data.items || [];
+            if (Array.isArray(cartItems)) {
+                cartItems.forEach(item => {
+                    itemsMarkup += `<div class="item-entry-row">· ${item.n || 'Product'} (Size: ${item.s || 'M'} | Qty: ${item.q || 1})</div>`;
                 });
             }
 
-            tableBody.innerHTML += `
+            htmlRowsBuffer += `
             <tr id="row-${docId}">
                 <td>
-                    <div class="ord-id">${data.orderNumber || docId}</div>
+                    <div class="ord-id">#${data.orderNumber || docId}</div>
                     <div class="ord-meta">${formattedDate}</div>
                 </td>
                 <td>
@@ -239,6 +380,13 @@ function listenToOrderTelemetryLogs() {
                 </td>
             </tr>`;
         });
+        
+        // Sync operational panel counters
+        document.getElementById("metricTotalOrders").innerText = totalCount;
+        document.getElementById("metricPendingOrders").innerText = pendingCount;
+        document.getElementById("metricApprovedOrders").innerText = approvedCount;
+        
+        tableBody.innerHTML = htmlRowsBuffer;
     });
 }
 
@@ -249,6 +397,7 @@ window.updateOrderStatusRegistry = async function(docId, selectedStatus) {
         await updateDoc(targetRef, { paymentStatus: selectedStatus });
     } catch(err) {
         console.error("Status modify loop anomaly:", err);
+        alert("Status update sync failed securely.");
     }
 };
 
@@ -256,12 +405,9 @@ window.updateOrderStatusRegistry = async function(docId, selectedStatus) {
 /* DANGER SYSTEM HUB: BULLETPROOF ALL ORDERS ERASURE ENGINE */
 // ==========================================================================
 window.deleteAllOrdersFromDatabase = async function() {
-    // Stage 1 Validation Track
     if (!confirm("🚨 WARNING: Kya aap sach mein saare orders database se hamesha ke liye delete karna chahte hain? Yeh process reverse nahi ho sakta!")) {
         return;
     }
-    
-    // Stage 2 Validation Lock
     if (!confirm("🔒 ABSOLUTE CONFIRMATION: Kya aap poori tarah sure hain? Orders table ka saara telemetry log saaf ho jayega.")) {
         return;
     }
@@ -279,17 +425,14 @@ window.deleteAllOrdersFromDatabase = async function() {
             deletePromises.push(deleteDoc(docRef));
         });
 
-        // Clear all entries concurrently using thread pooling mechanics
         await Promise.all(deletePromises);
         alert("✨ Perfect! Database clear ho gaya hai. Saare order logs successfully terminate ho chuke hain.");
         
     } catch (err) {
         console.error("Purge system drop track error:", err);
-        alert("Wipe operation failed securely. Check technical console logging parameter sets.");
+        alert("Wipe operation failed securely.");
     }
 };
-
-listenToOrderTelemetryLogs();
 </script>
 </body>
 </html>
