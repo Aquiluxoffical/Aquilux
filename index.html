@@ -976,7 +976,7 @@ function initiateIndividualCountdown(targetTime, elementId) {
 }
 
 /* ==========================================================================
-   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER (ADAPTED FOR INTERCHANGEABLE CHANNELS)
+   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER (ADAPTED FOR DIRECT SWAP)
    ========================================================================== */
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
@@ -984,10 +984,10 @@ function displayProducts(list = products) {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
    
-   // Determine Active Media Asset Layers Based on Current Perspective Toggle State
-   // Google Sheet headers specify 'model_image'. Fallback uses hover_image or original asset safely.
-   const primaryViewSrc = (currentViewMode === "try") ? (p.model_image || p.hover_image || p.image) : p.image;
-   const hoverViewSrc = (currentViewMode === "try") ? (p.image) : (p.hover_image || p.image);
+   // Direct dynamic allocation using 'modelImage' parameter securely mapped from GS
+   // If try view is on but column has no value, fallback safety locks back to default main asset[span_3](start_span)[span_3](end_span).
+   const primaryViewSrc = (currentViewMode === "try" && p.modelImage && p.modelImage.trim() !== "") ? p.modelImage : p.image;
+   const hoverViewSrc = (currentViewMode === "try" && p.modelImage && p.modelImage.trim() !== "") ? p.image : (p.hover_image || p.image);
    
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
@@ -1033,7 +1033,7 @@ function renderWishlistPanel() {
         <div class="panel-item-row">
             <img src="${item.image}">
             <div class="panel-item-row-info">
-                <h5>${item.product}</h5><p>Price: ₹${item.price}</p>
+                <h4>${item.product}</h4><p>Price: ₹${item.price}</p>
             </div>
             <button class="panel-action-icon-btn" onclick="wishlist.splice(${idx},1); localStorage.setItem('aquilux_wishlist',JSON.stringify(wishlist)); renderWishlistPanel(); displayProducts(currentProducts);">×</button>
         </div>`;
