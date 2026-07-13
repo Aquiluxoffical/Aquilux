@@ -111,7 +111,7 @@ html[data-theme="dark"] .filter-btn.active, html[data-theme="dark"] .filter-btn:
 
 /* ==========================================================================
    Custom Floating Top Notification (Premium Toast Banner)
-   ========================================================================== */
+   ========================================================================= */
 .custom-notification {
     position: fixed;
     top: -100px;
@@ -376,7 +376,7 @@ function showTopNotification(msg) {
     toast.classList.add("show");
     setTimeout(() => {
         toast.classList.remove("show");
-    }, 4500); // 4.5 seconds automatic fade-out
+    }, 4500); 
 }
 
 function applyVisualRenders() {
@@ -453,7 +453,6 @@ function applyVisualRenders() {
             </div>`;
         }
 
-        // Pass 'isDispatched' state inside cancellation checker securely
         let cancelBtnHtml = (!isCancelled) ? `
         <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}', ${isDispatched})">Cancel Order</button>
         ` : "";
@@ -485,13 +484,13 @@ function applyVisualRenders() {
 }
 
 window.cancelPendingOrder = async function(docId, isDispatched) {
-    // CRITICAL ENGINE RULE CHECK: Trigger floating notification bar if already dispatched
     if(isDispatched) {
         showTopNotification("Cancel Denied: Order has been Dispatched to Customer.");
         return;
     }
 
-    const doubleCheck = confirm("Are you sure you want to cancel this order reference track?");
+    // New Conditional Notification Alert Mechanism
+    const doubleCheck = confirm("This order will be cancelled if it isn’t dispatched yet.");
     if(!doubleCheck) return;
 
     try {
