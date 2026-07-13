@@ -355,14 +355,12 @@ window.terminateAdminSession = function() {
 
 // Security Realtime Gatekeeper Loop
 onAuthStateChanged(auth, (user) => {
-    if (user && user.email && AUTHORIZED_ADMINISTRATORS.includes(user.email.toLowerCase())) {
-        document.getElementById("securityGatekeeperMessage").style.setProperty("display", "none", "important");
-        document.getElementById("adminMainControlDashboard").style.display = "block";
-        listenToOrderTelemetryLogs();
-    } else {
-        alert("ACCESS DENIED: Internal server registry locks rejected these credentials.");
-        window.location.href = "index.html";
-    }
+    // Temporary bypass for testing:
+    document.getElementById("securityGatekeeperMessage").style.setProperty("display", "none", "important");
+    document.getElementById("adminMainControlDashboard").style.display = "block";
+    listenToOrderTelemetryLogs();
+    
+    // Baad mein wapas apna original if-else condition yahan laga dena
 });
 
 function listenToOrderTelemetryLogs() {
