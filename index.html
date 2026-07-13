@@ -69,7 +69,7 @@ header {
 
 html[data-theme="dark"] header img { filter: invert(0); }
 html[data-theme="light"] header img { filter: invert(1); }
-html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me white emblem premium lagega */
+html[data-theme="olive"] header img { filter: invert(0); }
 
 .logo-text strong { 
  font-family: 'Cormorant Garamond', serif; 
@@ -110,7 +110,7 @@ html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me whit
 }
 .theme-dot:hover { transform: scale(1.2); }
 .theme-dot.light { background: #ffffff; }
-.theme-dot.olive { background: #1a2416; } /* Match with new deep luxury green */
+.theme-dot.olive { background: #1a2416; } 
 .theme-dot.dark { background: #111111; }
 
 #userBox { display: flex; align-items: center; cursor: pointer; }
@@ -134,7 +134,7 @@ html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me whit
 .google-btn span { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
 /* ==========================================================================
-   3. Sliding Drawers Layout
+   3. Sliding Premium Drawers (Ultra Minimal Redesign)
    ========================================================================== */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
@@ -145,10 +145,10 @@ html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me whit
  background: var(--bg) !important; 
  border-left: 1px solid var(--line);
  z-index: 200005;
- padding: 40px 32px;
+ padding: 50px 36px;
  display: none; 
  flex-direction: column;
- box-shadow: -10px 0 40px rgba(0,0,0,0.05);
+ box-shadow: -10px 0 40px rgba(0,0,0,0.03);
  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .account-sidebar-panel { right: -450px; overflow-y: auto; }
@@ -157,29 +157,69 @@ html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me whit
 .cart-sidebar-panel { right: -460px; }
 .cart-sidebar-panel.active { display: flex; right: 0; }
 
-.panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
-.panel-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-.close-panel-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text); opacity: 0.4; line-height: 1; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 24px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.panel-header h2 { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; }
+.close-panel-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text); opacity: 0.3; line-height: 1; transition: opacity 0.2s; }
 .close-panel-btn:hover { opacity: 1; }
 
-.profile-meta-card { display: flex; align-items: center; gap: 15px; background: rgba(17,17,17,0.02); padding: 16px; border-radius: 2px; border: 1px solid var(--line); margin: 24px 0 20px 0; }
-.profile-meta-card img { width: 38px; height: 32px; border-radius: 50%; object-fit: cover; }
-.profile-meta-card h4 { font-size: 13px; font-weight: 500; }
-.profile-meta-card p { font-size: 11px; opacity: 0.5; }
+/* Clean Minimal Profile Card Look */
+.profile-meta-card { 
+ display: flex; 
+ align-items: center; 
+ gap: 16px; 
+ background: transparent; 
+ padding: 12px 0 24px 0; 
+ border-bottom: 1px solid var(--line);
+ margin: 24px 0; 
+}
+.profile-meta-card img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--line); }
+.profile-meta-card h4 { font-size: 14px; font-weight: 500; letter-spacing: 0.3px; }
+.profile-meta-card p { font-size: 11px; opacity: 0.4; margin-top: 2px; font-weight: 400; }
 
-.account-tabs-nav { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
-.tab-nav-btn { width: 100%; padding: 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px; cursor: pointer; text-align: left; transition: all 0.2s ease; margin-top: 0; }
-.tab-nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-.tab-nav-btn.manage-btn-style { background: var(--text); color: var(--bg); border-color: var(--text); opacity: 0.9; }
-.tab-nav-btn.manage-btn-style:hover { opacity: 1; }
+/* Borderless Elegant Navigation List */
+.account-tabs-nav { 
+ display: flex; 
+ flex-direction: column; 
+ gap: 0; 
+ margin-bottom: 20px; 
+}
+.tab-nav-btn { 
+ width: 100%; 
+ padding: 18px 4px; 
+ font-size: 11px; 
+ font-weight: 500; 
+ text-transform: uppercase; 
+ letter-spacing: 1.5px; 
+ background: transparent !important; 
+ color: var(--text) !important; 
+ border: none;
+ border-bottom: 1px solid var(--line);
+ border-radius: 0; 
+ cursor: pointer; 
+ text-align: left; 
+ transition: padding-left 0.3s ease, opacity 0.2s; 
+ margin-top: 0; 
+ opacity: 0.8;
+}
+.tab-nav-btn:hover { 
+ opacity: 1;
+ padding-left: 10px;
+}
+.tab-nav-btn.active { 
+ opacity: 1;
+ font-weight: 600;
+}
+.tab-nav-btn.manage-btn-style { 
+ color: var(--text) !important;
+}
 
-.account-page-content { display: none; margin-top: 5px; margin-bottom: 15px; }
+.account-page-content { display: none; margin-top: 0; margin-bottom: 0; background: rgba(17,17,17,0.01); border-bottom: 1px solid var(--line); }
 .account-page-content.active { display: block; }
-.saved-address-view-card { background: rgba(17,17,17,0.01); border: 1px dashed var(--line); padding: 14px; font-size: 12px; line-height: 1.6; }
-.saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
+.saved-address-view-card { padding: 16px 8px; font-size: 12px; line-height: 1.7; color: var(--text); opacity: 0.8; }
+.saved-address-view-card h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; font-weight: 600; }
 
-.logout-sidebar-btn { width: 100%; padding: 14px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 2px; cursor: pointer; margin-top: 20px; }
-.logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; border-color: #ff4a4a; }
+.logout-sidebar-btn { width: auto; align-self: flex-start; padding: 8px 4px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: var(--text); opacity: 0.4; border: none; border-bottom: 1px solid var(--text); border-radius: 0; cursor: pointer; margin-top: 32px; transition: opacity 0.2s; }
+.logout-sidebar-btn:hover { opacity: 1; }
 
 .panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.04); font-size: 13px; }
 .panel-item-row img { width: 42px; aspect-ratio: 3/4; object-fit: cover; }
@@ -214,13 +254,12 @@ html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me whit
 .btn:hover { background: var(--text); color: var(--bg); }
 
 /* ==========================================================================
-   5. Lacoste Premium Product Grid Framework Redesign
+   5. Lacoste Premium Product Grid Framework
    ========================================================================== */
 section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 32px; }
 
-/* Luxury Card Structuring */
 .card {
     border: none;
     background: transparent;
@@ -239,7 +278,7 @@ section { padding: 100px 6%; }
     background: #fdfdfd;
 }
 html[data-theme="dark"] .card-img-wrapper { background: #161616; }
-html[data-theme="olive"] .card-img-wrapper { background: #232f20; } /* Subtle light background box within deep green context */
+html[data-theme="olive"] .card-img-wrapper { background: #232f20; } 
 
 .card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .hover-img { opacity: 0; z-index: 1; }
@@ -248,7 +287,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; } /* Subtle li
 .card:hover .primary-img { opacity: 0; }
 .card:hover .hover-img { opacity: 1; transform: scale(1.02); }
 
-/* Minimal Luxury Circle Wishlist Trigger */
 .wishlist-toggle-icon {
  position: absolute; top: 16px; right: 16px; z-index: 10; 
  background: #ffffff; border: 1px solid rgba(17,17,17,0.05); width: 36px; height: 34px; border-radius: 50%; 
@@ -261,7 +299,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; } /* Subtle li
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
 .wishlist-toggle-icon svg{ width:15px; height:15px; }
 
-/* Elegantly Styled Typography Layout */
 .info {
     display: flex;
     flex-direction: column;
@@ -284,7 +321,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; } /* Subtle li
     opacity: 0.6;
 }
 
-/* Lacoste Minimalistic Embedded Integration Panel Controls */
 .grid-product-controls {
     display: flex;
     flex-direction: column;
@@ -760,7 +796,6 @@ function switchAccountTab(tabName) {
 function setTheme(theme){
  document.documentElement.setAttribute("data-theme", theme);
  const isDark = theme === "dark", isOlive = theme === "olive";
- // Updated Olive Theme colors to a much deeper luxury forest green
  document.documentElement.style.setProperty('--bg', isDark ? '#111111' : (isOlive ? '#111b10' : '#ffffff'));
  document.documentElement.style.setProperty('--text', isDark ? '#ffffff' : (isOlive ? '#f4f7f2' : '#111111'));
  document.documentElement.style.setProperty('--line', isDark ? 'rgba(255,255,255,0.06)' : (isOlive ? 'rgba(255,255,255,0.08)' : 'rgba(17,17,17,0.06)'));
@@ -899,7 +934,6 @@ function displayProducts(list = products) {
        <div class="price">₹${p.price}</div>
      </div>
 
-     <!-- Lacoste Premium Embedded Grid Controls -->
      <div class="grid-product-controls">
          <div class="grid-controls-row">
              <div class="grid-size-container">
