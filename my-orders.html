@@ -428,7 +428,7 @@ function applyVisualRenders() {
         return;
     }
 
-    filteredList.forEach(order => {
+    filteredList.forEach((order, idx) => {
         let displayDate = "Recent Transaction";
         let orderTimeMillis = now;
 
@@ -500,7 +500,6 @@ function applyVisualRenders() {
         if (isCancelled) {
             rightActionDockHtml = `<span class="executed-lock-text">Cancelled</span>`;
         } else {
-            // UPDATED CONFIGURATION: Expiration target shifted cleanly to 1 Hour (1 * 60 * 60 * 1000)
             const oneHourInMillis = 1 * 60 * 60 * 1000;
             const expirationTime = orderTimeMillis + oneHourInMillis;
             
@@ -509,7 +508,7 @@ function applyVisualRenders() {
             } else {
                 rightActionDockHtml = `
                 <div class="action-dock-right" id="${uniqueDockId}">
-                    <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}', ${isDispatched})">Cancel Order</button>
+                    <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}', ${isDispatched}, ${idx})">Cancel Order</button>
                     <span class="cancel-timer-countdown" id="${uniqueTimerId}">Calculating window...</span>
                 </div>`;
                 
@@ -562,7 +561,6 @@ function initiateCancelCountdownTimer(expireTime, timerElementId, dockElementId)
             const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
             
-            // Format to show correct hours countdown structure cleanly
             element.innerText = `${String(hrs).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s left to cancel`;
         }
     }
@@ -571,25 +569,63 @@ function initiateCancelCountdownTimer(expireTime, timerElementId, dockElementId)
     window.activeCancelTimers[timerElementId] = setInterval(processTick, 1000);
 }
 
-window.cancelPendingOrder = async function(docId, isDispatched) {
+// Telegram Order Cancellation Alert Pipeline Function
+async function sendCancelledOrderTelegramAlert(cancelledOrder) {
+    const botToken = "8892397338:AAEEDt5xZnDLSv5lnUuuVejrJfQlfEqVj64"; 
+    const chatId = "656520549"; 
+    
+    let itemsSummary = "";
+    const parsedItems = cancelledOrder.cart || cancelledOrder.items;
+    if (Array.isArray(parsedItems)) {
+        parsedItems.forEach(item => {
+            itemsSummary += `• ${item.n || item.productName || 'Premium Apparel'} (Size: ${item.s || item.size || 'M'}, Qty: ${item.q || item.quantity || 1})\n`;
+        });
+    }
+
+    const alertText = `⚠️ *ORDER CANCELLED BY USER!* ⚠️\n\n` +
+                      `🆔 *Order No:* ${cancelledOrder.orderNumber || 'AQ-Unverified'}\n` +
+                      `💰 *Refund Liability Total:* ₹${cancelledOrder.total || 0}\n` +
+                      `👤 *Customer Name:* ${cancelledOrder.receiverName || 'N/A'}\n` +
+                      `📞 *Contact Number:* ${cancelledOrder.phone || 'N/A'}\n` +
+                      `📍 *Zone Destination:* ${cancelledOrder.city || 'N/A'}, ${cancelledOrder.state || 'N/A'}\n\n` +
+                      `❌ *Cancelled Items List:*\n${itemsSummary || 'No items track available.'}`;
+
+    const endpointUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(alertText)}&parse_mode=Markdown`;
+    
+    try {
+        await fetch(endpointUrl);
+        console.log("Cancellation alert dispatched cleanly to Telegram pipeline.");
+    } catch(err) {
+        console.error("Telegram notification failed on cancel hook:", err);
+    }
+}
+
+window.cancelPendingOrder = async function(docId, isDispatched, listIndex) {
     if(isDispatched) {
         showTopNotification("Cancel Denied: Order has been Dispatched to Customer.");
         return;
     }
 
     const doubleCheck = confirm("Are you sure?");
-   
-                              
     if(!doubleCheck) return;
 
     alert("Notice: You have to visit the website to check the status of this order.");
 
     try {
+        // Fetch target order dataset from the loaded array for formatting text fields
+        const targetOrderData = allFetchedOrders[listIndex];
+
         const orderDocRef = doc(db, "orders", docId);
         await updateDoc(orderDocRef, {
             paymentStatus: "Cancelled by User",
             orderStatus: "Cancelled by User"
         });
+
+        // Fire dynamic background alert before updating state
+        if (targetOrderData) {
+            await sendCancelledOrderTelegramAlert(targetOrderData);
+        }
+
         alert("Order cancellation request processed successfully!");
         fetchOrderManifest(currentUserId); 
     } catch(err) {
