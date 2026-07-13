@@ -22,68 +22,77 @@ body {
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-    padding: 50px 20px;
+    padding: 60px 20px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
 }
 
 .checkout-container {
-    max-width: 480px;
+    max-width: 460px;
     width: 100%;
     margin: 0 auto;
 }
 
 .brand-hero {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 45px;
 }
 .brand-hero img {
-    width: 130px;
-    opacity: 0.45;
-    filter: grayscale(1) brightness(1.3);
-    margin-bottom: 12px;
+    width: 90px;
+    opacity: 0.85;
+    margin-bottom: 16px;
+    transition: transform 0.3s ease;
 }
 .brand-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 400;
-    letter-spacing: 2px;
-    text-transform: capitalize;
-    color: #f5f5f5;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+}
+.brand-subtitle {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: rgba(255, 255, 255, 0.3);
+    margin-top: 6px;
+    font-weight: 500;
 }
 
 .summary-card {
     background: #111111;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 12px;
     padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 .summary-card h3 {
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.35);
     margin-bottom: 18px;
     font-weight: 600;
+    border-left: 1.5px solid #ffffff;
+    padding-left: 8px;
 }
 
-.address-details { font-size: 13px; line-height: 1.6; color: #b5b5b5; }
+.address-details { font-size: 13px; line-height: 1.65; color: #a3a3a3; }
 .address-details strong { color: #ffffff; font-weight: 500; }
 
-.item-row { display: flex; align-items: center; gap: 15px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
+.item-row { display: flex; align-items: center; gap: 15px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
 .item-row:last-of-type { border-bottom: none; }
-.item-thumb { width: 48px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; background: #1a1a1a; }
+.item-thumb { width: 44px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; background: #161616; }
 .item-meta { flex: 1; }
 .item-meta h4 { font-size: 13px; font-weight: 400; color: #ffffff; letter-spacing: 0.3px; }
-.item-meta p { font-size: 11px; color: rgba(255, 255, 255, 0.4); margin-top: 3px; }
+.item-meta p { font-size: 11px; color: rgba(255, 255, 255, 0.35); margin-top: 3px; }
 .item-price { font-size: 13px; font-weight: 500; color: #ffffff; }
 
-.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, 0.1); }
-.total-label { font-size: 12px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; }
-.total-amount { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, 0.08); }
+.total-label { font-size: 11px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1.5px; }
+.total-amount { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; color: #ffffff; }
 
 /* ==========================================================================
    2. Refined Premium Payment Tray Style
@@ -92,7 +101,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    margin-top: 5px;
 }
 
 .premium-pay-btn {
@@ -101,22 +109,23 @@ body {
     justify-content: space-between;
     width: 100%;
     padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.01);
     color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 8px;
     font-size: 13px;
     font-weight: 400;
     letter-spacing: 0.5px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .premium-pay-btn:hover {
     background: #ffffff;
     color: #000000;
     border-color: #ffffff;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255,255,255,0.05);
 }
 
 .btn-left-content {
@@ -126,14 +135,16 @@ body {
 }
 
 .app-svg-icon {
-    height: 18px;
+    height: 16px;
     width: auto;
     max-width: 38px;
     object-fit: contain;
+    filter: brightness(0) invert(1); /* Keeps icons clean minimalist white by default */
+    transition: filter 0.3s ease;
 }
 
 .premium-pay-btn:hover .app-svg-icon {
-    filter: invert(1) brightness(0);
+    filter: none; /* Reverts to original color layout on luxury hover tracking state */
 }
 
 .premium-pay-btn span {
@@ -141,12 +152,54 @@ body {
 }
 
 .arrow-indicator {
-    font-family: serif;
-    font-size: 15px;
-    opacity: 0.4;
+    font-size: 14px;
+    opacity: 0.3;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .premium-pay-btn:hover .arrow-indicator {
-    opacity: 0.9;
+    opacity: 1;
+    transform: translateX(3px);
+}
+
+/* Luxury UTR Verification Control Segment */
+.utr-tracker-box {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.utr-input-field {
+    width: 100%;
+    padding: 14px;
+    background: #161616;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 13px;
+    outline: none;
+    letter-spacing: 1px;
+    transition: border-color 0.3s ease;
+}
+.utr-input-field:focus {
+    border-color: rgba(255,255,255,0.2);
+}
+.utr-verify-submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    color: #ffffff;
+    border: 1px dashed rgba(255,255,255,0.15);
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.utr-verify-submit-btn:hover {
+    background: rgba(255,255,255,0.03);
+    border-color: #ffffff;
 }
 </style>
 </head>
@@ -155,7 +208,8 @@ body {
 <div class="checkout-container">
     <div class="brand-hero">
         <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Aquilux Emblem">
-        <div class="brand-title">Aquilux Checkout Ledger</div>
+        <div class="brand-title">Aquilux</div>
+        <div class="brand-subtitle">Secure Order Ledger</div>
     </div>
 
     <div class="summary-card">
@@ -173,7 +227,7 @@ body {
     </div>
 
     <div class="summary-card">
-        <h3> Payment Mode</h3>
+        <h3>Payment Mode</h3>
         <div class="payment-buttons-grid">
             <button class="premium-pay-btn" onclick="triggerAppPayment('google-pay')">
                 <div class="btn-left-content">
@@ -198,6 +252,15 @@ body {
                 </div>
                 <span class="arrow-indicator">→</span>
             </button>
+        </div>
+    </div>
+
+    <!-- Optional Manual Sync Field Anchor Block -->
+    <div class="summary-card">
+        <h3>Already Paid?</h3>
+        <div class="utr-tracker-box">
+            <input type="text" id="manualUtrInputField" class="utr-input-field" placeholder="Enter 12-Digit UPI / UTR Ref No." maxlength="12">
+            <button class="utr-verify-submit-btn" onclick="submitManualUtrTokenLock()">Lock Payment Logs</button>
         </div>
     </div>
 </div>
@@ -250,7 +313,7 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// CLEAN ROUTER FLOW (Removed the overlapping fallback HTML popups)
+// CLEAN ROUTER FLOW 
 window.triggerAppPayment = async function(appTarget) {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -295,11 +358,11 @@ window.triggerAppPayment = async function(appTarget) {
     order.orderStatus = "Pending";
     order.createdAt = new Date().toISOString();
     order.userId = currentUserId;
+    order.utrReference = "N/A"; // Initial fallback parameter
 
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
 
-    // Async database background sync
     try {
         await addDoc(collection(db, "orders"), order);
         localStorage.removeItem("aquilux_cart");
@@ -307,10 +370,8 @@ window.triggerAppPayment = async function(appTarget) {
         console.error(err);
     }
 
-    // Launch App Intent Execution Natively
     window.location.href = targetUpiUri;
 
-    // Standard high-end fallbacks if app redirection doesn't pull browser window focus
     let storeFallbackTimer = setTimeout(() => {
         window.location.href = appStoreLink;
     }, 2500);
@@ -323,10 +384,36 @@ window.triggerAppPayment = async function(appTarget) {
     window.addEventListener("blur", clearStoreTimers);
     document.addEventListener("visibilitychange", clearStoreTimers);
 
-    // Final redirection tracking page update execution
     setTimeout(() => {
         window.location.href = "payment.html";
     }, 1500);
+};
+
+// Pure Manual Verification Override Trigger Module
+window.submitManualUtrTokenLock = async function() {
+    const tokenVal = document.getElementById("manualUtrInputField").value.trim();
+    if(tokenVal.length !== 12 || isNaN(tokenVal)) {
+        alert("Please enter a valid 12-digit transaction UTR reference number.");
+        return;
+    }
+    
+    order.utrReference = tokenVal;
+    order.orderNumber = "AQ" + Date.now();
+    order.paymentStatus = "Pending Verification";
+    order.orderStatus = "Pending";
+    order.createdAt = new Date().toISOString();
+    order.userId = currentUserId;
+
+    localStorage.setItem("lastOrderNumber", order.orderNumber);
+    
+    try {
+        await addDoc(collection(db, "orders"), order);
+        localStorage.removeItem("aquilux_cart");
+        alert("Payment parameters locked securely! Syncing trace logs...");
+        window.location.href = "payment.html";
+    } catch(e) {
+        alert("Syncing failed: " + e.message);
+    }
 };
 
 renderUI();
