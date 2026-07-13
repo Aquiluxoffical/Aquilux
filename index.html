@@ -234,7 +234,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 
 .mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; background: rgba(17,17,17,0.02); }
 .mini-qty-box button { padding: 2px 10px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; font-weight: 600; }
-.mini-qty-box button:hover { background: rgba(17,17,17,0.05); }
+.mini-qty-box button:hover { background: rgba(17, 17, 17, 0.05); }
 .mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
 
 /* ==========================================================================
@@ -372,7 +372,7 @@ input, textarea { width: 100%; }
 #priceFilter, #collectionFilter { 
  width: 100%; padding: 11px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); 
  color: var(--text); border: 1px solid var(--line); border-radius: 4px !important; 
- font-family: 'Inter', sans-serif; font-size: 13px; text-align-last: center; outline: none; cursor: pointer; 
+ font-family: 'Inter', sans-serif; font-size: 13px; text-align-last: center; outline: pointer; 
 }
 
 /* Premium Perspective Mode Switcher Framework */
@@ -551,7 +551,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
            <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
        </div>
 
-       <!-- Updated: Linked directly to your my-orders.html page -->
+       <!-- Linked directly to your my-orders.html page -->
        <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
    </div>
 
@@ -996,7 +996,7 @@ window.toggleWishlistProduct = function(prodName, index) {
 
 function renderWishlistPanel() {
     const container = document.getElementById("panelWishlistContainer");
-    if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5;font-size:12px;'>Wishlist is empty.</p>"; return; }
+    if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5; font-size:12px;'>Wishlist is empty.</p>"; return; }
     container.innerHTML = "";
     wishlist.forEach((item, idx) => {
         container.innerHTML += `
@@ -1046,7 +1046,7 @@ function executeUnifiedFiltering() {
             if (collectionVal === "Shorts") return cat.includes("shorts") || cat.includes("sweatshorts");
             if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
             if (collectionVal === "Crop Tee") return cat.includes("crop tee") || cat.includes("croptee");
-            return cat === collectionVal.toLowerCase();
+            return cat === collectionFilter.value.toLowerCase();
         });
     }
 
@@ -1095,6 +1095,19 @@ function draw(){
  document.getElementById("cartCount").textContent = count;
 }
 
+// Telegram Background Alert Pipeline Configuration
+async function triggerTelegramNotificationAlert(messageText) {
+    const telegramBotToken = "8892397338:AAEEDt5xZnDLSv5lnUuuVejrJfQlfEqVj64"; 
+    const telegramChatId = "656520549"; 
+    const endpointUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(messageText)}&parse_mode=Markdown`;
+    
+    try {
+        await fetch(endpointUrl);
+    } catch(err) {
+        console.error("Telegram alert channel pipeline dropped:", err);
+    }
+}
+
 function goToGateway(){
  if(cart.length === 0) { alert("Your shopping cart is empty!"); return; }
  const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
@@ -1109,6 +1122,11 @@ function goToGateway(){
    city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
  };
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
+
+ // Background Secure Telegram Alert Signal on Checkout Proceed
+ const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total: ₹${orderData.total}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
+ triggerTelegramNotificationAlert(alertMessage);
+
  window.location.href = "payment-gateway.html";
 }
 </script>
