@@ -139,12 +139,12 @@ body {
     width: auto;
     max-width: 38px;
     object-fit: contain;
-    filter: brightness(0) invert(1); /* Keeps icons clean minimalist white by default */
+    filter: brightness(0) invert(1);
     transition: filter 0.3s ease;
 }
 
 .premium-pay-btn:hover .app-svg-icon {
-    filter: none; /* Reverts to original color layout on luxury hover tracking state */
+    filter: none;
 }
 
 .premium-pay-btn span {
@@ -159,47 +159,6 @@ body {
 .premium-pay-btn:hover .arrow-indicator {
     opacity: 1;
     transform: translateX(3px);
-}
-
-/* Luxury UTR Verification Control Segment */
-.utr-tracker-box {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-.utr-input-field {
-    width: 100%;
-    padding: 14px;
-    background: #161616;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 6px;
-    color: #ffffff;
-    font-size: 13px;
-    outline: none;
-    letter-spacing: 1px;
-    transition: border-color 0.3s ease;
-}
-.utr-input-field:focus {
-    border-color: rgba(255,255,255,0.2);
-}
-.utr-verify-submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: transparent;
-    color: #ffffff;
-    border: 1px dashed rgba(255,255,255,0.15);
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.utr-verify-submit-btn:hover {
-    background: rgba(255,255,255,0.03);
-    border-color: #ffffff;
 }
 </style>
 </head>
@@ -254,15 +213,6 @@ body {
             </button>
         </div>
     </div>
-
-    <!-- Optional Manual Sync Field Anchor Block -->
-    <div class="summary-card">
-        <h3>Already Paid?</h3>
-        <div class="utr-tracker-box">
-            <input type="text" id="manualUtrInputField" class="utr-input-field" placeholder="Enter 12-Digit UPI / UTR Ref No." maxlength="12">
-            <button class="utr-verify-submit-btn" onclick="submitManualUtrTokenLock()">Lock Payment Logs</button>
-        </div>
-    </div>
 </div>
 
 <script type="module">
@@ -313,7 +263,6 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
-// CLEAN ROUTER FLOW 
 window.triggerAppPayment = async function(appTarget) {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -358,7 +307,7 @@ window.triggerAppPayment = async function(appTarget) {
     order.orderStatus = "Pending";
     order.createdAt = new Date().toISOString();
     order.userId = currentUserId;
-    order.utrReference = "N/A"; // Initial fallback parameter
+    order.utrReference = "N/A"; 
 
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
@@ -387,33 +336,6 @@ window.triggerAppPayment = async function(appTarget) {
     setTimeout(() => {
         window.location.href = "payment.html";
     }, 1500);
-};
-
-// Pure Manual Verification Override Trigger Module
-window.submitManualUtrTokenLock = async function() {
-    const tokenVal = document.getElementById("manualUtrInputField").value.trim();
-    if(tokenVal.length !== 12 || isNaN(tokenVal)) {
-        alert("Please enter a valid 12-digit transaction UTR reference number.");
-        return;
-    }
-    
-    order.utrReference = tokenVal;
-    order.orderNumber = "AQ" + Date.now();
-    order.paymentStatus = "Pending Verification";
-    order.orderStatus = "Pending";
-    order.createdAt = new Date().toISOString();
-    order.userId = currentUserId;
-
-    localStorage.setItem("lastOrderNumber", order.orderNumber);
-    
-    try {
-        await addDoc(collection(db, "orders"), order);
-        localStorage.removeItem("aquilux_cart");
-        alert("Payment parameters locked securely! Syncing trace logs...");
-        window.location.href = "payment.html";
-    } catch(e) {
-        alert("Syncing failed: " + e.message);
-    }
 };
 
 renderUI();
