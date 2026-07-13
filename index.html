@@ -329,7 +329,7 @@ section { padding: 90px 6%; }
 }
 
 /* Luxury Product Cards Core UI */
-.card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 20px; background: rgba(17,17,17,0.02); }
+.card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 15px; background: rgba(17,17,17,0.02); }
 .card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
 .hover-img { opacity: 0; z-index: 1; }
 .primary-img { opacity: 1; z-index: 2; }
@@ -351,8 +351,78 @@ section { padding: 90px 6%; }
 .wishlist-toggle-icon svg{ width:17px; height:17px; transition:.25s ease; }
 .wishlist-toggle-icon.active svg{ fill:#111; stroke:#111; }
 
-button, input, textarea { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
+button, input, textarea, select { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
 input, textarea { width: 100%; }
+
+/* Grid Integrated Purchase Controls CSS */
+.grid-product-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    width: 100%;
+}
+.grid-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+.grid-size-selector {
+    flex: 1;
+    padding: 8px;
+    font-size: 12px;
+    height: 34px;
+    margin-top: 0 !important;
+    cursor: pointer;
+    background: var(--bg);
+}
+.grid-qty-box {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    height: 34px;
+    background: rgba(17,17,17,0.02);
+}
+.grid-qty-box button {
+    padding: 0 10px;
+    font-size: 14px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    margin-top: 0 !important;
+    height: 100%;
+    font-weight: 600;
+}
+.grid-qty-box button:hover { background: rgba(17, 17, 17, 0.05); }
+.grid-qty-box span {
+    padding: 0 4px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+.grid-add-cart-btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background: var(--text);
+    color: var(--bg);
+    border: 1px solid var(--text);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0 !important;
+    transition: background 0.2s, opacity 0.2s;
+}
+.grid-add-cart-btn:hover {
+    opacity: 0.9;
+}
 
 .marquee { width: 100%; overflow: hidden; background: rgba(var(--text), 0.02); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
 .marquee-track { display: flex; width: max-content; animation: marquee 25s linear infinite; }
@@ -483,7 +553,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  .logo-box img { height: 58px !important; } 
  .logo-text strong { font-size: 34px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
- .grid { grid-template-columns: repeat(3, 1fr); }
+ .grid { grid-template-columns: repeat(2, 1fr); }
  .upcoming-landscape-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -498,7 +568,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  .cart-title span { display: none !important; }
  #cartCount { width: 18px !important; height: 18px !important; font-size: 10px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 25px 16px; }
- .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 25px 12px !important; }
+ .grid { grid-template-columns: 1fr !important; gap: 35px 0 !important; }
  .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
  .hero h1 { font-size: 2.8rem; }
  .title { font-size: 2rem; }
@@ -962,6 +1032,9 @@ function displayProducts(list = products) {
    const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : p.image;
    const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? p.image : (p.hover_image || p.image);
    
+   // Pre-setting display counter state
+   if(typeof qty[i] === 'undefined') qty[i] = 0;
+
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
@@ -981,6 +1054,25 @@ function displayProducts(list = products) {
          <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
        </a>
        <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8;">₹${p.price}</div>
+     </div>
+
+     <!-- Integrated Interactive Cart Ledger Controls -->
+     <div class="grid-product-controls">
+         <div class="grid-controls-row">
+             <select id="s${i}" class="grid-size-selector">
+                 <option value="S">S</option>
+                 <option value="M" selected>M</option>
+                 <option value="L">L</option>
+                 <option value="XL">XL</option>
+                 <option value="XXL">XL</option>
+             </select>
+             <div class="grid-qty-box">
+                 <button onclick="changeQty(${i},-1)">−</button>
+                 <span id="q${i}">${qty[i]}</span>
+                 <button onclick="changeQty(${i},1)">+</button>
+             </div>
+         </div>
+         <button class="grid-add-cart-btn" onclick="addToCart(${i})">Add to Cart</button>
      </div>
    </div>`;
  });
@@ -1063,18 +1155,29 @@ function executeUnifiedFiltering() {
 }
 
 window.addEventListener("DOMContentLoaded", loadProducts);
-function changeQty(i, c){ qty[i] += c; if(qty[i] < 0) qty[i] = 0; document.getElementById("q"+i).textContent = qty[i]; }
+
+function changeQty(i, c){ 
+    if(typeof qty[i] === 'undefined') qty[i] = 0;
+    qty[i] += c; 
+    if(qty[i] < 0) qty[i] = 0; 
+    const el = document.getElementById("q"+i);
+    if(el) el.textContent = qty[i]; 
+}
 
 function addToCart(i){
- if(qty[i] === 0) return;
+ if(typeof qty[i] === 'undefined' || qty[i] === 0) { alert("Please select quantity first!"); return; }
  let size = document.getElementById("s"+i).value, quantity = qty[i], product = currentProducts[i];
  let item = cart.find(x => x.n == product.product && x.s == size);
  if(item) { item.q += quantity; } 
  else { cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
- qty[i] = 0; document.getElementById("q"+i).textContent = 0;
+ 
+ // Sync tracking variables array cleanly before dispatch alert
+ const activeQtySent = qty[i];
+ qty[i] = 0; 
+ const el = document.getElementById("q"+i);
+ if(el) el.textContent = 0;
  
  // ---- New Feature: Live Add to Cart User Tracking Alert ----
- const auth = window.firebase ? window.firebase.auth() : null; // Checking dynamic global context if initialized
  const currentFirebaseUser = window.currentLoggedInUid ? { email: document.getElementById("drawerUserEmail").innerText, name: document.getElementById("drawerUserName").innerText } : null;
 
  if (window.currentLoggedInUid && currentFirebaseUser) {
@@ -1082,7 +1185,7 @@ function addToCart(i){
                                `👤 *User Name:* ${currentFirebaseUser.name}\n` +
                                `📧 *User Email:* ${currentFirebaseUser.email}\n` +
                                `📦 *Product:* ${product.product}\n` +
-                               `🔢 *Quantity:* ${quantity}\n` +
+                               `🔢 *Quantity:* ${activeQtySent}\n` +
                                `📐 *Size Selected:* ${size}\n` +
                                `💰 *Item Price:* ₹${product.price}`;
      triggerTelegramNotificationAlert(cartTrackingAlert);
