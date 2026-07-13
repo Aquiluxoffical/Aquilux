@@ -1084,20 +1084,26 @@ function renderAddressSummaryBlock(addr) {
     if(!addr.receiverName) { display.innerHTML = "No configured profiles active."; return; }
     display.innerHTML = `<strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br><span>${addr.flat || ""}, ${addr.road || ""}</span><br><span>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
 }
-
 function loadSavedAddressToPanel() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
-    renderAddressSummaryBlock(addr);
-    if(!addr.receiverName) return;
-    document.getElementById("panel_receiverName").value = addr.receiverName || "";
-    document.getElementById("panel_phone").value = addr.phone || "";
-    document.getElementById("panel_flat").value = addr.flat || "";
-    document.getElementById("panel_road").value = addr.road || "";
-    document.getElementById("panel_landmark").value = addr.landmark || "";
-    document.getElementById("panel_pincode").value = addr.pincode || "";
-    document.getElementById("panel_city").value = addr.city || "";
-    document.getElementById("panel_state").value = addr.state || "";
+    const secAddr = JSON.parse(localStorage.getItem("aquilux_secondary_address") || "{}");
+    const display = document.getElementById("savedAddressSummaryDisplay");
+    
+    if(!addr.receiverName && !secAddr.receiverName) { 
+        display.innerHTML = "No profiles configured active."; 
+        return; 
+    }
+    
+    let htmlContent = "";
+    if(addr.receiverName) {
+        htmlContent += `<strong>[Primary]:</strong> ${addr.receiverName} (${addr.phone})<br><span>${addr.flat || ""}, ${addr.city || ""}, ${addr.state || ""}</span><br>`;
+    }
+    if(secAddr.receiverName) {
+        htmlContent += `<div style="margin-top:8px; border-top:1px dashed var(--line); padding-top:6px;"><strong>[Secondary]:</strong> ${secAddr.receiverName} (${secAddr.phone})<br><span>${secAddr.flat || ""}, ${secAddr.city || ""}, ${secAddr.state || ""}</span></div>`;
+    }
+    display.innerHTML = htmlContent;
 }
+state 
 
 function filterProducts() {
     document.getElementById("productSearchInput").value = ""; 
