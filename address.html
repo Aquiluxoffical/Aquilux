@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Manage Addresses — Aquilux</title>
+<title>Manage Address — Aquilux</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -56,14 +56,8 @@ header {
 .nav-link { text-decoration: none; color: var(--text); font-size: 14px; font-weight: 500; letter-spacing: 0.5px; }
 .nav-link:hover { opacity: 0.7; }
 
-section { padding: 120px 6% 40px 6%; max-width: 1200px; margin: 0 auto; }
-.title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--text); margin-bottom: 30px; letter-spacing: 0.5px; text-transform: uppercase; }
-
-.address-layout-grid {
- display: grid;
- grid-template-columns: 1fr 1fr;
- gap: 40px;
-}
+section { padding: 120px 6% 40px 6%; max-width: 700px; margin: 0 auto; }
+.title { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 400; color: var(--text); margin-bottom: 30px; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; }
 
 .address-card-box {
  padding: 30px;
@@ -124,14 +118,12 @@ section { padding: 120px 6% 40px 6%; max-width: 1200px; margin: 0 auto; }
 }
 .save-btn:hover { opacity: 0.9; }
 
-@media(max-width: 900px) {
- .address-layout-grid { grid-template-columns: 1fr; gap: 30px; }
-}
 @media(max-width: 768px) {
  header { padding: 12px 16px !important; height: 75px; }
  .logo-box img { height: 44px !important; } 
  .logo-text strong { font-size: 26px !important; }
  .title { font-size: 2rem; }
+ .address-card-box { padding: 20px; }
 }
 </style>
 </head>
@@ -150,55 +142,30 @@ section { padding: 120px 6% 40px 6%; max-width: 1200px; margin: 0 auto; }
 <section>
   <div class="title">Manage Delivery Parameters</div>
   
-  <div class="address-layout-grid">
-      <!-- Primary Address -->
-      <div class="address-card-box">
-          <h3>01 / Primary Address</h3>
-          <div class="saved-address-preview" id="preview_primary">
-              <h4>Current Active Parameter</h4>
-              <div id="text_primary">No address locked.</div>
-          </div>
-          <div class="address-form">
-              <input type="text" id="p_name" placeholder="Receiver Full Name">
-              <input type="tel" id="p_phone" maxlength="10" placeholder="Contact Tracker No">
-              <input type="text" id="p_flat" placeholder="Flat / Society Space Info">
-              <input type="text" id="p_road" placeholder="Road / Sector Parameters">
-              <input type="text" id="p_landmark" placeholder="Landmark Parameters (Optional)">
-              <div class="row-split">
-                 <input type="text" id="p_pincode" maxlength="6" placeholder="PIN Code" oninput="checkPin(this, 'p_city', 'p_state')">
-                 <input type="text" id="p_city" placeholder="City Engine" readonly>
-              </div>
-              <input type="text" id="p_state" placeholder="State Zone" readonly>
-              <button class="save-btn" onclick="saveAddress('primary')">Lock Primary Address</button>
-          </div>
+  <!-- Only Primary Address Container Left -->
+  <div class="address-card-box">
+      <h3>01 / Primary Address</h3>
+      <div class="saved-address-preview" id="preview_primary">
+          <h4>Current Active Parameter</h4>
+          <div id="text_primary">No address locked.</div>
       </div>
-
-      <!-- Secondary Address -->
-      <div class="address-card-box">
-          <h3>02 / Secondary Address (Optional)</h3>
-          <div class="saved-address-preview" id="preview_secondary">
-              <h4>Backup Parameter</h4>
-              <div id="text_secondary">No secondary address locked.</div>
+      <div class="address-form">
+          <input type="text" id="p_name" placeholder="Receiver Full Name">
+          <input type="tel" id="p_phone" maxlength="10" placeholder="Contact Tracker No">
+          <input type="text" id="p_flat" placeholder="Flat / Society Space Info">
+          <input type="text" id="p_road" placeholder="Road / Sector Parameters">
+          <input type="text" id="p_landmark" placeholder="Landmark Parameters (Optional)">
+          <div class="row-split">
+             <input type="text" id="p_pincode" maxlength="6" placeholder="PIN Code" oninput="checkPin(this, 'p_city', 'p_state')">
+             <input type="text" id="p_city" placeholder="City Engine" readonly>
           </div>
-          <div class="address-form">
-              <input type="text" id="s_name" placeholder="Receiver Full Name">
-              <input type="tel" id="s_phone" maxlength="10" placeholder="Contact Tracker No">
-              <input type="text" id="s_flat" placeholder="Flat / Society Space Info">
-              <input type="text" id="s_road" placeholder="Road / Sector Parameters">
-              <input type="text" id="s_landmark" placeholder="Landmark Parameters (Optional)">
-              <div class="row-split">
-                 <input type="text" id="s_pincode" maxlength="6" placeholder="PIN Code" oninput="checkPin(this, 's_city', 's_state')">
-                 <input type="text" id="s_city" placeholder="City Engine" readonly>
-              </div>
-              <input type="text" id="s_state" placeholder="State Zone" readonly>
-              <button class="save-btn" onclick="saveAddress('secondary')">Lock Secondary Address</button>
-          </div>
+          <input type="text" id="p_state" placeholder="State Zone" readonly>
+          <button class="save-btn" onclick="saveAddress()">Lock Primary Address</button>
       </div>
   </div>
 </section>
 
 <script>
-// Theme syncing structure
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
 const isDark = activeTheme === "dark", isOlive = activeTheme === "olive";
@@ -207,21 +174,18 @@ document.documentElement.style.setProperty('--text', isDark ? '#ffffff' : (isOli
 document.documentElement.style.setProperty('--line', isDark ? 'rgba(255,255,255,0.08)' : 'rgba(17,17,17,0.08)');
 document.documentElement.style.setProperty('--glass-bg', isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.45)');
 
-function updateDisplay(type, addr) {
-    const display = document.getElementById("text_" + type);
+function updateDisplay(addr) {
+    const display = document.getElementById("text_primary");
     if(addr && addr.receiverName) {
         display.innerHTML = `<strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br>${addr.flat || ""}, ${addr.road || ""}<br>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}`;
     } else {
-        display.innerHTML = type === 'primary' ? "No address locked." : "No secondary address locked.";
+        display.innerHTML = "No address locked.";
     }
 }
 
 function loadAddresses() {
     const pAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
-    const sAddr = JSON.parse(localStorage.getItem("aquilux_secondary_address") || "{}");
-    
-    updateDisplay('primary', pAddr);
-    updateDisplay('secondary', sAddr);
+    updateDisplay(pAddr);
 
     if(pAddr.receiverName) {
         document.getElementById("p_name").value = pAddr.receiverName || "";
@@ -233,29 +197,18 @@ function loadAddresses() {
         document.getElementById("p_city").value = pAddr.city || "";
         document.getElementById("p_state").value = pAddr.state || "";
     }
-    if(sAddr.receiverName) {
-        document.getElementById("s_name").value = sAddr.receiverName || "";
-        document.getElementById("s_phone").value = sAddr.phone || "";
-        document.getElementById("s_flat").value = sAddr.flat || "";
-        document.getElementById("s_road").value = sAddr.road || "";
-        document.getElementById("s_landmark").value = sAddr.landmark || "";
-        document.getElementById("s_pincode").value = sAddr.pincode || "";
-        document.getElementById("s_city").value = sAddr.city || "";
-        document.getElementById("s_state").value = sAddr.state || "";
-    }
 }
 
-function saveAddress(type) {
-    const prefix = type === 'primary' ? 'p_' : 's_';
+function saveAddress() {
     const addressBlock = {
-        receiverName: document.getElementById(prefix + "name").value.trim(),
-        phone: document.getElementById(prefix + "phone").value.trim(),
-        flat: document.getElementById(prefix + "flat").value.trim(),
-        road: document.getElementById(prefix + "road").value.trim(),
-        landmark: document.getElementById(prefix + "landmark").value.trim(),
-        pincode: document.getElementById(prefix + "pincode").value.trim(),
-        city: document.getElementById(prefix + "city").value,
-        state: document.getElementById(prefix + "state").value
+        receiverName: document.getElementById("p_name").value.trim(),
+        phone: document.getElementById("p_phone").value.trim(),
+        flat: document.getElementById("p_flat").value.trim(),
+        road: document.getElementById("p_road").value.trim(),
+        landmark: document.getElementById("p_landmark").value.trim(),
+        pincode: document.getElementById("p_pincode").value.trim(),
+        city: document.getElementById("p_city").value,
+        state: document.getElementById("p_state").value
     };
 
     if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) { 
@@ -263,10 +216,9 @@ function saveAddress(type) {
         return; 
     }
 
-    const storageKey = type === 'primary' ? "aquilux_saved_address" : "aquilux_secondary_address";
-    localStorage.setItem(storageKey, JSON.stringify(addressBlock));
-    alert((type === 'primary' ? "Primary" : "Secondary") + " address parameter locked successfully!");
-    updateDisplay(type, addressBlock);
+    localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock));
+    alert("Primary address parameter locked successfully!");
+    updateDisplay(addressBlock);
 }
 
 async function lookupPinApi(pinCode, cityField, stateField) {
