@@ -101,7 +101,7 @@ body {
 }
 #menuLoader.active-cosmic-zoom .space-stars-matrix {
  opacity: 1;
- transform: scale(5) rotate(15deg); /* Reaching Earth -> Gujarat -> Ahmedabad tunnel */
+ transform: scale(5) rotate(15deg); 
 }
 
 @keyframes initialFloat {
@@ -837,7 +837,7 @@ window.fetchPanelOrders = async function(uid) {
                      <small style="opacity:0.7; font-size:11px;">Total: ₹${ord.total}</small>
                   </div>
                   <span class="mini-status-badge ${badgeStyle}">${displayStatusText}</span>
-               </div>
+                </div>
                <div id="details-${orderIdStr}" style="display: none; background: rgba(17,17,17,0.02); padding: 5px 10px 10px 10px; margin-top: 8px; border-radius: 6px;">
                   ${productsHtml}
                </div>
@@ -873,7 +873,7 @@ window.fireCosmicUniverseZoomSequence = function() {
         setTimeout(() => {
             loaderPanel.style.display = "none";
         }, 600);
-    }, 2400); // Transitions safely at 2.4 seconds to open home framework instantly
+    }, 2400); 
 };
 
 window.togglePerspectiveViewMode = function() {
@@ -1068,19 +1068,24 @@ function initiateIndividualCountdown(targetTime, elementId) {
     }, 1000);
 }
 
+// FIXED: Sahi URL mapping framework inject kiya hai dynamic filtering arrays ke liye
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
- list.forEach((p, i) => {
-   const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
-   const productLink = `product-page.html?id=${p.id || p.ID || i}`;
+ list.forEach((itemInList) => {
+   // Pure master database index finder to keep tracking exact ID keys cleanly[span_1](start_span)[span_1](end_span)
+   const masterDbIdx = products.findIndex(originalProd => originalProd.product === itemInList.product);
+   const finalValidIdx = masterDbIdx > -1 ? masterDbIdx : 0;
    
-   const hasModelImg = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined");
-   const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : p.image;
-   const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? p.image : (p.hover_image || p.image);
+   const isWished = wishlist.some(x => x.product === itemInList.product) ? 'active' : '';
+   const productLink = `product-page.html?id=${itemInList.id || itemInList.ID || finalValidIdx}`;
+   
+   const hasModelImg = (itemInList.modelImage && String(itemInList.modelImage).trim() !== "" && String(itemInList.modelImage) !== "undefined");
+   const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? itemInList.modelImage : itemInList.image;
+   const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? itemInList.image : (itemInList.hover_image || itemInList.image);
    
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
-     <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
+     <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${itemInList.product}', ${finalValidIdx})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
         </svg>
@@ -1094,9 +1099,9 @@ function displayProducts(list = products) {
      
      <div class="info" style="text-align: left; padding: 0;">
        <a href="${productLink}" style="text-decoration:none; color:inherit;">
-         <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
+         <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${itemInList.product}</h3>
        </a>
-       <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8;">₹${p.price}</div>
+       <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8;">₹${itemInList.price}</div>
      </div>
    </div>`;
  });
