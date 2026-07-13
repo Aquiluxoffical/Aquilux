@@ -112,6 +112,18 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 .countdown-box { background: var(--text); color: var(--bg); padding: 12px 16px; min-width: 70px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
 .countdown-box span { display: block; font-size: 8px; opacity: 0.6; font-weight: 400; text-transform: uppercase; margin-top: 2px; }
 
+/* Premium Shimmer Pulse Loader styling */
+.shimmer-loader {
+    animation: placeholderShimmer 1.5s linear infinite;
+    background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+    background-size: 800px 104px;
+    border-radius: 4px;
+}
+@keyframes placeholderShimmer {
+    0% { background-position: -468px 0; }
+    100% { background-position: 468px 0; }
+}
+
 @media (max-width: 768px) {
  .product-container { flex-direction: column; gap: 30px; }
  padding-top: 85px;
@@ -127,7 +139,9 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 
 <div class="product-container">
     <div class="product-media">
-        <img id="productImage" class="main-display-image" src="" alt="Syncing asset logs...">
+        <!-- Default loader with premium styling instead of text border box -->
+        <div id="imageShimmer" class="shimmer-loader" style="width:100%; aspect-ratio:3/4; position:absolute; inset:0; z-index:2;"></div>
+        <img id="productImage" class="main-display-image" src="" alt="Aquilux Asset Engine" style="opacity:0; transition: opacity 0.3s ease;">
     </div>
     
     <div class="product-info-panel">
@@ -166,7 +180,8 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyHNTjwLvle12n1de_VgSoS60ikvORj81q3FFfrnQqeu7hZIvQxBe7jO4iAxkeYB21E/exec";
+// Secured Web App API Endpoint URL matching latest deployment version
+const API_URL = "https://script.google.com/macros/s/AKfycbxyihaeB4hLfxAL-9XdQDlRfDjg1oWcuiy0JlhiapCI9MGckg3eWGGqBXWNhubsaF2A/exec";
 let targetProduct = null;
 let chosenSize = "";
 let selectedQty = 1;
@@ -183,12 +198,21 @@ async function initProductPage() {
         
         targetProduct = products.find((p, i) => String(p.id || p.ID || i) === String(productId));
 
-        if(!targetProduct) { document.getElementById("productTitle").innerText = "Product Not Found"; return; }
+        if(!targetProduct) { 
+            document.getElementById("productTitle").innerText = "Product Not Found"; 
+            document.getElementById("imageShimmer").style.display = "none";
+            return; 
+        }
 
         document.getElementById("productTitle").innerText = targetProduct.product;
         document.getElementById("productPrice").innerText = "₹" + targetProduct.price;
+        
         const imgNode = document.getElementById("productImage");
         imgNode.src = targetProduct.image;
+        imgNode.onload = function() {
+            imgNode.style.opacity = "1";
+            document.getElementById("imageShimmer").style.display = "none";
+        };
 
         // Render dynamic premium size capsule nodes
         const sizes = targetProduct.sizes?.length > 0 ? targetProduct.sizes : ['S', 'M', 'L', 'XL'];
@@ -225,7 +249,11 @@ async function initProductPage() {
             startPageTimerLoop(launchTimestamp);
         }
 
-    } catch (e) { document.getElementById("productTitle").innerText = "Error Syncing Parameters"; }
+    } catch (e) { 
+        document.getElementById("productTitle").innerText = "Syncing Network Channels...";
+        // Safe Automatic Retry mechanism after 1.5 seconds if Google API throttles request packets
+        setTimeout(initProductPage, 1500);
+    }
 }
 
 function changePageQuantity(amount) {
@@ -283,13 +311,8 @@ function handlePageAddToCart() {
     window.location.href = "index.html"; 
 }
 
-/* ==========================================================================
-   INSTANT DEPLOY BUY NOW LOGIC (DIRECT BYPASS TO GATEWAY)
-   ========================================================================== */
 function handleInstantBuyNow() {
     if(!targetProduct) return;
-    
-    // Check if delivery parameters exist in user profile
     const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
     if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
         alert("Please setup your Shipping Address parameters inside Account Space first!");
@@ -297,7 +320,6 @@ function handleInstantBuyNow() {
         return;
     }
 
-    // Direct checkout payload build injection
     const singleProductCartPayload = [{
         n: targetProduct.product,
         p: Number(targetProduct.price),
@@ -319,7 +341,6 @@ function handleInstantBuyNow() {
         pincode: savedAddr.pincode
     };
 
-    // Lock dynamic state to transfer parameters to gateway window frame
     localStorage.setItem("pendingOrder", JSON.stringify(orderData));
     window.location.href = "payment-gateway.html";
 }
