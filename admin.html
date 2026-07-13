@@ -484,6 +484,20 @@ window.deleteAllOrdersFromDatabase = async function() {
         console.error("Purge system drop track error:", err);
     }
 };
+
+// Live Stats Display logic
+import { doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const statsRef = doc(db, "analytics", "live_stats");
+onSnapshot(statsRef, (doc) => {
+    if (doc.exists()) {
+        const data = doc.data();
+        // Agar aapne ID 'total-visits' di hai, toh yahan update hoga
+        if(document.getElementById("total-visits")) {
+            document.getElementById("total-visits").innerText = data.total_visits;
+        }
+    }
+});  
 </script>
 </body>
 </html>
