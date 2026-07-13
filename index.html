@@ -735,7 +735,7 @@ onAuthStateChanged(auth, (user) => {
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("display", "none", "important");
+   document.getElementById("userBox").style.setProperty("none", "important");
    window.currentLoggedInUid = null;
  }
 });
@@ -1046,7 +1046,7 @@ function executeUnifiedFiltering() {
             if (collectionVal === "Shorts") return cat.includes("shorts") || cat.includes("sweatshorts");
             if (collectionVal === "Sweatpants") return cat.includes("sweatpants");
             if (collectionVal === "Crop Tee") return cat.includes("crop tee") || cat.includes("croptee");
-            return cat === collectionFilter.value.toLowerCase();
+            return cat === collectionVal.toLowerCase();
         });
     }
 
