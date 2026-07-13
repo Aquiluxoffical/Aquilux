@@ -30,6 +30,90 @@ body {
 }
 
 /* ==========================================================================
+   1b. Ultra Cinematic Universe Zoom Gateway Loader System
+   ========================================================================== */
+#menuLoader { 
+ position: fixed; 
+ inset: 0; 
+ background: #050505; /* Deep luxury space black */
+ color: #ffffff;
+ display: flex; 
+ justify-content: center; 
+ align-items: center; 
+ flex-direction: column; 
+ gap: 24px; 
+ z-index: 9999999; 
+ opacity: 1; 
+ transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+ overflow: hidden;
+ perspective: 1000px;
+}
+
+/* Fail-proof CSS Space Matrix Background */
+.space-stars-matrix {
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ background: radial-gradient(circle at center, rgba(255,255,255,0.15) 0%, transparent 70%);
+ opacity: 0;
+ transform: scale(0.8) translateZ(0);
+ transition: transform 2.8s cubic-bezier(0.7, 0, 0.2, 1), opacity 0.5s ease;
+ z-index: 1;
+}
+
+.loader-interactive-gate {
+ position: relative;
+ z-index: 2;
+ text-align: center;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ gap: 15px;
+ transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.loader-interactive-gate img { 
+ width: 105px; 
+ cursor: pointer;
+ transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+ animation: initialFloat 3s ease-in-out infinite alternate;
+}
+.loader-interactive-gate img:hover {
+ transform: scale(1.08);
+}
+
+.tap-action-hint {
+ font-size: 10px;
+ font-weight: 500;
+ text-transform: uppercase;
+ letter-spacing: 4px;
+ color: rgba(255, 255, 255, 0.4);
+ animation: pulseText 1.5s ease-in-out infinite alternate;
+ user-select: none;
+}
+
+/* Active Trigger Zoom System Rules */
+#menuLoader.active-cosmic-zoom .loader-interactive-gate {
+ opacity: 0;
+ transform: scale(0.8);
+ pointer-events: none;
+}
+#menuLoader.active-cosmic-zoom .space-stars-matrix {
+ opacity: 1;
+ transform: scale(5) rotate(15deg); /* Reaching Earth -> Gujarat -> Ahmedabad tunnel */
+}
+
+@keyframes initialFloat {
+ 0% { transform: translateY(0px); }
+ 100% { transform: translateY(-6px); }
+}
+@keyframes pulseText {
+ 0% { opacity: 0.2; }
+ 100% { opacity: 0.7; }
+}
+
+/* ==========================================================================
    2. Header & Navigation (Optimized Responsive Layout Framework)
    ========================================================================== */
 header {
@@ -367,11 +451,6 @@ input, textarea { width: 100%; }
 
 .payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
 
-#menuLoader { position: fixed; inset: 0; background: var(--bg); display: none; justify-content: center; align-items: center; flex-direction: column; gap: 18px; z-index: 999999; opacity: 0; transition: .35s; }
-#menuLoader.show { display: flex; opacity: 1; }
-#menuLoader img { width: 75px; animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-@keyframes luxSpin { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
-
 footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
 
 /* ==========================================================================
@@ -475,9 +554,14 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 </head>
 <body>
 
+<!-- SAFE CSS ENGINE COSMIC ARRAY SYSTEM GATEWAY LOADER -->
 <div id="menuLoader">
- <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
- <p>Welcome to aquilux</p>
+    <div class="space-stars-matrix" id="cosmicZoomTrack"></div>
+    
+    <div class="loader-interactive-gate" id="loaderInteractiveHub">
+         <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" id="gatewayActivationTriggerLogo" onclick="fireCosmicUniverseZoomSequence()">
+         <div class="tap-action-hint">Tap Logo to Enter Altitude</div>
+    </div>
 </div>
 
 <div id="accountDrawer" class="account-sidebar-panel">
@@ -604,7 +688,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    <div class="title">Collection</div>
    
    <div class="controls-right-dock">
-       <!-- Dynamic View Switcher Engine Button -->
        <button id="perspectiveToggleBtn" class="perspective-toggle-btn" onclick="togglePerspectiveViewMode()">
            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:2px; vertical-align:middle;">
                <rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect>
@@ -765,12 +848,11 @@ window.fetchPanelOrders = async function(uid) {
 </script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxyihaeB4hLfxAL-9XdQDlRfDjg1oWcuiy0JlhiapCI9MGckg3eWGGqBXWNhubsaF2A/exec";
 let products = [], currentProducts = [], qty = [];
 window.activeClockLoops = {}; 
 
-// Perspective Control State Tracking
-let currentViewMode = "default"; // "default" or "try"
+let currentViewMode = "default"; 
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
@@ -780,7 +862,20 @@ window.handleSmoothScrollToTop = function(event) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// View Mode Switching Engine Logic
+// Pure Crash-lock Proof Zoom Tracking Script Node
+window.fireCosmicUniverseZoomSequence = function() {
+    const loaderPanel = document.getElementById("menuLoader");
+    loaderPanel.classList.add("active-cosmic-zoom");
+    
+    // Smooth non-blocking tunnel thread timeout values
+    setTimeout(() => {
+        loaderPanel.style.opacity = "0";
+        setTimeout(() => {
+            loaderPanel.style.display = "none";
+        }, 600);
+    }, 2400); // Transitions safely at 2.4 seconds to open home framework instantly
+};
+
 window.togglePerspectiveViewMode = function() {
     const btn = document.getElementById("perspectiveToggleBtn");
     const label = document.getElementById("perspectiveToggleText");
@@ -879,7 +974,6 @@ function setTheme(theme){
 setTheme(localStorage.getItem("theme") || "light");
 
 async function loadProducts() {
- document.getElementById("menuLoader").classList.add("show");
  renderWishlistPanel(); draw();
  try {
    Object.keys(window.activeClockLoops).forEach(k => clearInterval(window.activeClockLoops[k]));
@@ -944,7 +1038,6 @@ async function loadProducts() {
  } catch (e) { 
      document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
  }
- setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
 function initiateIndividualCountdown(targetTime, elementId) {
@@ -975,37 +1068,30 @@ function initiateIndividualCountdown(targetTime, elementId) {
     }, 1000);
 }
 
-/* ==========================================================================
-   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER (ADAPTED FOR DIRECT SWAP)
-   ========================================================================== */
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
    
-   // Flexible safety validation mapping to read any variable mutation securely
    const hasModelImg = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined");
    const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : p.image;
    const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? p.image : (p.hover_image || p.image);
    
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
-     <!-- Premium Wishlist Node Capsule -->
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
         </svg>
      </button>
      
-     <!-- Interactivity Clickable Image Target -->
      <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
        <div class="card-img-wrapper">
          <img src="${primaryViewSrc}" class="primary-img"><img src="${hoverViewSrc}" class="hover-img">
        </div>
      </a>
      
-     <!-- Minimal Luxury Typography Metadata (No Selectors/No Buttons) -->
      <div class="info" style="text-align: left; padding: 0;">
        <a href="${productLink}" style="text-decoration:none; color:inherit;">
          <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
