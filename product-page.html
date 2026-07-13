@@ -38,6 +38,7 @@ header {
 }
 .logo-box { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 600; cursor: pointer; text-decoration: none; color: inherit; }
 
+/* Main Wrapper initially hidden to avoid ugly layout flashes */
 .product-container {
  display: flex;
  max-width: 1200px;
@@ -45,6 +46,9 @@ header {
  padding: 0 4%;
  gap: 60px;
  align-items: center;
+ visibility: hidden; /* JavaScript will make it visible at once */
+ opacity: 0;
+ transition: opacity 0.4s ease;
 }
 .product-media { flex: 1.2; position: relative; }
 .product-info-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -55,8 +59,7 @@ header {
  object-fit: cover;
  background: #f9f9f9;
  border-radius: 4px;
- transition: opacity 0.3s ease, filter 0.4s ease;
- opacity: 0; /* Initially hidden until loaded */
+ transition: filter 0.4s ease;
 }
 .main-display-image.blurred {
  filter: blur(25px) brightness(0.95);
@@ -113,16 +116,32 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 .countdown-box { background: var(--text); color: var(--bg); padding: 12px 16px; min-width: 70px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
 .countdown-box span { display: block; font-size: 8px; opacity: 0.6; font-weight: 400; text-transform: uppercase; margin-top: 2px; }
 
-/* Premium Shimmer Loading Keyframe Animation Layout */
-.shimmer-loader {
-    animation: placeholderShimmer 1.5s linear infinite;
-    background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
-    background-size: 800px 104px;
-    border-radius: 4px;
+/* Premium Full Page Welcome Loader System */
+#pageMenuLoader { 
+ position: fixed; 
+ inset: 0; 
+ background: var(--bg); 
+ display: flex; 
+ justify-content: center; 
+ align-items: center; 
+ flex-direction: column; 
+ gap: 18px; 
+ z-index: 999999; 
+ opacity: 1; 
+ transition: opacity 0.35s ease, transform 0.35s ease; 
 }
-@keyframes placeholderShimmer {
-    0% { background-position: -468px 0; }
-    100% { background-position: 468px 0; }
+#pageMenuLoader.hide { 
+ opacity: 0; 
+ pointer-events: none; 
+}
+#pageMenuLoader img { 
+ width: 75px; 
+ animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+}
+@keyframes luxSpin { 
+ 0% { transform: scale(0.95); opacity: 0.5; } 
+ 50% { transform: scale(1.05); opacity: 1; } 
+ 100% { transform: scale(0.95); opacity: 0.5; } 
 }
 
 @media (max-width: 768px) {
@@ -134,20 +153,24 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 </head>
 <body>
 
+<!-- PREMIUM SYSTEM WELCOME LOADER (Matches index look perfectly) -->
+<div id="pageMenuLoader">
+ <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Aquilux Logo">
+ <p style="font-size: 13px; letter-spacing: 1px; font-weight: 400; opacity: 0.8;">Loading Aquilux parameters...</p>
+</div>
+
 <header>
  <a href="index.html" class="logo-box">Aquilux</a>
 </header>
 
-<div class="product-container">
+<div class="product-container" id="mainProductWrapper">
     <div class="product-media">
-        <!-- Pure Shimmer Loader Overlay Panel Block -->
-        <div id="imageShimmer" class="shimmer-loader" style="width:100%; aspect-ratio:3/4; position:absolute; inset:0; z-index:2;"></div>
-        <img id="productImage" class="main-display-image" src="" alt="Aquilux Asset Log Core">
+        <img id="productImage" class="main-display-image" src="" alt="Aquilux Asset Channel">
     </div>
     
     <div class="product-info-panel">
-        <h1 id="productTitle">Loading Drop Parameters...</h1>
-        <div class="price-tag" id="productPrice">₹0</div>
+        <h1 id="productTitle"></h1>
+        <div class="price-tag" id="productPrice"></div>
         
         <!-- Highly Functional Controls Dock Area -->
         <div id="interactivePurchaseControls">
@@ -200,21 +223,14 @@ async function initProductPage() {
 
         if(!targetProduct) { 
             document.getElementById("productTitle").innerText = "Product Not Found"; 
-            document.getElementById("imageShimmer").style.display = "none";
+            hideLoaderAndShowContent();
             return; 
         }
 
         document.getElementById("productTitle").innerText = targetProduct.product;
         document.getElementById("productPrice").innerText = "₹" + targetProduct.price;
-        
         const imgNode = document.getElementById("productImage");
         imgNode.src = targetProduct.image;
-        
-        // Hide animation once image stream hits client viewport safely
-        imgNode.onload = function() {
-            imgNode.style.opacity = "1";
-            document.getElementById("imageShimmer").style.display = "none";
-        };
 
         // Render dynamic premium size capsule nodes
         const sizes = targetProduct.sizes?.length > 0 ? targetProduct.sizes : ['S', 'M', 'L', 'XL'];
@@ -251,10 +267,28 @@ async function initProductPage() {
             startPageTimerLoop(launchTimestamp);
         }
 
+        // Wait for image network data asset to pull cleanly before disabling lock screen
+        if(imgNode.complete) {
+            hideLoaderAndShowContent();
+        } else {
+            imgNode.onload = function() {
+                hideLoaderAndShowContent();
+            };
+        }
+
     } catch (e) { 
-        document.getElementById("productTitle").innerText = "Syncing Parameters..."; 
-        setTimeout(initProductPage, 1500); // Fail-safe auto recovery background loop
+        document.getElementById("productTitle").innerText = "Error Syncing Parameters"; 
+        hideLoaderAndShowContent();
     }
+}
+
+function hideLoaderAndShowContent() {
+    const loader = document.getElementById("pageMenuLoader");
+    const container = document.getElementById("mainProductWrapper");
+    
+    loader.classList.add("hide");
+    container.style.visibility = "visible";
+    container.style.opacity = "1";
 }
 
 function changePageQuantity(amount) {
