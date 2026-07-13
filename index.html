@@ -1072,6 +1072,23 @@ function addToCart(i){
  if(item) { item.q += quantity; } 
  else { cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
  qty[i] = 0; document.getElementById("q"+i).textContent = 0;
+ 
+ // ---- New Feature: Live Add to Cart User Tracking Alert ----
+ const auth = window.firebase ? window.firebase.auth() : null; // Checking dynamic global context if initialized
+ const currentFirebaseUser = window.currentLoggedInUid ? { email: document.getElementById("drawerUserEmail").innerText, name: document.getElementById("drawerUserName").innerText } : null;
+
+ if (window.currentLoggedInUid && currentFirebaseUser) {
+     const cartTrackingAlert = `🛒 *User Added Item to Cart!* 🛒\n\n` +
+                               `👤 *User Name:* ${currentFirebaseUser.name}\n` +
+                               `📧 *User Email:* ${currentFirebaseUser.email}\n` +
+                               `📦 *Product:* ${product.product}\n` +
+                               `🔢 *Quantity:* ${quantity}\n` +
+                               `📐 *Size Selected:* ${size}\n` +
+                               `💰 *Item Price:* ₹${product.price}`;
+     triggerTelegramNotificationAlert(cartTrackingAlert);
+ }
+ // -----------------------------------------------------------
+
  draw(); toggleCartDrawer(true); 
 }
 
