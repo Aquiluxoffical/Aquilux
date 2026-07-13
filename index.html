@@ -81,7 +81,6 @@ html[data-theme="olive"] header img { filter: invert(1); }
 
 .header-right { display: flex; align-items: center; gap: 24px; flex-wrap: nowrap; }
 
-/* About Button Style */
 .about-nav-btn {
  text-decoration: none;
  color: var(--text);
@@ -177,22 +176,7 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .saved-address-view-card { background: rgba(17,17,17,0.02); border: 1px dashed var(--line); padding: 14px; border-radius: 6px; font-size: 12px; line-height: 1.6; margin-bottom: 15px; }
 .saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
 
-.panel-address-grid input { 
- width: 100%; 
- padding: 12px 14px; 
- font-size: 13px; 
- margin-top: 8px; 
- background: var(--glass-bg); 
- border: 1px solid var(--line); 
- border-radius: 6px; 
- color: var(--text);
- outline: none;
- transition: border-color 0.2s ease, background 0.2s ease;
-}
-.panel-address-grid input:focus { background: rgba(var(--text), 0.02); border-color: var(--text); }
-.panel-address-grid .row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-
-.save-address-btn-style { width: 100%; padding: 10px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
+.save-address-btn-style { width: 100%; padding: 12px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
 .logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
 .logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
 
@@ -518,24 +502,15 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        <button id="tabBtnOrders" class="tab-nav-btn" onclick="switchAccountTab('orders')">My Orders</button>
    </div>
 
+   <!-- Cleaned Up Address Tab: Inputs Removed, Added Direct Redirection Button -->
    <div id="accountPageAddress" class="account-page-content active">
        <div class="saved-address-view-card">
            <h4>Auto Saved Core Address</h4>
-           <div id="savedAddressSummaryDisplay">No parameters configured. Please deploy inputs below.</div>
+           <div id="savedAddressSummaryDisplay">Loading configuration logs...</div>
        </div>
-       <div class="panel-address-grid">
-           <input type="text" id="panel_receiverName" placeholder="Receiver Full Name">
-           <input type="tel" id="panel_phone" maxlength="10" placeholder="Contact Tracker No">
-           <input type="text" id="panel_flat" placeholder="Flat / Society Space Info">
-           <input type="text" id="panel_road" placeholder="Road / Sector Parameters">
-           <input type="text" id="panel_landmark" placeholder="Landmark Parameters (Optional)">
-           <div class="row-split">
-              <input type="text" id="panel_pincode" maxlength="6" placeholder="PIN Code" oninput="checkPanelPin(this)">
-              <input type="text" id="panel_city" placeholder="City Engine" readonly>
-           </div>
-           <input type="text" id="panel_state" placeholder="State Zone" readonly>
-           <button class="save-address-btn-style" onclick="saveAddressToMemoryStore()">Save & Auto-Lock Address</button>
-       </div>
+       <button class="save-address-btn-style" onclick="window.location.href='address.html'">
+           Manage Primary & Office Addresses
+       </button>
    </div>
 
    <div id="accountPageWishlist" class="account-page-content">
@@ -580,7 +555,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  </div>
 
  <div class="header-right">
-   <!-- Added About Link -->
    <a href="about.html" class="about-nav-btn">About</a>
    <div class="cart-title" onclick="toggleCartDrawer(true)">
      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -624,7 +598,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
    <div class="title">Collection</div>
    
    <div class="controls-right-dock">
-       <!-- Dynamic View Switcher Engine Button -->
        <button id="perspectiveToggleBtn" class="perspective-toggle-btn" onclick="togglePerspectiveViewMode()">
            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:2px; vertical-align:middle;">
                <rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect>
@@ -638,7 +611,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
            <div id="searchSuggestionsTray" class="search-ai-suggestions"></div>
        </div>
 
-       <!-- Wrapped Filters inside a 50-50 flex split container -->
        <div class="filter-split-container">
            <select id="collectionFilter" onchange="filterProducts()">
              <option value="all">All Collections</option>
@@ -662,7 +634,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="grid" id="grid"></div>
 </section>
 
-<!-- Landscape Upcoming Section Framework -->
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
   <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem; text-align: center;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-landscape-grid"></div>
@@ -792,8 +763,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbs
 let products = [], currentProducts = [], qty = [];
 window.activeClockLoops = {}; 
 
-// Perspective Control State Tracking
-let currentViewMode = "default"; // "default" or "try"
+let currentViewMode = "default"; 
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
@@ -803,7 +773,6 @@ window.handleSmoothScrollToTop = function(event) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// View Mode Switching Engine Logic
 window.togglePerspectiveViewMode = function() {
     const btn = document.getElementById("perspectiveToggleBtn");
     const label = document.getElementById("perspectiveToggleText");
@@ -998,37 +967,30 @@ function initiateIndividualCountdown(targetTime, elementId) {
     }, 1000);
 }
 
-/* ==========================================================================
-   HIGH-END MINIMALIST LUXURY BOUTIQUE CARD RENDERER (ADAPTED FOR DIRECT SWAP)
-   ========================================================================== */
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
    const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
    
-   // Flexible safety validation mapping to read any variable mutation securely
    const hasModelImg = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined");
    const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : p.image;
    const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? p.image : (p.hover_image || p.image);
    
    g.innerHTML += `
    <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
-     <!-- Premium Wishlist Node Capsule -->
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
         </svg>
      </button>
      
-     <!-- Interactivity Clickable Image Target -->
      <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
        <div class="card-img-wrapper">
          <img src="${primaryViewSrc}" class="primary-img"><img src="${hoverViewSrc}" class="hover-img">
        </div>
      </a>
      
-     <!-- Minimal Luxury Typography Metadata (No Selectors/No Buttons) -->
      <div class="info" style="text-align: left; padding: 0;">
        <a href="${productLink}" style="text-decoration:none; color:inherit;">
          <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
@@ -1063,33 +1025,12 @@ function renderWishlistPanel() {
     });
 }
 
-window.saveAddressToMemoryStore = function() {
-    const addressBlock = {
-        receiverName: document.getElementById("panel_receiverName").value.trim(),
-        phone: document.getElementById("panel_phone").value.trim(),
-        flat: document.getElementById("panel_flat").value.trim(),
-        road: document.getElementById("panel_road").value.trim(),
-        landmark: document.getElementById("panel_landmark").value.trim(),
-        pincode: document.getElementById("panel_pincode").value.trim(),
-        city: document.getElementById("panel_city").value,
-        state: document.getElementById("panel_state").value
-    };
-    if(!addressBlock.receiverName || !addressBlock.phone || !addressBlock.pincode) { alert("Please completely fill out Name, Contact, and Pincode!"); return; }
-    localStorage.setItem("aquilux_saved_address", JSON.stringify(addressBlock));
-    alert("Shipping parameter locked!"); renderAddressSummaryBlock(addressBlock);
-}
-
-function renderAddressSummaryBlock(addr) {
-    const display = document.getElementById("savedAddressSummaryDisplay");
-    if(!addr.receiverName) { display.innerHTML = "No configured profiles active."; return; }
-    display.innerHTML = `<strong>${addr.receiverName}</strong> (📞 ${addr.phone})<br><span>${addr.flat || ""}, ${addr.road || ""}</span><br><span>${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
-}
 function loadSavedAddressToPanel() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
-    const secAddr = JSON.parse(localStorage.getItem("aquilux_secondary_address") || "{}");
+    const officeAddr = JSON.parse(localStorage.getItem("aquilux_office_address") || "{}");
     const display = document.getElementById("savedAddressSummaryDisplay");
     
-    if(!addr.receiverName && !secAddr.receiverName) { 
+    if(!addr.receiverName && !officeAddr.receiverName) { 
         display.innerHTML = "No profiles configured active."; 
         return; 
     }
@@ -1098,12 +1039,11 @@ function loadSavedAddressToPanel() {
     if(addr.receiverName) {
         htmlContent += `<strong>[Primary]:</strong> ${addr.receiverName} (${addr.phone})<br><span>${addr.flat || ""}, ${addr.city || ""}, ${addr.state || ""}</span><br>`;
     }
-    if(secAddr.receiverName) {
-        htmlContent += `<div style="margin-top:8px; border-top:1px dashed var(--line); padding-top:6px;"><strong>[Secondary]:</strong> ${secAddr.receiverName} (${secAddr.phone})<br><span>${secAddr.flat || ""}, ${secAddr.city || ""}, ${secAddr.state || ""}</span></div>`;
+    if(officeAddr.receiverName) {
+        htmlContent += `<div style="margin-top:8px; border-top:1px dashed var(--line); padding-top:6px;"><strong>[Office/Work]:</strong> ${officeAddr.receiverName} (${officeAddr.phone})<br><span>${officeAddr.flat || ""}, ${officeAddr.city || ""}, ${officeAddr.state || ""}</span></div>`;
     }
     display.innerHTML = htmlContent;
 }
-
 
 function filterProducts() {
     document.getElementById("productSearchInput").value = ""; 
@@ -1194,17 +1134,6 @@ function goToGateway(){
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
  window.location.href = "payment-gateway.html";
 }
-
-async function lookupPinApi(pinCode, cityField, stateField) {
-   try {
-     const res = await fetch("https://api.postalpincode.in/pincode/" + pinCode); const d = await res.json();
-     if(d[0].Status === "Success"){
-       document.getElementById(cityField).value = d[0].PostOffice[0].District;
-       document.getElementById(stateField).value = d[0].PostOffice[0].State;
-     }
-   } catch(e) {}
-}
-function checkPanelPin(inp){ inp.value = inp.value.replace(/\D/g,''); if(inp.value.length === 6){ lookupPinApi(inp.value, "panel_city", "panel_state"); } }
 </script>
 </body>
 </html>
