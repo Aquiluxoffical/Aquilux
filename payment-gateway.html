@@ -263,6 +263,37 @@ function renderUI() {
     document.getElementById("totalAmount").textContent = order.total;
 }
 
+// Telegram Live Order Notification Function
+async function sendConfirmedOrderTelegramAlert(paymentMethodUsed, orderNo) {
+    const botToken = "8892397338:AAEEDt5xZnDLSv5lnUuuVejrJfQlfEqVj64"; 
+    const chatId = "656520549"; 
+    
+    let itemsSummary = "";
+    if (Array.isArray(order.cart)) {
+        order.cart.forEach(item => {
+            itemsSummary += `• ${item.n} (Size: ${item.s}, Qty: ${item.q})\n`;
+        });
+    }
+
+    const alertText = `🚨 *SUCCESSFUL LIVE ORDER CONFORMED!* 🚨\n\n` +
+                      `🆔 *Order No:* ${orderNo}\n` +
+                      `📲 *Payment App:* ${paymentMethodUsed}\n` +
+                      `💰 *Gross Total:* ₹${order.total}\n` +
+                      `👤 *Customer Name:* ${order.receiverName}\n` +
+                      `📞 *Contact Number:* ${order.phone}\n` +
+                      `📍 *Address:* ${order.flat || ''}, ${order.city || ''}, ${order.state || ''} - ${order.pincode || ''}\n\n` +
+                      `📦 *Items List:*\n${itemsSummary || 'No items listed.'}`;
+
+    const endpointUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(alertText)}&parse_mode=Markdown`;
+    
+    try {
+        await fetch(endpointUrl);
+        console.log("Live confirmation message pushed to Yash's Telegram.");
+    } catch(err) {
+        console.error("Pipeline breakdown:", err);
+    }
+}
+
 window.triggerAppPayment = async function(appTarget) {
     const amount = order.total || 0;
     const merchantName = encodeURIComponent("Aquilux Luxury Store");
@@ -272,19 +303,23 @@ window.triggerAppPayment = async function(appTarget) {
 
     let targetVpa = "";
     let appStoreLink = "";
+    let readableAppName = "";
 
     if (appTarget === 'google-pay') {
         targetVpa = "yashojhaoffical1982@oksbi";
+        readableAppName = "Google Pay 🟢";
         appStoreLink = isIOS 
             ? "https://apps.apple.com/in/app/google-pay-save-pay-earn/id1193357041"
             : "https://play.google.com/store/apps/details?id=com.google.android.apps.nbu.paisa.user";
     } else if (appTarget === 'phonepe') {
         targetVpa = "yashojha.13@ybl";
+        readableAppName = "PhonePe 🟣";
         appStoreLink = isIOS 
             ? "https://apps.apple.com/in/app/phonepe-india-s-payments-app/id1170258563"
             : "https://play.google.com/store/apps/details?id=com.phonepe.app";
     } else if (appTarget === 'bhim') {
         targetVpa = "9558039135@upi";
+        readableAppName = "BHIM UPI 🔵";
         appStoreLink = isIOS 
             ? "https://apps.apple.com/in/app/bhim-making-india-cashless/id1193102223"
             : "https://play.google.com/store/apps/details?id=in.org.npci.upiapp";
@@ -311,6 +346,9 @@ window.triggerAppPayment = async function(appTarget) {
 
     localStorage.setItem("lastOrderNumber", orderNo);
     localStorage.setItem("pendingOrder", JSON.stringify(order));
+
+    // Send Telegram Alert and wait for Database Doc Creation
+    await sendConfirmedOrderTelegramAlert(readableAppName, orderNo);
 
     try {
         await addDoc(collection(db, "orders"), order);
