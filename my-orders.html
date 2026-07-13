@@ -377,7 +377,6 @@ async function fetchOrderManifest(uid) {
     container.innerHTML = "<p style='opacity:0.6; font-size:14px;'>Loading historical database tracks...</p>";
 
     try {
-        // Clear all running interval loops completely on refresh/reload
         Object.keys(window.activeCancelTimers).forEach(key => clearInterval(window.activeCancelTimers[key]));
         window.activeCancelTimers = {};
 
@@ -433,7 +432,6 @@ function applyVisualRenders() {
         let displayDate = "Recent Transaction";
         let orderTimeMillis = now;
 
-        // FIXED CRITICAL LINE: Always extract true object timestamp reference from firestore database securely
         if(order.createdAt) {
             if (typeof order.createdAt.toMillis === 'function') {
                 orderTimeMillis = order.createdAt.toMillis();
@@ -502,9 +500,9 @@ function applyVisualRenders() {
         if (isCancelled) {
             rightActionDockHtml = `<span class="executed-lock-text">Cancelled</span>`;
         } else {
-            // Precise 3-Hour expiration check based exclusively on true Server received timestamp
-            const threeHoursInMillis = 3 * 60 * 60 * 1000;
-            const expirationTime = orderTimeMillis + threeHoursInMillis;
+            // UPDATED CONFIGURATION: Expiration target shifted cleanly to 1 Hour (1 * 60 * 60 * 1000)
+            const oneHourInMillis = 1 * 60 * 60 * 1000;
+            const expirationTime = orderTimeMillis + oneHourInMillis;
             
             if (Date.now() >= expirationTime) {
                 rightActionDockHtml = `<span class="executed-lock-text">This order executed, can’t cancel now</span>`;
@@ -564,11 +562,12 @@ function initiateCancelCountdownTimer(expireTime, timerElementId, dockElementId)
             const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
             
+            // Format to show correct hours countdown structure cleanly
             element.innerText = `${String(hrs).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s left to cancel`;
         }
     }
 
-    processTick(); // Execute first calculation tick instantly before loop triggers
+    processTick(); 
     window.activeCancelTimers[timerElementId] = setInterval(processTick, 1000);
 }
 
