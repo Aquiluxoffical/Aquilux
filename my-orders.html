@@ -242,6 +242,33 @@ html[data-theme="dark"] .approval-banner { color: #26d26b; }
 .order-total-lbl { font-size: 12px; opacity: 0.7; text-transform: uppercase; }
 .order-total-val { font-size: 16px; font-weight: 600; }
 
+.action-dock-right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+/* Reverse Timer Text Styling */
+.cancel-timer-countdown {
+    font-size: 11px;
+    opacity: 0.75;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    color: #ff4a4a;
+}
+html[data-theme="olive"] .cancel-timer-countdown { color: #b51c1c; }
+
+/* Executed Locked Order Text */
+.executed-lock-text {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888888;
+}
+
 /* Custom Minimal Cancel Button Action */
 .cancel-action-btn {
     background: transparent;
@@ -330,6 +357,7 @@ const db = getFirestore(app);
 let allFetchedOrders = [];
 let activeFilter = 'all';
 let currentUserId = null;
+window.activeCancelTimers = {}; // Object bucket to hold running loop pointers safely
 
 const activeTheme = localStorage.getItem("theme") || "light";
 document.documentElement.setAttribute("data-theme", activeTheme);
@@ -349,6 +377,10 @@ async function fetchOrderManifest(uid) {
     container.innerHTML = "<p style='opacity:0.6; font-size:14px;'>Loading historical database tracks...</p>";
 
     try {
+        // Stop any running intervals before refreshing to avoid memory leaks
+        Object.keys(window.activeCancelTimers).forEach(key => clearInterval(window.activeCancelTimers[key]));
+        window.activeCancelTimers = {};
+
         const q = query(
             collection(db, "orders"),
             where("userId", "==", uid),
@@ -399,8 +431,11 @@ function applyVisualRenders() {
 
     filteredList.forEach(order => {
         let displayDate = "Recent Transaction";
+        let orderTimeMillis = now;
+
         if(order.createdAt) {
-            const dateObj = order.createdAt.toMillis ? new Date(order.createdAt.toMillis()) : new Date();
+            orderTimeMillis = order.createdAt.toMillis ? order.createdAt.toMillis() : (order.createdAt.seconds * 1000 || now);
+            const dateObj = new Date(orderTimeMillis);
             displayDate = dateObj.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'});
         }
 
@@ -453,9 +488,33 @@ function applyVisualRenders() {
             </div>`;
         }
 
-        let cancelBtnHtml = (!isCancelled) ? `
-        <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}', ${isDispatched})">Cancel Order</button>
-        ` : "";
+        // Action Right Dock Injection setup
+        let rightActionDockHtml = "";
+        const uniqueDockId = `action_dock_${order.firebaseDocId}`;
+        const uniqueTimerId = `timer_label_${order.firebaseDocId}`;
+
+        if (isCancelled) {
+            rightActionDockHtml = `<span class="executed-lock-text">Cancelled</span>`;
+        } else {
+            // Three hours logic duration check calculation
+            const threeHoursInMillis = 3 * 60 * 60 * 1000;
+            const expirationTime = orderTimeMillis + threeHoursInMillis;
+            
+            if (Date.now() >= expirationTime) {
+                // If 3 hours window already crossed over
+                rightActionDockHtml = `<span class="executed-lock-text">This order executed, can’t cancel now</span>`;
+            } else {
+                // Inside the valid 3 hours frame window loop
+                rightActionDockHtml = `
+                <div class="action-dock-right" id="${uniqueDockId}">
+                    <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}', ${isDispatched})">Cancel Order</button>
+                    <span class="cancel-timer-countdown" id="${uniqueTimerId}">Calculating window...</span>
+                </div>`;
+                
+                // Initialize active countdown ticking script loops
+                initiateCancelCountdownTimer(expirationTime, uniqueTimerId, uniqueDockId);
+            }
+        }
 
         container.innerHTML += `
         <div class="order-card">
@@ -477,10 +536,38 @@ function applyVisualRenders() {
                    <span class="order-total-lbl">Gross Liability: </span>
                    <span class="order-total-val">₹${order.total || 0}</span>
                 </div>
-                ${cancelBtnHtml}
+                <div id="dock_wrapper_${order.firebaseDocId}">${rightActionDockHtml}</div>
             </div>
         </div>`;
     });
+}
+
+function initiateCancelCountdownTimer(expireTime, timerElementId, dockElementId) {
+    function processTick() {
+        const timeLeft = expireTime - Date.now();
+        const element = document.getElementById(timerElementId);
+        
+        if (timeLeft <= 0) {
+            clearInterval(window.activeCancelTimers[timerElementId]);
+            const parentDock = document.getElementById(dockElementId);
+            if (parentDock) {
+                parentDock.parentElement.innerHTML = `<span class="executed-lock-text">This order executed, can’t cancel now</span>`;
+            }
+            return;
+        }
+
+        if (element) {
+            const hrs = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            element.innerText = `${String(hrs).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s left to cancel`;
+        }
+    }
+
+    // Run first layout pass instantly, then spin loop each second
+    setTimeout(processTick, 50);
+    window.activeCancelTimers[timerElementId] = setInterval(processTick, 1000);
 }
 
 window.cancelPendingOrder = async function(docId, isDispatched) {
@@ -489,9 +576,10 @@ window.cancelPendingOrder = async function(docId, isDispatched) {
         return;
     }
 
-    // New Conditional Notification Alert Mechanism
     const doubleCheck = confirm("This order will be cancelled if it isn’t dispatched yet.");
     if(!doubleCheck) return;
+
+    alert("Notice: You have to visit the website to check the status of this order.");
 
     try {
         const orderDocRef = doc(db, "orders", docId);
@@ -499,7 +587,7 @@ window.cancelPendingOrder = async function(docId, isDispatched) {
             paymentStatus: "Cancelled by User",
             orderStatus: "Cancelled by User"
         });
-        alert("Order cancelled successfully!");
+        alert("Order cancellation request processed successfully!");
         fetchOrderManifest(currentUserId); 
     } catch(err) {
         console.error("Cancellation Error Exception:", err);
