@@ -551,12 +551,8 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
            <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
        </div>
 
-       <button id="tabBtnOrders" class="tab-nav-btn" onclick="switchAccountTab('orders')">My Orders ▾</button>
-       
-       <!-- Content under Orders Tab -->
-       <div id="accountPageOrders" class="account-page-content">
-           <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
-       </div>
+       <!-- Updated: Linked directly to your my-orders.html page -->
+       <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
    </div>
 
    <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
@@ -736,7 +732,6 @@ onAuthStateChanged(auth, (user) => {
    document.getElementById("drawerUserEmail").innerText = user.email;
    
    window.currentLoggedInUid = user.uid;
-   fetchPanelOrders(user.uid);
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
@@ -744,56 +739,6 @@ onAuthStateChanged(auth, (user) => {
    window.currentLoggedInUid = null;
  }
 });
-
-window.fetchPanelOrders = async function(uid) {
-    if(!uid) return;
-    const pContainer = document.getElementById("panelOrdersContainer");
-    try {
-        const q = query(collection(db, "orders"), where("userId", "==", uid), orderBy("createdAt", "desc"));
-        const snap = await getDocs(q);
-        if(snap.empty) { pContainer.innerHTML = "<p style='opacity:0.5;font-size:12px;'>No active tracks synced.</p>"; return; }
-        pContainer.innerHTML = "";
-        snap.forEach(docSnap => {
-            const ord = docSnap.data();
-            let badgeStyle = "pending";
-            let displayStatusText = ord.paymentStatus || 'Pending Verification';
-            
-            if(ord.paymentStatus?.toLowerCase() === "approved") { badgeStyle = "approved"; displayStatusText = "Approved"; }
-            if(ord.paymentStatus?.toLowerCase() === "cancelled by user" || ord.paymentStatus?.toLowerCase() === "cancelled by owner") {
-                badgeStyle = "cancelled"; displayStatusText = "Your Order is Cancelled";
-            }
-
-            let productsHtml = "";
-            const targetCart = ord.cart || ord.items || [];
-            targetCart.forEach(item => {
-                productsHtml += `
-                <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(17,17,17,0.05);">
-                    <img src="${item.img || item.image || ''}" style="width: 35px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px;" onerror="this.style.display='none'">
-                    <div style="flex: 1; font-size: 11px;">
-                        <span style="font-weight: 500;">${item.n || item.productName || 'Item'}</span><br>
-                        <small style="opacity: 0.7;">Size: ${item.s || item.size || 'M'} | Qty: ${item.q || item.quantity || 1}</small>
-                    </div>
-                    <span style="font-size: 11px; font-weight: 500;">₹${(item.p || item.price || 0) * (item.q || item.quantity || 1)}</span>
-                </div>`;
-            });
-
-            const orderIdStr = ord.orderNumber || docSnap.id;
-            pContainer.innerHTML += `
-            <div style="border-bottom: 1px solid var(--line); padding: 12px 0;">
-               <div onclick="toggleOrderDetails('${orderIdStr}')" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-                  <div class="panel-item-row-info">
-                     <span style="font-weight:600; color: var(--text); font-size:12px;">ID: ${orderIdStr} ▾</span><br>
-                     <small style="opacity:0.7; font-size:11px;">Total: ₹${ord.total}</small>
-                  </div>
-                  <span class="mini-status-badge ${badgeStyle}">${displayStatusText}</span>
-               </div>
-               <div id="details-${orderIdStr}" style="display: none; background: rgba(17,17,17,0.02); padding: 5px 10px 10px 10px; margin-top: 8px; border-radius: 6px;">
-                  ${productsHtml}
-               </div>
-            </div>`;
-        });
-    } catch(e) { pContainer.innerHTML = "<p style='color:red;'>Failed to pool logs</p>"; }
-}
 </script>
 
 <script>
@@ -862,16 +807,11 @@ function toggleAccountDrawer(openState) {
     panel.style.display = openState ? "block" : "none";
     setTimeout(() => panel.classList.toggle("active", openState), 10);
     
-    // Reset all sections to collapsed/hidden state when opening drawer initially
     if(openState) {
         document.getElementById("accountPageAddress").classList.remove("active");
         document.getElementById("accountPageWishlist").classList.remove("active");
-        document.getElementById("accountPageOrders").classList.remove("active");
         document.getElementById("tabBtnAddress").classList.remove("active");
         document.getElementById("tabBtnWishlist").classList.remove("active");
-        document.getElementById("tabBtnOrders").classList.remove("active");
-        
-        if(window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
     }
 }
 
@@ -882,47 +822,26 @@ function toggleCartDrawer(openState) {
     setTimeout(() => panel.classList.toggle("active", openState), 10);
 }
 
-/* Toggling Active State Individually to display content only on Explicit Tab Click */
 function switchAccountTab(tabName) {
     const addrPage = document.getElementById("accountPageAddress");
     const wishPage = document.getElementById("accountPageWishlist");
-    const ordPage = document.getElementById("accountPageOrders");
     
     const addrBtn = document.getElementById("tabBtnAddress");
     const wishBtn = document.getElementById("tabBtnWishlist");
-    const ordBtn = document.getElementById("tabBtnOrders");
 
     if(tabName === 'address') {
         const isCurrentlyActive = addrPage.classList.contains("active");
         addrPage.classList.toggle("active", !isCurrentlyActive);
         addrBtn.classList.toggle("active", !isCurrentlyActive);
         
-        // Collapse others
         wishPage.classList.remove("active"); wishBtn.classList.remove("active");
-        ordPage.classList.remove("active"); ordBtn.classList.remove("active");
     } else if(tabName === 'wishlist') {
         const isCurrentlyActive = wishPage.classList.contains("active");
         wishPage.classList.toggle("active", !isCurrentlyActive);
         wishBtn.classList.toggle("active", !isCurrentlyActive);
         
-        // Collapse others
         addrPage.classList.remove("active"); addrBtn.classList.remove("active");
-        ordPage.classList.remove("active"); ordBtn.classList.remove("active");
-    } else if(tabName === 'orders') {
-        const isCurrentlyActive = ordPage.classList.contains("active");
-        ordPage.classList.toggle("active", !isCurrentlyActive);
-        ordBtn.classList.toggle("active", !isCurrentlyActive);
-        
-        // Collapse others
-        addrPage.classList.remove("active"); addrBtn.classList.remove("active");
-        wishPage.classList.remove("active"); wishBtn.classList.remove("active");
-        if(!isCurrentlyActive && window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
     }
-}
-
-window.toggleOrderDetails = function(orderId) {
-    const detailDiv = document.getElementById(`details-${orderId}`);
-    if(detailDiv) detailDiv.style.display = detailDiv.style.display === "none" ? "block" : "none";
 }
 
 function setTheme(theme){
