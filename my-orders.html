@@ -110,6 +110,33 @@ html[data-theme="dark"] .filter-box { background: rgba(255, 255, 255, 0.04); bor
 html[data-theme="dark"] .filter-btn.active, html[data-theme="dark"] .filter-btn:hover { background: #ffffff; color: #111111; }
 
 /* ==========================================================================
+   Custom Floating Top Notification (Premium Toast Banner)
+   ========================================================================== */
+.custom-notification {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff4a4a;
+    color: #ffffff;
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: 0 10px 30px rgba(255, 74, 74, 0.25);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.custom-notification.show {
+    top: 30px;
+}
+.custom-notification svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* ==========================================================================
    4. Compact Order Card Elements (Mobile Optimized)
    ========================================================================== */
 .order-card {
@@ -149,11 +176,13 @@ html[data-theme="dark"] .order-card { background: rgba(255, 255, 255, 0.04); bor
 }
 .status-badge.pending { background: rgba(255, 191, 0, 0.1); color: #d49b00; }
 .status-badge.approved { background: rgba(24, 183, 90, 0.1); color: #148f43; }
+.status-badge.dispatched { background: rgba(0, 150, 255, 0.1); color: #0076d6; }
 .status-badge.cancelled { background: rgba(255, 74, 74, 0.1); color: #c22d2d; }
 
 .pulse-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
 .status-badge.pending .pulse-dot { background: #ffbf00; animation: yellowPulse 1.6s infinite ease-in-out; }
 .status-badge.approved .pulse-dot { background: #18b75a; animation: greenPulse 1.6s infinite ease-in-out; }
+.status-badge.dispatched .pulse-dot { background: #0096ff; animation: bluePulse 1.6s infinite ease-in-out; }
 .status-badge.cancelled .pulse-dot { background: #ff4a4a; }
 
 @keyframes yellowPulse {
@@ -165,6 +194,11 @@ html[data-theme="dark"] .order-card { background: rgba(255, 255, 255, 0.04); bor
     0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(24, 183, 90, 0.4); }
     70% { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(24, 183, 90, 0); }
     100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(24, 183, 90, 0); }
+}
+@keyframes bluePulse {
+    0% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(0, 150, 255, 0.4); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 5px rgba(0, 150, 255, 0); }
+    100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(0, 150, 255, 0); }
 }
 
 .approval-banner {
@@ -191,7 +225,7 @@ html[data-theme="dark"] .approval-banner { color: #26d26b; }
 .order-item-row:last-of-type { border-bottom: none; }
 .item-thumb-wrapper { width: 50px; aspect-ratio: 3 / 4; background: rgba(0,0,0,0.02); overflow: hidden; border-radius: 2px; }
 .item-thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-.item-particulars flex: 1;
+.item-particulars { flex: 1; }
 .item-particulars h4 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
 .item-particulars p { font-size: 11px; opacity: 0.6; }
 .item-cost-summary { text-align: right; font-size: 13px; font-weight: 500; }
@@ -246,6 +280,12 @@ html[data-theme="dark"] .approval-banner { color: #26d26b; }
 </style>
 </head>
 <body>
+
+<!-- Custom Premium Notification Top Bar -->
+<div id="topNotification" class="custom-notification">
+    <svg viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="notificationMessage">Cancel denied due to dispatched to customer.</span>
+</div>
 
 <header>
     <div class="logo">Aquilux</div>
@@ -319,7 +359,7 @@ async function fetchOrderManifest(uid) {
         allFetchedOrders = [];
         snapshot.forEach(docSnap => { 
             const data = docSnap.data();
-            data.firebaseDocId = docSnap.id; // Inject reference token key to allow dynamic cancellation
+            data.firebaseDocId = docSnap.id; 
             allFetchedOrders.push(data); 
         });
         applyVisualRenders();
@@ -328,6 +368,15 @@ async function fetchOrderManifest(uid) {
         console.error("Firebase Exception Error:", err);
         container.innerHTML = `<p style="color:#ff4a4a; font-size:14px;">Sync error: ${err.message}</p>`;
     }
+}
+
+function showTopNotification(msg) {
+    const toast = document.getElementById("topNotification");
+    document.getElementById("notificationMessage").innerText = msg;
+    toast.classList.add("show");
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 4500); // 4.5 seconds automatic fade-out
 }
 
 function applyVisualRenders() {
@@ -361,41 +410,52 @@ function applyVisualRenders() {
             parsedItems.forEach(item => {
                itemsHtml += `
                <div class="order-item-row">
-                   <div class="item-thumb-wrapper"><img src="${item.img || ''}" onerror="this.style.display='none'"></div>
+                   <div class="item-thumb-wrapper"><img src="${item.img || item.image || ''}" onerror="this.style.display='none'"></div>
                    <div class="item-particulars">
-                       <h4>${item.n || 'Premium Apparel'}</h4>
-                       <p>Size : ${item.s || 'M'} · Qty : ${item.q || 1}</p>
+                       <h4>${item.n || item.productName || 'Premium Apparel'}</h4>
+                       <p>Size : ${item.s || item.size || 'M'} · Qty : ${item.q || item.quantity || 1}</p>
                    </div>
-                   <div class="item-cost-summary">₹${(item.p || 0) * (item.q || 1)}</div>
+                   <div class="item-cost-summary">₹${(item.p || item.price || 0) * (item.q || item.quantity || 1)}</div>
                </div>`;
             });
         }
 
-        // Logic check for Verification Status Mapping
-        let currentStatus = order.paymentStatus || "Pending Verification";
-        let isApproved = currentStatus.toLowerCase() === "approved" || currentStatus.toLowerCase() === "success" || order.orderStatus === "Approved";
-        let isCancelled = currentStatus.toLowerCase() === "cancelled by user" || order.orderStatus === "Cancelled by User";
+        let currentStatus = (order.paymentStatus || "Pending Verification").toLowerCase();
+        let customOrderStatus = (order.orderStatus || "").toLowerCase();
+        
+        let isCancelled = currentStatus === "cancelled by user" || customOrderStatus === "cancelled by user" || currentStatus === "cancelled by owner";
+        let isDispatched = currentStatus === "dispatched" || customOrderStatus === "dispatched";
+        let isApproved = currentStatus === "approved" || currentStatus === "success" || customOrderStatus === "approved" || isDispatched;
         
         let statusClass = "pending";
         let statusText = "Pending Verification";
 
-        if(isApproved) {
-            statusClass = "approved";
-            statusText = "Approved";
-        } else if (isCancelled) {
+        if (isCancelled) {
             statusClass = "cancelled";
             statusText = "Cancelled";
+        } else if (isDispatched) {
+            statusClass = "dispatched";
+            statusText = "Dispatched";
+        } else if (isApproved) {
+            statusClass = "approved";
+            statusText = "Approved";
         }
 
-        // Dynamic banner insertion condition based on status check matches
-        let successBannerHtml = isApproved ? `
+        let successBannerHtml = (isApproved && !isDispatched) ? `
         <div class="approval-banner">
            🎉 Your order is successful! You will get your delivery ID soon.
         </div>` : "";
 
-        // Only show cancel option if status is strictly pending verification
-        let cancelBtnHtml = (!isApproved && !isCancelled) ? `
-        <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}')">Cancel Order</button>
+        if (isDispatched) {
+            successBannerHtml = `
+            <div class="approval-banner" style="background: rgba(0, 150, 255, 0.04); border-color: rgba(0, 150, 255, 0.25); color: #0076d6;">
+               🚚 Your order has been dispatched from Yash Ojha's Ahmedabad Hub! Tracking parameters synced.
+            </div>`;
+        }
+
+        // Pass 'isDispatched' state inside cancellation checker securely
+        let cancelBtnHtml = (!isCancelled) ? `
+        <button class="cancel-action-btn" onclick="cancelPendingOrder('${order.firebaseDocId}', ${isDispatched})">Cancel Order</button>
         ` : "";
 
         container.innerHTML += `
@@ -407,7 +467,7 @@ function applyVisualRenders() {
                 </div>
                 <div class="status-container">
                     <div class="status-badge ${statusClass}">
-                        ${!isCancelled ? '<span class="pulse-dot"></span>' : ''}${statusText}
+                        ${(!isCancelled) ? '<span class="pulse-dot"></span>' : ''}${statusText}
                     </div>
                 </div>
             </div>
@@ -424,8 +484,13 @@ function applyVisualRenders() {
     });
 }
 
-// Live Inline Order Cancellation Process Pipeline Loop
-window.cancelPendingOrder = async function(docId) {
+window.cancelPendingOrder = async function(docId, isDispatched) {
+    // CRITICAL ENGINE RULE CHECK: Trigger floating notification bar if already dispatched
+    if(isDispatched) {
+        showTopNotification("Cancel Denied: Order has been Dispatched to Customer.");
+        return;
+    }
+
     const doubleCheck = confirm("Are you sure you want to cancel this order reference track?");
     if(!doubleCheck) return;
 
@@ -436,7 +501,7 @@ window.cancelPendingOrder = async function(docId) {
             orderStatus: "Cancelled by User"
         });
         alert("Order cancelled successfully!");
-        fetchOrderManifest(currentUserId); // Dynamic fast soft-reload
+        fetchOrderManifest(currentUserId); 
     } catch(err) {
         console.error("Cancellation Error Exception:", err);
         alert("Action dropped: " + err.message);
