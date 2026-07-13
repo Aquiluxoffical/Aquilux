@@ -166,18 +166,52 @@ html[data-theme="olive"] header img { filter: invert(1); }
 .profile-meta-card h4 { font-size: 14px; font-weight: 500; }
 .profile-meta-card p { font-size: 11px; opacity: 0.6; }
 
-.account-tabs-nav { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 15px; }
-.tab-nav-btn { padding: 10px 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; background: var(--glass-bg); color: var(--text); border: 1px solid var(--line); border-radius: 4px; cursor: pointer; transition: all 0.2s ease; margin-top: 0; }
+/* Portrait Stack Navigation Design */
+.account-tabs-nav { 
+ display: flex; 
+ flex-direction: column; 
+ gap: 10px; 
+ margin-bottom: 20px; 
+ border-bottom: 1px solid var(--line); 
+ padding-bottom: 15px; 
+}
+.tab-nav-btn { 
+ width: 100%;
+ padding: 14px 16px; 
+ font-size: 12px; 
+ font-weight: 600; 
+ text-transform: uppercase; 
+ letter-spacing: 1px; 
+ background: var(--glass-bg); 
+ color: var(--text); 
+ border: 1px solid var(--line); 
+ border-radius: 6px; 
+ cursor: pointer; 
+ text-align: left;
+ transition: all 0.25s ease; 
+ margin-top: 0; 
+}
 .tab-nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-.account-page-content { display: none; }
+/* Custom Manage Button inside Portrait Stack */
+.tab-nav-btn.manage-btn-style {
+ background: var(--text);
+ color: var(--bg);
+ border-color: var(--text);
+ text-align: left;
+ opacity: 0.9;
+}
+.tab-nav-btn.manage-btn-style:hover {
+ opacity: 1;
+}
+
+.account-page-content { display: none; margin-top: 5px; margin-bottom: 15px; }
 .account-page-content.active { display: block; }
 
-.saved-address-view-card { background: rgba(17,17,17,0.02); border: 1px dashed var(--line); padding: 14px; border-radius: 6px; font-size: 12px; line-height: 1.6; margin-bottom: 15px; }
+.saved-address-view-card { background: rgba(17,17,17,0.02); border: 1px dashed var(--line); padding: 14px; border-radius: 6px; font-size: 12px; line-height: 1.6; }
 .saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
 
-.save-address-btn-style { width: 100%; padding: 12px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: var(--text); color: var(--bg); border: none; border-radius: 4px; cursor: pointer; margin-top: 10px; }
-.logout-sidebar-btn { width: 100%; padding: 12px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 30px; }
+.logout-sidebar-btn { width: 100%; padding: 14px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 20px; }
 .logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
 
 .panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.05); font-size: 13px; }
@@ -496,29 +530,33 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
+   <!-- Portrait Stack Tab Navigation -->
    <div class="account-tabs-nav">
-       <button id="tabBtnAddress" class="tab-nav-btn active" onclick="switchAccountTab('address')">Address</button>
-       <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist</button>
-       <button id="tabBtnOrders" class="tab-nav-btn" onclick="switchAccountTab('orders')">My Orders</button>
-   </div>
-
-   <!-- Cleaned Up Address Tab: Inputs Removed, Added Direct Redirection Button -->
-   <div id="accountPageAddress" class="account-page-content active">
-       <div class="saved-address-view-card">
-           <h4>Auto Saved Core Address</h4>
-           <div id="savedAddressSummaryDisplay">Loading configuration logs...</div>
+       <button id="tabBtnAddress" class="tab-nav-btn" onclick="switchAccountTab('address')">Address Details ▾</button>
+       
+       <!-- Content under Address Tab (Shows only on click) -->
+       <div id="accountPageAddress" class="account-page-content">
+           <div class="saved-address-view-card">
+               <h4>Auto Saved Core Address</h4>
+               <div id="savedAddressSummaryDisplay">Loading configuration logs...</div>
+           </div>
        </div>
-       <button class="save-address-btn-style" onclick="window.location.href='address.html'">
-           Manage Primary & Office Addresses
-       </button>
-   </div>
 
-   <div id="accountPageWishlist" class="account-page-content">
-       <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
-   </div>
+       <button id="tabBtnManageAddr" class="tab-nav-btn manage-btn-style" onclick="window.location.href='address.html'">Manage Primary Address ↗</button>
 
-   <div id="accountPageOrders" class="account-page-content">
-       <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
+       <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist ▾</button>
+       
+       <!-- Content under Wishlist Tab -->
+       <div id="accountPageWishlist" class="account-page-content">
+           <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
+       </div>
+
+       <button id="tabBtnOrders" class="tab-nav-btn" onclick="switchAccountTab('orders')">My Orders ▾</button>
+       
+       <!-- Content under Orders Tab -->
+       <div id="accountPageOrders" class="account-page-content">
+           <div id="panelOrdersContainer"><p style="opacity:0.5; font-size:12px;">Sign in to extract database telemetry logs.</p></div>
+       </div>
    </div>
 
    <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
@@ -823,7 +861,18 @@ function toggleAccountDrawer(openState) {
     const panel = document.getElementById("accountDrawer");
     panel.style.display = openState ? "block" : "none";
     setTimeout(() => panel.classList.toggle("active", openState), 10);
-    if(openState && window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
+    
+    // Reset all sections to collapsed/hidden state when opening drawer initially
+    if(openState) {
+        document.getElementById("accountPageAddress").classList.remove("active");
+        document.getElementById("accountPageWishlist").classList.remove("active");
+        document.getElementById("accountPageOrders").classList.remove("active");
+        document.getElementById("tabBtnAddress").classList.remove("active");
+        document.getElementById("tabBtnWishlist").classList.remove("active");
+        document.getElementById("tabBtnOrders").classList.remove("active");
+        
+        if(window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
+    }
 }
 
 function toggleCartDrawer(openState) {
@@ -833,24 +882,41 @@ function toggleCartDrawer(openState) {
     setTimeout(() => panel.classList.toggle("active", openState), 10);
 }
 
+/* Toggling Active State Individually to display content only on Explicit Tab Click */
 function switchAccountTab(tabName) {
-    document.getElementById("tabBtnAddress").classList.remove("active");
-    document.getElementById("tabBtnWishlist").classList.remove("active");
-    document.getElementById("tabBtnOrders").classList.remove("active");
-    document.getElementById("accountPageAddress").classList.remove("active");
-    document.getElementById("accountPageWishlist").classList.remove("active");
-    document.getElementById("accountPageOrders").classList.remove("active");
+    const addrPage = document.getElementById("accountPageAddress");
+    const wishPage = document.getElementById("accountPageWishlist");
+    const ordPage = document.getElementById("accountPageOrders");
     
+    const addrBtn = document.getElementById("tabBtnAddress");
+    const wishBtn = document.getElementById("tabBtnWishlist");
+    const ordBtn = document.getElementById("tabBtnOrders");
+
     if(tabName === 'address') {
-        document.getElementById("tabBtnAddress").classList.add("active");
-        document.getElementById("accountPageAddress").classList.add("active");
+        const isCurrentlyActive = addrPage.classList.contains("active");
+        addrPage.classList.toggle("active", !isCurrentlyActive);
+        addrBtn.classList.toggle("active", !isCurrentlyActive);
+        
+        // Collapse others
+        wishPage.classList.remove("active"); wishBtn.classList.remove("active");
+        ordPage.classList.remove("active"); ordBtn.classList.remove("active");
     } else if(tabName === 'wishlist') {
-        document.getElementById("tabBtnWishlist").classList.add("active");
-        document.getElementById("accountPageWishlist").classList.add("active");
+        const isCurrentlyActive = wishPage.classList.contains("active");
+        wishPage.classList.toggle("active", !isCurrentlyActive);
+        wishBtn.classList.toggle("active", !isCurrentlyActive);
+        
+        // Collapse others
+        addrPage.classList.remove("active"); addrBtn.classList.remove("active");
+        ordPage.classList.remove("active"); ordBtn.classList.remove("active");
     } else if(tabName === 'orders') {
-        document.getElementById("tabBtnOrders").classList.add("active");
-        document.getElementById("accountPageOrders").classList.add("active");
-        if(window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
+        const isCurrentlyActive = ordPage.classList.contains("active");
+        ordPage.classList.toggle("active", !isCurrentlyActive);
+        ordBtn.classList.toggle("active", !isCurrentlyActive);
+        
+        // Collapse others
+        addrPage.classList.remove("active"); addrBtn.classList.remove("active");
+        wishPage.classList.remove("active"); wishBtn.classList.remove("active");
+        if(!isCurrentlyActive && window.currentLoggedInUid) { window.fetchPanelOrders(window.currentLoggedInUid); }
     }
 }
 
@@ -1027,22 +1093,14 @@ function renderWishlistPanel() {
 
 function loadSavedAddressToPanel() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
-    const officeAddr = JSON.parse(localStorage.getItem("aquilux_office_address") || "{}");
     const display = document.getElementById("savedAddressSummaryDisplay");
     
-    if(!addr.receiverName && !officeAddr.receiverName) { 
+    if(!addr.receiverName) { 
         display.innerHTML = "No profiles configured active."; 
         return; 
     }
     
-    let htmlContent = "";
-    if(addr.receiverName) {
-        htmlContent += `<strong>[Primary]:</strong> ${addr.receiverName} (${addr.phone})<br><span>${addr.flat || ""}, ${addr.city || ""}, ${addr.state || ""}</span><br>`;
-    }
-    if(officeAddr.receiverName) {
-        htmlContent += `<div style="margin-top:8px; border-top:1px dashed var(--line); padding-top:6px;"><strong>[Office/Work]:</strong> ${officeAddr.receiverName} (${officeAddr.phone})<br><span>${officeAddr.flat || ""}, ${officeAddr.city || ""}, ${officeAddr.state || ""}</span></div>`;
-    }
-    display.innerHTML = htmlContent;
+    display.innerHTML = `<strong>[Primary]:</strong> ${addr.receiverName} (${addr.phone})<br><span>${addr.flat || ""}, ${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
 }
 
 function filterProducts() {
