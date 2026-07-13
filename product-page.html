@@ -46,7 +46,7 @@ header {
  padding: 0 4%;
  gap: 60px;
  align-items: center;
- visibility: hidden; /* JavaScript will make it visible at once */
+ visibility: hidden; 
  opacity: 0;
  transition: opacity 0.4s ease;
 }
@@ -105,8 +105,33 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 .bag-btn { background: transparent; color: var(--text); border: 1px solid var(--text); }
 .bag-btn:hover { background: var(--text); color: var(--bg); }
 
-.buy-now-btn { background: var(--text); color: var(--bg); border: 1px solid var(--text); }
+/* Buy It Now Button Updated with Flex for Icons Alignment */
+.buy-now-btn { 
+ background: var(--text); 
+ color: var(--bg); 
+ border: 1px solid var(--text); 
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ gap: 10px;
+}
 .buy-now-btn:hover { background: transparent; color: var(--text); }
+.buy-now-btn:hover .upi-icon-badge { filter: none; } /* Reverts inverted filter on hover if background turns white */
+
+/* Sleek Payment Badges Container */
+.upi-icons-container {
+ display: inline-flex;
+ align-items: center;
+ gap: 6px;
+}
+.upi-icon-badge {
+ height: 14px;
+ width: auto;
+ object-fit: contain;
+ filter: brightness(0) invert(1); /* Inverts icons to pure clean white to match dark button theme */
+ opacity: 0.9;
+ transition: filter 0.4s ease;
+}
 
 .page-countdown-dock {
  margin-top: 30px; border: 1px dashed var(--line); padding: 25px;
@@ -116,32 +141,16 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 .countdown-box { background: var(--text); color: var(--bg); padding: 12px 16px; min-width: 70px; text-align: center; font-weight: 600; border-radius: 4px; font-size: 14px; }
 .countdown-box span { display: block; font-size: 8px; opacity: 0.6; font-weight: 400; text-transform: uppercase; margin-top: 2px; }
 
-/* Premium Full Page Welcome Loader System */
-#pageMenuLoader { 
- position: fixed; 
- inset: 0; 
- background: var(--bg); 
- display: flex; 
- justify-content: center; 
- align-items: center; 
- flex-direction: column; 
- gap: 18px; 
- z-index: 999999; 
- opacity: 1; 
- transition: opacity 0.35s ease, transform 0.35s ease; 
+/* Premium Shimmer Loading Keyframe Animation Layout */
+.shimmer-loader {
+    animation: placeholderShimmer 1.5s linear infinite;
+    background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+    background-size: 800px 104px;
+    border-radius: 4px;
 }
-#pageMenuLoader.hide { 
- opacity: 0; 
- pointer-events: none; 
-}
-#pageMenuLoader img { 
- width: 75px; 
- animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
-}
-@keyframes luxSpin { 
- 0% { transform: scale(0.95); opacity: 0.5; } 
- 50% { transform: scale(1.05); opacity: 1; } 
- 100% { transform: scale(0.95); opacity: 0.5; } 
+@keyframes placeholderShimmer {
+    0% { background-position: -468px 0; }
+    100% { background-position: 468px 0; }
 }
 
 @media (max-width: 768px) {
@@ -156,8 +165,7 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 <!-- PREMIUM SYSTEM WELCOME LOADER (Matches index look perfectly) -->
 <div id="pageMenuLoader">
  <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" alt="Aquilux Logo">
- <p style="font-size: 13px; letter-spacing: 1px; font-weight: 400; opacity: 0.8;">Loading..
- </p>
+ <p style="font-size: 13px; letter-spacing: 1px; font-weight: 400; opacity: 0.8;">Loading Aquilux parameters...</p>
 </div>
 
 <header>
@@ -166,7 +174,9 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 
 <div class="product-container" id="mainProductWrapper">
     <div class="product-media">
-        <img id="productImage" class="main-display-image" src="" alt="Aquilux Asset Channel">
+        <!-- Pure Shimmer Loader Overlay Panel Block -->
+        <div id="imageShimmer" class="shimmer-loader" style="width:100%; aspect-ratio:3/4; position:absolute; inset:0; z-index:2;"></div>
+        <img id="productImage" class="main-display-image" src="" alt="Aquilux Asset Log Core">
     </div>
     
     <div class="product-info-panel">
@@ -191,7 +201,14 @@ h1 { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 4
 
             <!-- Premium Dual Action Stack Layout -->
             <div class="button-action-stack">
-                <button class="action-btn buy-now-btn" id="buyNowBtn" onclick="handleInstantBuyNow()">Buy It Now</button>
+                <button class="action-btn buy-now-btn" id="buyNowBtn" onclick="handleInstantBuyNow()">
+                    <span>Buy It Now</span>
+                    <div class="upi-icons-container">
+                        <img class="upi-icon-badge" src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" alt="GPay">
+                        <img class="upi-icon-badge" src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe">
+                        <img class="upi-icon-badge" src="https://upload.wikimedia.org/wikipedia/commons/e/e1/BHIM_Logo.svg" alt="BHIM">
+                    </div>
+                </button>
                 <button class="action-btn bag-btn" id="addToBagBtn" onclick="handlePageAddToCart()">Add To Bag</button>
             </div>
         </div>
@@ -232,6 +249,12 @@ async function initProductPage() {
         document.getElementById("productPrice").innerText = "₹" + targetProduct.price;
         const imgNode = document.getElementById("productImage");
         imgNode.src = targetProduct.image;
+        
+        // Hide animation once image stream hits client viewport safely
+        imgNode.onload = function() {
+            imgNode.style.opacity = "1";
+            document.getElementById("imageShimmer").style.display = "none";
+        };
 
         // Render dynamic premium size capsule nodes
         const sizes = targetProduct.sizes?.length > 0 ? targetProduct.sizes : ['S', 'M', 'L', 'XL'];
@@ -268,7 +291,6 @@ async function initProductPage() {
             startPageTimerLoop(launchTimestamp);
         }
 
-        // Wait for image network data asset to pull cleanly before disabling lock screen
         if(imgNode.complete) {
             hideLoaderAndShowContent();
         } else {
@@ -278,8 +300,8 @@ async function initProductPage() {
         }
 
     } catch (e) { 
-        document.getElementById("productTitle").innerText = "Error Syncing Parameters"; 
-        hideLoaderAndShowContent();
+        document.getElementById("productTitle").innerText = "Syncing Parameters..."; 
+        setTimeout(initProductPage, 1500); 
     }
 }
 
