@@ -675,6 +675,17 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+async function trackVisitor() {
+    try {
+        const visitorRef = doc(db, "analytics", "live_stats");
+        await updateDoc(visitorRef, {
+            total_visits: increment(1)
+        });
+    } catch (e) { console.error("Tracking Error:", e); }
+}
+trackVisitor();
+
+ 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
