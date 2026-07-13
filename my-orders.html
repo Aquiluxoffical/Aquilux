@@ -577,7 +577,9 @@ window.cancelPendingOrder = async function(docId, isDispatched) {
         return;
     }
 
-    const doubleCheck = confirm("This order will be cancelled if it isn’t dispatched yet.");
+    const doubleCheck = confirm("Are you sure?");
+   
+                              
     if(!doubleCheck) return;
 
     alert("Notice: You have to visit the website to check the status of this order.");
