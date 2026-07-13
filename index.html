@@ -6,14 +6,14 @@
 <title>Aquilux — Own. Your. Altitude.</title>
 <style>
 /* ==========================================================================
-   1. Global Variables & Base Resets (Premium Aesthetics)
+   1. Global Variables & Base Resets (Luxury Boutique Layer)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
  --bg: #ffffff;             
  --text: #111111;           
- --line: rgba(17, 17, 17, 0.08); 
+ --line: rgba(17, 17, 17, 0.05); 
  --glass-bg: rgba(255, 255, 255, 0.45);
  --glass-blur: 12px;
 }
@@ -30,13 +30,13 @@ body {
 }
 
 /* ==========================================================================
-   2. Header & Navigation (Optimized Responsive Layout Framework)
+   2. Header & Navigation (Boutique Clean Layout)
    ========================================================================== */
 header {
  position: fixed;
  top: 0;
  width: 100%;
- padding: 18px 6%;
+ padding: 22px 6%;
  display: flex;
  justify-content: space-between;
  align-items: center;
@@ -58,60 +58,63 @@ header {
 }
 
 .logo-box img { 
- height: 48px; 
+ height: 42px; 
  width: auto;
  object-fit: contain;
- transition: filter 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1); 
+ transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
 }
 .logo-box:hover img {
- transform: scale(1.04);
+ transform: scale(1.03);
 }
 
 html[data-theme="dark"] header img { filter: invert(0); }
 html[data-theme="light"] header img { filter: invert(1); }
-html[data-theme="olive"] header img { filter: invert(1); }
+html[data-theme="olive"] header img { filter: invert(0); } /* Deep green me white emblem premium lagega */
 
 .logo-text strong { 
  font-family: 'Cormorant Garamond', serif; 
- font-size: 30px; 
- font-weight: 600; 
- letter-spacing: 1.5px; 
+ font-size: 28px; 
+ font-weight: 500; 
+ letter-spacing: 2px; 
  line-height: 1;
+ text-transform: uppercase;
 }
 
-.header-right { display: flex; align-items: center; gap: 24px; flex-wrap: nowrap; }
+.header-right { display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; }
 
 .about-nav-btn {
  text-decoration: none;
  color: var(--text);
- font-size: 14px;
+ font-size: 13px;
  font-weight: 500;
- letter-spacing: 0.5px;
+ letter-spacing: 0.8px;
+ text-transform: uppercase;
  transition: opacity 0.2s;
 }
-.about-nav-btn:hover { opacity: 0.7; }
+.about-nav-btn:hover { opacity: 0.6; }
 
 .cart-title {
- color: var(--text) !important; text-decoration: none; font-size: 14px; font-weight: 400; letter-spacing: 0.5px;
+ color: var(--text) !important; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.8px;
  display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative;
+ text-transform: uppercase;
 }
-.cart-title:hover { opacity: 0.7; }
+.cart-title:hover { opacity: 0.6; }
 #cartCount {
- width: 20px; height: 18px; display: flex; align-items: center; justify-content: center;
- background: var(--text); color: var(--bg); border-radius: 50%; font-size: 10px; font-weight: 600;
+ width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+ background: var(--text); color: var(--bg); border-radius: 50%; font-size: 9px; font-weight: 600;
 }
 
-.theme-switcher { display: flex; gap: 8px; margin-top: 6px; }
+.theme-switcher { display: flex; gap: 10px; margin-top: 6px; }
 .theme-dot {
- width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(var(--text), 0.2); cursor: pointer; transition: transform 0.2s ease;
+ width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(var(--text), 0.15); cursor: pointer; transition: transform 0.2s ease;
 }
-.theme-dot:hover { transform: scale(1.25); }
+.theme-dot:hover { transform: scale(1.2); }
 .theme-dot.light { background: #ffffff; }
-.theme-dot.olive { background: #d7d9cf; }
+.theme-dot.olive { background: #1a2416; } /* Match with new deep luxury green */
 .theme-dot.dark { background: #111111; }
 
 #userBox { display: flex; align-items: center; cursor: pointer; }
-#userImg { border-radius: 50%; border: 2px solid var(--text); object-fit: cover; width: 34px; height: 34px; transition: transform 0.3s ease; }
+#userImg { border-radius: 50%; border: 1px solid var(--text); object-fit: cover; width: 32px; height: 32px; transition: transform 0.3s ease; }
 #userImg:hover { transform: scale(1.05); }
 
 .google-btn {
@@ -119,249 +122,174 @@ html[data-theme="olive"] header img { filter: invert(1); }
  align-items: center;
  gap: 8px;
  padding: 8px 16px;
- background: var(--glass-bg);
- border: 1px solid var(--line);
- border-radius: 4px;
+ background: transparent;
+ border: 1px solid var(--text);
+ border-radius: 2px;
  cursor: pointer;
- transition: background 0.2s;
+ transition: background 0.2s, color 0.2s;
  margin-top: 0 !important;
 }
-.google-btn:hover { background: rgba(17, 17, 17, 0.05); }
-.google-btn img { height: 18px !important; width: 18px !important; object-fit: contain !important; filter: none !important; }
-.google-btn span { font-size: 13px; font-weight: 500; color: var(--text); }
+.google-btn:hover { background: var(--text); color: var(--bg); }
+.google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
+.google-btn span { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
 /* ==========================================================================
-   3. Premium Sliding Drawers (Fixed Pure Solid Non-Transparent Background)
+   3. Sliding Drawers Layout
    ========================================================================== */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
  top: 0;
- width: 450px;
+ width: 440px;
  height: 100vh;
  height: 100dvh;
  background: var(--bg) !important; 
- backdrop-filter: none !important;
- -webkit-backdrop-filter: none !important;
  border-left: 1px solid var(--line);
  z-index: 200005;
- padding: 30px 24px;
+ padding: 40px 32px;
  display: none; 
  flex-direction: column;
- box-shadow: -15px 0 45px rgba(0,0,0,0.18);
+ box-shadow: -10px 0 40px rgba(0,0,0,0.05);
  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.account-sidebar-panel { right: -460px; overflow-y: auto; }
+.account-sidebar-panel { right: -450px; overflow-y: auto; }
 .account-sidebar-panel.active { display: block; right: 0; }
 
 .cart-sidebar-panel { right: -460px; }
 .cart-sidebar-panel.active { display: flex; right: 0; }
 
-.panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
-.panel-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; }
-.close-panel-btn { background: none; border: none; font-size: 28px; cursor: pointer; color: var(--text); opacity: 0.5; line-height: 1; }
+.panel-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+.panel-header h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+.close-panel-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text); opacity: 0.4; line-height: 1; }
 .close-panel-btn:hover { opacity: 1; }
 
-.profile-meta-card { display: flex; align-items: center; gap: 15px; background: var(--glass-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--line); margin: 20px 0 15px 0; }
-.profile-meta-card img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-.profile-meta-card h4 { font-size: 14px; font-weight: 500; }
-.profile-meta-card p { font-size: 11px; opacity: 0.6; }
+.profile-meta-card { display: flex; align-items: center; gap: 15px; background: rgba(17,17,17,0.02); padding: 16px; border-radius: 2px; border: 1px solid var(--line); margin: 24px 0 20px 0; }
+.profile-meta-card img { width: 38px; height: 32px; border-radius: 50%; object-fit: cover; }
+.profile-meta-card h4 { font-size: 13px; font-weight: 500; }
+.profile-meta-card p { font-size: 11px; opacity: 0.5; }
 
-/* Portrait Stack Navigation Design */
-.account-tabs-nav { 
- display: flex; 
- flex-direction: column; 
- gap: 10px; 
- margin-bottom: 20px; 
- border-bottom: 1px solid var(--line); 
- padding-bottom: 15px; 
-}
-.tab-nav-btn { 
- width: 100%;
- padding: 14px 16px; 
- font-size: 12px; 
- font-weight: 600; 
- text-transform: uppercase; 
- letter-spacing: 1px; 
- background: var(--glass-bg); 
- color: var(--text); 
- border: 1px solid var(--line); 
- border-radius: 6px; 
- cursor: pointer; 
- text-align: left;
- transition: all 0.25s ease; 
- margin-top: 0; 
-}
+.account-tabs-nav { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+.tab-nav-btn { width: 100%; padding: 14px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px; cursor: pointer; text-align: left; transition: all 0.2s ease; margin-top: 0; }
 .tab-nav-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-
-/* Custom Manage Button inside Portrait Stack */
-.tab-nav-btn.manage-btn-style {
- background: var(--text);
- color: var(--bg);
- border-color: var(--text);
- text-align: left;
- opacity: 0.9;
-}
-.tab-nav-btn.manage-btn-style:hover {
- opacity: 1;
-}
+.tab-nav-btn.manage-btn-style { background: var(--text); color: var(--bg); border-color: var(--text); opacity: 0.9; }
+.tab-nav-btn.manage-btn-style:hover { opacity: 1; }
 
 .account-page-content { display: none; margin-top: 5px; margin-bottom: 15px; }
 .account-page-content.active { display: block; }
-
-.saved-address-view-card { background: rgba(17,17,17,0.02); border: 1px dashed var(--line); padding: 14px; border-radius: 6px; font-size: 12px; line-height: 1.6; }
+.saved-address-view-card { background: rgba(17,17,17,0.01); border: 1px dashed var(--line); padding: 14px; font-size: 12px; line-height: 1.6; }
 .saved-address-view-card h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 6px; }
 
-.logout-sidebar-btn { width: 100%; padding: 14px; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: rgba(255, 74, 74, 0.08); color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 4px; cursor: pointer; margin-top: 20px; }
-.logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; }
+.logout-sidebar-btn { width: 100%; padding: 14px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: #ff4a4a; border: 1px solid rgba(255, 74, 74, 0.2); border-radius: 2px; cursor: pointer; margin-top: 20px; }
+.logout-sidebar-btn:hover { background: #ff4a4a; color: #fff; border-color: #ff4a4a; }
 
-.panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.05); font-size: 13px; }
-.panel-item-row img { width: 45px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; }
+.panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.04); font-size: 13px; }
+.panel-item-row img { width: 42px; aspect-ratio: 3/4; object-fit: cover; }
 .panel-item-row-info { flex: 1; }
-.panel-item-row-info h5 { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
-.panel-item-row-info p { font-size: 11px; opacity: 0.6; }
+.panel-item-row-info h5 { font-size: 12px; font-weight: 500; margin-bottom: 2px; text-transform: uppercase; }
+.panel-item-row-info p { font-size: 11px; opacity: 0.5; }
 
-.panel-action-icon-btn { background: none; border: none; cursor: pointer; color: var(--text); opacity: 0.5; transition: opacity 0.2s; }
+.panel-action-icon-btn { background: none; border: none; cursor: pointer; color: var(--text); opacity: 0.4; }
 .panel-action-icon-btn:hover { opacity: 1; color: #ff4a4a; }
 
-.mini-status-badge { font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600; text-transform: uppercase; display: inline-block; }
-.mini-status-badge.pending { background: rgba(255,191,0,0.1); color: #b88600; }
-.mini-status-badge.approved { background: rgba(24,183,90,0.1); color: #148f43; }
-.mini-status-badge.cancelled { background: rgba(255,74,74,0.15); color: #ff4a4a; }
+.cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; }
+.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 20px; flex-shrink: 0; width: 100%; }
+.cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-.cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; -webkit-overflow-scrolling: touch; }
-.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 15px; padding-bottom: max(15px, env(safe-area-inset-bottom)); flex-shrink: 0; background: transparent; width: 100%; }
-.cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
-
-.mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; margin-top: 5px; background: rgba(17,17,17,0.02); }
-.mini-qty-box button { padding: 2px 10px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; font-weight: 600; }
-.mini-qty-box button:hover { background: rgba(17, 17, 17, 0.05); }
+.mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; margin-top: 5px; }
+.mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; }
 .mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
 
 /* ==========================================================================
-   4. Hero, Product Cards, and Layout Frameworks
+   4. Hero Section
    ========================================================================== */
 .hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-
-.luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(100px); mix-blend-mode: multiply; opacity: 0.08; animation: slowFloat 24s ease-in-out infinite alternate; }
-.orb-1 { width: 50vw; height: 50vh; top: -10%; left: 10%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); }
-.orb-2 { width: 45vw; height: 45vh; bottom: -5%; right: 5%; background: radial-gradient(circle, var(--text) 0%, transparent 80%); animation-delay: -8s; }
-
-.hero-luxury-bg svg { position: absolute; width: 100%; height: 100%; object-fit: cover; top: 0; left: 0; opacity: 0.12; animation: rotateBg 60s linear infinite; }
-
-.kinetic-path { 
- fill: none; 
- stroke: var(--text); 
- stroke-width: 1.8; 
- stroke-opacity: 0.35; 
- stroke-linecap: round;
- filter: drop-shadow(0 0 8px rgba(0,0,0,0.15)); 
- animation: flowDrift 15s ease-in-out infinite alternate; 
-}
-
-@keyframes slowFloat { 0% { transform: translate(0px, 0px) scale(1); } 100% { transform: translate(50px, 30px) scale(1.1); } }
-
-@keyframes flowDrift { 
- 0% { stroke-dashoffset: 0; transform: translateY(0px) scale(1); } 
- 50% { stroke-opacity: 0.5; } 
- 100% { stroke-dashoffset: 200; transform: translateY(15px) scale(1.02); } 
-}
-
-@keyframes rotateBg {
- from { transform: rotate(0deg); }
- to { transform: rotate(360deg); }
-}
+.luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.05; }
+.orb-1 { width: 40vw; height: 40vh; top: -5%; left: 15%; background: var(--text); }
+.orb-2 { width: 35vw; height: 35vh; bottom: -5%; right: 10%; background: var(--text); }
 
 .hero .wrap { text-align: center; max-width: 800px; padding: 20px; position: relative; z-index: 2; }
-.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 8vw, 6.5rem); font-weight: 400; color: var(--text); letter-spacing: .03em; line-height: 1.1; margin-bottom: 10px; }
-.type { margin: 15px auto; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 400; letter-spacing: 5px; text-transform: uppercase; color: var(--text); opacity: 0.6; }
-.btn { display: inline-block; margin-top: 30px; padding: 14px 42px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 12px; letter-spacing: 2px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+.hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 400; color: var(--text); letter-spacing: 4px; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; }
+.type { margin: 15px auto; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: var(--text); opacity: 0.5; }
+.btn { display: inline-block; margin-top: 24px; padding: 14px 44px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 11px; letter-spacing: 2.5px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px; }
 .btn:hover { background: var(--text); color: var(--bg); }
 
-.review-roller-container { margin-bottom: 40px; width: 100%; border-bottom: 1px solid var(--line); padding-bottom: 40px; }
-.review-roller-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 400; color: var(--text); margin-bottom: 15px; }
-.review-roller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 5px 25px 5px; scroll-snap-type: x mandatory; }
-.roller-card { flex: 0 0 280px; scroll-snap-align: start; padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+/* ==========================================================================
+   5. Lacoste Premium Product Grid Framework Redesign
+   ========================================================================== */
+section { padding: 100px 6%; }
+.title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 32px; }
 
-section { padding: 90px 6%; }
-.title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; color: var(--text); margin-bottom: 30px; letter-spacing: 0.5px; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px 20px; }
-
-/* AI Product Search & Predictive Suggestions Interface */
-.search-ai-dock {
+/* Luxury Card Structuring */
+.card {
+    border: none;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    width: 280px;
-}
-.search-ai-input {
-    width: 100%;
-    padding: 11px 16px;
-    font-size: 13px;
-    background: var(--glass-bg);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    color: var(--text);
-    outline: none;
-    margin-top: 0 !important;
-}
-.search-ai-suggestions {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    z-index: 50;
-    max-height: 220px;
-    overflow-y: auto;
-    display: none;
-}
-.suggestion-node {
-    padding: 10px 14px;
-    font-size: 12px;
-    cursor: pointer;
-    color: var(--text);
-    transition: background 0.2s;
-}
-.suggestion-node:hover {
-    background: rgba(17,17,17,0.04);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Luxury Product Cards Core UI */
-.card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 15px; background: rgba(17,17,17,0.02); }
-.card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); }
+.card-img-wrapper { 
+    position: relative; 
+    width: 100%; 
+    aspect-ratio: 3 / 4 !important; 
+    overflow: hidden; 
+    margin-bottom: 16px; 
+    background: #fdfdfd;
+}
+html[data-theme="dark"] .card-img-wrapper { background: #161616; }
+html[data-theme="olive"] .card-img-wrapper { background: #232f20; } /* Subtle light background box within deep green context */
+
+.card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
 .hover-img { opacity: 0; z-index: 1; }
 .primary-img { opacity: 1; z-index: 2; }
 
 .card:hover .primary-img { opacity: 0; }
-.card:hover .hover-img { opacity: 1; transform: scale(1.03); }
+.card:hover .hover-img { opacity: 1; transform: scale(1.02); }
 
+/* Minimal Luxury Circle Wishlist Trigger */
 .wishlist-toggle-icon {
- position: absolute; top: 16px; right: 14px; z-index: 10; 
- background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
- border: 1px solid rgba(17, 17, 17, 0.05); width: 34px; height: 34px; border-radius: 50%; 
+ position: absolute; top: 16px; right: 16px; z-index: 10; 
+ background: #ffffff; border: 1px solid rgba(17,17,17,0.05); width: 36px; height: 34px; border-radius: 50%; 
  display: flex; align-items: center; justify-content: center; cursor: pointer; 
- color: #111111; font-size: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);
- transition: background 0.3s, color 0.3s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+ color: #111111; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+ transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
  margin-top: 0 !important;
 }
-.wishlist-toggle-icon:hover { transform: scale(1.08); background: #ffffff; }
+.wishlist-toggle-icon:hover { transform: scale(1.06); background: #ffffff; }
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
-.wishlist-toggle-icon svg{ width:17px; height:17px; transition:.25s ease; }
-.wishlist-toggle-icon.active svg{ fill:#111; stroke:#111; }
+.wishlist-toggle-icon svg{ width:15px; height:15px; }
 
-button, input, textarea, select { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 4px; outline: none; }
-input, textarea { width: 100%; }
+/* Elegantly Styled Typography Layout */
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 2px 2px 0 2px;
+}
+.info h3 {
+    font-family: 'Inter', sans-serif; 
+    font-weight: 500; 
+    font-size: 12px; 
+    letter-spacing: 0.8px; 
+    color: var(--text); 
+    text-transform: uppercase; 
+}
+.price {
+    font-family: 'Inter', sans-serif; 
+    font-weight: 400; 
+    font-size: 13px; 
+    color: var(--text); 
+    opacity: 0.6;
+}
 
-/* ==========================================================================
-   Luxury Embedded Purchase Panel Controls (High Premium Look)
-   ========================================================================== */
+/* Lacoste Minimalistic Embedded Integration Panel Controls */
 .grid-product-controls {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 12px;
+    gap: 12px;
+    margin-top: 14px;
     width: 100%;
 }
 .grid-controls-row {
@@ -370,55 +298,75 @@ input, textarea { width: 100%; }
     justify-content: space-between;
     width: 100%;
     border-bottom: 1px solid var(--line);
-    padding-bottom: 6px;
+    padding-bottom: 8px;
+}
+.grid-size-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+}
+.size-label-tag {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.35;
+    font-weight: 500;
 }
 .grid-size-selector {
     border: none !important;
     background: transparent !important;
     backdrop-filter: none !important;
     color: var(--text) !important;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.5px;
     height: auto;
-    padding: 4px 0;
+    padding: 2px 14px 2px 0;
     margin-top: 0 !important;
     cursor: pointer;
     outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
     appearance: none;
+    -webkit-appearance: none;
+}
+.grid-size-container::after {
+    content: "↓";
+    font-size: 9px;
+    position: absolute;
+    right: 0;
+    pointer-events: none;
+    opacity: 0.4;
 }
 .grid-qty-box {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
 }
 .grid-qty-box button {
     background: transparent !important;
     backdrop-filter: none !important;
     border: none !important;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 300;
     color: var(--text);
     cursor: pointer;
     margin-top: 0 !important;
-    padding: 0 4px;
+    padding: 0 2px;
     transition: opacity 0.2s;
 }
-.grid-qty-box button:hover { opacity: 0.6; }
+.grid-qty-box button:hover { opacity: 0.5; }
 .grid-qty-box span {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
-    min-width: 16px;
+    min-width: 14px;
     text-align: center;
     color: var(--text);
 }
 .grid-add-cart-btn {
     width: 100%;
-    padding: 11px;
-    font-size: 11px;
-    font-weight: 500;
+    padding: 12px;
+    font-size: 10px;
+    font-weight: 600;
     letter-spacing: 1.5px;
     text-transform: uppercase;
     background: var(--text) !important;
@@ -426,169 +374,84 @@ input, textarea { width: 100%; }
     border: 1px solid var(--text) !important;
     border-radius: 2px !important;
     cursor: pointer;
-    margin-top: 4px !important;
+    margin-top: 0 !important;
     transition: all 0.3s ease;
 }
 .grid-add-cart-btn:hover {
-    opacity: 0.85;
-    transform: translateY(-1px);
+    background: transparent !important;
+    color: var(--text) !important;
+    border-color: var(--text) !important;
 }
 
-.marquee { width: 100%; overflow: hidden; background: rgba(var(--text), 0.02); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
-.marquee-track { display: flex; width: max-content; animation: marquee 25s linear infinite; }
-.marquee-track span { white-space: nowrap; padding: 12px 40px; font-size: 12px; letter-spacing: 2px; color: var(--text); opacity: 0.7; text-transform: uppercase; }
+button, input, textarea, select { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 2px; outline: none; }
+input, textarea { width: 100%; }
+
+.marquee { width: 100%; overflow: hidden; background: rgba(var(--text), 0.01); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
+.marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
+.marquee-track span { white-space: nowrap; padding: 14px 40px; font-size: 11px; letter-spacing: 2px; color: var(--text); opacity: 0.5; text-transform: uppercase; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-.collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; gap: 20px; flex-wrap: wrap; }
-.controls-right-dock { display: flex; align-items: center; gap: 15px; }
+.collection-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; gap: 20px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 24px; }
+.controls-right-dock { display: flex; align-items: center; gap: 16px; }
 
-/* Filter Flex Layout for 50-50 view */
-.filter-split-container {
- display: flex;
- gap: 12px;
- width: 380px;
-}
-
+.filter-split-container { display: flex; gap: 12px; width: 360px; }
 #priceFilter, #collectionFilter { 
- width: 100%; padding: 11px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); 
- color: var(--text); border: 1px solid var(--line); border-radius: 4px !important; 
- font-family: 'Inter', sans-serif; font-size: 13px; text-align-last: center; outline: pointer; 
+ width: 100%; padding: 11px; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px !important; font-family: 'Inter', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; outline: none;
 }
 
-/* Premium Perspective Mode Switcher Framework */
 .perspective-toggle-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 11px 16px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
-    background: var(--glass-bg);
+    background: transparent;
     border: 1px solid var(--line);
-    border-radius: 4px;
+    border-radius: 2px;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-top: 0 !important;
 }
-.perspective-toggle-btn:hover {
-    border-color: var(--text);
-}
-.perspective-toggle-btn.mode-try {
-    background: var(--text);
-    color: var(--bg);
-    border-color: var(--text);
-}
+.perspective-toggle-btn:hover { border-color: var(--text); }
+.perspective-toggle-btn.mode-try { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-.payment-btn { width: 100%; padding: 14px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 4px !important; font-weight: 500; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
+.payment-btn { width: 100%; padding: 15px; background: var(--text); color: var(--bg); border: 1px solid var(--text); border-radius: 2px !important; font-weight: 600; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 0; }
 
 #menuLoader { position: fixed; inset: 0; background: var(--bg); display: none; justify-content: center; align-items: center; flex-direction: column; gap: 18px; z-index: 999999; opacity: 0; transition: .35s; }
 #menuLoader.show { display: flex; opacity: 1; }
-#menuLoader img { width: 75px; animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
-@keyframes luxSpin { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
+#menuLoader img { width: 60px; animation: luxSpin 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@keyframes luxSpin { 0% { transform: scale(0.96); opacity: 0.6; } 50% { transform: scale(1.02); opacity: 1; } 100% { transform: scale(0.96); opacity: 0.6; } }
 
-footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center; }
-
-/* ==========================================================================
-   4b. Dynamic Multi-Product Landscape Grid Layout
-   ========================================================================== */
-.upcoming-section-wrapper { 
- border-top: 1px dashed var(--line);
- margin-top: 60px;
- background: rgba(17,17,17,0.01);
-}
-.upcoming-landscape-grid { 
- display: grid; 
- grid-template-columns: repeat(3, 1fr); 
- gap: 30px; 
- margin-top: 40px; 
-}
-.upcoming-hype-card {
- display: flex;
- flex-direction: column;
- align-items: center;
- text-align: center;
- background: transparent;
-}
-.hype-blurred-visual-card { 
- position: relative;
- width: 100%; 
- aspect-ratio: 3/4;
- border-radius: 8px;
- overflow: hidden;
- filter: blur(24px) brightness(0.95);
- pointer-events: none; 
- box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-}
-.hype-blurred-visual-card img {
- width: 100%;
- height: 100%;
- object-fit: cover;
-}
-.countdown-clock-dock { 
- display: flex; 
- justify-content: center; 
- gap: 8px; 
- margin-top: 16px; 
- width: 100%;
-}
-.countdown-segment-node { 
- background: var(--text); 
- color: var(--bg); 
- padding: 8px 12px; 
- font-family: 'Inter', sans-serif;
- font-size: 13px; 
- font-weight: 600; 
- text-align: center; 
- flex: 1;
- max-width: 65px;
- border-radius: 4px;
-}
-.countdown-segment-node span {
- display: block;
- font-size: 8px;
- text-transform: uppercase;
- letter-spacing: 0.5px;
- opacity: 0.6;
- margin-top: 1px;
- font-weight: 400;
-}
+footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
 
 /* ==========================================================================
-   5. Tablet and iPad Specific Layout Core Framework Patch
+   6. Responsiveness Layout Frame Overwrites
    ========================================================================== */
 @media(max-width: 1024px) {
- header { padding: 16px 4% !important; height: 90px; }
- .logo-box img { height: 58px !important; } 
- .logo-text strong { font-size: 34px !important; }
- .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
- .grid { grid-template-columns: repeat(2, 1fr); }
- .upcoming-landscape-grid { grid-template-columns: repeat(2, 1fr); }
+ header { padding: 18px 4% !important; }
+ .grid { grid-template-columns: repeat(3, 1fr); gap: 32px 20px; }
+ .account-sidebar-panel, .cart-sidebar-panel { width: 400px; }
 }
 
-/* Compact Mobile Devices Specific Layout Patch (Updated to 50-50 2 Product Grid View) */
 @media(max-width: 768px) {
- header { padding: 12px 16px !important; height: 75px; }
- .logo-box img { height: 44px !important; } 
- .logo-text strong { font-size: 26px !important; }
- .theme-switcher { margin-top: 2px !important; gap: 5px !important; }
- .theme-dot { width: 12px !important; height: 12px !important; }
- .header-right { gap: 14px !important; }
+ header { padding: 14px 20px !important; }
+ .logo-box img { height: 36px !important; } 
+ .logo-text strong { font-size: 22px !important; }
+ .header-right { gap: 16px !important; }
  .cart-title span { display: none !important; }
- #cartCount { width: 18px !important; height: 18px !important; font-size: 10px !important; }
- .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 25px 16px; }
+ #cartCount { width: 16px !important; height: 16px !important; font-size: 9px !important; }
+ .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 30px 20px; }
  
- /* GRID CONFIGURATION FIXED TO SHOW 2 PRODUCTS PER ROW IN MOBILE VIEW */
- .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 20px 10px !important; }
+ .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 28px 12px !important; }
  
- .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
- .hero h1 { font-size: 2.8rem; }
- .title { font-size: 2rem; }
- .search-ai-dock { width: 100%; }
- .collection-header { flex-direction: column; align-items: flex-start; }
- .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 10px; }
+ .hero h1 { font-size: 2.4rem; letter-spacing: 2px; }
+ .collection-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+ .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 12px; }
  .filter-split-container { width: 100%; }
+ .title { font-size: 1.8rem; margin-bottom: 24px; }
 }
 </style>
 </head>
@@ -596,7 +459,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 
 <div id="menuLoader">
  <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
- <p>Welcome to aquilux</p>
+ <p style="font-family:'Cormorant Garamond',serif; text-transform:uppercase; letter-spacing:2px; font-size:12px; margin-top:8px;">AQUILUX</p>
 </div>
 
 <div id="accountDrawer" class="account-sidebar-panel">
@@ -613,28 +476,19 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
 
-   <!-- Portrait Stack Tab Navigation -->
    <div class="account-tabs-nav">
        <button id="tabBtnAddress" class="tab-nav-btn" onclick="switchAccountTab('address')">Address Details ▾</button>
-       
-       <!-- Content under Address Tab (Shows only on click) -->
        <div id="accountPageAddress" class="account-page-content">
            <div class="saved-address-view-card">
                <h4>Auto Saved Core Address</h4>
                <div id="savedAddressSummaryDisplay">Loading configuration logs...</div>
            </div>
        </div>
-
        <button id="tabBtnManageAddr" class="tab-nav-btn manage-btn-style" onclick="window.location.href='address.html'">Manage Primary Address ↗</button>
-
        <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist ▾</button>
-       
-       <!-- Content under Wishlist Tab -->
        <div id="accountPageWishlist" class="account-page-content">
            <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
        </div>
-
-       <!-- Linked directly to your my-orders.html page -->
        <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
    </div>
 
@@ -674,7 +528,7 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="header-right">
    <a href="about.html" class="about-nav-btn">About</a>
    <div class="cart-title" onclick="toggleCartDrawer(true)">
-     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
        <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L23 6H6"></path>
      </svg>
@@ -693,10 +547,6 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
 <section class="hero">
   <div class="hero-luxury-bg">
     <div class="luxury-blur-orb orb-1"></div><div class="luxury-blur-orb orb-2"></div>
-    <svg viewBox="0 0 1440 800" xmlns="http://www.w3.org/2000/svg">
-      <path class="kinetic-path" d="M -100,250 C 300,100 600,400 1000,150 C 1200,50 1400,300 1600,200" />
-      <path class="kinetic-path" d="M -100,400 C 400,250 500,600 950,300 C 1200,150 1350,450 1600,380" />
-    </svg>
   </div>
   <div class="wrap">
     <h1>Aquilux</h1><div class="type">Own. Your. Altitude.</div>
@@ -712,11 +562,11 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  </div>
  
  <div class="collection-header">
-   <div class="title">Collection</div>
+   <div class="title" style="text-align:left; margin-bottom:0; font-size:1.8rem;">Collection</div>
    
    <div class="controls-right-dock">
        <button id="perspectiveToggleBtn" class="perspective-toggle-btn" onclick="togglePerspectiveViewMode()">
-           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:2px; vertical-align:middle;">
+           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                <rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect>
                <rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect>
            </svg>
@@ -751,33 +601,13 @@ footer { padding: 60px 8%; border-top: 1px solid var(--line); text-align: center
  <div class="grid" id="grid"></div>
 </section>
 
-<section id="upcoming" class="upcoming-section-wrapper" style="display: none;">
-  <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem; text-align: center;">Reveals In</div>
+<section id="upcoming" class="upcoming-section-wrapper" style="display: none; border-top:1px solid var(--line); max-width:1440px; margin:0 auto;">
+  <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.4rem; text-align: center;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-landscape-grid"></div>
 </section>
 
-<section id="reviews-section" style="padding-top:20px;">
-  <div class="review-roller-container">
-     <div class="review-roller-title">Customer Remarks</div>
-     <div class="review-roller" id="reviewsRollerDisplay">
-         <div class="roller-card">
-             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"The absolute pinnacle of minimalism. The quality matches top tier craftsmanship tiers cleanly."</p>
-             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Raghav M.</h5>
-         </div>
-         <div class="roller-card">
-             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"Stunning aesthetics. Delivery coordinates locked accurately, product texture feels elite."</p>
-             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Ishaan K.</h5>
-         </div>
-         <div class="roller-card">
-             <p style="font-size:13px; font-style:italic; line-height:1.6; opacity:0.85;">"Pure old money luxury vibe. Exceeded my high product cinematography standard expectations."</p>
-             <h5 style="font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-top:15px; font-weight:600;">— Aarav S.</h5>
-         </div>
-     </div>
-  </div>
-</section>
-
 <footer>
-  <p>Own. Your. Altitude.</p><p>aquilux.support@gmail.com</p>
+  <p>Own. Your. Altitude. · aquilux.support@gmail.com</p>
 </footer>
 
 <script type="module">
@@ -930,10 +760,11 @@ function switchAccountTab(tabName) {
 function setTheme(theme){
  document.documentElement.setAttribute("data-theme", theme);
  const isDark = theme === "dark", isOlive = theme === "olive";
- document.documentElement.style.setProperty('--bg', isDark ? '#111111' : (isOlive ? '#d7d9cf' : '#ffffff'));
- document.documentElement.style.setProperty('--text', isDark ? '#ffffff' : (isOlive ? '#2c3525' : '#111111'));
- document.documentElement.style.setProperty('--line', isDark ? 'rgba(255,255,255,0.08)' : 'rgba(17,17,17,0.08)');
- document.documentElement.style.setProperty('--glass-bg', isDark ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.45)');
+ // Updated Olive Theme colors to a much deeper luxury forest green
+ document.documentElement.style.setProperty('--bg', isDark ? '#111111' : (isOlive ? '#111b10' : '#ffffff'));
+ document.documentElement.style.setProperty('--text', isDark ? '#ffffff' : (isOlive ? '#f4f7f2' : '#111111'));
+ document.documentElement.style.setProperty('--line', isDark ? 'rgba(255,255,255,0.06)' : (isOlive ? 'rgba(255,255,255,0.08)' : 'rgba(17,17,17,0.06)'));
+ document.documentElement.style.setProperty('--glass-bg', isDark ? 'rgba(255,255,255,0.04)' : (isOlive ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.45)'));
  localStorage.setItem("theme", theme);
 }
 setTheme(localStorage.getItem("theme") || "light");
@@ -1048,7 +879,7 @@ function displayProducts(list = products) {
    if(typeof qty[i] === 'undefined') qty[i] = 0;
 
    g.innerHTML += `
-   <div class="card" style="border:none; background:transparent; display:flex; flex-direction:column; position:relative;">
+   <div class="card">
      <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
@@ -1063,21 +894,24 @@ function displayProducts(list = products) {
      
      <div class="info" style="text-align: left; padding: 0;">
        <a href="${productLink}" style="text-decoration:none; color:inherit;">
-         <h3 style="font-family:'Inter',sans-serif; font-weight:400; font-size:13px; letter-spacing:0.5px; color:var(--text); text-transform:uppercase; margin-bottom:4px;">${p.product}</h3>
+         <h3>${p.product}</h3>
        </a>
-       <div class="price" style="font-family:'Inter',sans-serif; font-weight:500; font-size:13px; color:var(--text); opacity:0.8;">₹${p.price}</div>
+       <div class="price">₹${p.price}</div>
      </div>
 
-     <!-- Integrated Interactive Cart Ledger Controls -->
+     <!-- Lacoste Premium Embedded Grid Controls -->
      <div class="grid-product-controls">
          <div class="grid-controls-row">
-             <select id="s${i}" class="grid-size-selector">
-                 <option value="S">S</option>
-                 <option value="M" selected>M</option>
-                 <option value="L">L</option>
-                 <option value="XL">XL</option>
-                 <option value="XXL">XL</option>
-             </select>
+             <div class="grid-size-container">
+                 <span class="size-label-tag">Size:</span>
+                 <select id="s${i}" class="grid-size-selector">
+                     <option value="S">S</option>
+                     <option value="M" selected>M</option>
+                     <option value="L">L</option>
+                     <option value="XL">XL</option>
+                     <option value="XXL">XXL</option>
+                 </select>
+             </div>
              <div class="grid-qty-box">
                  <button onclick="changeQty(${i},-1)">−</button>
                  <span id="q${i}">${qty[i]}</span>
@@ -1188,7 +1022,6 @@ function addToCart(i){
  const el = document.getElementById("q"+i);
  if(el) el.textContent = 0;
  
- // ---- New Feature: Live Add to Cart User Tracking Alert ----
  const currentFirebaseUser = window.currentLoggedInUid ? { email: document.getElementById("drawerUserEmail").innerText, name: document.getElementById("drawerUserName").innerText } : null;
 
  if (window.currentLoggedInUid && currentFirebaseUser) {
@@ -1201,7 +1034,6 @@ function addToCart(i){
                                `💰 *Item Price:* ₹${product.price}`;
      triggerTelegramNotificationAlert(cartTrackingAlert);
  }
- // -----------------------------------------------------------
 
  draw(); toggleCartDrawer(true); 
 }
@@ -1226,7 +1058,6 @@ function draw(){
  document.getElementById("cartCount").textContent = count;
 }
 
-// Telegram Background Alert Pipeline Configuration
 async function triggerTelegramNotificationAlert(messageText) {
     const telegramBotToken = "8892397338:AAEEDt5xZnDLSv5lnUuuVejrJfQlfEqVj64"; 
     const telegramChatId = "656520549"; 
@@ -1235,7 +1066,7 @@ async function triggerTelegramNotificationAlert(messageText) {
     try {
         await fetch(endpointUrl);
     } catch(err) {
-        console.error("Telegram alert channel pipeline dropped:", err);
+        console.error("Telegram alert dropped:", err);
     }
 }
 
@@ -1254,7 +1085,6 @@ function goToGateway(){
  };
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
 
- // Background Secure Telegram Alert Signal on Checkout Proceed
  const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total: ₹${orderData.total}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
  triggerTelegramNotificationAlert(alertMessage);
 
