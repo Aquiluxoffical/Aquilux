@@ -660,10 +660,10 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </footer>
 
 <script type="module">
-// CACHE-BUSTING TARGETED MODULE IMPORTS FOR GITHUB PAGES CDN RESETS
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=2.0.1";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=2.0.1";
-import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=2.0.1";
+// FRESH CACHE-BUSTING AND ROBUST IMPORT BINDINGS FOR GITHUB PAGES
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=999";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=999";
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=999";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -680,25 +680,27 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 // ==========================================================================
-// 🚀 ROBUST LIVE VISITOR ENGINE WITH DOM LOAD PATERS & EXPLICIT OVERRIDES
+// 🔥 ULTIMATE DEBUGBABLE TRACKING CORE ENGINE
 // ==========================================================================
-async function trackVisitor() {
+async function forceTrackTotalVisitors() {
+    console.log("Registry pipeline active. Testing handshake...");
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
         await updateDoc(visitorRef, {
             total_visits: increment(1)
         });
-        console.log("Telemetry logs: Visitor successfully tracked via Cloud Gateway.");
-    } catch (e) { 
-        console.error("Tracking Error Engine Drop:", e); 
+        console.log("Success: Matrix counter logs updated on Firestore.");
+    } catch (error) { 
+        console.error("Critical Matrix Interruption:", error);
+        alert("Tracker System Alert: " + error.message);
     }
 }
 
-// System triggers tracking safely after DOM architecture validates
+// Safer load execution pattern to bypass network rendering blockages
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    trackVisitor();
+    forceTrackTotalVisitors();
 } else {
-    window.addEventListener('load', trackVisitor);
+    window.addEventListener('load', forceTrackTotalVisitors);
 }
 
 window.googleLogin = async () => {
