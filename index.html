@@ -29,8 +29,8 @@
  --bg: #ffffff;             
  --text: #111111;           
  --line: rgba(17, 17, 17, 0.05); 
- --glass-bg: rgba(255, 255, 255, 0.85);
- --glass-blur: 16px;
+ --glass-bg: rgba(255, 255, 255, 0.45);
+ --glass-blur: 12px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,11 +55,11 @@ header {
  display: flex;
  justify-content: space-between;
  align-items: center;
- background: var(--glass-bg);
- backdrop-filter: blur(var(--glass-blur));
- -webkit-backdrop-filter: blur(var(--glass-blur));
+ background: rgba(var(--bg), 0.85);
+ backdrop-filter: blur(16px);
+ -webkit-backdrop-filter: blur(16px);
  border-bottom: 1px solid var(--line);
- z-index: 100000 !important; /* Fixed layer stacking priority */
+ z-index: 100;
 }
 
 .logo-box { 
@@ -95,7 +95,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  text-transform: uppercase;
 }
 
-.header-right { display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; z-index: 100002 !important; }
+.header-right { display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; }
 
 .about-nav-btn {
  text-decoration: none;
@@ -121,12 +121,12 @@ html[data-theme="olive"] header img { filter: invert(0); }
 
 .theme-switcher { display: flex; gap: 10px; margin-top: 6px; }
 .theme-dot {
- width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(17, 17, 17, 0.15); cursor: pointer; transition: transform 0.2s ease;
+ width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(var(--text), 0.15); cursor: pointer; transition: transform 0.2s ease;
 }
 .theme-dot:hover { transform: scale(1.2); }
-.theme-dot.light { background: #ffffff; border-color: rgba(0,0,0,0.2); }
-.theme-dot.olive { background: #1a2416; border-color: rgba(255,255,255,0.2); } 
-.theme-dot.dark { background: #111111; border-color: rgba(255,255,255,0.2); }
+.theme-dot.light { background: #ffffff; }
+.theme-dot.olive { background: #1a2416; } 
+.theme-dot.dark { background: #111111; }
 
 #userBox { display: flex; align-items: center; cursor: pointer; }
 #userImg { border-radius: 50%; border: 1px solid var(--text); object-fit: cover; width: 32px; height: 32px; transition: transform 0.3s ease; }
@@ -159,7 +159,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  height: 100dvh;
  background: var(--bg) !important; 
  border-left: 1px solid var(--line);
- z-index: 200005 !important;
+ z-index: 200005;
  padding: 50px 36px;
  display: none; 
  flex-direction: column;
@@ -254,7 +254,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 /* ==========================================================================
    4. Hero Section
    ========================================================================== */
-.hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; z-index: 10; }
+.hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 .luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.05; }
 .orb-1 { width: 40vw; height: 40vh; top: -5%; left: 15%; background: var(--text); }
@@ -269,7 +269,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 /* ==========================================================================
    5. Lacoste Premium Product Grid Framework
    ========================================================================== */
-section { padding: 100px 6%; position: relative; z-index: 20; }
+section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 32px; }
 
@@ -477,7 +477,7 @@ input, textarea { width: 100%; }
 footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
 
 /* ==========================================================================
-   6. 🚀 10/10 BULLETPROOF RESPONSIVE MOBILE MEDIA QUERY LAYER
+   6. Responsiveness Layout Frame Overwrites
    ========================================================================== */
 @media(max-width: 1024px) {
  header { padding: 18px 4% !important; }
@@ -486,153 +486,21 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 }
 
 @media(max-width: 768px) {
- header { 
-   padding: 10px 14px !important; 
-   height: 62px !important;
-   display: flex !important;
-   justify-content: space-between !important;
-   align-items: center !important;
-   background: var(--glass-bg) !important;
- }
+ header { padding: 14px 20px !important; }
+ .logo-box img { height: 36px !important; } 
+ .logo-text strong { font-size: 22px !important; }
+ .header-right { gap: 16px !important; }
+ .cart-title span { display: none !important; }
+ #cartCount { width: 16px !important; height: 16px !important; font-size: 9px !important; }
+ .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 30px 20px; }
  
- .logo-box { 
-   gap: 6px !important; 
-   flex-shrink: 0 !important;
-   display: flex !important;
-   align-items: center !important;
- }
+ .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 28px 12px !important; }
  
- .logo-box img { 
-   height: 24px !important; 
-   width: auto !important;
- } 
- 
- .logo-text strong { 
-   font-size: 15px !important; 
-   letter-spacing: 0.5px !important;
- }
-
- .theme-switcher {
-   margin-top: 0px !important;
-   gap: 5px !important;
- }
- .theme-dot {
-   width: 9px !important;
-   height: 9px !important;
- }
-
- .header-right { 
-   gap: 16px !important; 
-   flex-wrap: nowrap !important;
-   align-items: center !important;
- }
-
- .about-nav-btn { 
-   display: none !important; 
- }
- 
- .cart-title span { 
-   display: none !important; 
- }
- 
- .cart-title {
-   gap: 0 !important;
-   position: relative !important;
-   display: inline-flex !important;
-   align-items: center !important;
- }
- 
- .cart-title svg {
-   width: 20px !important;
-   height: 20px !important;
-   color: var(--text) !important;
- }
- 
- #cartCount { 
-   width: 14px !important; 
-   height: 14px !important; 
-   font-size: 8px !important; 
-   position: absolute !important;
-   top: -5px !important;
-   right: -7px !important;
-   background: var(--text) !important;
-   color: var(--bg) !important;
-   z-index: 50 !important;
- }
-
- /* Google Premium Round Mini Button Overwrite */
- .google-btn {
-   background: #ffffff !important;
-   border: 1px solid rgba(0,0,0,0.12) !important;
-   border-radius: 50% !important;
-   width: 32px !important;
-   height: 32px !important;
-   padding: 0 !important;
-   display: inline-flex !important;
-   justify-content: center !important;
-   align-items: center !important;
-   box-shadow: 0 2px 6px rgba(0,0,0,0.06) !important;
- }
- .google-btn img { 
-   height: 15px !important; 
-   width: 15px !important; 
-   margin: 0 !important;
- }
- .google-btn span { 
-   display: none !important;
- }
- 
- #userBox {
-   display: flex !important;
-   align-items: center !important;
- }
- #userImg {
-   width: 28px !important;
-   height: 28px !important;
- }
-
- .account-sidebar-panel, .cart-sidebar-panel { 
-   width: 100% !important; 
-   right: -100% !important; 
-   padding: 24px 16px !important; 
- }
- 
- .grid { 
-   grid-template-columns: repeat(2, 1fr) !important; 
-   gap: 20px 10px !important; 
- }
- 
- .hero h1 { 
-   font-size: 2.2rem !important; 
-   letter-spacing: 2px !important; 
- }
- .type {
-   font-size: 9px !important;
-   letter-spacing: 4px !important;
- }
- .btn {
-   padding: 12px 32px !important;
-   font-size: 10px !important;
- }
- 
- .collection-header { 
-   flex-direction: column !important; 
-   align-items: flex-start !important; 
-   gap: 12px !important; 
- }
- .controls-right-dock { 
-   width: 100% !important; 
-   flex-direction: column !important; 
-   align-items: stretch !important; 
-   gap: 10px !important; 
- }
- .filter-split-container { 
-   width: 100% !important; 
- }
- .title { 
-   font-size: 1.6rem !important; 
-   margin-bottom: 20px !important; 
- }
+ .hero h1 { font-size: 2.4rem; letter-spacing: 2px; }
+ .collection-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+ .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 12px; }
+ .filter-split-container { width: 100%; }
+ .title { font-size: 1.8rem; margin-bottom: 24px; }
 }
 </style>
 </head>
@@ -854,7 +722,7 @@ onAuthStateChanged(auth, (user) => {
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("display", "none", "important");
+   document.getElementById("userBox").style.setProperty("none", "important");
    window.currentLoggedInUid = null;
  }
 });
@@ -969,7 +837,7 @@ function setTheme(theme){
  document.documentElement.style.setProperty('--bg', isDark ? '#111111' : (isOlive ? '#111b10' : '#ffffff'));
  document.documentElement.style.setProperty('--text', isDark ? '#ffffff' : (isOlive ? '#f4f7f2' : '#111111'));
  document.documentElement.style.setProperty('--line', isDark ? 'rgba(255,255,255,0.06)' : (isOlive ? 'rgba(255,255,255,0.08)' : 'rgba(17,17,17,0.06)'));
- document.documentElement.style.setProperty('--glass-bg', isDark ? 'rgba(17,17,17,0.85)' : (isOlive ? 'rgba(17,27,16,0.85)' : 'rgba(255,255,255,0.85)'));
+ document.documentElement.style.setProperty('--glass-bg', isDark ? 'rgba(255,255,255,0.04)' : (isOlive ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.45)'));
  localStorage.setItem("theme", theme);
 }
 setTheme(localStorage.getItem("theme") || "light");
