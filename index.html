@@ -660,10 +660,10 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </footer>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-// YAHAN DOC, UPDATE-DOC AUR INCREMENT BIND KAR DIYE HAIN PERMANENT FIX KE LIYE
-import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+// CACHE-BUSTING TARGETED MODULE IMPORTS FOR GITHUB PAGES CDN RESETS
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=2.0.1";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=2.0.1";
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=2.0.1";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -679,21 +679,27 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ==========================================
-// 🚀 FIXED LIVE TRACK VISITOR SYSTEM
-// ==========================================
+// ==========================================================================
+// 🚀 ROBUST LIVE VISITOR ENGINE WITH DOM LOAD PATERS & EXPLICIT OVERRIDES
+// ==========================================================================
 async function trackVisitor() {
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
         await updateDoc(visitorRef, {
             total_visits: increment(1)
         });
+        console.log("Telemetry logs: Visitor successfully tracked via Cloud Gateway.");
     } catch (e) { 
-        console.error("Tracking Error:", e); 
+        console.error("Tracking Error Engine Drop:", e); 
     }
 }
-// Initialization ke just baad trigger
-trackVisitor();
+
+// System triggers tracking safely after DOM architecture validates
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    trackVisitor();
+} else {
+    window.addEventListener('load', trackVisitor);
+}
 
 window.googleLogin = async () => {
  try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
