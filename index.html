@@ -715,8 +715,9 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </footer>
 
 <script type="module">
+// FRESH CACHE-BUSTING AND ROBUST IMPORT BINDINGS FOR GITHUB PAGES
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=999";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=999";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=999";
 import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=999";
 
 const firebaseConfig = {
@@ -733,6 +734,9 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// ==========================================================================
+// 🔥 ULTIMATE DEBUGBABLE TRACKING CORE ENGINE
+// ==========================================================================
 async function forceTrackTotalVisitors() {
     console.log("Registry pipeline active. Testing handshake...");
     try {
@@ -746,36 +750,17 @@ async function forceTrackTotalVisitors() {
     }
 }
 
+// Safer load execution pattern to bypass network rendering blockages
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     forceTrackTotalVisitors();
 } else {
     window.addEventListener('load', forceTrackTotalVisitors);
 }
 
-// Secure multi-layer popup to redirect backup handshake logic
 window.googleLogin = async () => {
- try { 
-   await signInWithPopup(auth, provider); 
- } catch (e) { 
-   console.log("Popup restricted, moving to secure background redirect workflow...", e);
-   try {
-     await signInWithRedirect(auth, provider);
-   } catch(redirectErr) {
-     console.error("Redirect pipeline broke down:", redirectErr);
-   }
- }
+ try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
-
 window.googleLogout = () => { signOut(auth); toggleAccountDrawer(false); };
-
-// Processing active execution loops on safe page landing hooks
-getRedirectResult(auth).then((result) => {
-    if (result?.user) {
-        console.log("Authenticated secure payload successfully tracked via sync logs.");
-    }
-}).catch((error) => {
-    console.error("Handshake authorization failed:", error);
-});
 
 onAuthStateChanged(auth, (user) => {
  if (user) {
