@@ -662,7 +662,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+// YAHAN DOC, UPDATE-DOC AUR INCREMENT BIND KAR DIYE HAIN PERMANENT FIX KE LIYE
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -675,19 +676,24 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// ==========================================
+// 🚀 FIXED LIVE TRACK VISITOR SYSTEM
+// ==========================================
 async function trackVisitor() {
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
         await updateDoc(visitorRef, {
             total_visits: increment(1)
         });
-    } catch (e) { console.error("Tracking Error:", e); }
+    } catch (e) { 
+        console.error("Tracking Error:", e); 
+    }
 }
+// Initialization ke just baad trigger
 trackVisitor();
-
- 
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
 window.googleLogin = async () => {
  try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
