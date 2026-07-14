@@ -59,7 +59,7 @@ header {
  backdrop-filter: blur(var(--glass-blur));
  -webkit-backdrop-filter: blur(var(--glass-blur));
  border-bottom: 1px solid var(--line);
- z-index: 10000;
+ z-index: 999999 !important; /* Forces top click priority over everything */
 }
 
 .logo-box { 
@@ -70,6 +70,7 @@ header {
  text-decoration: none;
  color: inherit;
  user-select: none;
+ pointer-events: auto !important;
 }
 
 .logo-box img { 
@@ -95,7 +96,14 @@ html[data-theme="olive"] header img { filter: invert(0); }
  text-transform: uppercase;
 }
 
-.header-right { display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; z-index: 10002; }
+.header-right { 
+ display: flex; 
+ align-items: center; 
+ gap: 28px; 
+ flex-wrap: nowrap; 
+ pointer-events: auto !important; 
+ z-index: 9999999 !important;
+}
 
 .about-nav-btn {
  text-decoration: none;
@@ -109,9 +117,18 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .about-nav-btn:hover { opacity: 0.6; }
 
 .cart-title {
- color: var(--text) !important; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.8px;
- display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative;
+ color: var(--text) !important; 
+ text-decoration: none; 
+ font-size: 13px; 
+ font-weight: 500; 
+ letter-spacing: 0.8px;
+ display: flex; 
+ align-items: center; 
+ gap: 6px; 
+ cursor: pointer; 
+ position: relative;
  text-transform: uppercase;
+ pointer-events: auto !important;
 }
 .cart-title:hover { opacity: 0.6; }
 #cartCount {
@@ -119,7 +136,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  background: var(--text); color: var(--bg); border-radius: 50%; font-size: 9px; font-weight: 600;
 }
 
-.theme-switcher { display: flex; gap: 10px; margin-top: 6px; }
+.theme-switcher { display: flex; gap: 10px; margin-top: 6px; pointer-events: auto !important; }
 .theme-dot {
  width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(17, 17, 17, 0.15); cursor: pointer; transition: transform 0.2s ease;
 }
@@ -128,7 +145,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .theme-dot.olive { background: #1a2416; border-color: rgba(255,255,255,0.2); } 
 .theme-dot.dark { background: #111111; border-color: rgba(255,255,255,0.2); }
 
-#userBox { display: flex; align-items: center; cursor: pointer; }
+#userBox { display: flex; align-items: center; cursor: pointer; pointer-events: auto !important; }
 #userImg { border-radius: 50%; border: 1px solid var(--text); object-fit: cover; width: 32px; height: 32px; transition: transform 0.3s ease; }
 #userImg:hover { transform: scale(1.05); }
 
@@ -143,6 +160,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  cursor: pointer;
  transition: background 0.2s, color 0.2s;
  margin-top: 0 !important;
+ pointer-events: auto !important;
 }
 .google-btn:hover { background: var(--text); color: var(--bg); }
 .google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
@@ -159,7 +177,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  height: 100dvh;
  background: var(--bg) !important; 
  border-left: 1px solid var(--line);
- z-index: 200005;
+ z-index: 2000005 !important;
  padding: 50px 36px;
  display: none; 
  flex-direction: column;
@@ -254,7 +272,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 /* ==========================================================================
    4. Hero Section
    ========================================================================== */
-.hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
+.hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; z-index: 10; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 .luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.05; }
 .orb-1 { width: 40vw; height: 40vh; top: -5%; left: 15%; background: var(--text); }
@@ -269,7 +287,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 /* ==========================================================================
    5. Lacoste Premium Product Grid Framework
    ========================================================================== */
-section { padding: 100px 6%; }
+section { padding: 100px 6%; position: relative; z-index: 20; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 32px; }
 
@@ -477,7 +495,7 @@ input, textarea { width: 100%; }
 footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
 
 /* ==========================================================================
-   6. 🚀 10/10 BULLETPROOF RESPONSIVE MOBILE MEDIA QUERY LAYER
+   6. 🚀 10/10 RESPONSIVE STRUCTURAL OVERHAUL FOR MOBILE VIEWPORTS (MAX-WIDTH: 768px)
    ========================================================================== */
 @media(max-width: 1024px) {
  header { padding: 18px 4% !important; }
@@ -572,7 +590,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    justify-content: center !important;
    align-items: center !important;
    box-shadow: 0 2px 6px rgba(0,0,0,0.06) !important;
-   z-index: 10005 !important;
  }
  .google-btn img { 
    height: 15px !important; 
@@ -586,7 +603,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
  #userBox {
    display: flex !important;
    align-items: center !important;
-   z-index: 10005 !important;
  }
  #userImg {
    width: 28px !important;
@@ -782,8 +798,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    </div>
  </div>
  <div class="grid" id="grid"></div>
-</section>
-
+</head>
+ 
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none; border-top:1px solid var(--line); max-width:1440px; margin:0 auto;">
   <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.4rem; text-align: center;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-landscape-grid"></div>
@@ -793,10 +809,18 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude. · aquilux.support@gmail.com</p>
 </footer>
 
+<!-- INITIALIZE SCOPED GLOBAL ARRAYS SAFELY BEFORE ANY SCRIPT INTERACTION -->
+<script>
+let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
+let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
+let products = [], currentProducts = [], qty = [];
+window.activeClockLoops = {};
+</script>
+
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=final99";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=final99";
-import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=final99";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=production-fix";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=production-fix";
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=production-fix";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -811,6 +835,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+
+// Explicit mapping to local execution context
+window.dbInstanceRef = db;
 
 async function forceTrackTotalVisitors() {
     try {
@@ -863,13 +890,7 @@ onAuthStateChanged(auth, (user) => {
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
-let products = [], currentProducts = [], qty = [];
-window.activeClockLoops = {}; 
-
 let currentViewMode = "default"; 
-
-let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
-let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
@@ -1140,6 +1161,7 @@ window.toggleWishlistProduct = function(prodName, index) {
 
 function renderWishlistPanel() {
     const container = document.getElementById("panelWishlistContainer");
+    if(!container) return;
     if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5; font-size:12px;'>Wishlist is empty.</p>"; return; }
     container.innerHTML = "";
     wishlist.forEach((item, idx) => {
