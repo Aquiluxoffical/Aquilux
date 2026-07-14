@@ -772,7 +772,7 @@ onAuthStateChanged(auth, (user) => {
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("none", "important");
+   document.getElementById("userBox").style.setProperty("display", "none", "important");
    window.currentLoggedInUid = null;
  }
 });
