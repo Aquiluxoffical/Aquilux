@@ -532,6 +532,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    height: 16px !important; 
    font-size: 9px !important; 
    margin-left: -2px;
+   display: flex !important;
  }
  .google-btn {
    padding: 6px 10px !important;
@@ -747,6 +748,7 @@ async function forceTrackTotalVisitors() {
         console.log("Success: Matrix counter logs updated on Firestore.");
     } catch (error) { 
         console.error("Critical Matrix Interruption:", error);
+        alert("Tracker System Alert: " + error.message);
     }
 }
 
@@ -773,10 +775,10 @@ onAuthStateChanged(auth, (user) => {
    document.getElementById("drawerUserEmail").innerText = user.email;
    
    window.currentLoggedInUid = user.uid;
-   if(typeof loadSavedAddressToPanel === "function") loadSavedAddressToPanel();
+   loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("display", "none", "important");
+   document.getElementById("userBox").style.setProperty("none", "important");
    window.currentLoggedInUid = null;
  }
 });
