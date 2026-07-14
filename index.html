@@ -59,7 +59,7 @@ header {
  backdrop-filter: blur(var(--glass-blur));
  -webkit-backdrop-filter: blur(var(--glass-blur));
  border-bottom: 1px solid var(--line);
- z-index: 999999 !important; /* Forces top click priority over everything */
+ z-index: 100000 !important; /* Fixed layer stacking priority */
 }
 
 .logo-box { 
@@ -70,7 +70,6 @@ header {
  text-decoration: none;
  color: inherit;
  user-select: none;
- pointer-events: auto !important;
 }
 
 .logo-box img { 
@@ -96,14 +95,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  text-transform: uppercase;
 }
 
-.header-right { 
- display: flex; 
- align-items: center; 
- gap: 28px; 
- flex-wrap: nowrap; 
- pointer-events: auto !important; 
- z-index: 9999999 !important;
-}
+.header-right { display: flex; align-items: center; gap: 28px; flex-wrap: nowrap; z-index: 100002 !important; }
 
 .about-nav-btn {
  text-decoration: none;
@@ -117,18 +109,9 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .about-nav-btn:hover { opacity: 0.6; }
 
 .cart-title {
- color: var(--text) !important; 
- text-decoration: none; 
- font-size: 13px; 
- font-weight: 500; 
- letter-spacing: 0.8px;
- display: flex; 
- align-items: center; 
- gap: 6px; 
- cursor: pointer; 
- position: relative;
+ color: var(--text) !important; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.8px;
+ display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative;
  text-transform: uppercase;
- pointer-events: auto !important;
 }
 .cart-title:hover { opacity: 0.6; }
 #cartCount {
@@ -136,7 +119,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  background: var(--text); color: var(--bg); border-radius: 50%; font-size: 9px; font-weight: 600;
 }
 
-.theme-switcher { display: flex; gap: 10px; margin-top: 6px; pointer-events: auto !important; }
+.theme-switcher { display: flex; gap: 10px; margin-top: 6px; }
 .theme-dot {
  width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(17, 17, 17, 0.15); cursor: pointer; transition: transform 0.2s ease;
 }
@@ -145,7 +128,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .theme-dot.olive { background: #1a2416; border-color: rgba(255,255,255,0.2); } 
 .theme-dot.dark { background: #111111; border-color: rgba(255,255,255,0.2); }
 
-#userBox { display: flex; align-items: center; cursor: pointer; pointer-events: auto !important; }
+#userBox { display: flex; align-items: center; cursor: pointer; }
 #userImg { border-radius: 50%; border: 1px solid var(--text); object-fit: cover; width: 32px; height: 32px; transition: transform 0.3s ease; }
 #userImg:hover { transform: scale(1.05); }
 
@@ -160,7 +143,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
  cursor: pointer;
  transition: background 0.2s, color 0.2s;
  margin-top: 0 !important;
- pointer-events: auto !important;
 }
 .google-btn:hover { background: var(--text); color: var(--bg); }
 .google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
@@ -177,7 +159,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  height: 100dvh;
  background: var(--bg) !important; 
  border-left: 1px solid var(--line);
- z-index: 2000005 !important;
+ z-index: 200005 !important;
  padding: 50px 36px;
  display: none; 
  flex-direction: column;
@@ -495,7 +477,7 @@ input, textarea { width: 100%; }
 footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
 
 /* ==========================================================================
-   6. 🚀 10/10 RESPONSIVE STRUCTURAL OVERHAUL FOR MOBILE VIEWPORTS (MAX-WIDTH: 768px)
+   6. 🚀 10/10 BULLETPROOF RESPONSIVE MOBILE MEDIA QUERY LAYER
    ========================================================================== */
 @media(max-width: 1024px) {
  header { padding: 18px 4% !important; }
@@ -691,7 +673,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
        <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
    </div>
 
-   <button onclick="window.googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
+   <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
 </div>
 
 <div id="cartDrawer" class="cart-sidebar-panel">
@@ -733,7 +715,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
      </svg>
      <span>Cart</span><span id="cartCount">0</span>
    </div>
-   <button id="loginBtn" onclick="window.googleLogin()" class="google-btn">
+   <button id="loginBtn" onclick="googleLogin()" class="google-btn">
      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
      <span>Sign in</span>
    </button>
@@ -798,8 +780,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    </div>
  </div>
  <div class="grid" id="grid"></div>
-</head>
- 
+</section>
+
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none; border-top:1px solid var(--line); max-width:1440px; margin:0 auto;">
   <div class="title" style="letter-spacing: 2px; text-transform: uppercase; font-size: 1.4rem; text-align: center;">Reveals In</div>
   <div id="upcomingProductContainer" class="upcoming-landscape-grid"></div>
@@ -809,18 +791,11 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude. · aquilux.support@gmail.com</p>
 </footer>
 
-<!-- INITIALIZE SCOPED GLOBAL ARRAYS SAFELY BEFORE ANY SCRIPT INTERACTION -->
-<script>
-let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
-let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
-let products = [], currentProducts = [], qty = [];
-window.activeClockLoops = {};
-</script>
-
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=production-fix";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=production-fix";
-import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=production-fix";
+// FRESH CACHE-BUSTING AND ROBUST IMPORT BINDINGS FOR GITHUB PAGES
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=999";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js?v=999";
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js?v=999";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -836,20 +811,24 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// Explicit mapping to local execution context
-window.dbInstanceRef = db;
-
+// ==========================================================================
+// 🔥 ULTIMATE DEBUGBABLE TRACKING CORE ENGINE
+// ==========================================================================
 async function forceTrackTotalVisitors() {
+    console.log("Registry pipeline active. Testing handshake...");
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
         await updateDoc(visitorRef, {
             total_visits: increment(1)
         });
+        console.log("Success: Matrix counter logs updated on Firestore.");
     } catch (error) { 
-        console.error("Tracking Engine Aborted:", error);
+        console.error("Critical Matrix Interruption:", error);
+        alert("Tracker System Alert: " + error.message);
     }
 }
 
+// Safer load execution pattern to bypass network rendering blockages
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     forceTrackTotalVisitors();
 } else {
@@ -857,16 +836,9 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 }
 
 window.googleLogin = async () => {
- try { 
-    await signInWithPopup(auth, provider); 
- } catch (e) { 
-    console.error(e); 
- }
+ try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
-window.googleLogout = () => { 
-    signOut(auth); 
-    toggleAccountDrawer(false); 
-};
+window.googleLogout = () => { signOut(auth); toggleAccountDrawer(false); };
 
 onAuthStateChanged(auth, (user) => {
  if (user) {
@@ -879,7 +851,7 @@ onAuthStateChanged(auth, (user) => {
    document.getElementById("drawerUserEmail").innerText = user.email;
    
    window.currentLoggedInUid = user.uid;
-   if(typeof window.loadSavedAddressToPanel === 'function') window.loadSavedAddressToPanel();
+   loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
    document.getElementById("userBox").style.setProperty("display", "none", "important");
@@ -890,7 +862,13 @@ onAuthStateChanged(auth, (user) => {
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
+let products = [], currentProducts = [], qty = [];
+window.activeClockLoops = {}; 
+
 let currentViewMode = "default"; 
+
+let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
+let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
@@ -1062,7 +1040,6 @@ async function loadProducts() {
  } catch (e) { 
      document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
  }
- window.loadSavedAddressToPanel();
  setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
@@ -1161,7 +1138,6 @@ window.toggleWishlistProduct = function(prodName, index) {
 
 function renderWishlistPanel() {
     const container = document.getElementById("panelWishlistContainer");
-    if(!container) return;
     if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5; font-size:12px;'>Wishlist is empty.</p>"; return; }
     container.innerHTML = "";
     wishlist.forEach((item, idx) => {
@@ -1176,14 +1152,15 @@ function renderWishlistPanel() {
     });
 }
 
-window.loadSavedAddressToPanel = function() {
+function loadSavedAddressToPanel() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
     const display = document.getElementById("savedAddressSummaryDisplay");
-    if(!display) return;
+    
     if(!addr.receiverName) { 
         display.innerHTML = "No profiles configured active."; 
         return; 
     }
+    
     display.innerHTML = `<strong>[Primary]:</strong> ${addr.receiverName} (${addr.phone})<br><span>${addr.flat || ""}, ${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
 }
 
