@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aquilux — Own. Your. Altitude.</title>
 
+<!-- Google Analytics (GA4) Integration -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q2P8NR8D6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3Q2P8NR8D6');
+</script>
+
 <meta name="google-site-verification" content="lJBIN4yiyuSvFcI7bAf5HUs02Havb9KxdEmmrD6pB3s" />
 <meta name="description" content="Aquilux — Own Your Altitude. Premium minimalist luxury fashion apparel store featuring elite oversized t-shirts, hoodies, and high-end streetwear.">
 <meta name="keywords" content="Aquilux, Aquilux clothing, luxury streetwear, oversized t-shirts, premium hoodies, old money fashion India, Yash Ojha">
@@ -1041,7 +1051,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -1057,18 +1067,14 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// Firebase module import list ke andar 'increment' check kar lein
-import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
-
 async function trackVisitorSecure() {
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
-        // Date.now() ko hata kar increment(1) ka use kiya hai
+        // [FIXED] Replaced bad Date.now() timestamp with proper Firestore numeric incrementer
         await setDoc(visitorRef, { total_visits: increment(1) }, { merge: true });
     } catch (e) { console.error("Tracking Error Logs:", e); }
 }
 trackVisitorSecure();
-
 
 window.googleLogin = async () => {
  try { await signInWithRedirect(auth, provider); } catch (e) { console.error(e); }
