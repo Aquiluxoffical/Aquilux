@@ -42,11 +42,11 @@ body {
  -webkit-font-smoothing: antialiased;
  transition: background 0.4s ease, color 0.4s ease;
  height: 100%;
- top: 0 !important; /* Fix Google Translate top bar shift */
+ top: 0 !important;
 }
 
-/* Hide Google Translate Banner Widgets for Clean Minimalist Look */
-.goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, .goog-te-banner { display: none !important; }
+/* Hide Google Translate Widgets securely */
+.goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, .goog-te-banner, .goog-te-menu-value { display: none !important; }
 body { top: 0px !important; }
 .goog-tooltip { display: none !important; }
 .goog-tooltip:hover { display: none !important; }
@@ -116,7 +116,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
 }
 .about-nav-btn:hover { opacity: 0.6; }
 
-/* Hidden default Google combo box */
 #google_translate_element {
  display: none !important;
  position: absolute;
@@ -555,14 +554,15 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <body>
 
 <!-- Hidden standard Google wrapper node -->
-<div id="google_translate_element"></div>
+<div id="google_translate_element" class="skiptranslate"></div>
 
 <div id="menuLoader">
  <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
  <p style="font-family:'Cormorant Garamond',serif; text-transform:uppercase; letter-spacing:2px; font-size:12px; margin-top:8px;">AQUILUX</p>
 </div>
 
-<div id="accountDrawer" class="account-sidebar-panel">
+<!-- Added skiptranslate class securely here so drawer components don't crash firebase DOM references -->
+<div id="accountDrawer" class="account-sidebar-panel skiptranslate">
    <div class="panel-header">
        <h2>My Premium Space</h2>
        <button class="close-panel-btn" onclick="toggleAccountDrawer(false)">×</button>
@@ -596,7 +596,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
            <span class="drawer-lang-label">Select Language:</span>
            <select class="lang-select-btn" id="customLangSelector" onchange="changeWebsiteLanguage(this.value)">
                <option value="en">🇺🇸 EN</option>
-               <option value="hi">🇮🇳 HI (हिंदी)</option>
+               <option value="hi">🇮🇳 HI</option>
                <option value="es">🇪🇸 ES</option>
                <option value="fr">🇫🇷 FR</option>
                <option value="de">🇩🇪 DE</option>
@@ -625,7 +625,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    </div>
 </div>
 
-<header>
+<!-- Added skiptranslate class on interactive headers to preserve clean Firebase click streams -->
+<header class="skiptranslate">
  <div class="logo-box" onclick="handleSmoothScrollToTop(event)">
    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
    <div class="logo-text">
@@ -756,9 +757,6 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ==========================================================================
-// 🔥 ULTIMATE DEBUGBABLE TRACKING CORE ENGINE
-// ==========================================================================
 async function forceTrackTotalVisitors() {
     console.log("Registry pipeline active. Testing handshake...");
     try {
@@ -798,7 +796,7 @@ onAuthStateChanged(auth, (user) => {
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("none", "important");
+   document.getElementById("userBox").style.setProperty("display", "none", "important");
    window.currentLoggedInUid = null;
  }
 });
@@ -814,25 +812,17 @@ let currentViewMode = "default";
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
-/* Fixed & More Accurate Google Translation Trigger Engine */
+/* Precise Cookie-friendly Google Translation Inject Engine */
 window.changeWebsiteLanguage = function(langCode) {
     const googleSelect = document.querySelector('.goog-te-combo');
     if (googleSelect) {
         googleSelect.value = langCode;
         googleSelect.dispatchEvent(new Event('change'));
     } else {
-        // If Google library delayed loading, try updating via iframe directly
-        const frame = document.querySelector('.goog-te-menu-frame');
-        if (frame) {
-            const frameDoc = frame.contentDocument || frame.contentWindow.document;
-            const items = frameDoc.querySelectorAll('.goog-te-menu2-item span.text');
-            for (let i = 0; i < items.length; i++) {
-                if (items[i].innerHTML.includes(langCode)) {
-                    items[i].click();
-                    break;
-                }
-            }
-        }
+        // Fallback cookie trigger mechanism if DOM nodes are fully translation blocked
+        document.cookie = "googtrans=/en/" + langCode + "; path=/;";
+        document.cookie = "googtrans=/en/" + langCode + "; domain=" + window.location.hostname + "; path=/;";
+        location.reload();
     }
 };
 
@@ -917,7 +907,7 @@ function switchAccountTab(tabName) {
     if(tabName === 'address') {
         const isCurrentlyActive = addrPage.classList.contains("active");
         addrPage.classList.toggle("active", !isCurrentlyActive);
-        addrBtn.classList.toggle("active", !isActive);
+        addrBtn.classList.toggle("active", !isCurrentlyActive);
         
         wishPage.classList.remove("active"); wishBtn.classList.remove("active");
     } else if(tabName === 'wishlist') {
