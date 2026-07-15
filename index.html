@@ -227,7 +227,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .saved-address-view-card { padding: 16px 8px; font-size: 12px; line-height: 1.7; color: var(--text); opacity: 0.8; }
 .saved-address-view-card h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; font-weight: 600; }
 
-/* Minimalist Language Selector CSS */
 #languageSelector {
     width: 100%;
     padding: 12px;
@@ -260,7 +259,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; }
 .mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
 
-/* Hide Google Translate top bar/header banner for clean premium UI */
 .goog-te-banner-frame, .goog-te-banner { display: none !important; }
 body { top: 0dvh !important; }
 .skiptranslate { display: none !important; }
@@ -522,14 +520,13 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 .hype-blurred-visual-card img {
     width: 100%;
     height: 100%;
-    object-fit: contain !important; /* Fixed image cropping issue */
+    object-fit: contain !important; 
     filter: blur(28px);
     transform: scale(1.15);
     opacity: 0.9;
     transition: filter 0.5s ease, transform 0.5s ease;
 }
 
-/* Dark Overlay Layer & Glassmorphic Badging inside Visual Container */
 .hype-overlay-container {
     position: absolute;
     inset: 0;
@@ -576,7 +573,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
     border-color: #ffffff;
 }
 
-/* Premium Digital Countdown Typography */
 .countdown-clock-dock {
     display: flex;
     gap: 24px;
@@ -605,7 +601,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
     color: #ffffff;
 }
 
-/* Interactive Card Elevation & Zoom Trigger Updates */
 .upcoming-hype-card:hover {
     transform: translateY(-4px);
 }
@@ -853,7 +848,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+// Step 2: Imported Firestore functions (doc, setDoc, getDoc) properly loaded
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -883,7 +879,14 @@ const provider = new GoogleAuthProvider();
 window.googleLogin = async () => {
  try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
-window.googleLogout = () => { signOut(auth); toggleAccountDrawer(false); };
+
+// Step 9: Clear cart arrays & trigger layout/cloud updates during logouts
+window.googleLogout = () => { 
+    signOut(auth); 
+    toggleAccountDrawer(false); 
+    window.cart = []; 
+    if(typeof draw === 'function') draw();
+};
 
 onAuthStateChanged(auth, (user) => {
  if (user) {
@@ -897,12 +900,46 @@ onAuthStateChanged(auth, (user) => {
    
    window.currentLoggedInUid = user.uid;
    loadSavedAddressToPanel();
+   
+   // Step 3: Trigger active remote database cart state tracking hooks
+   if(typeof loadCartFromFirestore === 'function') loadCartFromFirestore();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
    document.getElementById("userBox").style.setProperty("none", "important");
    window.currentLoggedInUid = null;
  }
 });
+
+// Step 4: Save Cart Core Sync Engine
+window.saveCartToFirestore = async function() {
+    if(!window.currentLoggedInUid) return;
+    try {
+        await setDoc(
+            doc(db, "users", window.currentLoggedInUid),
+            { cart: window.cart },
+            { merge: true }
+        );
+    } catch(err) {
+        console.error("Cloud cart backup drops failed:", err);
+    }
+};
+
+// Step 5: Load Cart Core Synchronization Execution
+window.loadCartFromFirestore = async function() {
+    if(!window.currentLoggedInUid) return;
+    try {
+        const snap = await getDoc(doc(db, "users", window.currentLoggedInUid));
+        if(snap.exists()){
+            const data = snap.data();
+            if(data.cart){
+                window.cart = data.cart;
+                if(typeof draw === 'function') draw();
+            }
+        }
+    } catch(err) {
+        console.error("Cloud cart synchronization retrieval failed:", err);
+    }
+};
 </script>
 
 <script>
@@ -912,7 +949,7 @@ window.activeClockLoops = {};
 
 let currentViewMode = "default"; 
 
-let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
+window.cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 window.handleSmoothScrollToTop = function(event) {
@@ -1072,7 +1109,6 @@ async function loadProducts() {
            const targetClockNodeId = `timer_node_id_${index}`;
            const upcomingLink = `product-page.html?id=${p.id || p.ID || index}&upcoming=true`;
            
-           /* Dynamic Premium Architecture Injection */
            upcomingContainer.innerHTML += `
                <div class="upcoming-hype-card">
                    <div class="hype-blurred-visual-card">
@@ -1308,9 +1344,9 @@ function changeQty(i, c){
 function addToCart(i){
  if(typeof qty[i] === 'undefined' || qty[i] === 0) { alert("Please select quantity first!"); return; }
  let size = document.getElementById("s"+i).value, quantity = qty[i], product = currentProducts[i];
- let item = cart.find(x => x.n == product.product && x.s == size);
+ let item = window.cart.find(x => x.n == product.product && x.s == size);
  if(item) { item.q += quantity; } 
- else { cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
+ else { window.cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
  
  const activeQtySent = qty[i];
  qty[i] = 0; 
@@ -1330,26 +1366,32 @@ function addToCart(i){
      triggerTelegramNotificationAlert(cartTrackingAlert);
  }
 
- draw(); toggleCartDrawer(true); 
+ draw(); 
+ // Step 6: Trigger cloud state distribution update immediately after product insertion
+ if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
+ toggleCartDrawer(true); 
 }
 
 window.changeDrawerQty = function(index, change) {
-    if(cart[index].q + change < 1) return;
-    cart[index].q += change;
+    if(window.cart[index].q + change < 1) return;
+    window.cart[index].q += change;
     draw();
+    // Step 7: Push instant quantity updates to database streams
+    if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
 function draw(){
  let t = 0; let h = "";
- cart.forEach((c, i) => {
+ window.cart.forEach((c, i) => {
    t += c.p * c.q;
-   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="cart.splice(${i},1);draw()">×</button></div>`;
+   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); draw(); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button></div>`;
+   // Step 8: Embedded custom splice hook parameter triggers directly inside item index removal action buttons above.
  });
- if(cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
- localStorage.setItem("aquilux_cart", JSON.stringify(cart));
+ if(window.cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
+ localStorage.setItem("aquilux_cart", JSON.stringify(window.cart));
  document.getElementById("drawerCartContainer").innerHTML = h; 
  document.getElementById("drawerCartTotal").textContent = t;
- let count = 0; cart.forEach(x => { count += x.q; }); 
+ let count = 0; window.cart.forEach(x => { count += x.q; }); 
  document.getElementById("cartCount").textContent = count;
 }
 
@@ -1366,14 +1408,14 @@ async function triggerTelegramNotificationAlert(messageText) {
 }
 
 function goToGateway(){
- if(cart.length === 0) { alert("Your shopping cart is empty!"); return; }
+ if(window.cart.length === 0) { alert("Your shopping cart is empty!"); return; }
  const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
  if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
      alert("Please save your delivery address first!");
      toggleAccountDrawer(true); switchAccountTab('address'); return;
  }
  const orderData = {
-   cart: cart, total: Number(document.getElementById("drawerCartTotal").textContent),
+   cart: window.cart, total: Number(document.getElementById("drawerCartTotal").textContent),
    receiverName: savedAddr.receiverName, phone: savedAddr.phone,
    flat: savedAddr.flat || "", road: savedAddr.road || "", landmark: savedAddr.landmark || "", 
    city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
@@ -1382,6 +1424,11 @@ function goToGateway(){
 
  const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total: ₹${orderData.total}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
  triggerTelegramNotificationAlert(alertMessage);
+
+ // Step 10: Clear local and cloud state parameters before passing controls over to validation nodes
+ window.cart = [];
+ draw();
+ if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 
  window.location.href = "payment-gateway.html";
 }
