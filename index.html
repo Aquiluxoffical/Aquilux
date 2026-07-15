@@ -38,6 +38,29 @@ body {
  -webkit-font-smoothing: antialiased;
  transition: background 0.4s ease, color 0.4s ease;
  height: 100%;
+ padding-top: 34px; /* Space for the exclusive offer top bar */
+}
+
+/* ==========================================================================
+   Offer Top Bar Style
+   ========================================================================== */
+.offer-top-bar {
+ position: fixed;
+ top: 0;
+ left: 0;
+ width: 100%;
+ height: 34px;
+ background: var(--text);
+ color: var(--bg);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-size: 11px;
+ font-weight: 500;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ z-index: 101;
+ border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* ==========================================================================
@@ -45,7 +68,7 @@ body {
    ========================================================================== */
 header {
  position: fixed;
- top: 0;
+ top: 34px; /* Pushed down smoothly under offer bar */
  width: 100%;
  padding: 22px 6%;
  display: flex;
@@ -56,6 +79,7 @@ header {
  -webkit-backdrop-filter: blur(16px);
  border-bottom: 1px solid var(--line);
  z-index: 100;
+ transition: top 0.3s ease;
 }
 
 .logo-box { 
@@ -252,7 +276,27 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .panel-action-icon-btn:hover { opacity: 1; color: #ff4a4a; }
 
 .cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; }
-.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 20px; flex-shrink: 0; width: 100%; }
+.cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 16px; flex-shrink: 0; width: 100%; }
+
+/* Redesigned Minimal Cart Pricing Breakdown */
+.cart-summary-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+.cart-summary-line {
+  display: flex;
+  justify-content: space-between;
+  opacity: 0.7;
+}
+.cart-summary-line.discount-highlight {
+  color: #00aa66;
+  opacity: 1;
+  font-weight: 500;
+}
+
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
 .mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; margin-top: 5px; }
@@ -645,7 +689,9 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 }
 
 @media(max-width: 767px) {
- header { padding: 14px 20px !important; }
+ body { padding-top: 30px; }
+ .offer-top-bar { font-size: 9px; letter-spacing: 1.5px; height: 30px; }
+ header { top: 30px; padding: 14px 20px !important; }
  .logo-box img { height: 36px !important; } 
  .logo-text strong { font-size: 22px !important; }
  .header-right { gap: 16px !important; }
@@ -668,6 +714,11 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </style>
 </head>
 <body>
+
+<!-- Exclusive Top Offer Banner -->
+<div class="offer-top-bar">
+    ✦ Free Shipping On Orders Above ₹1499 · Use Code: AQUILUX10 ✦
+</div>
 
 <div id="google_translate_element" style="display:none;"></div>
 
@@ -709,7 +760,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
                <select id="languageSelector">
                    <option value="en">🇺🇸 English</option>
                    <option value="hi">🇮🇳 हिन्दी</option>
-                   <option value="gu">🇮🇳 ગુજરા態</option>
+                   <option value="gu">🇮🇳 ગુજરાતી</option>
                    <option value="es">🇪🇸 Español</option>
                    <option value="fr">🇫🇷 Français</option>
                    <option value="de">🇩🇪 Deutsch</option>
@@ -739,6 +790,17 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
        <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
    </div>
    <div class="cart-footer-calculation-dock">
+       <!-- Dynamic Calculations Layout -->
+       <div class="cart-summary-breakdown">
+           <div class="cart-summary-line">
+               <span>Bag Subtotal</span>
+               <span>₹<span id="drawerCartSubtotal">0</span></span>
+           </div>
+           <div class="cart-summary-line discount-highlight" id="discountLine" style="display:none;">
+               <span>Volume Promo Discount (10%)</span>
+               <span>-₹<span id="drawerCartDiscount">0</span></span>
+           </div>
+       </div>
        <div class="cart-panel-total-row">
            <span>Total Remittance</span>
            <span>₹<span id="drawerCartTotal">0</span></span>
@@ -848,7 +910,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-// Added missing updateDoc and increment modules to fix trackVisitor console errors
 import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -879,7 +940,6 @@ window.googleLogin = async () => {
  try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
 
-// Problem 2 Fix: Made logout function async, clears live variables, updates database cloud backup, then destroys session
 window.googleLogout = async () => { 
     try {
         window.cart = []; 
@@ -894,7 +954,6 @@ window.googleLogout = async () => {
     }
 };
 
-// Problem 1 Fix: Configured onAuthStateChanged handler to operate natively as an async block 
 onAuthStateChanged(auth, async (user) => {
  if (user) {
    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
@@ -908,7 +967,6 @@ onAuthStateChanged(auth, async (user) => {
    window.currentLoggedInUid = user.uid;
    loadSavedAddressToPanel();
    
-   // Sync cloud data seamlessly upon initial user detection
    if(typeof loadCartFromFirestore === 'function') {
        await loadCartFromFirestore();
    }
@@ -919,7 +977,6 @@ onAuthStateChanged(auth, async (user) => {
  }
 });
 
-// Save Cart Function with Premium Multi-State Tracking Optimization
 window.saveCartToFirestore = async function() {
     if(!window.currentLoggedInUid) return;
     try {
@@ -937,7 +994,6 @@ window.saveCartToFirestore = async function() {
     }
 };
 
-// Load Cart Function
 window.loadCartFromFirestore = async function() {
     if(!window.currentLoggedInUid) return;
     try {
@@ -1253,7 +1309,6 @@ window.toggleWishlistProduct = function(prodName, index) {
    else { const p = products.find(x => x.product === prodName); if(p) window.wishlist.push(p); }
    localStorage.setItem("aquilux_wishlist", JSON.stringify(window.wishlist));
    displayProducts(currentProducts); renderWishlistPanel();
-   // Highly integrated: Wishlist changes will auto-merge to cloud backup along with cart items
    if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
@@ -1399,16 +1454,35 @@ window.changeDrawerQty = function(index, change) {
     if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
+/* Updated draw() with Dynamic Offer Discount Calculations */
 function draw(){
- let t = 0; let h = "";
+ let subtotal = 0; let h = "";
  window.cart.forEach((c, i) => {
-   t += c.p * c.q;
+   subtotal += c.p * c.q;
    h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); draw(); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button></div>`;
  });
+ 
  if(window.cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
  localStorage.setItem("aquilux_cart", JSON.stringify(window.cart));
  document.getElementById("drawerCartContainer").innerHTML = h; 
- document.getElementById("drawerCartTotal").textContent = t;
+ 
+ // Discount Calculations Layer
+ let discount = 0;
+ const discountLineNode = document.getElementById("discountLine");
+ 
+ if (subtotal >= 1499) {
+     discount = Math.round(subtotal * 0.10); // 10% auto discount rules applied
+     if(discountLineNode) discountLineNode.style.display = "flex";
+     document.getElementById("drawerCartDiscount").textContent = discount;
+ } else {
+     if(discountLineNode) discountLineNode.style.display = "none";
+ }
+ 
+ let finalTotal = subtotal - discount;
+ 
+ document.getElementById("drawerCartSubtotal").textContent = subtotal;
+ document.getElementById("drawerCartTotal").textContent = finalTotal;
+ 
  let count = 0; window.cart.forEach(x => { count += x.q; }); 
  document.getElementById("cartCount").textContent = count;
 }
@@ -1432,19 +1506,24 @@ function goToGateway(){
      alert("Please save your delivery address first!");
      toggleAccountDrawer(true); switchAccountTab('address'); return;
  }
+ 
+ // Syncing final calculated parameters safely
+ const grossTotalCalculated = Number(document.getElementById("drawerCartTotal").textContent);
+ const discountCalculated = Number(document.getElementById("drawerCartDiscount").textContent || 0);
+ 
  const orderData = {
-   cart: window.cart, total: Number(document.getElementById("drawerCartTotal").textContent),
+   cart: window.cart, 
+   total: grossTotalCalculated,
+   discountApplied: discountCalculated,
    receiverName: savedAddr.receiverName, phone: savedAddr.phone,
    flat: savedAddr.flat || "", road: savedAddr.road || "", landmark: savedAddr.landmark || "", 
    city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
  };
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
 
- const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total: ₹${orderData.total}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
+ const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total (After Offer): ₹${orderData.total}\n🏷️ Promo Discount Value: ₹${orderData.discountApplied}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
  triggerTelegramNotificationAlert(alertMessage);
 
- // Problem 3 Fix: Persistent architecture setup. Cart is NOT cleared here anymore. 
- // Ab cart validation checkout nodes (payment-gateway.html) successfully execution hone ke baad hi completely flush hoga.
  window.location.href = "payment-gateway.html";
 }
 </script>
