@@ -148,39 +148,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
 .google-btn span { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
-/* Language Container Placement Inside Drawer */
-.drawer-lang-container {
- border-bottom: 1px solid var(--line);
- padding: 18px 4px;
- display: flex;
- align-items: center;
- justify-content: space-between;
-}
-.drawer-lang-label {
- font-size: 11px;
- font-weight: 500;
- text-transform: uppercase;
- letter-spacing: 1.5px;
- opacity: 0.8;
-}
-.lang-select-btn {
- background: transparent;
- color: var(--text);
- border: 1px solid var(--line);
- padding: 6px 10px;
- font-size: 11px;
- font-weight: 600;
- letter-spacing: 0.5px;
- cursor: pointer;
- border-radius: 2px;
- outline: none;
- margin-top: 0 !important;
-}
-.lang-select-btn option {
- background: var(--bg);
- color: var(--text);
-}
-
 /* ==========================================================================
    3. Sliding Premium Drawers (Ultra Minimal Redesign)
    ========================================================================== */
@@ -539,9 +506,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </head>
 <body>
 
-<!-- Hidden system mapping container -->
-<div id="google_translate_element" style="display:none !important;"></div>
-
 <div id="menuLoader">
  <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
  <p style="font-family:'Cormorant Garamond',serif; text-transform:uppercase; letter-spacing:2px; font-size:12px; margin-top:8px;">AQUILUX</p>
@@ -575,19 +539,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
            <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
        </div>
        <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
-       
-       <!-- Language Selector Dropdown Box Frame with Flags -->
-       <div class="drawer-lang-container">
-           <span class="drawer-lang-label">Language / Flag:</span>
-           <select class="lang-select-btn" id="customLangSelector" onchange="triggerGlobalRerouteTranslation(this.value)">
-               <option value="en">🇺🇸 EN</option>
-               <option value="hi">🇮🇳 HI</option>
-               <option value="es">🇪🇸 ES</option>
-               <option value="fr">🇫🇷 FR</option>
-               <option value="de">🇩🇪 DE</option>
-               <option value="ja">🇯🇵 JA</option>
-           </select>
-       </div>
    </div>
 
    <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
@@ -708,19 +659,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude. · aquilux.support@gmail.com</p>
 </footer>
 
-<!-- Google Translate Core Script Native Initialization Layer -->
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'en,hi,es,fr,de,ja',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-    autoDisplay: false
-  }, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 <script type="module">
 // FRESH CACHE-BUSTING AND ROBUST IMPORT BINDINGS FOR GITHUB PAGES
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js?v=999";
@@ -741,6 +679,9 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// ==========================================================================
+// 🔥 ULTIMATE DEBUGBABLE TRACKING CORE ENGINE
+// ==========================================================================
 async function forceTrackTotalVisitors() {
     console.log("Registry pipeline active. Testing handshake...");
     try {
@@ -751,9 +692,11 @@ async function forceTrackTotalVisitors() {
         console.log("Success: Matrix counter logs updated on Firestore.");
     } catch (error) { 
         console.error("Critical Matrix Interruption:", error);
+        alert("Tracker System Alert: " + error.message);
     }
 }
 
+// Safer load execution pattern to bypass network rendering blockages
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
     forceTrackTotalVisitors();
 } else {
@@ -779,7 +722,7 @@ onAuthStateChanged(auth, (user) => {
    loadSavedAddressToPanel();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("display", "none", "important");
+   document.getElementById("userBox").style.setProperty("none", "important");
    window.currentLoggedInUid = null;
  }
 });
@@ -794,36 +737,6 @@ let currentViewMode = "default";
 
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
-
-/* Clean Translation Fallback Native Selector Execution Hook */
-window.triggerGlobalRerouteTranslation = function(langCode) {
-    const googleSelect = document.querySelector('.goog-te-combo');
-    if (googleSelect) {
-        googleSelect.value = langCode;
-        googleSelect.dispatchEvent(new Event('change'));
-        localStorage.setItem("aquilux_active_lang", langCode);
-    } else {
-        // Safe domain routing fallback if local compilation requires frame proxy redirection
-        localStorage.setItem("aquilux_active_lang", langCode);
-        let currentCleanUrl = window.location.href;
-        if (currentCleanUrl.includes("translate.google.com")) {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('u')) currentCleanUrl = urlParams.get('u');
-        }
-        if (langCode === 'en') {
-            window.location.href = currentCleanUrl;
-        } else {
-            window.location.href = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${encodeURIComponent(currentCleanUrl)}`;
-        }
-    }
-};
-
-window.addEventListener("DOMContentLoaded", () => {
-    const cachedActiveLang = localStorage.getItem("aquilux_active_lang");
-    if (cachedActiveLang && document.getElementById("customLangSelector")) {
-        document.getElementById("customLangSelector").value = cachedActiveLang;
-    }
-});
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
