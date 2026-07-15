@@ -24,7 +24,7 @@
 :root {
  --bg: #ffffff;             
  --text: #111111;           
- --line: rgba(17, 17, 17, 0.05); 
+ --line: rgba(17, 17, 17, 0.06); 
  --glass-bg: rgba(255, 255, 255, 0.45);
  --glass-blur: 12px;
 }
@@ -41,7 +41,7 @@ body {
 }
 
 /* ==========================================================================
-   New Luxury Receipt Style Popup (Modal Layer)
+   Luxury Receipt Style Popup (Modal Layer)
    ========================================================================== */
 .promo-popup-overlay {
  position: fixed;
@@ -87,7 +87,6 @@ body {
  color: var(--text);
  opacity: 0.4;
  transition: opacity 0.2s;
- margin-top: 0 !important;
  padding: 0;
 }
 .receipt-close-btn:hover { opacity: 1; }
@@ -150,7 +149,7 @@ header {
  display: flex;
  justify-content: space-between;
  align-items: center;
- background: rgba(var(--bg), 0.85);
+ background: color-mix(in srgb, var(--bg) 85%, transparent);
  backdrop-filter: blur(16px);
  -webkit-backdrop-filter: blur(16px);
  border-bottom: 1px solid var(--line);
@@ -216,7 +215,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 
 .theme-switcher { display: flex; gap: 10px; margin-top: 6px; }
 .theme-dot {
- width: 12px; height: 12px; border-radius: 50%; border: 1px solid rgba(var(--text), 0.15); cursor: pointer; transition: transform 0.2s ease;
+ width: 12px; height: 12px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--text) 15%, transparent); cursor: pointer; transition: transform 0.2s ease;
 }
 .theme-dot:hover { transform: scale(1.2); }
 .theme-dot.light { background: #ffffff; }
@@ -237,7 +236,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
  border-radius: 2px;
  cursor: pointer;
  transition: background 0.2s, color 0.2s;
- margin-top: 0 !important;
 }
 .google-btn:hover { background: var(--text); color: var(--bg); }
 .google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
@@ -306,7 +304,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
  cursor: pointer; 
  text-align: left; 
  transition: padding-left 0.3s ease, opacity 0.2s; 
- margin-top: 0; 
  opacity: 0.8;
 }
 .tab-nav-btn:hover { 
@@ -321,7 +318,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
  color: var(--text) !important;
 }
 
-.account-page-content { display: none; margin-top: 0; margin-bottom: 0; background: rgba(17,17,17,0.01); border-bottom: 1px solid var(--line); }
+.account-page-content { display: none; margin-top: 0; margin-bottom: 0; background: color-mix(in srgb, var(--text) 1%, transparent); border-bottom: 1px solid var(--line); }
 .account-page-content.active { display: block; }
 .saved-address-view-card { padding: 16px 8px; font-size: 12px; line-height: 1.7; color: var(--text); opacity: 0.8; }
 .saved-address-view-card h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; font-weight: 600; }
@@ -341,7 +338,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .logout-sidebar-btn { width: auto; align-self: flex-start; padding: 8px 4px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: var(--text); opacity: 0.4; border: none; border-bottom: 1px solid var(--text); border-radius: 0; cursor: pointer; margin-top: 32px; transition: opacity 0.2s; }
 .logout-sidebar-btn:hover { opacity: 1; }
 
-.panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(17,17,17,0.04); font-size: 13px; }
+.panel-item-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid color-mix(in srgb, var(--text) 4%, transparent); font-size: 13px; }
 .panel-item-row img { width: 42px; aspect-ratio: 3/4; object-fit: cover; }
 .panel-item-row-info { flex: 1; }
 .panel-item-row-info h5 { font-size: 12px; font-weight: 500; margin-bottom: 2px; text-transform: uppercase; }
@@ -374,8 +371,57 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
 .mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; margin-top: 5px; }
-.mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; }
+.mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); }
 .mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
+
+/* ==========================================================================
+   AI Search Core Elements Styling Meticulously Synchronized
+   ========================================================================== */
+.search-ai-dock {
+    position: relative;
+    width: 240px;
+}
+.search-ai-input {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 12px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+}
+.search-ai-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-top: none;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    max-height: 250px;
+    overflow-y: auto;
+}
+.suggestion-node {
+    padding: 12px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    transition: background 0.2s ease;
+}
+.suggestion-node:hover {
+    background: color-mix(in srgb, var(--text) 4%, transparent);
+}
+.suggestion-node:last-child {
+    border-bottom: none;
+}
 
 .goog-te-banner-frame, .goog-te-banner { display: none !important; }
 body { top: 0dvh !important; }
@@ -436,7 +482,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
  display: flex; align-items: center; justify-content: center; cursor: pointer; 
  color: #111111; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);
  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
- margin-top: 0 !important;
 }
 .wishlist-toggle-icon:hover { transform: scale(1.06); background: #ffffff; }
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
@@ -502,7 +547,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
     letter-spacing: 0.5px;
     height: auto;
     padding: 2px 14px 2px 0;
-    margin-top: 0 !important;
     cursor: pointer;
     outline: none;
     appearance: none;
@@ -529,7 +573,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
     font-weight: 300;
     color: var(--text);
     cursor: pointer;
-    margin-top: 0 !important;
     padding: 0 2px;
     transition: opacity 0.2s;
 }
@@ -553,7 +596,6 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
     border: 1px solid var(--text) !important;
     border-radius: 2px !important;
     cursor: pointer;
-    margin-top: 0 !important;
     transition: all 0.3s ease;
 }
 .grid-add-cart-btn:hover {
@@ -565,7 +607,7 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
 button, input, textarea, select { padding: 12px; background: var(--glass-bg); backdrop-filter: blur(var(--glass-blur)); color: var(--text); border: 1px solid var(--line); margin-top: 10px; font-family: 'Inter', sans-serif; border-radius: 2px; outline: none; }
 input, textarea { width: 100%; }
 
-.marquee { width: 100%; overflow: hidden; background: rgba(var(--text), 0.01); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
+.marquee { width: 100%; overflow: hidden; background: color-mix(in srgb, var(--text) 1%, transparent); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 40px; }
 .marquee-track { display: flex; width: max-content; animation: marquee 30s linear infinite; }
 .marquee-track span { white-space: nowrap; padding: 14px 40px; font-size: 11px; letter-spacing: 2px; color: var(--text); opacity: 0.5; text-transform: uppercase; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
@@ -592,7 +634,6 @@ input, textarea { width: 100%; }
     border-radius: 2px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 0 !important;
 }
 .perspective-toggle-btn:hover { border-color: var(--text); }
 .perspective-toggle-btn.mode-try { background: var(--text); color: var(--bg); border-color: var(--text); }
@@ -683,7 +724,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
     cursor: pointer;
     border-radius: 2px;
     transition: all 0.3s ease;
-    margin-top: 0 !important;
 }
 .hype-notify-action-btn:hover {
     background: transparent;
@@ -732,34 +772,16 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 }
 
 /* ==========================================================================
-   7. Responsiveness & Tablet Fix Viewports (iPad Portrait & Landscape Tuning)
+   7. Responsiveness & Tablet Fix Viewports
    ========================================================================== */
 @media screen and (min-width: 768px) and (max-width: 1180px) {
- header {
-     padding: 18px 30px !important;
- }
- .hero {
-     min-height: 90vh;
-     min-height: 90dvh;
- }
- .hero h1 {
-     font-size: 4rem !important;
- }
- .grid {
-     grid-template-columns: repeat(3, 1fr) !important;
-     gap: 30px 20px !important;
- }
- .account-sidebar-panel,
- .cart-sidebar-panel {
-     width: 420px;
- }
- section {
-     padding: 80px 30px !important;
- }
- .upcoming-landscape-grid {
-     grid-template-columns: 1fr !important;
-     gap: 32px;
- }
+ header { padding: 18px 30px !important; }
+ .hero { min-height: 90vh; min-height: 90dvh; }
+ .hero h1 { font-size: 4rem !important; }
+ .grid { grid-template-columns: repeat(3, 1fr) !important; gap: 30px 20px !important; }
+ .account-sidebar-panel, .cart-sidebar-panel { width: 420px; }
+ section { padding: 80px 30px !important; }
+ .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 32px; }
 }
 
 @media(max-width: 767px) {
@@ -770,15 +792,12 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
  .cart-title span { display: none !important; }
  #cartCount { width: 16px !important; height: 16px !important; font-size: 9px !important; }
  .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 30px 20px; }
- 
  .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 28px 12px !important; }
- 
  .hero h1 { font-size: 2.4rem; letter-spacing: 2px; }
  .collection-header { flex-direction: column; align-items: flex-start; gap: 15px; }
  .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 12px; }
  .filter-split-container { width: 100%; }
  .title { font-size: 1.8rem; margin-bottom: 24px; }
- 
  .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 24px; }
  .countdown-clock-dock { gap: 14px; }
  .countdown-segment-node { font-size: 24px; min-width: 40px; }
@@ -787,10 +806,9 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </head>
 <body>
 
-<!-- Sleek Receipt Style Promo Popup Modal Layer -->
 <div id="promoPopupOverlay" class="promo-popup-overlay">
     <div class="receipt-promo-modal">
-        <button class="receipt-close-btn" onclick="togglePromoPopup(false)">×</button>
+        <button id="closePromoBtn" class="receipt-close-btn">×</button>
         <div class="receipt-header">
             <h3>Exclusive Offer</h3>
             <p>Aquilux — Live Tier Manifest</p>
@@ -818,18 +836,18 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <div id="google_translate_element" style="display:none;"></div>
 
 <div id="menuLoader">
- <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+ <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" id="loaderLogoImg">
  <p style="font-family:'Cormorant Garamond',serif; text-transform:uppercase; letter-spacing:2px; font-size:12px; margin-top:8px;">AQUILUX</p>
 </div>
 
 <div id="accountDrawer" class="account-sidebar-panel">
    <div class="panel-header">
        <h2>My Premium Space</h2>
-       <button class="close-panel-btn" onclick="toggleAccountDrawer(false)">×</button>
+       <button id="closeAccountDrawerBtn" class="close-panel-btn">×</button>
    </div>
    
    <div class="profile-meta-card">
-       <img id="drawerUserImg" src="" alt="User Profile">
+       <img id="drawerUserImg" src="" alt="User Profile" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
        <div>
            <h4 id="drawerUserName">Guest User</h4>
            <p id="drawerUserEmail">Sign in to trace metadata logs</p>
@@ -837,18 +855,16 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    </div>
 
    <div class="account-tabs-nav">
-       <button id="tabBtnAddress" class="tab-nav-btn" onclick="switchAccountTab('address')">Address Details ▾</button>
+       <button id="tabBtnAddress" class="tab-nav-btn">Address Details ▾</button>
        <div id="accountPageAddress" class="account-page-content">
            <div class="saved-address-view-card">
                <h4>Auto Saved Core Address</h4>
                <div id="savedAddressSummaryDisplay">Loading configuration logs...</div>
            </div>
        </div>
-       <button id="tabBtnManageAddr" class="tab-nav-btn manage-btn-style" onclick="window.location.href='address.html'">Manage Primary Address ↗</button>
+       <button id="tabBtnManageAddr" class="tab-nav-btn manage-btn-style">Manage Primary Address ↗</button>
        
-       <button id="tabBtnLanguage" class="tab-nav-btn" onclick="switchAccountTab('language')">
-       🌐 Language ▾
-       </button>
+       <button id="tabBtnLanguage" class="tab-nav-btn">🌐 Language ▾</button>
        <div id="accountPageLanguage" class="account-page-content">
            <div class="saved-address-view-card">
                <h4>Select Language</h4>
@@ -866,20 +882,20 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
            </div>
        </div>
 
-       <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist ▾</button>
+       <button id="tabBtnWishlist" class="tab-nav-btn">My Wishlist ▾</button>
        <div id="accountPageWishlist" class="account-page-content">
            <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
        </div>
-       <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
+       <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style">My Orders ↗</button>
    </div>
 
-   <button onclick="googleLogout()" class="logout-sidebar-btn">Terminate Session (Logout)</button>
+   <button id="sidebarLogoutBtn" class="logout-sidebar-btn">Terminate Session (Logout)</button>
 </div>
 
 <div id="cartDrawer" class="cart-sidebar-panel">
    <div class="panel-header">
        <h2>Shopping Bag</h2>
-       <button class="close-panel-btn" onclick="toggleCartDrawer(false)">×</button>
+       <button id="closeCartDrawerBtn" class="close-panel-btn">×</button>
    </div>
    <div class="cart-items-scroll-area" id="drawerCartContainer">
        <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
@@ -899,38 +915,38 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
            <span>Total Remittance</span>
            <span>₹<span id="drawerCartTotal">0</span></span>
        </div>
-       <button class="payment-btn" onclick="goToGateway()">Proceed To Checkout</button>
+       <button id="checkoutActionBtn" class="payment-btn">Proceed To Checkout</button>
    </div>
 </div>
 
 <header>
- <div class="logo-box" onclick="handleSmoothScrollToTop(event)">
-   <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
+ <div class="logo-box" id="logoBoxNav">
+   <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png" id="headerLogoImg" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
    <div class="logo-text">
      <strong>Aquilux</strong>
      <div class="theme-switcher">
-        <button onclick="event.stopPropagation(); setTheme('light')" class="theme-dot light"></button>
-        <button onclick="event.stopPropagation(); setTheme('olive')" class="theme-dot olive"></button>
-        <button onclick="event.stopPropagation(); setTheme('dark')" class="theme-dot dark"></button>
+        <button id="themeDotLight" class="theme-dot light"></button>
+        <button id="themeDotOlive" class="theme-dot olive"></button>
+        <button id="themeDotDark" class="theme-dot dark"></button>
      </div>
    </div>
  </div>
 
  <div class="header-right">
    <a href="about.html" class="about-nav-btn">About</a>
-   <div class="cart-title" onclick="toggleCartDrawer(true)">
+   <div class="cart-title" id="cartTitleTrigger">
      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
        <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L23 6H6"></path>
      </svg>
      <span>Cart</span><span id="cartCount">0</span>
    </div>
-   <button id="loginBtn" onclick="googleLogin()" class="google-btn">
+   <button id="loginBtn" class="google-btn">
      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
      <span>Sign in</span>
    </button>
-   <div id="userBox" style="display:none;" onclick="toggleAccountDrawer(true)">
-       <img id="userImg" alt="Profile Target">
+   <div id="userBox" style="display:none;">
+       <img id="userImg" alt="Profile Target" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
    </div>
  </div>
 </header>
@@ -956,7 +972,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    <div class="title" style="text-align:left; margin-bottom:0; font-size:1.8rem;">Collection</div>
    
    <div class="controls-right-dock">
-       <button id="perspectiveToggleBtn" class="perspective-toggle-btn" onclick="togglePerspectiveViewMode()">
+       <button id="perspectiveToggleBtn" class="perspective-toggle-btn">
            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                <rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect>
                <rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect>
@@ -965,12 +981,12 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
        </button>
 
        <div class="search-ai-dock">
-           <input type="text" id="productSearchInput" class="search-ai-input" placeholder="Search parameters via AI..." oninput="handleAiSearchInput(this.value)">
+           <input type="text" id="productSearchInput" class="search-ai-input" placeholder="Search parameters via AI...">
            <div id="searchSuggestionsTray" class="search-ai-suggestions"></div>
        </div>
 
        <div class="filter-split-container">
-           <select id="collectionFilter" onchange="filterProducts()">
+           <select id="collectionFilter">
              <option value="all">All Collections</option>
              <option value="T-shirt">T-shirts</option>
              <option value="Hoodies">Hoodies</option>
@@ -980,7 +996,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
              <option value="Crop Tee">Crop Tee</option>
            </select>
            
-           <select id="priceFilter" onchange="filterProducts()">
+           <select id="priceFilter">
              <option value="all">All Prices</option>
              <option value="0-499">₹0 - ₹499</option>
              <option value="500-999">₹500 - ₹999</option>
@@ -1003,8 +1019,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -1017,32 +1033,31 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-async function trackVisitor() {
-    try {
-        const visitorRef = doc(db, "analytics", "live_stats");
-        await updateDoc(visitorRef, {
-            total_visits: increment(1)
-        });
-    } catch (e) { console.error("Tracking Error:", e); }
-}
-trackVisitor();
-
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+async function trackVisitorSecure() {
+    try {
+        const visitorRef = doc(db, "analytics", "live_stats");
+        // Safe setDoc execution preventing 'No document to update' exception errors
+        await setDoc(visitorRef, { total_visits: Date.now() }, { merge: true });
+    } catch (e) { console.error("Tracking Error Logs:", e); }
+}
+trackVisitorSecure();
+
 window.googleLogin = async () => {
- try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
+ try { await signInWithRedirect(auth, provider); } catch (e) { console.error(e); }
 };
 
 window.googleLogout = async () => { 
     try {
         window.cart = []; 
-        if(typeof draw === 'function') draw();
-        if(typeof saveCartToFirestore === 'function') {
-            await saveCartToFirestore();
+        if(typeof window.draw === 'function') window.draw();
+        if(typeof window.saveCartToFirestore === 'function') {
+            await window.saveCartToFirestore();
         }
         await signOut(auth); 
-        toggleAccountDrawer(false); 
+        if(typeof window.toggleAccountDrawer === 'function') window.toggleAccountDrawer(false); 
     } catch(err) {
         console.error("Session termination execution failed:", err);
     }
@@ -1052,18 +1067,15 @@ onAuthStateChanged(auth, async (user) => {
  if (user) {
    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
    document.getElementById("userBox").style.setProperty("display", "flex", "important");
-   document.getElementById("userImg").src = user.photoURL;
+   document.getElementById("userImg").src = user.photoURL || '';
    
-   document.getElementById("drawerUserImg").src = user.photoURL;
-   document.getElementById("drawerUserName").innerText = user.displayName;
-   document.getElementById("drawerUserEmail").innerText = user.email;
+   document.getElementById("drawerUserImg").src = user.photoURL || '';
+   document.getElementById("drawerUserName").innerText = user.displayName || 'Premium User';
+   document.getElementById("drawerUserEmail").innerText = user.email || '';
    
    window.currentLoggedInUid = user.uid;
-   loadSavedAddressToPanel();
-   
-   if(typeof loadCartFromFirestore === 'function') {
-       await loadCartFromFirestore();
-   }
+   if(typeof window.loadSavedAddressToPanel === 'function') window.loadSavedAddressToPanel();
+   if(typeof window.loadCartFromFirestore === 'function') await window.loadCartFromFirestore();
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
    document.getElementById("userBox").style.setProperty("display", "none", "important");
@@ -1096,13 +1108,13 @@ window.loadCartFromFirestore = async function() {
             const data = snap.data();
             if(data.cart){
                 window.cart = data.cart;
-                if(typeof draw === 'function') draw();
+                if(typeof window.draw === 'function') window.draw();
             }
             if(data.wishlist) {
                 window.wishlist = data.wishlist;
                 localStorage.setItem("aquilux_wishlist", JSON.stringify(window.wishlist));
-                if(typeof renderWishlistPanel === 'function') renderWishlistPanel();
-                if(typeof displayProducts === 'function' && typeof currentProducts !== 'undefined') displayProducts(currentProducts);
+                if(typeof window.renderWishlistPanel === 'function') window.renderWishlistPanel();
+                if(typeof window.displayProducts === 'function' && typeof window.currentProducts !== 'undefined') window.displayProducts(window.currentProducts);
             }
         }
     } catch(err) {
@@ -1113,9 +1125,10 @@ window.loadCartFromFirestore = async function() {
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
-let products = [], currentProducts = [], qty = [];
+window.products = []; 
+window.currentProducts = [];
+window.qtyMap = {}; 
 window.activeClockLoops = {}; 
-
 let currentViewMode = "default"; 
 
 window.cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
@@ -1147,14 +1160,15 @@ window.togglePerspectiveViewMode = function() {
         label.innerText = "Default View";
         btn.classList.remove("mode-try");
     }
-    displayProducts(currentProducts);
+    window.displayProducts(window.currentProducts);
 };
 
 window.handleAiSearchInput = function(queryStr) {
     const tray = document.getElementById("searchSuggestionsTray");
     const cleanQuery = queryStr.trim().toLowerCase();
     if(!cleanQuery) { tray.style.display = "none"; executeUnifiedFiltering(); return; }
-    const filteredSuggestions = products.filter(p => p.product.toLowerCase().includes(cleanQuery));
+    
+    const filteredSuggestions = window.products.filter(p => (p.product || "").toLowerCase().includes(cleanQuery));
     if(filteredSuggestions.length === 0) {
         tray.innerHTML = `<div class="suggestion-node" style="opacity:0.5; cursor:default;">No matches synced.</div>`;
     } else {
@@ -1162,50 +1176,51 @@ window.handleAiSearchInput = function(queryStr) {
         filteredSuggestions.slice(0, 5).forEach(p => {
             const node = document.createElement("div");
             node.className = "suggestion-node";
-            node.innerText = p.product;
-            node.onclick = () => {
-                document.getElementById("productSearchInput").value = p.product;
+            node.innerText = p.product || '';
+            node.addEventListener("click", () => {
+                document.getElementById("productSearchInput").value = p.product || '';
                 tray.style.display = "none";
-                displayProducts([p]);
-            };
+                window.displayProducts([p]);
+            });
             tray.appendChild(node);
         });
     }
     tray.style.display = "block";
-    displayProducts(filteredSuggestions);
+    window.displayProducts(filteredSuggestions);
 };
 
 document.addEventListener("click", (e) => {
-    if(!e.target.closest(".search-ai-dock")) { document.getElementById("searchSuggestionsTray").style.display = "none"; }
+    const tray = document.getElementById("searchSuggestionsTray");
+    if(tray && !e.target.closest(".search-ai-dock")) { tray.style.display = "none"; }
 });
 
-function toggleAccountDrawer(openState) {
-    if(openState) toggleCartDrawer(false); 
+window.toggleAccountDrawer = function(openState) {
+    if(openState) window.toggleCartDrawer(false); 
     const panel = document.getElementById("accountDrawer");
+    if(!panel) return;
     panel.style.display = openState ? "block" : "none";
     setTimeout(() => panel.classList.toggle("active", openState), 10);
     
     if(openState) {
         document.getElementById("accountPageAddress").classList.remove("active");
         document.getElementById("accountPageWishlist").classList.remove("active");
-        
         const langPage = document.getElementById("accountPageLanguage");
         if(langPage) langPage.classList.remove("active");
         
         document.getElementById("tabBtnAddress").classList.remove("active");
         document.getElementById("tabBtnWishlist").classList.remove("active");
-        
         const langBtn = document.getElementById("tabBtnLanguage");
         if(langBtn) langBtn.classList.remove("active");
     }
-}
+};
 
-function toggleCartDrawer(openState) {
-    if(openState) toggleAccountDrawer(false);
+window.toggleCartDrawer = function(openState) {
+    if(openState) window.toggleAccountDrawer(false);
     const panel = document.getElementById("cartDrawer");
+    if(!panel) return;
     panel.style.display = openState ? "flex" : "none";
     setTimeout(() => panel.classList.toggle("active", openState), 10);
-}
+};
 
 function switchAccountTab(tabName) {
     const addrPage = document.getElementById("accountPageAddress");
@@ -1220,21 +1235,18 @@ function switchAccountTab(tabName) {
         const isCurrentlyActive = addrPage.classList.contains("active");
         addrPage.classList.toggle("active", !isCurrentlyActive);
         addrBtn.classList.toggle("active", !isCurrentlyActive);
-        
         wishPage.classList.remove("active"); wishBtn.classList.remove("active");
         if(langPage) { langPage.classList.remove("active"); langBtn.classList.remove("active"); }
     } else if(tabName === 'wishlist') {
         const isCurrentlyActive = wishPage.classList.contains("active");
         wishPage.classList.toggle("active", !isCurrentlyActive);
         wishBtn.classList.toggle("active", !isCurrentlyActive);
-        
         addrPage.classList.remove("active"); addrBtn.classList.remove("active");
         if(langPage) { langPage.classList.remove("active"); langBtn.classList.remove("active"); }
     } else if(tabName === 'language') {
         const isCurrentlyActive = langPage.classList.contains("active");
         langPage.classList.toggle("active", !isCurrentlyActive);
         langBtn.classList.toggle("active", !isCurrentlyActive);
-        
         addrPage.classList.remove("active"); addrBtn.classList.remove("active");
         wishPage.classList.remove("active"); wishBtn.classList.remove("active");
     }
@@ -1253,14 +1265,16 @@ setTheme(localStorage.getItem("theme") || "light");
 
 async function loadProducts() {
  document.getElementById("menuLoader").classList.add("show");
- renderWishlistPanel(); draw();
+ window.renderWishlistPanel(); window.draw();
  try {
    Object.keys(window.activeClockLoops).forEach(k => clearInterval(window.activeClockLoops[k]));
    window.activeClockLoops = {};
 
    const antiCacheTokenUrl = API_URL + "?t=" + new Date().getTime();
    const res = await fetch(antiCacheTokenUrl); 
-   products = await res.json(); 
+   if(!res.ok) throw new Error("API Connection Interrupted");
+   
+   window.products = await res.json(); 
    
    const nowTime = new Date().getTime();
    let activeMarketDisplayItems = [];
@@ -1268,7 +1282,9 @@ async function loadProducts() {
    const upcomingContainer = document.getElementById("upcomingProductContainer");
    upcomingContainer.innerHTML = "";
 
-   products.forEach((p, index) => {
+   window.products.forEach((p) => {
+       if(!p.product) return; // Skip broken items
+       let pId = p.id || p.ID || p.product.replace(/\s+/g, '-');
        let rawLaunch = p.launchDate || p.launchdate || null;
        let launchTimestamp = null;
        
@@ -1283,17 +1299,17 @@ async function loadProducts() {
 
        if (launchTimestamp && launchTimestamp > nowTime) {
            upcomingHypeFound = true;
-           const targetClockNodeId = `timer_node_id_${index}`;
-           const upcomingLink = `product-page.html?id=${p.id || p.ID || index}&upcoming=true`;
+           const targetClockNodeId = `timer_node_id_${pId}`;
+           const upcomingLink = `product-page.html?id=${encodeURIComponent(pId)}&upcoming=true`;
            
            upcomingContainer.innerHTML += `
                <div class="upcoming-hype-card">
                    <div class="hype-blurred-visual-card">
-                       <img src="${p.image || ''}">
+                       <img src="${p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png'}" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
                        <div class="hype-overlay-container">
                            <div class="coming-soon-badge">Coming Soon</div>
                            <div class="countdown-clock-dock" id="${targetClockNodeId}"></div>
-                           <button class="hype-notify-action-btn" onclick="window.location.href='${upcomingLink}'">Notify Me</button>
+                           <button class="hype-notify-action-btn" data-link="${upcomingLink}">Notify Me</button>
                        </div>
                    </div>
                    <h3 style="font-family:'Inter', sans-serif; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:1px; margin-top:16px; text-align:center;">${p.product || 'Upcoming Drop'}</h3>
@@ -1305,19 +1321,26 @@ async function loadProducts() {
        }
    });
 
+   // Safe dynamic event attachments to button nodes
+   document.querySelectorAll('.hype-notify-action-btn').forEach(btn => {
+       btn.addEventListener('click', function() {
+           window.location.href = this.getAttribute('data-link');
+       });
+   });
+
    const upcomingSection = document.getElementById("upcoming");
    if (upcomingSection) {
        upcomingSection.style.display = upcomingHypeFound ? "block" : "none";
    }
 
-   currentProducts = [...activeMarketDisplayItems];
-   qty = Array(currentProducts.length).fill(0); 
-   displayProducts(currentProducts);
+   window.currentProducts = [...activeMarketDisplayItems];
+   window.displayProducts(window.currentProducts);
 
  } catch (e) { 
-     document.getElementById("grid").innerHTML = "<p>Failed loading products.</p>"; 
+     console.error("Products Initialization Loop Failed:", e);
+     document.getElementById("grid").innerHTML = "<p style='grid-column:1/-1;text-align:center;opacity:0.5;'>Premium collection logs currently offline.</p>"; 
  }
- setTimeout(() => { document.getElementById("menuLoader").classList.remove("remove"); }, 500);
+ setTimeout(() => { document.getElementById("menuLoader").classList.remove("show"); }, 500);
 }
 
 function initiateIndividualCountdown(targetTime, elementId) {
@@ -1348,21 +1371,28 @@ function initiateIndividualCountdown(targetTime, elementId) {
     }, 1000);
 }
 
-function displayProducts(list = products) {
- currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
- list.forEach((p, i) => {
+window.displayProducts = function(list = window.products) {
+ window.currentProducts = list; 
+ const g = document.getElementById("grid"); 
+ if(!g) return;
+ g.innerHTML = "";
+ 
+ list.forEach((p) => {
+   if(!p.product) return;
+   let pId = p.id || p.ID || p.product.replace(/\s+/g, '-');
    const isWished = window.wishlist.some(x => x.product === p.product) ? 'active' : '';
-   const productLink = `product-page.html?id=${p.id || p.ID || i}`;
+   const productLink = `product-page.html?id=${encodeURIComponent(pId)}`;
    
    const hasModelImg = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined");
-   const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : p.image;
-   const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? p.image : (p.hover_image || p.image);
+   const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : (p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png');
+   const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? (p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png') : (p.hover_image || p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png');
    
-   if(typeof qty[i] === 'undefined') qty[i] = 0;
+   // Key Structural Fix: Fallback state mapping for unique string IDs instead of array sequence index numbers
+   if(typeof window.qtyMap[pId] === 'undefined') window.qtyMap[pId] = 0;
 
    g.innerHTML += `
-   <div class="card">
-     <button class="wishlist-toggle-icon ${isWished}" onclick="toggleWishlistProduct('${p.product}', ${i})">
+   <div class="card" data-pid="${pId}">
+     <button class="wishlist-toggle-icon ${isWished}" data-pname="${p.product}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 21s-7-4.8-9.5-9C.7 8.7 2.2 5 5.8 5c2.1 0 3.4 1.2 4.2 2.5C10.8 6.2 12.1 5 14.2 5 17.8 5 19.3 8.7 21.5 12 19 16.2 12 21 12 21z"/>
         </svg>
@@ -1370,7 +1400,8 @@ function displayProducts(list = products) {
      
      <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
        <div class="card-img-wrapper">
-         <img src="${primaryViewSrc}" class="primary-img"><img src="${hoverViewSrc}" class="hover-img">
+         <img src="${primaryViewSrc}" class="primary-img" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
+         <img src="${hoverViewSrc}" class="hover-img" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
        </div>
      </a>
      
@@ -1385,7 +1416,7 @@ function displayProducts(list = products) {
          <div class="grid-controls-row">
              <div class="grid-size-container">
                  <span class="size-label-tag">Size:</span>
-                 <select id="s${i}" class="grid-size-selector">
+                 <select id="size_select_${pId}" class="grid-size-selector">
                      <option value="S">S</option>
                      <option value="M" selected>M</option>
                      <option value="L">L</option>
@@ -1394,64 +1425,87 @@ function displayProducts(list = products) {
                  </select>
              </div>
              <div class="grid-qty-box">
-                 <button onclick="changeQty(${i},-1)">−</button>
-                 <span id="q${i}">${qty[i]}</span>
-                 <button onclick="changeQty(${i},1)">+</button>
+                 <button class="qty-btn-minus" data-pid="${pId}">−</button>
+                 <span id="qty_display_${pId}">${window.qtyMap[pId]}</span>
+                 <button class="qty-btn-plus" data-pid="${pId}">+</button>
              </div>
          </div>
-         <button class="grid-add-cart-btn" onclick="addToCart(${i})">Add to Cart</button>
+         <button class="grid-add-cart-btn" data-pid="${pId}">Add to Cart</button>
      </div>
    </div>`;
  });
-}
 
-window.toggleWishlistProduct = function(prodName, index) {
+ // Event listeners safely attached directly to nodes to decouple from index mutation bugs
+ document.querySelectorAll('.wishlist-toggle-icon').forEach(btn => {
+     btn.addEventListener('click', function(e) {
+         e.stopPropagation();
+         window.toggleWishlistProduct(this.getAttribute('data-name') || this.dataset.pname);
+     });
+ });
+ document.querySelectorAll('.qty-btn-minus').forEach(btn => {
+     btn.addEventListener('click', function() { window.changeQtyMap(this.dataset.pid, -1); });
+ });
+ document.querySelectorAll('.qty-btn-plus').forEach(btn => {
+     btn.addEventListener('click', function() { window.changeQtyMap(this.dataset.pid, 1); });
+ });
+ document.querySelectorAll('.grid-add-cart-btn').forEach(btn => {
+     btn.addEventListener('click', function() { window.addToCartExplicit(this.dataset.pid); });
+ });
+};
+
+window.toggleWishlistProduct = function(prodName) {
+   if(!prodName) return;
    const matchIndex = window.wishlist.findIndex(x => x.product === prodName);
    if(matchIndex > -1) { window.wishlist.splice(matchIndex, 1); } 
-   else { const p = products.find(x => x.product === prodName); if(p) window.wishlist.push(p); }
+   else { const p = window.products.find(x => x.product === prodName); if(p) window.wishlist.push(p); }
    localStorage.setItem("aquilux_wishlist", JSON.stringify(window.wishlist));
-   displayProducts(currentProducts); renderWishlistPanel();
-   if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
-}
+   window.displayProducts(window.currentProducts); window.renderWishlistPanel();
+   if(typeof window.saveCartToFirestore === 'function') window.saveCartToFirestore();
+};
 
-function renderWishlistPanel() {
+window.renderWishlistPanel = function() {
     const container = document.getElementById("panelWishlistContainer");
+    if(!container) return;
     if(window.wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5; font-size:12px;'>Wishlist is empty.</p>"; return; }
     container.innerHTML = "";
     window.wishlist.forEach((item, idx) => {
-        container.innerHTML += `
-        <div class="panel-item-row">
-            <img src="${item.image}">
+        const row = document.createElement("div");
+        row.className = "panel-item-row";
+        row.innerHTML = `
+            <img src="${item.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png'}" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
             <div class="panel-item-row-info">
-                <h4>${item.product}</h4><p>Price: ₹${item.price}</p>
+                <h4>${item.product || ''}</h4><p>Price: ₹${item.price || 0}</p>
             </div>
-            <button class="panel-action-icon-btn" onclick="window.wishlist.splice(${idx},1); localStorage.setItem('aquilux_wishlist',JSON.stringify(window.wishlist)); renderWishlistPanel(); displayProducts(currentProducts); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button>
-        </div>`;
+            <button class="panel-action-icon-btn">×</button>
+        `;
+        row.querySelector('.panel-action-icon-btn').addEventListener('click', () => {
+            window.wishlist.splice(idx, 1);
+            localStorage.setItem('aquilux_wishlist', JSON.stringify(window.wishlist));
+            window.renderWishlistPanel();
+            window.displayProducts(window.currentProducts);
+            if(typeof window.saveCartToFirestore === 'function') window.saveCartToFirestore();
+        });
+        container.appendChild(row);
     });
-}
+};
 
-function loadSavedAddressToPanel() {
+window.loadSavedAddressToPanel = function() {
     const addr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
     const display = document.getElementById("savedAddressSummaryDisplay");
-    
+    if(!display) return;
     if(!addr.receiverName) { 
         display.innerHTML = "No profiles configured active."; 
         return; 
     }
-    
     display.innerHTML = `<strong>[Primary]:</strong> ${addr.receiverName} (${addr.phone})<br><span>${addr.flat || ""}, ${addr.city || ""}, ${addr.state || ""} - ${addr.pincode || ""}</span>`;
-}
-
-function filterProducts() {
-    document.getElementById("productSearchInput").value = ""; 
-    executeUnifiedFiltering();
-}
+};
 
 function executeUnifiedFiltering() {
     const priceVal = document.getElementById("priceFilter").value;
     const collectionVal = document.getElementById("collectionFilter").value;
     
-    let compiledList = products.filter(p => {
+    let compiledList = window.products.filter(p => {
+        if(!p.product) return false;
         const nowTime = new Date().getTime();
         let launchTimestamp = p.launchDate || p.launchdate ? Date.parse(p.launchDate || p.launchdate) : null;
         return !launchTimestamp || launchTimestamp <= nowTime;
@@ -1479,102 +1533,86 @@ function executeUnifiedFiltering() {
         }
     }
 
-    displayProducts(compiledList);
+    window.displayProducts(compiledList);
 }
 
 function changeLanguage(lang){
     localStorage.setItem("aquilux_language", lang);
     let interval = setInterval(function(){
-        let combo = document.querySelector(".goog-te-combo");
-        if(combo){
-            combo.value = lang;
-            combo.dispatchEvent(new Event("change"));
-            clearInterval(interval);
+        // Handled cleanly via conditional loops checking window instance availability 
+        if(window.google && window.google.translate) {
+            let combo = document.querySelector(".goog-te-combo");
+            if(combo){
+                combo.value = lang;
+                combo.dispatchEvent(new Event("change"));
+                clearInterval(interval);
+            }
         }
     }, 300);
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-    loadProducts();
+window.changeQtyMap = function(pId, change) {
+    if(typeof window.qtyMap[pId] === 'undefined') window.qtyMap[pId] = 0;
+    window.qtyMap[pId] += change;
+    if(window.qtyMap[pId] < 0) window.qtyMap[pId] = 0;
+    const display = document.getElementById(`qty_display_${pId}`);
+    if(display) display.textContent = window.qtyMap[pId];
+};
+
+window.addToCartExplicit = function(pId) {
+    if(!window.qtyMap[pId] || window.qtyMap[pId] === 0) { alert("Please select quantity first!"); return; }
+    const product = window.products.find(x => (x.id || x.ID || x.product.replace(/\s+/g, '-')) === pId);
+    if(!product) return;
     
-    // Auto-trigger the structural Receipt Offer Modal when user lands on page
-    setTimeout(() => {
-        togglePromoPopup(true);
-    }, 1200);
+    let size = document.getElementById(`size_select_${pId}`).value;
+    let quantity = window.qtyMap[pId];
     
-    const selector = document.getElementById("languageSelector");
-    const saved = localStorage.getItem("aquilux_language") || "en";
-    if (selector) {
-        selector.value = saved;
-        selector.addEventListener("change", function(){
-            changeLanguage(this.value);
-        });
+    let item = window.cart.find(x => x.n == product.product && x.s == size);
+    if(item) { item.q += quantity; } 
+    else { window.cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
+    
+    const activeQtySent = window.qtyMap[pId];
+    window.qtyMap[pId] = 0;
+    const display = document.getElementById(`qty_display_${pId}`);
+    if(display) display.textContent = 0;
+    
+    const currentFirebaseUser = window.currentLoggedInUid ? { email: document.getElementById("drawerUserEmail").innerText, name: document.getElementById("drawerUserName").innerText } : null;
+
+    if (window.currentLoggedInUid && currentFirebaseUser) {
+        const cartTrackingAlert = `🛒 *User Added Item to Cart!* 🛒\n\n` +
+                                  `👤 *User Name:* ${currentFirebaseUser.name}\n` +
+                                  `📧 *User Email:* ${currentFirebaseUser.email}\n` +
+                                  `📦 *Product:* ${product.product}\n` +
+                                  `🔢 *Quantity:* ${activeQtySent}\n` +
+                                  `📐 *Size Selected:* ${size}\n` +
+                                  `💰 *Item Price:* ₹${product.price}`;
+        triggerTelegramNotificationAlert(cartTrackingAlert);
     }
-    
-    if (saved !== "en") {
-        changeLanguage(saved);
-    }
-});
 
-function changeQty(i, c){ 
-    if(typeof qty[i] === 'undefined') qty[i] = 0;
-    qty[i] += c; 
-    if(qty[i] < 0) qty[i] = 0; 
-    const el = document.getElementById("q"+i);
-    if(el) el.textContent = qty[i]; 
-}
-
-function addToCart(i){
- if(typeof qty[i] === 'undefined' || qty[i] === 0) { alert("Please select quantity first!"); return; }
- let size = document.getElementById("s"+i).value, quantity = qty[i], product = currentProducts[i];
- let item = window.cart.find(x => x.n == product.product && x.s == size);
- if(item) { item.q += quantity; } 
- else { window.cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
- 
- const activeQtySent = qty[i];
- qty[i] = 0; 
- const el = document.getElementById("q"+i);
- if(el) el.textContent = 0;
- 
- const currentFirebaseUser = window.currentLoggedInUid ? { email: document.getElementById("drawerUserEmail").innerText, name: document.getElementById("drawerUserName").innerText } : null;
-
- if (window.currentLoggedInUid && currentFirebaseUser) {
-     const cartTrackingAlert = `🛒 *User Added Item to Cart!* 🛒\n\n` +
-                               `👤 *User Name:* ${currentFirebaseUser.name}\n` +
-                               `📧 *User Email:* ${currentFirebaseUser.email}\n` +
-                               `📦 *Product:* ${product.product}\n` +
-                               `🔢 *Quantity:* ${activeQtySent}\n` +
-                               `📐 *Size Selected:* ${size}\n` +
-                               `💰 *Item Price:* ₹${product.price}`;
-     triggerTelegramNotificationAlert(cartTrackingAlert);
- }
-
- draw(); 
- if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
- toggleCartDrawer(true); 
-}
+    window.draw(); 
+    if(typeof window.saveCartToFirestore === 'function') window.saveCartToFirestore();
+    window.toggleCartDrawer(true);
+};
 
 window.changeDrawerQty = function(index, change) {
     if(window.cart[index].q + change < 1) return;
     window.cart[index].q += change;
-    draw();
-    if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
-}
+    window.draw();
+    if(typeof window.saveCartToFirestore === 'function') window.saveCartToFirestore();
+};
 
-/* Updated Dynamic Cart Function for Matrix Scaling (1-5%, 2-10%, 3+-15%) */
-function draw(){
+window.draw = function() {
  let subtotal = 0; let totalItemCount = 0; let h = "";
  window.cart.forEach((c, i) => {
    subtotal += c.p * c.q;
    totalItemCount += c.q;
-   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); draw(); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button></div>`;
+   h += `<div class="panel-item-row"><img src="${c.img || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png'}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="window.changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="window.changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); window.draw(); if(typeof window.saveCartToFirestore === 'function') window.saveCartToFirestore();">×</button></div>`;
  });
  
  if(window.cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
  localStorage.setItem("aquilux_cart", JSON.stringify(window.cart));
  document.getElementById("drawerCartContainer").innerHTML = h; 
  
- // Matrix Tier Calculation Execution 
  let discountPercent = 0;
  if(totalItemCount === 1) discountPercent = 5;
  else if(totalItemCount === 2) discountPercent = 10;
@@ -1594,22 +1632,17 @@ function draw(){
  }
  
  let finalTotal = subtotal - discountAmount;
- 
  document.getElementById("drawerCartSubtotal").textContent = subtotal;
  document.getElementById("drawerCartTotal").textContent = finalTotal;
  document.getElementById("cartCount").textContent = totalItemCount;
-}
+};
 
 async function triggerTelegramNotificationAlert(messageText) {
+    // Note: Kept intact per instruction architecture requirement context 
     const telegramBotToken = "8892397338:AAEEDt5xZnDLSv5lnUuuVejrJfQlfEqVj64"; 
     const telegramChatId = "656520549"; 
     const endpointUrl = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(messageText)}&parse_mode=Markdown`;
-    
-    try {
-        await fetch(endpointUrl);
-    } catch(err) {
-        console.error("Telegram alert dropped:", err);
-    }
+    try { await fetch(endpointUrl); } catch(err) { console.error("Telegram error:", err); }
 }
 
 function goToGateway(){
@@ -1617,7 +1650,7 @@ function goToGateway(){
  const savedAddr = JSON.parse(localStorage.getItem("aquilux_saved_address") || "{}");
  if(!savedAddr.receiverName || !savedAddr.phone || !savedAddr.pincode) {
      alert("Please save your delivery address first!");
-     toggleAccountDrawer(true); switchAccountTab('address'); return;
+     window.toggleAccountDrawer(true); switchAccountTab('address'); return;
  }
  
  const grossTotalCalculated = Number(document.getElementById("drawerCartTotal").textContent);
@@ -1625,21 +1658,54 @@ function goToGateway(){
  const finalPercentCalculated = document.getElementById("discountPercentLabel").textContent || 0;
  
  const orderData = {
-   cart: window.cart, 
-   total: grossTotalCalculated,
-   discountApplied: discountCalculated,
-   discountTierPercent: finalPercentCalculated,
+   cart: window.cart, total: grossTotalCalculated,
+   discountApplied: discountCalculated, discountTierPercent: finalPercentCalculated,
    receiverName: savedAddr.receiverName, phone: savedAddr.phone,
    flat: savedAddr.flat || "", road: savedAddr.road || "", landmark: savedAddr.landmark || "", 
    city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
  };
  localStorage.setItem("pendingOrder", JSON.stringify(orderData));
 
- const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total (After Discount): ₹${orderData.total}\n🏷️ Matrix Discount: ${orderData.discountTierPercent}% (-₹${orderData.discountApplied})\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
+ const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total (After Discount): ₹${orderData.total}\n🏷️ Matrix Discount: ${orderData.discountTierPercent}% (-₹${orderData.discountApplied})\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
  triggerTelegramNotificationAlert(alertMessage);
-
  window.location.href = "payment-gateway.html";
 }
+
+// Complete decoupled Event Listener Strategy mapped directly on DOM load nodes
+window.addEventListener("DOMContentLoaded", () => {
+    loadProducts();
+    setTimeout(() => { window.togglePromoPopup(true); }, 1200);
+    
+    // UI Interaction Listeners
+    document.getElementById("closePromoBtn").addEventListener("click", () => window.togglePromoPopup(false));
+    document.getElementById("logoBoxNav").addEventListener("click", (e) => window.handleSmoothScrollToTop(e));
+    document.getElementById("cartTitleTrigger").addEventListener("click", () => window.toggleCartDrawer(true));
+    document.getElementById("closeCartDrawerBtn").addEventListener("click", () => window.toggleCartDrawer(false));
+    document.getElementById("closeAccountDrawerBtn").addEventListener("click", () => window.toggleAccountDrawer(false));
+    document.getElementById("checkoutActionBtn").addEventListener("click", goToGateway);
+    document.getElementById("perspectiveToggleBtn").addEventListener("click", window.togglePerspectiveViewMode);
+    document.getElementById("loginBtn").addEventListener("click", () => window.googleLogin());
+    document.getElementById("userBox").addEventListener("click", () => window.toggleAccountDrawer(true));
+    document.getElementById("sidebarLogoutBtn").addEventListener("click", () => window.googleLogout());
+    
+    // Filter controls mapping
+    document.getElementById("collectionFilter").addEventListener("change", executeUnifiedFiltering);
+    document.getElementById("priceFilter").addEventListener("change", executeUnifiedFiltering);
+    document.getElementById("productSearchInput").addEventListener("input", function() { window.handleAiSearchInput(this.value); });
+    
+    // Tab navigations mappings
+    document.getElementById("tabBtnAddress").addEventListener("click", () => switchAccountTab('address'));
+    document.getElementById("tabBtnWishlist").addEventListener("click", () => switchAccountTab('wishlist'));
+    document.getElementById("tabBtnLanguage").addEventListener("click", () => switchAccountTab('language'));
+    
+    const selector = document.getElementById("languageSelector");
+    const saved = localStorage.getItem("aquilux_language") || "en";
+    if (selector) {
+        selector.value = saved;
+        selector.addEventListener("change", function(){ changeLanguage(this.value); });
+    }
+    if (saved !== "en") { changeLanguage(saved); }
+});
 </script>
 
 <script>
@@ -1651,7 +1717,7 @@ function googleTranslateElementInit() {
     }, 'google_translate_element');
 }
 </script>
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 
 </body>
 </html>
