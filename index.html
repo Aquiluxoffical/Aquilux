@@ -42,15 +42,7 @@ body {
  -webkit-font-smoothing: antialiased;
  transition: background 0.4s ease, color 0.4s ease;
  height: 100%;
- top: 0 !important;
 }
-
-/* Hide Google Translate Widgets securely */
-.goog-te-banner-frame.skiptranslate, .goog-te-gadget-icon, .goog-te-banner, .goog-te-menu-value { display: none !important; }
-body { top: 0px !important; }
-.goog-tooltip { display: none !important; }
-.goog-tooltip:hover { display: none !important; }
-.goog-text-highlight { background-color: transparent !important; border: none !important; box-shadow: none !important; }
 
 /* ==========================================================================
    2. Header & Navigation (Boutique Clean Layout)
@@ -116,12 +108,6 @@ html[data-theme="olive"] header img { filter: invert(0); }
 }
 .about-nav-btn:hover { opacity: 0.6; }
 
-#google_translate_element {
- display: none !important;
- position: absolute;
- top: -9999px;
-}
-
 .cart-title {
  color: var(--text) !important; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.8px;
  display: flex; align-items: center; gap: 6px; cursor: pointer; position: relative;
@@ -162,10 +148,10 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
 .google-btn span { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
-/* Custom Language Dropdown Container inside Drawer */
+/* Language Container Placement Inside Drawer */
 .drawer-lang-container {
  border-bottom: 1px solid var(--line);
- padding: 12px 4px;
+ padding: 18px 4px;
  display: flex;
  align-items: center;
  justify-content: space-between;
@@ -553,16 +539,15 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </head>
 <body>
 
-<!-- Hidden standard Google wrapper node -->
-<div id="google_translate_element" class="skiptranslate"></div>
+<!-- Hidden system mapping container -->
+<div id="google_translate_element" style="display:none !important;"></div>
 
 <div id="menuLoader">
  <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
  <p style="font-family:'Cormorant Garamond',serif; text-transform:uppercase; letter-spacing:2px; font-size:12px; margin-top:8px;">AQUILUX</p>
 </div>
 
-<!-- Added skiptranslate class securely here so drawer components don't crash firebase DOM references -->
-<div id="accountDrawer" class="account-sidebar-panel skiptranslate">
+<div id="accountDrawer" class="account-sidebar-panel">
    <div class="panel-header">
        <h2>My Premium Space</h2>
        <button class="close-panel-btn" onclick="toggleAccountDrawer(false)">×</button>
@@ -591,10 +576,10 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
        <button id="tabBtnOrders" class="tab-nav-btn manage-btn-style" onclick="window.location.href='my-orders.html'">My Orders ↗</button>
        
-       <!-- Custom Language Selector with Flags right below 'My Orders' -->
+       <!-- Language Selector Dropdown Box Frame with Flags -->
        <div class="drawer-lang-container">
-           <span class="drawer-lang-label">Select Language:</span>
-           <select class="lang-select-btn" id="customLangSelector" onchange="changeWebsiteLanguage(this.value)">
+           <span class="drawer-lang-label">Language / Flag:</span>
+           <select class="lang-select-btn" id="customLangSelector" onchange="triggerGlobalRerouteTranslation(this.value)">
                <option value="en">🇺🇸 EN</option>
                <option value="hi">🇮🇳 HI</option>
                <option value="es">🇪🇸 ES</option>
@@ -625,8 +610,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    </div>
 </div>
 
-<!-- Added skiptranslate class on interactive headers to preserve clean Firebase click streams -->
-<header class="skiptranslate">
+<header>
  <div class="logo-box" onclick="handleSmoothScrollToTop(event)">
    <img src="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
    <div class="logo-text">
@@ -724,7 +708,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude. · aquilux.support@gmail.com</p>
 </footer>
 
-<!-- Google Translate Core Script Import Initialization Layer -->
+<!-- Google Translate Core Script Native Initialization Layer -->
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
@@ -735,7 +719,7 @@ function googleTranslateElementInit() {
   }, 'google_translate_element');
 }
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 <script type="module">
 // FRESH CACHE-BUSTING AND ROBUST IMPORT BINDINGS FOR GITHUB PAGES
@@ -767,7 +751,6 @@ async function forceTrackTotalVisitors() {
         console.log("Success: Matrix counter logs updated on Firestore.");
     } catch (error) { 
         console.error("Critical Matrix Interruption:", error);
-        alert("Tracker System Alert: " + error.message);
     }
 }
 
@@ -812,19 +795,35 @@ let currentViewMode = "default";
 let cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
 let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
-/* Precise Cookie-friendly Google Translation Inject Engine */
-window.changeWebsiteLanguage = function(langCode) {
+/* Clean Translation Fallback Native Selector Execution Hook */
+window.triggerGlobalRerouteTranslation = function(langCode) {
     const googleSelect = document.querySelector('.goog-te-combo');
     if (googleSelect) {
         googleSelect.value = langCode;
         googleSelect.dispatchEvent(new Event('change'));
+        localStorage.setItem("aquilux_active_lang", langCode);
     } else {
-        // Fallback cookie trigger mechanism if DOM nodes are fully translation blocked
-        document.cookie = "googtrans=/en/" + langCode + "; path=/;";
-        document.cookie = "googtrans=/en/" + langCode + "; domain=" + window.location.hostname + "; path=/;";
-        location.reload();
+        // Safe domain routing fallback if local compilation requires frame proxy redirection
+        localStorage.setItem("aquilux_active_lang", langCode);
+        let currentCleanUrl = window.location.href;
+        if (currentCleanUrl.includes("translate.google.com")) {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('u')) currentCleanUrl = urlParams.get('u');
+        }
+        if (langCode === 'en') {
+            window.location.href = currentCleanUrl;
+        } else {
+            window.location.href = `https://translate.google.com/translate?sl=en&tl=${langCode}&u=${encodeURIComponent(currentCleanUrl)}`;
+        }
     }
 };
+
+window.addEventListener("DOMContentLoaded", () => {
+    const cachedActiveLang = localStorage.getItem("aquilux_active_lang");
+    if (cachedActiveLang && document.getElementById("customLangSelector")) {
+        document.getElementById("customLangSelector").value = cachedActiveLang;
+    }
+});
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
