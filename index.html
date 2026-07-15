@@ -709,7 +709,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
                <select id="languageSelector">
                    <option value="en">🇺🇸 English</option>
                    <option value="hi">🇮🇳 हिन्दी</option>
-                   <option value="gu">🇮🇳 ગુજરાતી</option>
+                   <option value="gu">🇮🇳 ગુજરા態</option>
                    <option value="es">🇪🇸 Español</option>
                    <option value="fr">🇫🇷 Français</option>
                    <option value="de">🇩🇪 Deutsch</option>
@@ -848,8 +848,8 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-// Step 2: Imported Firestore functions (doc, setDoc, getDoc) properly loaded
-import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+// Added missing updateDoc and increment modules to fix trackVisitor console errors
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -872,7 +872,6 @@ async function trackVisitor() {
 }
 trackVisitor();
 
- 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
@@ -880,15 +879,23 @@ window.googleLogin = async () => {
  try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
 
-// Step 9: Clear cart arrays & trigger layout/cloud updates during logouts
-window.googleLogout = () => { 
-    signOut(auth); 
-    toggleAccountDrawer(false); 
-    window.cart = []; 
-    if(typeof draw === 'function') draw();
+// Problem 2 Fix: Made logout function async, clears live variables, updates database cloud backup, then destroys session
+window.googleLogout = async () => { 
+    try {
+        window.cart = []; 
+        if(typeof draw === 'function') draw();
+        if(typeof saveCartToFirestore === 'function') {
+            await saveCartToFirestore();
+        }
+        await signOut(auth); 
+        toggleAccountDrawer(false); 
+    } catch(err) {
+        console.error("Session termination execution failed:", err);
+    }
 };
 
-onAuthStateChanged(auth, (user) => {
+// Problem 1 Fix: Configured onAuthStateChanged handler to operate natively as an async block 
+onAuthStateChanged(auth, async (user) => {
  if (user) {
    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
    document.getElementById("userBox").style.setProperty("display", "flex", "important");
@@ -901,22 +908,28 @@ onAuthStateChanged(auth, (user) => {
    window.currentLoggedInUid = user.uid;
    loadSavedAddressToPanel();
    
-   // Step 3: Trigger active remote database cart state tracking hooks
-   if(typeof loadCartFromFirestore === 'function') loadCartFromFirestore();
+   // Sync cloud data seamlessly upon initial user detection
+   if(typeof loadCartFromFirestore === 'function') {
+       await loadCartFromFirestore();
+   }
  } else {
    document.getElementById("loginBtn").style.setProperty("display", "inline-flex", "important");
-   document.getElementById("userBox").style.setProperty("none", "important");
+   document.getElementById("userBox").style.setProperty("display", "none", "important");
    window.currentLoggedInUid = null;
  }
 });
 
-// Step 4: Save Cart Core Sync Engine
+// Save Cart Function with Premium Multi-State Tracking Optimization
 window.saveCartToFirestore = async function() {
     if(!window.currentLoggedInUid) return;
     try {
         await setDoc(
             doc(db, "users", window.currentLoggedInUid),
-            { cart: window.cart },
+            { 
+                cart: window.cart,
+                wishlist: window.wishlist || [],
+                updatedAt: new Date()
+            },
             { merge: true }
         );
     } catch(err) {
@@ -924,7 +937,7 @@ window.saveCartToFirestore = async function() {
     }
 };
 
-// Step 5: Load Cart Core Synchronization Execution
+// Load Cart Function
 window.loadCartFromFirestore = async function() {
     if(!window.currentLoggedInUid) return;
     try {
@@ -934,6 +947,12 @@ window.loadCartFromFirestore = async function() {
             if(data.cart){
                 window.cart = data.cart;
                 if(typeof draw === 'function') draw();
+            }
+            if(data.wishlist) {
+                window.wishlist = data.wishlist;
+                localStorage.setItem("aquilux_wishlist", JSON.stringify(window.wishlist));
+                if(typeof renderWishlistPanel === 'function') renderWishlistPanel();
+                if(typeof displayProducts === 'function' && typeof currentProducts !== 'undefined') displayProducts(currentProducts);
             }
         }
     } catch(err) {
@@ -950,7 +969,7 @@ window.activeClockLoops = {};
 let currentViewMode = "default"; 
 
 window.cart = JSON.parse(localStorage.getItem("aquilux_cart") || "[]");
-let wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
+window.wishlist = JSON.parse(localStorage.getItem("aquilux_wishlist") || "[]");
 
 window.handleSmoothScrollToTop = function(event) {
     if(event) event.preventDefault();
@@ -1174,7 +1193,7 @@ function initiateIndividualCountdown(targetTime, elementId) {
 function displayProducts(list = products) {
  currentProducts = list; const g = document.getElementById("grid"); g.innerHTML = "";
  list.forEach((p, i) => {
-   const isWished = wishlist.some(x => x.product === p.product) ? 'active' : '';
+   const isWished = window.wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${p.id || p.ID || i}`;
    
    const hasModelImg = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined");
@@ -1229,25 +1248,27 @@ function displayProducts(list = products) {
 }
 
 window.toggleWishlistProduct = function(prodName, index) {
-   const matchIndex = wishlist.findIndex(x => x.product === prodName);
-   if(matchIndex > -1) { wishlist.splice(matchIndex, 1); } 
-   else { const p = products.find(x => x.product === prodName); if(p) wishlist.push(p); }
-   localStorage.setItem("aquilux_wishlist", JSON.stringify(wishlist));
+   const matchIndex = window.wishlist.findIndex(x => x.product === prodName);
+   if(matchIndex > -1) { window.wishlist.splice(matchIndex, 1); } 
+   else { const p = products.find(x => x.product === prodName); if(p) window.wishlist.push(p); }
+   localStorage.setItem("aquilux_wishlist", JSON.stringify(window.wishlist));
    displayProducts(currentProducts); renderWishlistPanel();
+   // Highly integrated: Wishlist changes will auto-merge to cloud backup along with cart items
+   if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
 function renderWishlistPanel() {
     const container = document.getElementById("panelWishlistContainer");
-    if(wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5; font-size:12px;'>Wishlist is empty.</p>"; return; }
+    if(window.wishlist.length === 0) { container.innerHTML = "<p style='opacity:0.5; font-size:12px;'>Wishlist is empty.</p>"; return; }
     container.innerHTML = "";
-    wishlist.forEach((item, idx) => {
+    window.wishlist.forEach((item, idx) => {
         container.innerHTML += `
         <div class="panel-item-row">
             <img src="${item.image}">
             <div class="panel-item-row-info">
                 <h4>${item.product}</h4><p>Price: ₹${item.price}</p>
             </div>
-            <button class="panel-action-icon-btn" onclick="wishlist.splice(${idx},1); localStorage.setItem('aquilux_wishlist',JSON.stringify(wishlist)); renderWishlistPanel(); displayProducts(currentProducts);">×</button>
+            <button class="panel-action-icon-btn" onclick="window.wishlist.splice(${idx},1); localStorage.setItem('aquilux_wishlist',JSON.stringify(window.wishlist)); renderWishlistPanel(); displayProducts(currentProducts); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button>
         </div>`;
     });
 }
@@ -1367,7 +1388,6 @@ function addToCart(i){
  }
 
  draw(); 
- // Step 6: Trigger cloud state distribution update immediately after product insertion
  if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
  toggleCartDrawer(true); 
 }
@@ -1376,7 +1396,6 @@ window.changeDrawerQty = function(index, change) {
     if(window.cart[index].q + change < 1) return;
     window.cart[index].q += change;
     draw();
-    // Step 7: Push instant quantity updates to database streams
     if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
@@ -1385,7 +1404,6 @@ function draw(){
  window.cart.forEach((c, i) => {
    t += c.p * c.q;
    h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); draw(); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button></div>`;
-   // Step 8: Embedded custom splice hook parameter triggers directly inside item index removal action buttons above.
  });
  if(window.cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
  localStorage.setItem("aquilux_cart", JSON.stringify(window.cart));
@@ -1425,11 +1443,8 @@ function goToGateway(){
  const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total: ₹${orderData.total}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
  triggerTelegramNotificationAlert(alertMessage);
 
- // Step 10: Clear local and cloud state parameters before passing controls over to validation nodes
- window.cart = [];
- draw();
- if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
-
+ // Problem 3 Fix: Persistent architecture setup. Cart is NOT cleared here anymore. 
+ // Ab cart validation checkout nodes (payment-gateway.html) successfully execution hone ke baad hi completely flush hoga.
  window.location.href = "payment-gateway.html";
 }
 </script>
