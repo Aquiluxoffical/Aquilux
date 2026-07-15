@@ -268,7 +268,7 @@ body { top: 0dvh !important; }
 /* ==========================================================================
    4. Hero Section
    ========================================================================== */
-.hero { height: 100vh; height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
+.hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
 .hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 .luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.05; }
 .orb-1 { width: 40vw; height: 40vh; top: -5%; left: 15%; background: var(--text); }
@@ -491,15 +491,165 @@ input, textarea { width: 100%; }
 footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
 
 /* ==========================================================================
-   6. Responsiveness Layout Frame Overwrites
+   6. Upcoming Hype Section (Zara × Nike × Fear of God Premium Overhaul)
    ========================================================================== */
-@media(max-width: 1024px) {
- header { padding: 18px 4% !important; }
- .grid { grid-template-columns: repeat(3, 1fr); gap: 32px 20px; }
- .account-sidebar-panel, .cart-sidebar-panel { width: 400px; }
+.upcoming-section-wrapper {
+    padding: 120px 6% 80px 6%;
+}
+.upcoming-landscape-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 40px;
+}
+.upcoming-hype-card {
+    position: relative;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hype-blurred-visual-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #0d0d0d;
+    border-radius: 4px;
+}
+.hype-blurred-visual-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important; /* Fixed image cropping issue */
+    filter: blur(28px);
+    transform: scale(1.15);
+    opacity: 0.9;
+    transition: filter 0.5s ease, transform 0.5s ease;
 }
 
-@media(max-width: 768px) {
+/* Dark Overlay Layer & Glassmorphic Badging inside Visual Container */
+.hype-overlay-container {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px;
+    z-index: 5;
+}
+.coming-soon-badge {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    padding: 8px 20px;
+    text-transform: uppercase;
+    border-radius: 20px;
+}
+.hype-notify-action-btn {
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    color: #111111;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 12px 36px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+    margin-top: 0 !important;
+}
+.hype-notify-action-btn:hover {
+    background: transparent;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+/* Premium Digital Countdown Typography */
+.countdown-clock-dock {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.countdown-segment-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    color: #ffffff;
+    letter-spacing: 1px;
+    min-width: 50px;
+}
+.countdown-segment-node span {
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.5;
+    margin-top: 4px;
+    color: #ffffff;
+}
+
+/* Interactive Card Elevation & Zoom Trigger Updates */
+.upcoming-hype-card:hover {
+    transform: translateY(-4px);
+}
+.upcoming-hype-card:hover .hype-blurred-visual-card img {
+    filter: blur(14px);
+    transform: scale(1.08);
+}
+.upcoming-hype-card:hover .countdown-segment-node {
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+}
+
+/* ==========================================================================
+   7. Responsiveness & Tablet Fix Viewports (iPad Portrait & Landscape Tuning)
+   ========================================================================== */
+@media screen and (min-width: 768px) and (max-width: 1180px) {
+ header {
+     padding: 18px 30px !important;
+ }
+ .hero {
+     min-height: 90vh;
+     min-height: 90dvh;
+ }
+ .hero h1 {
+     font-size: 4rem !important;
+ }
+ .grid {
+     grid-template-columns: repeat(3, 1fr) !important;
+     gap: 30px 20px !important;
+ }
+ .account-sidebar-panel,
+ .cart-sidebar-panel {
+     width: 420px;
+ }
+ section {
+     padding: 80px 30px !important;
+ }
+ .upcoming-landscape-grid {
+     grid-template-columns: 1fr !important;
+     gap: 32px;
+ }
+}
+
+@media(max-width: 767px) {
  header { padding: 14px 20px !important; }
  .logo-box img { height: 36px !important; } 
  .logo-text strong { font-size: 22px !important; }
@@ -515,6 +665,10 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
  .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 12px; }
  .filter-split-container { width: 100%; }
  .title { font-size: 1.8rem; margin-bottom: 24px; }
+ 
+ .upcoming-landscape-grid { grid-template-columns: 1fr !important; gap: 24px; }
+ .countdown-clock-dock { gap: 14px; }
+ .countdown-segment-node { font-size: 24px; min-width: 40px; }
 }
 </style>
 </head>
@@ -821,7 +975,6 @@ function toggleAccountDrawer(openState) {
         document.getElementById("accountPageAddress").classList.remove("active");
         document.getElementById("accountPageWishlist").classList.remove("active");
         
-        // Ensure language drawer resets nicely
         const langPage = document.getElementById("accountPageLanguage");
         if(langPage) langPage.classList.remove("active");
         
@@ -840,7 +993,6 @@ function toggleCartDrawer(openState) {
     setTimeout(() => panel.classList.toggle("active", openState), 10);
 }
 
-// 5. Updated switchAccountTab() supporting live Language toggling
 function switchAccountTab(tabName) {
     const addrPage = document.getElementById("accountPageAddress");
     const wishPage = document.getElementById("accountPageWishlist");
@@ -920,17 +1072,18 @@ async function loadProducts() {
            const targetClockNodeId = `timer_node_id_${index}`;
            const upcomingLink = `product-page.html?id=${p.id || p.ID || index}&upcoming=true`;
            
+           /* Dynamic Premium Architecture Injection */
            upcomingContainer.innerHTML += `
                <div class="upcoming-hype-card">
-                   <a href="${upcomingLink}" style="display:block; width:100%;">
-                       <div class="hype-blurred-visual-card">
-                           <img src="${p.image || ''}">
+                   <div class="hype-blurred-visual-card">
+                       <img src="${p.image || ''}">
+                       <div class="hype-overlay-container">
+                           <div class="coming-soon-badge">Coming Soon</div>
+                           <div class="countdown-clock-dock" id="${targetClockNodeId}"></div>
+                           <button class="hype-notify-action-btn" onclick="window.location.href='${upcomingLink}'">Notify Me</button>
                        </div>
-                   </a>
-                   <a href="${upcomingLink}" style="text-decoration:none; color:inherit;">
-                       <h3 style="font-family:'Cormorant Garamond', serif; font-size:18px; text-transform:uppercase; margin-top:12px; font-weight:500; letter-spacing:0.5px;">${p.product || 'Upcoming Drop'}</h3>
-                   </a>
-                   <div class="countdown-clock-dock" id="${targetClockNodeId}"></div>
+                   </div>
+                   <h3 style="font-family:'Inter', sans-serif; font-size:12px; font-weight:500; text-transform:uppercase; letter-spacing:1px; margin-top:16px; text-align:center;">${p.product || 'Upcoming Drop'}</h3>
                </div>
            `;
            initiateIndividualCountdown(launchTimestamp, targetClockNodeId);
@@ -1115,7 +1268,6 @@ function executeUnifiedFiltering() {
     displayProducts(compiledList);
 }
 
-// 4. JavaScript Language Controller Logic
 function changeLanguage(lang){
     localStorage.setItem("aquilux_language", lang);
     let interval = setInterval(function(){
@@ -1131,7 +1283,6 @@ function changeLanguage(lang){
 window.addEventListener("DOMContentLoaded", () => {
     loadProducts();
     
-    // Auto-load translation state & selector value mapping
     const selector = document.getElementById("languageSelector");
     const saved = localStorage.getItem("aquilux_language") || "en";
     if (selector) {
@@ -1141,7 +1292,6 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
     
-    // If a non-English language was previously saved, trigger the translator
     if (saved !== "en") {
         changeLanguage(saved);
     }
