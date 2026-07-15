@@ -1057,13 +1057,18 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+// Firebase module import list ke andar 'increment' check kar lein
+import { getFirestore, doc, setDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
 async function trackVisitorSecure() {
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
-        await setDoc(visitorRef, { total_visits: Date.now() }, { merge: true });
+        // Date.now() ko hata kar increment(1) ka use kiya hai
+        await setDoc(visitorRef, { total_visits: increment(1) }, { merge: true });
     } catch (e) { console.error("Tracking Error Logs:", e); }
 }
 trackVisitorSecure();
+
 
 window.googleLogin = async () => {
  try { await signInWithRedirect(auth, provider); } catch (e) { console.error(e); }
