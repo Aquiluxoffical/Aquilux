@@ -5,15 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aquilux — Own. Your. Altitude.</title>
 
-<!-- ==========================================================================
-   Google Search Engine Optimization (SEO) & New HTML Tag Verification
-   ========================================================================== */ -->
 <meta name="google-site-verification" content="lJBIN4yiyuSvFcI7bAf5HUs02Havb9KxdEmmrD6pB3s" />
 <meta name="description" content="Aquilux — Own Your Altitude. Premium minimalist luxury fashion apparel store featuring elite oversized t-shirts, hoodies, and high-end streetwear.">
 <meta name="keywords" content="Aquilux, Aquilux clothing, luxury streetwear, oversized t-shirts, premium hoodies, old money fashion India, Yash Ojha">
 <meta name="robots" content="index, follow">
 
-<!-- Open Graph Preview (WhatsApp/Insta Premium Link Card View) -->
 <meta property="og:title" content="Aquilux — Own. Your. Altitude.">
 <meta property="og:description" content="Discover the absolute pinnacle of luxury minimalism. Premium quality oversized t-shirts and luxury streetwear drops.">
 <meta property="og:image" content="https://i.ibb.co/KcK5JqBf/IMG-0068.png">
@@ -230,6 +226,19 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .account-page-content.active { display: block; }
 .saved-address-view-card { padding: 16px 8px; font-size: 12px; line-height: 1.7; color: var(--text); opacity: 0.8; }
 .saved-address-view-card h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; font-weight: 600; }
+
+/* Language Selector styling added */
+#languageSelector {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+}
 
 .logout-sidebar-btn { width: auto; align-self: flex-start; padding: 8px 4px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: var(--text); opacity: 0.4; border: none; border-bottom: 1px solid var(--text); border-radius: 0; cursor: pointer; margin-top: 32px; transition: opacity 0.2s; }
 .logout-sidebar-btn:hover { opacity: 1; }
@@ -534,6 +543,21 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
            </div>
        </div>
        <button id="tabBtnManageAddr" class="tab-nav-btn manage-btn-style" onclick="window.location.href='address.html'">Manage Primary Address ↗</button>
+       
+       <button id="tabBtnLanguage" class="tab-nav-btn" onclick="switchAccountTab('language')">
+           Language ▾
+       </button>
+       <div id="accountPageLanguage" class="account-page-content">
+           <div class="saved-address-view-card">
+               <h4>Select Language</h4>
+               <select id="languageSelector" onchange="changeLanguage(this.value)">
+                   <option value="en">🇺🇸 English</option>
+                   <option value="hi">🇮🇳 हिन्दी</option>
+                   <option value="gu">🇮🇳 ગુજરાતી</option>
+               </select>
+           </div>
+       </div>
+
        <button id="tabBtnWishlist" class="tab-nav-btn" onclick="switchAccountTab('wishlist')">My Wishlist ▾</button>
        <div id="accountPageWishlist" class="account-page-content">
            <div id="panelWishlistContainer"><p style="opacity:0.5; font-size:12px;">Wishlist space empty.</p></div>
@@ -783,8 +807,16 @@ function toggleAccountDrawer(openState) {
     if(openState) {
         document.getElementById("accountPageAddress").classList.remove("active");
         document.getElementById("accountPageWishlist").classList.remove("active");
+        
+        // Language panel active state handling
+        const langPage = document.getElementById("accountPageLanguage");
+        if(langPage) langPage.classList.remove("active");
+        
         document.getElementById("tabBtnAddress").classList.remove("active");
         document.getElementById("tabBtnWishlist").classList.remove("active");
+        
+        const langBtn = document.getElementById("tabBtnLanguage");
+        if(langBtn) langBtn.classList.remove("active");
     }
 }
 
@@ -795,12 +827,15 @@ function toggleCartDrawer(openState) {
     setTimeout(() => panel.classList.toggle("active", openState), 10);
 }
 
+// Updated switchAccountTab() function with Language tab toggle behavior
 function switchAccountTab(tabName) {
     const addrPage = document.getElementById("accountPageAddress");
     const wishPage = document.getElementById("accountPageWishlist");
+    const langPage = document.getElementById("accountPageLanguage");
     
     const addrBtn = document.getElementById("tabBtnAddress");
     const wishBtn = document.getElementById("tabBtnWishlist");
+    const langBtn = document.getElementById("tabBtnLanguage");
 
     if(tabName === 'address') {
         const isCurrentlyActive = addrPage.classList.contains("active");
@@ -808,12 +843,35 @@ function switchAccountTab(tabName) {
         addrBtn.classList.toggle("active", !isCurrentlyActive);
         
         wishPage.classList.remove("active"); wishBtn.classList.remove("active");
+        if(langPage) { langPage.classList.remove("active"); langBtn.classList.remove("active"); }
     } else if(tabName === 'wishlist') {
         const isCurrentlyActive = wishPage.classList.contains("active");
         wishPage.classList.toggle("active", !isCurrentlyActive);
         wishBtn.classList.toggle("active", !isCurrentlyActive);
         
         addrPage.classList.remove("active"); addrBtn.classList.remove("active");
+        if(langPage) { langPage.classList.remove("active"); langBtn.classList.remove("active"); }
+    } else if(tabName === 'language') {
+        const isCurrentlyActive = langPage.classList.contains("active");
+        langPage.classList.toggle("active", !isCurrentlyActive);
+        langBtn.classList.toggle("active", !isCurrentlyActive);
+        
+        addrPage.classList.remove("active"); addrBtn.classList.remove("active");
+        wishPage.classList.remove("active"); wishBtn.classList.remove("active");
+    }
+}
+
+// Language redirect/saving functionality
+function changeLanguage(lang){
+    localStorage.setItem("language", lang);
+    if(lang==="en"){
+        location.href="index.html";
+    }
+    if(lang==="hi"){
+        location.href="index-hi.html";
+    }
+    if(lang==="gu"){
+        location.href="index-gu.html";
     }
 }
 
@@ -1058,7 +1116,15 @@ function executeUnifiedFiltering() {
     displayProducts(compiledList);
 }
 
-window.addEventListener("DOMContentLoaded", loadProducts);
+// Set saved language selector layout on page load
+window.addEventListener("DOMContentLoaded", () => {
+    loadProducts();
+    const savedLang = localStorage.getItem("language") || "en";
+    const selector = document.getElementById("languageSelector");
+    if (selector) {
+        selector.value = savedLang;
+    }
+});
 
 function changeQty(i, c){ 
     if(typeof qty[i] === 'undefined') qty[i] = 0;
