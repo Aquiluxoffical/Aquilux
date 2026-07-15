@@ -1698,6 +1698,14 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("tabBtnWishlist").addEventListener("click", () => switchAccountTab('wishlist'));
     document.getElementById("tabBtnLanguage").addEventListener("click", () => switchAccountTab('language'));
     
+    // [FIXED] Redirect Navigation Listeners Added to Prevent Broken Hrefs
+    document.getElementById("tabBtnManageAddr").addEventListener("click", () => {
+        window.location.href = "address.html";
+    });
+    document.getElementById("tabBtnOrders").addEventListener("click", () => {
+        window.location.href = "my-orders.html";
+    });
+    
     const selector = document.getElementById("languageSelector");
     const saved = localStorage.getItem("aquilux_language") || "en";
     if (selector) {
@@ -1706,6 +1714,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     if (saved !== "en") { changeLanguage(saved); }
 });
+
 </script>
 
 <script>
