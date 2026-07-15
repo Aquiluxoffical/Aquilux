@@ -145,7 +145,7 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .google-btn span { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
 /* ==========================================================================
-   3. Sliding Premium Drawers (Ultra Minimal Redesign)
+   3. Sliding Premium Drawers & AOV Upsell Banners
    ========================================================================== */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
@@ -172,6 +172,24 @@ html[data-theme="olive"] header img { filter: invert(0); }
 .panel-header h2 { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 2px; opacity: 0.9; }
 .close-panel-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text); opacity: 0.3; line-height: 1; transition: opacity 0.2s; }
 .close-panel-btn:hover { opacity: 1; }
+
+/* Dynamic AOV Upsell Message Container styling */
+.cart-upsell-banner {
+ background: rgba(17, 17, 17, 0.03);
+ border: 1px dashed var(--line);
+ padding: 12px;
+ text-align: center;
+ font-size: 11px;
+ font-weight: 500;
+ letter-spacing: 0.8px;
+ text-transform: uppercase;
+ margin-top: 14px;
+ border-radius: 2px;
+ color: var(--text);
+ transition: all 0.3s ease;
+}
+html[data-theme="dark"] .cart-upsell-banner { background: rgba(255, 255, 255, 0.03); }
+html[data-theme="olive"] .cart-upsell-banner { background: rgba(255, 255, 255, 0.02); }
 
 .profile-meta-card { 
  display: flex; 
@@ -253,7 +271,18 @@ html[data-theme="olive"] header img { filter: invert(0); }
 
 .cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; }
 .cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 20px; flex-shrink: 0; width: 100%; }
-.cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+
+/* Dynamic Discount Label Spacing Configuration */
+.cart-panel-total-row.final-gross-dock {
+    margin-top: 14px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: 1;
+    border-top: 1px dashed var(--line);
+    padding-top: 12px;
+}
 
 .mini-qty-box { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; margin-top: 5px; }
 .mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); margin-top: 0; }
@@ -279,7 +308,7 @@ body { top: 0dvh !important; }
 .btn:hover { background: var(--text); color: var(--bg); }
 
 /* ==========================================================================
-   5. Lacoste Premium Product Grid Framework
+   5. Premium Product Grid Framework
    ========================================================================== */
 section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
@@ -735,13 +764,24 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
        <h2>Shopping Bag</h2>
        <button class="close-panel-btn" onclick="toggleCartDrawer(false)">×</button>
    </div>
+   
+   <div id="cartUpsellMessage" class="cart-upsell-banner" style="display: none;"></div>
+
    <div class="cart-items-scroll-area" id="drawerCartContainer">
        <p style="opacity:0.5; font-size:13px; padding:20px 0; text-align:center;">Your shopping bag is completely empty.</p>
    </div>
    <div class="cart-footer-calculation-dock">
        <div class="cart-panel-total-row">
+           <span>Cart Subtotal</span>
+           <span>₹<span id="drawerCartSubtotal">0.00</span></span>
+       </div>
+       <div class="cart-panel-total-row">
+           <span id="discountLabel">Discount</span>
+           <span>-₹<span id="drawerDiscount">0.00</span></span>
+       </div>
+       <div class="cart-panel-total-row final-gross-dock">
            <span>Total Remittance</span>
-           <span>₹<span id="drawerCartTotal">0</span></span>
+           <span>₹<span id="drawerCartTotal">0.00</span></span>
        </div>
        <button class="payment-btn" onclick="goToGateway()">Proceed To Checkout</button>
    </div>
@@ -848,7 +888,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-// Added missing updateDoc and increment modules to fix trackVisitor console errors
+import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js"
 import { getFirestore, collection, query, where, getDocs, orderBy, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -879,7 +919,6 @@ window.googleLogin = async () => {
  try { await signInWithPopup(auth, provider); } catch (e) { console.error(e); }
 };
 
-// Problem 2 Fix: Made logout function async, clears live variables, updates database cloud backup, then destroys session
 window.googleLogout = async () => { 
     try {
         window.cart = []; 
@@ -894,7 +933,6 @@ window.googleLogout = async () => {
     }
 };
 
-// Problem 1 Fix: Configured onAuthStateChanged handler to operate natively as an async block 
 onAuthStateChanged(auth, async (user) => {
  if (user) {
    document.getElementById("loginBtn").style.setProperty("display", "none", "important");
@@ -908,7 +946,6 @@ onAuthStateChanged(auth, async (user) => {
    window.currentLoggedInUid = user.uid;
    loadSavedAddressToPanel();
    
-   // Sync cloud data seamlessly upon initial user detection
    if(typeof loadCartFromFirestore === 'function') {
        await loadCartFromFirestore();
    }
@@ -919,7 +956,6 @@ onAuthStateChanged(auth, async (user) => {
  }
 });
 
-// Save Cart Function with Premium Multi-State Tracking Optimization
 window.saveCartToFirestore = async function() {
     if(!window.currentLoggedInUid) return;
     try {
@@ -937,7 +973,6 @@ window.saveCartToFirestore = async function() {
     }
 };
 
-// Load Cart Function
 window.loadCartFromFirestore = async function() {
     if(!window.currentLoggedInUid) return;
     try {
@@ -1253,7 +1288,6 @@ window.toggleWishlistProduct = function(prodName, index) {
    else { const p = products.find(x => x.product === prodName); if(p) window.wishlist.push(p); }
    localStorage.setItem("aquilux_wishlist", JSON.stringify(window.wishlist));
    displayProducts(currentProducts); renderWishlistPanel();
-   // Highly integrated: Wishlist changes will auto-merge to cloud backup along with cart items
    if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
@@ -1399,18 +1433,65 @@ window.changeDrawerQty = function(index, change) {
     if(typeof saveCartToFirestore === 'function') saveCartToFirestore();
 }
 
+/* Redesigned Core draw Engine with Decimal Precision and Upsell Core Logic */
 function draw(){
  let t = 0; let h = "";
+ let totalQty = 0; 
+ 
  window.cart.forEach((c, i) => {
    t += c.p * c.q;
-   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${c.p * c.q}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); draw(); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button></div>`;
+   totalQty += c.q;
+   h += `<div class="panel-item-row"><img src="${c.img || ''}" onerror="this.style.display='none'"><div class="panel-item-row-info"><h5>${c.n}</h5><p>Size: ${c.s} · Price: ₹${(c.p * c.q).toFixed(2)}</p><div class="mini-qty-box"><button onclick="changeDrawerQty(${i},-1)">−</button><span>${c.q}</span><button onclick="changeDrawerQty(${i},1)">+</button></div></div><button class="panel-action-icon-btn" onclick="window.cart.splice(${i},1); draw(); if(typeof saveCartToFirestore === 'function') saveCartToFirestore();">×</button></div>`;
  });
+ 
  if(window.cart.length == 0) h = "<p style='opacity:0.5; font-size:13px; padding:20px 0; text-align:center;'>Your shopping bag is completely empty.</p>";
  localStorage.setItem("aquilux_cart", JSON.stringify(window.cart));
  document.getElementById("drawerCartContainer").innerHTML = h; 
- document.getElementById("drawerCartTotal").textContent = t;
- let count = 0; window.cart.forEach(x => { count += x.q; }); 
- document.getElementById("cartCount").textContent = count;
+ 
+ // Tiered Volume Pricing Formula Calculation Logic
+ let discount = 0;
+ if (totalQty >= 3) {
+     discount = t * 0.15;
+ } else if (totalQty == 2) {
+     discount = t * 0.05;
+ }
+ let finalTotal = t - discount;
+
+ // Dynamic UI HTML Discount Label Handling
+ const label = document.getElementById("discountLabel");
+ if (label) {
+     if (totalQty >= 3) {
+         label.innerText = "15% OFF";
+     } else if (totalQty == 2) {
+         label.innerText = "5% OFF";
+     } else {
+         label.innerText = "Discount";
+     }
+ }
+
+ // Dynamic AOV Conversion Upsell Message System Triggers
+ const upsellBanner = document.getElementById("cartUpsellMessage");
+ if (upsellBanner) {
+     if (totalQty === 0) {
+         upsellBanner.style.display = "none";
+     } else if (totalQty === 1) {
+         upsellBanner.style.display = "block";
+         upsellBanner.innerHTML = "Buy 1 more & get 5% OFF ✨";
+     } else if (totalQty === 2) {
+         upsellBanner.style.display = "block";
+         upsellBanner.innerHTML = "Add 1 more item & unlock 15% OFF 🔥";
+     } else {
+         upsellBanner.style.display = "block";
+         upsellBanner.innerHTML = "🎉 15% Discount Applied";
+     }
+ }
+
+ // Render matching high precision decimal numeric arrays to tags
+ document.getElementById("drawerCartSubtotal").textContent = t.toFixed(2);
+ document.getElementById("drawerDiscount").textContent = discount.toFixed(2);
+ document.getElementById("drawerCartTotal").textContent = finalTotal.toFixed(2);
+ 
+ document.getElementById("cartCount").textContent = totalQty;
 }
 
 async function triggerTelegramNotificationAlert(messageText) {
@@ -1433,7 +1514,10 @@ function goToGateway(){
      toggleAccountDrawer(true); switchAccountTab('address'); return;
  }
  const orderData = {
-   cart: window.cart, total: Number(document.getElementById("drawerCartTotal").textContent),
+   cart: window.cart, 
+   subtotal: Number(document.getElementById("drawerCartSubtotal").textContent),
+   discount: Number(document.getElementById("drawerDiscount").textContent),
+   total: Number(document.getElementById("drawerCartTotal").textContent),
    receiverName: savedAddr.receiverName, phone: savedAddr.phone,
    flat: savedAddr.flat || "", road: savedAddr.road || "", landmark: savedAddr.landmark || "", 
    city: savedAddr.city || "", state: savedAddr.state || "", pincode: savedAddr.pincode
@@ -1443,8 +1527,6 @@ function goToGateway(){
  const alertMessage = `📦 *New Order Attempt on Aquilux!*\n\n👤 Owner: Yash Ojha Hub\n👤 Client: ${orderData.receiverName}\n📞 Tracker No: ${orderData.phone}\n💰 Gross Total: ₹${orderData.total}\n📍 Zone Destination: ${orderData.city}, ${orderData.state}`;
  triggerTelegramNotificationAlert(alertMessage);
 
- // Problem 3 Fix: Persistent architecture setup. Cart is NOT cleared here anymore. 
- // Ab cart validation checkout nodes (payment-gateway.html) successfully execution hone ke baad hi completely flush hoga.
  window.location.href = "payment-gateway.html";
 }
 </script>
