@@ -459,15 +459,43 @@ body { top: 0dvh !important; }
 .skiptranslate { display: none !important; }
 
 /* ==========================================================================
-   4. Hero Section
+   4. Hero Section & Cinematic Background Integration
    ========================================================================== */
-.hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
-.hero-luxury-bg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
-.luxury-blur-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.05; }
-.orb-1 { width: 40vw; height: 40vh; top: -5%; left: 15%; background: var(--text); }
-.orb-2 { width: 35vw; height: 35vh; bottom: -5%; right: 10%; background: var(--text); }
-
-.hero .wrap { text-align: center; max-width: 800px; padding: 20px; position: relative; z-index: 2; }
+.hero { 
+    min-height: 100vh; 
+    min-height: 100dvh; 
+    display: grid; 
+    place-items: center; 
+    background: var(--bg) !important; 
+    position: relative; 
+    overflow: hidden; 
+}
+.hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.35; /* Layout visibility optimization overlay */
+    transition: opacity 0.4s ease;
+}
+/* Luxury vignette radial gradient to avoid light background text washing */
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, transparent 30%, color-mix(in srgb, var(--bg) 60%, transparent) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+.hero .wrap { 
+    text-align: center; 
+    max-width: 800px; 
+    padding: 20px; 
+    position: relative; 
+    z-index: 2; 
+}
 .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 400; color: var(--text); letter-spacing: 4px; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; }
 .type { margin: 15px auto; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: var(--text); opacity: 0.5; }
 .btn { display: inline-block; margin-top: 24px; padding: 14px 44px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 11px; letter-spacing: 2.5px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px; }
@@ -982,9 +1010,10 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </header>
  
 <section class="hero">
-  <div class="hero-luxury-bg">
-    <div class="luxury-blur-orb orb-1"></div><div class="luxury-blur-orb orb-2"></div>
-  </div>
+  <!-- Fixed Embedded Video Element Structure Mapped in DOM Node -->
+  <video autoplay muted loop playsinline class="hero-video" id="heroCinematicVideo">
+      <source src="hero.mp4" type="video/mp4">
+  </video>
   <div class="wrap">
     <h1>Aquilux</h1><div class="type">Own. Your. Altitude.</div>
     <a href="#shop" class="btn">SHOP NOW</a>
@@ -1657,7 +1686,7 @@ window.draw = function() {
  document.getElementById("cartCount").textContent = totalItemCount;
 };
 
-// [SECURE OVERHAUL] Client-side token data dropped. Forwarding triggers directly via AppScript endpoint routing.
+// Secure microservice handler tunnel bypasses token exposures completely via server-side endpoints
 async function triggerTelegramNotificationAlert(messageText) {
     const microserviceEndpoint = API_URL; 
     try {
