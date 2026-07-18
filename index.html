@@ -11,7 +11,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-3Q2P8NR8D6');
+  gtag('config', 'G-3Q2P8NR8D6', { 'anonymize_ip': true });
 </script>
 
 <meta name="google-site-verification" content="lJBIN4yiyuSvFcI7bAf5HUs02Havb9KxdEmmrD6pB3s" />
@@ -199,18 +199,24 @@ header {
  transform: scale(1.03);
 }
 
-/* Image Assets Adaptive Inversions Mapped to Variables */
-html[data-theme="light"] header img, 
+/* Specific Target Image Assets Adaptive Inversions */
+html[data-theme="light"] #headerLogoImg,
 html[data-theme="light"] #menuLoader img { 
- filter: invert(1) !important; 
+    filter: invert(1) !important; 
 }
-html[data-theme="dark"] header img, 
+html[data-theme="dark"] #headerLogoImg, 
 html[data-theme="dark"] #menuLoader img { 
- filter: invert(0) !important; 
+    filter: invert(0) !important; 
 }
-html[data-theme="olive"] header img, 
+html[data-theme="olive"] #headerLogoImg, 
 html[data-theme="olive"] #menuLoader img { 
- filter: invert(0) !important; 
+    filter: invert(0) !important; 
+}
+
+/* Strict Exclusion Layer to Shield High-Definition Profile Images */
+#userImg,
+.google-btn img {
+    filter: none !important;
 }
 
 .logo-text strong { 
@@ -476,8 +482,8 @@ body { top: 0dvh !important; }
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 0;
-    opacity: 0.35; /* Layout visibility optimization overlay */
+    z-index: 1;
+    opacity: 0.35; 
     transition: opacity 0.4s ease;
 }
 /* Luxury vignette radial gradient overlay */
@@ -486,7 +492,7 @@ body { top: 0dvh !important; }
     position: absolute;
     inset: 0;
     background: radial-gradient(circle, transparent 30%, color-mix(in srgb, var(--bg) 60%, transparent) 100%);
-    z-index: 1;
+    z-index: 2;
     pointer-events: none;
 }
 .hero .wrap { 
@@ -494,7 +500,7 @@ body { top: 0dvh !important; }
     max-width: 800px; 
     padding: 20px; 
     position: relative; 
-    z-index: 2; 
+    z-index: 3; 
 }
 .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 400; color: var(--text); letter-spacing: 4px; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; }
 .type { margin: 15px auto; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: var(--text); opacity: 0.5; }
@@ -1010,9 +1016,9 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </header>
  
 <section class="hero">
-  <!-- Fixed Embedded Video Element Structure Mapped in DOM Node -->
+  <!-- Fixed Embedded Video Element Target Mapping to Double Extension Formats -->
   <video autoplay muted loop playsinline class="hero-video" id="heroCinematicVideo">
-      <source src="hero.mp4" type="video/mp4">
+      <source src="hero.mp4.mp4" type="video/mp4">
   </video>
   <div class="wrap">
     <h1>Aquilux</h1><div class="type">Own. Your. Altitude.</div>
@@ -1078,7 +1084,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithRedirect, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -1099,29 +1105,35 @@ async function trackVisitorSecure() {
     try {
         const visitorRef = doc(db, "analytics", "live_stats");
         await setDoc(visitorRef, { total_visits: increment(1) }, { merge: true });
+        if(typeof window.gtag === 'function') {
+            window.gtag('event', 'visitor_logged', { 'event_category': 'analytics' });
+        }
     } catch (e) { console.error("Tracking Error Logs:", e); }
 }
 trackVisitorSecure();
 
-window.googleLogin = async () => {
- try { await signInWithRedirect(auth, provider); } catch (e) { console.error(e); }
-};
+// Event listeners bound dynamically inside the module block context directly
+document.getElementById("loginBtn").addEventListener("click", async () => {
+ try { 
+    await signInWithPopup(auth, provider); 
+ } catch (e) { 
+    console.error("Popup window blocked or context execution interrupted:", e);
+ }
+});
 
-window.googleLogout = async () => { 
+document.getElementById("sidebarLogoutBtn").addEventListener("click", async () => {
     try {
+        // Cloud backup storage logic isolation loop completely preserves data logs across sessions
         window.cart = []; 
         if(typeof window.draw === 'function') window.draw();
-        if(typeof window.saveCartToFirestore === 'function') {
-            await window.saveCartToFirestore();
-        }
         await signOut(auth); 
         if(typeof window.toggleAccountDrawer === 'function') window.toggleAccountDrawer(false); 
     } catch(err) {
         console.error("Session termination execution failed:", err);
     }
-};
+});
 
-/* [FIXED COMPLETE AUTH HANDLER] Fully reactive profile hide/show dynamic override injection */
+/* Fully reactive profile hide/show dynamic override injection */
 onAuthStateChanged(auth, async (user) => {
  try {
    const loginBtnEl = document.getElementById("loginBtn");
@@ -1275,10 +1287,11 @@ window.toggleAccountDrawer = function(openState) {
     if(openState) window.toggleCartDrawer(false); 
     const panel = document.getElementById("accountDrawer");
     if(!panel) return;
-    panel.style.display = openState ? "block" : "none";
-    setTimeout(() => panel.classList.toggle("active", openState), 10);
     
     if(openState) {
+        panel.style.display = "block";
+        setTimeout(() => panel.classList.add("active"), 10);
+        
         document.getElementById("accountPageAddress").classList.remove("active");
         document.getElementById("accountPageWishlist").classList.remove("active");
         const langPage = document.getElementById("accountPageLanguage");
@@ -1288,6 +1301,9 @@ window.toggleAccountDrawer = function(openState) {
         document.getElementById("tabBtnWishlist").classList.remove("active");
         const langBtn = document.getElementById("tabBtnLanguage");
         if(langBtn) langBtn.classList.remove("active");
+    } else {
+        panel.classList.remove("active");
+        setTimeout(() => { if(!panel.classList.contains("active")) panel.style.display = "none"; }, 400);
     }
 };
 
@@ -1295,8 +1311,14 @@ window.toggleCartDrawer = function(openState) {
     if(openState) window.toggleAccountDrawer(false);
     const panel = document.getElementById("cartDrawer");
     if(!panel) return;
-    panel.style.display = openState ? "flex" : "none";
-    setTimeout(() => panel.classList.toggle("active", openState), 10);
+    
+    if(openState) {
+        panel.style.display = "flex";
+        setTimeout(() => panel.classList.add("active"), 10);
+    } else {
+        panel.classList.remove("active");
+        setTimeout(() => { if(!panel.classList.contains("active")) panel.style.display = "none"; }, 400);
+    }
 };
 
 function switchAccountTab(tabName) {
@@ -1751,9 +1773,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("closeAccountDrawerBtn").addEventListener("click", () => window.toggleAccountDrawer(false));
     document.getElementById("checkoutActionBtn").addEventListener("click", goToGateway);
     document.getElementById("perspectiveToggleBtn").addEventListener("click", window.togglePerspectiveViewMode);
-    document.getElementById("loginBtn").addEventListener("click", () => window.googleLogin());
     document.getElementById("userBox").addEventListener("click", () => window.toggleAccountDrawer(true));
-    document.getElementById("sidebarLogoutBtn").addEventListener("click", () => window.googleLogout());
     
     // Theme Switcher Fixed Integrations Mapped Cleanly
     document.getElementById("themeDotLight").addEventListener("click", (e) => { e.stopPropagation(); window.setTheme('light'); });
