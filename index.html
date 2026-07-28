@@ -409,13 +409,13 @@ body { top: 0dvh !important; }
 .btn { display: inline-block; margin-top: 24px; padding: 14px 44px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 11px; letter-spacing: 2.5px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px; }
 .btn:hover { background: var(--text); color: var(--bg); }
 
-/* Product Grid (Ultra Minimal Redesign) */
+/* Product Grid (Ultra Minimal & Touch Responsive) */
 section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 32px; }
 
 .card { border: none; background: transparent; display: flex; flex-direction: column; position: relative; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-.card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 16px; background: #fdfdfd; }
+.card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 16px; background: #fdfdfd; cursor: pointer; }
 html[data-theme="dark"] .card-img-wrapper { background: #161616; }
 html[data-theme="olive"] .card-img-wrapper { background: #232f20; } 
 
@@ -423,8 +423,15 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
 .hover-img { opacity: 0; z-index: 1; }
 .primary-img { opacity: 1; z-index: 2; }
 
-.card:hover .primary-img { opacity: 0; }
-.card:hover .hover-img { opacity: 1; transform: scale(1.02); }
+/* Desktop Hover Effects */
+@media (hover: hover) {
+  .card:hover .primary-img { opacity: 0; }
+  .card:hover .hover-img { opacity: 1; transform: scale(1.02); }
+}
+
+/* Mobile Active Toggled State (Touch Friendly) */
+.card-img-wrapper.mobile-toggled .primary-img { opacity: 0 !important; }
+.card-img-wrapper.mobile-toggled .hover-img { opacity: 1 !important; transform: scale(1.02); }
 
 .wishlist-toggle-icon {
  position: absolute; top: 16px; right: 16px; z-index: 10; 
@@ -1306,12 +1313,10 @@ window.displayProducts = function(list = window.products) {
         </svg>
      </button>
      
-     <a href="${productLink}" style="display:block; width:100%; text-decoration:none; color:inherit;">
-       <div class="card-img-wrapper">
-         <img src="${primaryViewSrc}" class="primary-img" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
-         <img src="${hoverViewSrc}" class="hover-img" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
-       </div>
-     </a>
+     <div class="card-img-wrapper" data-link="${productLink}">
+       <img src="${primaryViewSrc}" class="primary-img" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
+       <img src="${hoverViewSrc}" class="hover-img" onerror="this.src='https://i.ibb.co/KcK5JqBf/IMG-0068.png'">
+     </div>
      
      <div class="info" style="text-align: left; padding: 0;">
        <a href="${productLink}" style="text-decoration:none; color:inherit;">
@@ -1330,6 +1335,34 @@ window.displayProducts = function(list = window.products) {
          window.toggleWishlistProduct(this.getAttribute('data-name') || this.dataset.pname);
      });
  });
+
+ /* Mobile Touch & Navigation Logic */
+ document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
+     let touchHandled = false;
+     
+     wrapper.addEventListener('touchstart', function() {
+         touchHandled = true;
+     }, { passive: true });
+
+     wrapper.addEventListener('click', function(e) {
+         const link = this.getAttribute('data-link');
+         const isMobile = window.matchMedia("(max-width: 1024px)").matches || touchHandled;
+
+         if (isMobile) {
+             if (!this.classList.contains('mobile-toggled')) {
+                 // First Tap: Show Hover Image
+                 document.querySelectorAll('.card-img-wrapper').forEach(el => el.classList.remove('mobile-toggled'));
+                 this.classList.add('mobile-toggled');
+             } else {
+                 // Second Tap: Open Product Page
+                 window.location.href = link;
+             }
+         } else {
+             window.location.href = link;
+         }
+     });
+ });
+
  document.querySelectorAll('.grid-add-cart-btn').forEach(btn => {
      btn.addEventListener('click', function() { window.addToCartExplicit(this.dataset.pid); });
  });
