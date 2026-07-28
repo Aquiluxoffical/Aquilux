@@ -1029,7 +1029,7 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
    <div class="marquee-track">
      <span>✦ NEW DROP ✦ PREMIUM QUALITY ✦ FREE SHIPPING ✦ AQUILUX ✦ OWN. YOUR. ALTITUDE. ✦</span>
    </div>
- </div>
+ </div> 
  
  <div class="collection-header">
    <div class="title" style="text-align:left; margin-bottom:0; font-size:1.8rem;">Collection</div>
@@ -1363,8 +1363,10 @@ window.loadCartFromFirestore = async function() {
 </script>
 
 <script>
-// New Updated Telegram Web App Endpoint
-const API_URL = "https://script.google.com/macros/s/AKfycbwd49CNKEad01asV0qG0uZ-KNA8UnxCXlhTHfJIhZlN1O6N82jR1JsuAoJbO4H3Pl3R/exec";
+// Separate URLs for Products Spreadsheet & Telegram Web App
+const PRODUCTS_API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
+const TELEGRAM_API_URL = "https://script.google.com/macros/s/AKfycbwd49CNKEad01asV0qG0uZ-KNA8UnxCXlhTHfJIhZlN1O6N82jR1JsuAoJbO4H3Pl3R/exec";
+
 window.products = []; 
 window.currentProducts = [];
 window.activeClockLoops = {}; 
@@ -1519,7 +1521,7 @@ async function loadProducts() {
    Object.keys(window.activeClockLoops).forEach(k => clearInterval(window.activeClockLoops[k]));
    window.activeClockLoops = {};
 
-   const antiCacheTokenUrl = API_URL + "?t=" + new Date().getTime();
+   const antiCacheTokenUrl = PRODUCTS_API_URL + "?t=" + new Date().getTime();
    const res = await fetch(antiCacheTokenUrl); 
    if(!res.ok) throw new Error("API Connection Interrupted");
    
@@ -1937,9 +1939,8 @@ window.draw = function() {
 };
 
 async function triggerTelegramNotificationAlert(messageText) {
-    const microserviceEndpoint = API_URL; 
     try {
-        await fetch(microserviceEndpoint, {
+        await fetch(TELEGRAM_API_URL, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "application/json" },
@@ -2000,11 +2001,10 @@ window.addEventListener("DOMContentLoaded", () => {
         chatInput.value = "";
         messagesBox.scrollTop = messagesBox.scrollHeight;
 
-        // Har Support/Bug Message ko Instant Telegram Bot par bhejta hai
         triggerTelegramNotificationAlert(`💬 *New Support / Bug Message Alert!* 💬\n\n📝 Message: ${text}`);
 
         setTimeout(() => {
-            messagesBox.innerHTML += `<div class="chat-msg bot">Thank you. Your message has been forwarded directly to our engineering team via Telegram.</div>`;
+            messagesBox.innerHTML += `<div class="chat-msg bot">Thank you. Your message has been forwarded directly to our team via Telegram.</div>`;
             messagesBox.scrollTop = messagesBox.scrollHeight;
         }, 600);
     };
