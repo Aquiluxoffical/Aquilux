@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aquilux — Own. Your. Altitude.</title>
 
+<!-- Three.js for 3D Box Experience -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <!-- Google Analytics (GA4) Integration Framework -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q2P8NR8D6"></script>
 <script>
@@ -38,7 +41,6 @@
  --glass-blur: 12px;
 }
 
-/* Color Mappings Matrix Fixes */
 html[data-theme="dark"] {
  --bg: #111111;
  --text: #ffffff;
@@ -61,11 +63,51 @@ body {
  -webkit-font-smoothing: antialiased;
  transition: background 0.4s ease, color 0.4s ease;
  height: 100%;
+ overflow-x: hidden;
 }
 
-/* ==========================================================================
-   Luxury Receipt Style Popup (Modal Layer)
-   ========================================================================== */
+/* 3D Entry Experience Container */
+#entry-3d-overlay {
+ position: fixed;
+ inset: 0;
+ z-index: 9999999;
+ background: #0a0a0a;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 1.2s;
+}
+#entry-3d-overlay.hidden {
+ opacity: 0;
+ visibility: hidden;
+ pointer-events: none;
+}
+#canvas-3d {
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ cursor: pointer;
+}
+.tap-instruction {
+ position: absolute;
+ bottom: 15%;
+ color: #ffffff;
+ font-family: 'Inter', sans-serif;
+ font-size: 11px;
+ letter-spacing: 4px;
+ text-transform: uppercase;
+ opacity: 0.6;
+ pointer-events: none;
+ animation: pulseText 2s infinite ease-in-out;
+ text-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+@keyframes pulseText {
+ 0%, 100% { opacity: 0.3; transform: translateY(0); }
+ 50% { opacity: 0.8; transform: translateY(-5px); }
+}
+
+/* Luxury Receipt Style Popup */
 .promo-popup-overlay {
  position: fixed;
  inset: 0;
@@ -161,9 +203,7 @@ body {
  font-style: italic;
 }
 
-/* ==========================================================================
-   2. Header & Navigation (Boutique Clean Layout)
-   ========================================================================== */
+/* Header & General Layout */
 header {
  position: fixed;
  top: 0; 
@@ -199,25 +239,14 @@ header {
  transform: scale(1.03);
 }
 
-/* Specific Target Image Assets Adaptive Inversions */
 html[data-theme="light"] #headerLogoImg,
-html[data-theme="light"] #menuLoader img { 
-    filter: invert(1) !important; 
-}
+html[data-theme="light"] #menuLoader img { filter: invert(1) !important; }
 html[data-theme="dark"] #headerLogoImg, 
-html[data-theme="dark"] #menuLoader img { 
-    filter: invert(0) !important; 
-}
+html[data-theme="dark"] #menuLoader img { filter: invert(0) !important; }
 html[data-theme="olive"] #headerLogoImg, 
-html[data-theme="olive"] #menuLoader img { 
-    filter: invert(0) !important; 
-}
+html[data-theme="olive"] #menuLoader img { filter: invert(0) !important; }
 
-/* Strict Exclusion Layer to Shield High-Definition Profile Images */
-#userImg,
-.google-btn img {
-    filter: none !important;
-}
+#userImg, .google-btn img { filter: none !important; }
 
 .logo-text strong { 
  font-family: 'Cormorant Garamond', serif; 
@@ -280,9 +309,7 @@ html[data-theme="olive"] #menuLoader img {
 .google-btn img { height: 16px !important; width: 16px !important; object-fit: contain !important; filter: none !important; }
 .google-btn span { font-size: 12px; font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
 
-/* ==========================================================================
-   3. Sliding Premium Drawers (Ultra Minimal Redesign)
-   ========================================================================== */
+/* Drawers */
 .account-sidebar-panel, .cart-sidebar-panel {
  position: fixed;
  top: 0;
@@ -322,58 +349,20 @@ html[data-theme="olive"] #menuLoader img {
 .profile-meta-card h4 { font-size: 14px; font-weight: 500; letter-spacing: 0.3px; }
 .profile-meta-card p { font-size: 11px; opacity: 0.4; margin-top: 2px; font-weight: 400; }
 
-.account-tabs-nav { 
- display: flex; 
- flex-direction: column; 
- gap: 0; 
- margin-bottom: 20px; 
-}
+.account-tabs-nav { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
 .tab-nav-btn { 
- width: 100%; 
- padding: 18px 4px; 
- font-size: 11px; 
- font-weight: 500; 
- text-transform: uppercase; 
- letter-spacing: 1.5px; 
- background: transparent !important; 
- color: var(--text) !important; 
- border: none;
- border-bottom: 1px solid var(--line);
- border-radius: 0; 
- cursor: pointer; 
- text-align: left; 
- transition: padding-left 0.3s ease, opacity 0.2s; 
- opacity: 0.8;
+ width: 100%; padding: 18px 4px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; 
+ background: transparent !important; color: var(--text) !important; border: none; border-bottom: 1px solid var(--line); border-radius: 0; cursor: pointer; text-align: left; transition: padding-left 0.3s ease, opacity 0.2s; opacity: 0.8;
 }
-.tab-nav-btn:hover { 
- opacity: 1;
- padding-left: 10px;
-}
-.tab-nav-btn.active { 
- opacity: 1;
- font-weight: 600;
-}
-.tab-nav-btn.manage-btn-style { 
- color: var(--text) !important;
-}
+.tab-nav-btn:hover { opacity: 1; padding-left: 10px; }
+.tab-nav-btn.active { opacity: 1; font-weight: 600; }
 
 .account-page-content { display: none; margin-top: 0; margin-bottom: 0; background: color-mix(in srgb, var(--text) 1%, transparent); border-bottom: 1px solid var(--line); }
 .account-page-content.active { display: block; }
 .saved-address-view-card { padding: 16px 8px; font-size: 12px; line-height: 1.7; color: var(--text); opacity: 0.8; }
 .saved-address-view-card h4 { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 8px; font-weight: 600; }
 
-#languageSelector {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--text);
-    font-size: 12px;
-    text-transform: uppercase;
-    cursor: pointer;
-    outline: none;
-}
-
+#languageSelector { width: 100%; padding: 12px; border: 1px solid var(--line); background: transparent; color: var(--text); font-size: 12px; text-transform: uppercase; cursor: pointer; outline: none; }
 .logout-sidebar-btn { width: auto; align-self: flex-start; padding: 8px 4px; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; background: transparent; color: var(--text); opacity: 0.4; border: none; border-bottom: 1px solid var(--text); border-radius: 0; cursor: pointer; margin-top: 32px; transition: opacity 0.2s; }
 .logout-sidebar-btn:hover { opacity: 1; }
 
@@ -389,23 +378,9 @@ html[data-theme="olive"] #menuLoader img {
 .cart-items-scroll-area { flex: 1; overflow-y: auto; margin: 15px 0; padding-right: 5px; }
 .cart-footer-calculation-dock { border-top: 1px solid var(--line); padding-top: 16px; flex-shrink: 0; width: 100%; }
 
-.cart-summary-breakdown {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
-  font-size: 12px;
-}
-.cart-summary-line {
-  display: flex;
-  justify-content: space-between;
-  opacity: 0.7;
-}
-.cart-summary-line.discount-highlight {
-  color: #00aa66;
-  opacity: 1;
-  font-weight: 500;
-}
+.cart-summary-breakdown { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; font-size: 12px; }
+.cart-summary-line { display: flex; justify-content: space-between; opacity: 0.7; }
+.cart-summary-line.discount-highlight { color: #00aa66; opacity: 1; font-weight: 500; }
 
 .cart-panel-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
@@ -413,124 +388,34 @@ html[data-theme="olive"] #menuLoader img {
 .mini-qty-box button { padding: 2px 8px; font-size: 12px; background: transparent; border: none; cursor: pointer; color: var(--text); }
 .mini-qty-box span { padding: 0 4px; font-size: 11px; font-weight: 600; min-width: 14px; text-align: center; }
 
-/* AI Search Container Layout Style Mappings */
-.search-ai-dock {
-    position: relative;
-    width: 240px;
-}
-.search-ai-input {
-    width: 100%;
-    padding: 11px 16px;
-    font-size: 12px;
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    outline: none;
-    font-family: 'Inter', sans-serif;
-}
-.search-ai-suggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-top: none;
-    z-index: 1000;
-    display: none;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-    max-height: 250px;
-    overflow-y: auto;
-}
-.suggestion-node {
-    padding: 12px 16px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    border-bottom: 1px solid var(--line);
-    color: var(--text);
-    transition: background 0.2s ease;
-}
-.suggestion-node:hover {
-    background: color-mix(in srgb, var(--text) 4%, transparent);
-}
-.suggestion-node:last-child {
-    border-bottom: none;
-}
+/* AI Search Container */
+.search-ai-dock { position: relative; width: 240px; }
+.search-ai-input { width: 100%; padding: 11px 16px; font-size: 12px; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px; outline: none; font-family: 'Inter', sans-serif; }
+.search-ai-suggestions { position: absolute; top: 100%; left: 0; width: 100%; background: var(--bg); border: 1px solid var(--line); border-top: none; z-index: 1000; display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.05); max-height: 250px; overflow-y: auto; }
+.suggestion-node { padding: 12px 16px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; border-bottom: 1px solid var(--line); color: var(--text); transition: background 0.2s ease; }
+.suggestion-node:hover { background: color-mix(in srgb, var(--text) 4%, transparent); }
 
 .goog-te-banner-frame, .goog-te-banner { display: none !important; }
 body { top: 0dvh !important; }
 .skiptranslate { display: none !important; }
 
-/* ==========================================================================
-   4. Hero Section & Cinematic Background Integration
-   ========================================================================== */
-.hero { 
-    min-height: 100vh; 
-    min-height: 100dvh; 
-    display: grid; 
-    place-items: center; 
-    background: var(--bg) !important; 
-    position: relative; 
-    overflow: hidden; 
-}
-.hero-video {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    opacity: 0.35; 
-    transition: opacity 0.4s ease;
-}
-/* Luxury vignette radial gradient overlay */
-.hero::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle, transparent 30%, color-mix(in srgb, var(--bg) 60%, transparent) 100%);
-    z-index: 2;
-    pointer-events: none;
-}
-.hero .wrap { 
-    text-align: center; 
-    max-width: 800px; 
-    padding: 20px; 
-    position: relative; 
-    z-index: 3; 
-}
+/* Hero Section */
+.hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; background: var(--bg) !important; position: relative; overflow: hidden; }
+.hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.35; transition: opacity 0.4s ease; }
+.hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, transparent 30%, color-mix(in srgb, var(--bg) 60%, transparent) 100%); z-index: 2; pointer-events: none; }
+.hero .wrap { text-align: center; max-width: 800px; padding: 20px; position: relative; z-index: 3; }
 .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 400; color: var(--text); letter-spacing: 4px; text-transform: uppercase; line-height: 1.1; margin-bottom: 12px; }
 .type { margin: 15px auto; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 400; letter-spacing: 6px; text-transform: uppercase; color: var(--text); opacity: 0.5; }
 .btn { display: inline-block; margin-top: 24px; padding: 14px 44px; border: 1px solid var(--text); color: var(--text); background: transparent; text-decoration: none; font-size: 11px; letter-spacing: 2.5px; font-weight: 500; text-transform: uppercase; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px; }
 .btn:hover { background: var(--text); color: var(--bg); }
 
-/* ==========================================================================
-   5. Lacoste Premium Product Grid Framework
-   ========================================================================== */
+/* Product Grid (Ultra Minimal Redesign) */
 section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 32px; }
 
-.card {
-    border: none;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.card-img-wrapper { 
-    position: relative; 
-    width: 100%; 
-    aspect-ratio: 3 / 4 !important; 
-    overflow: hidden; 
-    margin-bottom: 16px; 
-    background: #fdfdfd;
-}
+.card { border: none; background: transparent; display: flex; flex-direction: column; position: relative; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.card-img-wrapper { position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden; margin-bottom: 16px; background: #fdfdfd; }
 html[data-theme="dark"] .card-img-wrapper { background: #161616; }
 html[data-theme="olive"] .card-img-wrapper { background: #232f20; } 
 
@@ -552,105 +437,14 @@ html[data-theme="olive"] .card-img-wrapper { background: #232f20; }
 .wishlist-toggle-icon.active { color: #ff4a4a !important; background: #ffffff; }
 .wishlist-toggle-icon svg{ width:15px; height:15px; }
 
-.info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 2px 2px 0 2px;
-}
-.info h3 {
-    font-family: 'Inter', sans-serif; 
-    font-weight: 500; 
-    font-size: 12px; 
-    letter-spacing: 0.8px; 
-    color: var(--text); 
-    text-transform: uppercase; 
-}
-.price {
-    font-family: 'Inter', sans-serif; 
-    font-weight: 400; 
-    font-size: 13px; 
-    color: var(--text); 
-    opacity: 0.6;
-}
+.info { display: flex; flex-direction: column; gap: 4px; padding: 2px 2px 0 2px; }
+.info h3 { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 12px; letter-spacing: 0.8px; color: var(--text); text-transform: uppercase; }
+.price { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13px; color: var(--text); opacity: 0.6; }
 
-.grid-product-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 14px;
-    width: 100%;
-}
-.grid-controls-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 8px;
-}
-.grid-size-container {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    position: relative;
-}
-.size-label-tag {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.35;
-    font-weight: 500;
-}
-.grid-size-selector {
-    border: none !important;
-    background: transparent !important;
-    backdrop-filter: none !important;
-    color: var(--text) !important;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    height: auto;
-    padding: 2px 14px 2px 0;
-    cursor: pointer;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-}
-.grid-size-container::after {
-    content: "↓";
-    font-size: 9px;
-    position: absolute;
-    right: 0;
-    pointer-events: none;
-    opacity: 0.4;
-}
-.grid-qty-box {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-}
-.grid-qty-box button {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    font-size: 15px;
-    font-weight: 300;
-    color: var(--text);
-    cursor: pointer;
-    padding: 0 2px;
-    transition: opacity 0.2s;
-}
-.grid-qty-box button:hover { opacity: 0.5; }
-.grid-qty-box span {
-    font-size: 11px;
-    font-weight: 600;
-    min-width: 14px;
-    text-align: center;
-    color: var(--text);
-}
+/* Minimalist Clean Single Button Layout */
 .grid-add-cart-btn {
     width: 100%;
+    margin-top: 12px;
     padding: 12px;
     font-size: 10px;
     font-weight: 600;
@@ -681,25 +475,9 @@ input, textarea { width: 100%; }
 .controls-right-dock { display: flex; align-items: center; gap: 16px; }
 
 .filter-split-container { display: flex; gap: 12px; width: 360px; }
-#priceFilter, #collectionFilter { 
- width: 100%; padding: 11px; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px !important; font-family: 'Inter', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; outline: none;
-}
+#priceFilter, #collectionFilter { width: 100%; padding: 11px; background: transparent; color: var(--text); border: 1px solid var(--line); border-radius: 2px !important; font-family: 'Inter', sans-serif; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; outline: none; }
 
-.perspective-toggle-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 11px 16px;
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    background: transparent;
-    border: 1px solid var(--line);
-    border-radius: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+.perspective-toggle-btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 16px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; background: transparent; border: 1px solid var(--line); border-radius: 2px; cursor: pointer; transition: all 0.3s ease; }
 .perspective-toggle-btn:hover { border-color: var(--text); }
 .perspective-toggle-btn.mode-try { background: var(--text); color: var(--bg); border-color: var(--text); }
 
@@ -712,132 +490,26 @@ input, textarea { width: 100%; }
 
 footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5; }
 
-/* ==========================================================================
-   6. Upcoming Hype Section
-   ========================================================================== */
-.upcoming-section-wrapper {
-    padding: 120px 6% 80px 6%;
-}
-.upcoming-landscape-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    margin-top: 40px;
-}
-.upcoming-hype-card {
-    position: relative;
-    background: transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.hype-blurred-visual-card {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background: #0d0d0d;
-    border-radius: 4px;
-}
-.hype-blurred-visual-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain !important; 
-    filter: blur(28px);
-    transform: scale(1.15);
-    opacity: 0.9;
-    transition: filter 0.5s ease, transform 0.5s ease;
-}
+/* Upcoming Section */
+.upcoming-section-wrapper { padding: 120px 6% 80px 6%; }
+.upcoming-landscape-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-top: 40px; }
+.upcoming-hype-card { position: relative; background: transparent; display: flex; flex-direction: column; align-items: center; overflow: hidden; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.hype-blurred-visual-card { position: relative; width: 100%; aspect-ratio: 16 / 10; overflow: hidden; background: #0d0d0d; border-radius: 4px; }
+.hype-blurred-visual-card img { width: 100%; height: 100%; object-fit: contain !important; filter: blur(28px); transform: scale(1.15); opacity: 0.9; transition: filter 0.5s ease, transform 0.5s ease; }
 
-.hype-overlay-container {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.35);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px;
-    z-index: 5;
-}
-.coming-soon-badge {
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    padding: 8px 20px;
-    text-transform: uppercase;
-    border-radius: 20px;
-}
-.hype-notify-action-btn {
-    background: #ffffff;
-    border: 1px solid #ffffff;
-    color: #111111;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 12px 36px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-.hype-notify-action-btn:hover {
-    background: transparent;
-    color: #ffffff;
-    border-color: #ffffff;
-}
+.hype-overlay-container { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 30px; z-index: 5; }
+.coming-soon-badge { background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; font-size: 10px; font-weight: 600; letter-spacing: 3px; padding: 8px 20px; text-transform: uppercase; border-radius: 20px; }
+.hype-notify-action-btn { background: #ffffff; border: 1px solid #ffffff; color: #111111; font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; padding: 12px 36px; cursor: pointer; transition: all 0.3s ease; }
+.hype-notify-action-btn:hover { background: transparent; color: #ffffff; border-color: #ffffff; }
 
-.countdown-clock-dock {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-.countdown-segment-node {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 32px;
-    font-weight: 300;
-    color: #ffffff;
-    letter-spacing: 1px;
-    min-width: 50px;
-}
-.countdown-segment-node span {
-    font-size: 9px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    opacity: 0.5;
-    margin-top: 4px;
-    color: #ffffff;
-}
+.countdown-clock-dock { display: flex; gap: 24px; justify-content: center; align-items: center; width: 100%; }
+.countdown-segment-node { display: flex; flex-direction: column; align-items: center; font-family: 'Inter', sans-serif; font-size: 32px; font-weight: 300; color: #ffffff; letter-spacing: 1px; min-width: 50px; }
+.countdown-segment-node span { font-size: 9px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 4px; color: #ffffff; }
 
-.upcoming-hype-card:hover {
-    transform: translateY(-4px);
-}
-.upcoming-hype-card:hover .hype-blurred-visual-card img {
-    filter: blur(14px);
-    transform: scale(1.08);
-}
-.upcoming-hype-card:hover .countdown-segment-node {
-    transform: scale(1.03);
-    transition: transform 0.3s ease;
-}
+.upcoming-hype-card:hover { transform: translateY(-4px); }
+.upcoming-hype-card:hover .hype-blurred-visual-card img { filter: blur(14px); transform: scale(1.08); }
+.upcoming-hype-card:hover .countdown-segment-node { transform: scale(1.03); transition: transform 0.3s ease; }
 
-/* ==========================================================================
-   7. Responsiveness & Tablet Fix Viewports
-   ========================================================================== */
 @media screen and (min-width: 768px) and (max-width: 1180px) {
  header { padding: 18px 30px !important; }
  .hero { min-height: 90vh; min-height: 90dvh; }
@@ -869,6 +541,12 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </style>
 </head>
 <body>
+
+<!-- 3D Entry Unboxing Screen Layer -->
+<div id="entry-3d-overlay">
+    <canvas id="canvas-3d"></canvas>
+    <div class="tap-instruction">TAP THE AQUILUX BOX TO UNBOX</div>
+</div>
 
 <div id="promoPopupOverlay" class="promo-popup-overlay">
     <div class="receipt-promo-modal">
@@ -1016,7 +694,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </header>
  
 <section class="hero">
-  <!-- Fixed Embedded Video Element Target Mapping to Double Extension Formats -->
   <video autoplay muted loop playsinline class="hero-video" id="heroCinematicVideo">
       <source src="hero.mp4" type="video/mp4">
   </video>
@@ -1082,6 +759,157 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
   <p>Own. Your. Altitude. · aquilux.support@gmail.com</p>
 </footer>
 
+<!-- Dynamic 3D Box Unboxing Engine -->
+<script>
+window.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('canvas-3d');
+    const overlay = document.getElementById('entry-3d-overlay');
+    
+    if (sessionStorage.getItem('aquilux_unboxed') === 'true') {
+        overlay.style.display = 'none';
+        return;
+    }
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(5, 10, 7);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 2, 10);
+    pointLight.position.set(0, 0, 3);
+    scene.add(pointLight);
+
+    const matteBlackMat = new THREE.MeshStandardMaterial({
+        color: 0x111111,
+        roughness: 0.4,
+        metalness: 0.2
+    });
+
+    const createLogoTexture = () => {
+        const texCanvas = document.createElement('canvas');
+        texCanvas.width = 512;
+        texCanvas.height = 512;
+        const ctx = texCanvas.getContext('2d');
+        ctx.fillStyle = '#111111';
+        ctx.fillRect(0, 0, 512, 512);
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.1)';
+        ctx.lineWidth = 10;
+        ctx.strokeRect(20, 20, 472, 472);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '500 48px "Cormorant Garamond", serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('AQUILUX', 256, 230);
+
+        ctx.font = '400 14px "Inter", sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.5)';
+        ctx.fillText('OWN. YOUR. ALTITUDE.', 256, 280);
+
+        return new THREE.CanvasTexture(texCanvas);
+    };
+
+    const logoTexture = createLogoTexture();
+    const topLidMat = new THREE.MeshStandardMaterial({
+        map: logoTexture,
+        roughness: 0.3,
+        metalness: 0.3
+    });
+
+    const boxGroup = new THREE.Group();
+    
+    const baseGeo = new THREE.BoxGeometry(3, 1.2, 2.2);
+    const baseMesh = new THREE.Mesh(baseGeo, matteBlackMat);
+    baseMesh.position.y = -0.6;
+    boxGroup.add(baseMesh);
+
+    const lidGeo = new THREE.BoxGeometry(3.08, 0.4, 2.28);
+    const lidMaterials = [
+        matteBlackMat, matteBlackMat,
+        topLidMat, matteBlackMat,
+        matteBlackMat, matteBlackMat
+    ];
+    const lidMesh = new THREE.Mesh(lidGeo, lidMaterials);
+    lidMesh.position.set(0, 0.2, 0);
+    boxGroup.add(lidMesh);
+
+    scene.add(boxGroup);
+    camera.position.set(0, 2.5, 6);
+    camera.lookAt(0, 0, 0);
+
+    let isOpening = false;
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function triggerUnboxing() {
+        if (isOpening) return;
+        isOpening = true;
+        sessionStorage.setItem('aquilux_unboxed', 'true');
+        
+        const inst = document.querySelector('.tap-instruction');
+        if(inst) inst.style.opacity = '0';
+
+        setTimeout(() => {
+            overlay.classList.add('hidden');
+            setTimeout(() => {
+                if(typeof window.togglePromoPopup === 'function') {
+                    window.togglePromoPopup(true);
+                }
+            }, 800);
+        }, 1200);
+    }
+
+    canvas.addEventListener('click', (e) => {
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(boxGroup.children);
+        if (intersects.length > 0 || !isOpening) {
+            triggerUnboxing();
+        }
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        if (!isOpening) {
+            boxGroup.rotation.y += 0.005;
+            boxGroup.position.y = Math.sin(Date.now() * 0.002) * 0.08;
+        } else {
+            if (lidMesh.position.y < 2.5) {
+                lidMesh.position.y += 0.05;
+                lidMesh.rotation.x -= 0.03;
+            }
+            if (camera.position.z > 2) {
+                camera.position.z -= 0.08;
+            }
+            boxGroup.rotation.y += 0.02;
+        }
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+});
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
@@ -1112,7 +940,6 @@ async function trackVisitorSecure() {
 }
 trackVisitorSecure();
 
-// Event listeners bound dynamically inside the module block context directly
 document.getElementById("loginBtn").addEventListener("click", async () => {
  try { 
     await signInWithPopup(auth, provider); 
@@ -1123,7 +950,6 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
 
 document.getElementById("sidebarLogoutBtn").addEventListener("click", async () => {
     try {
-        // Cloud backup storage logic isolation loop completely preserves data logs across sessions
         window.cart = []; 
         if(typeof window.draw === 'function') window.draw();
         await signOut(auth); 
@@ -1133,7 +959,6 @@ document.getElementById("sidebarLogoutBtn").addEventListener("click", async () =
     }
 });
 
-/* Fully reactive profile hide/show dynamic override injection */
 onAuthStateChanged(auth, async (user) => {
  try {
    const loginBtnEl = document.getElementById("loginBtn");
@@ -1210,7 +1035,6 @@ window.loadCartFromFirestore = async function() {
 const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
 window.products = []; 
 window.currentProducts = [];
-window.qtyMap = {}; 
 window.activeClockLoops = {}; 
 let currentViewMode = "default"; 
 
@@ -1473,8 +1297,6 @@ window.displayProducts = function(list = window.products) {
    const hasModelImg = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined");
    const primaryViewSrc = (currentViewMode === "try" && hasModelImg) ? p.modelImage : (p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png');
    const hoverViewSrc = (currentViewMode === "try" && hasModelImg) ? (p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png') : (p.hover_image || p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png');
-   
-   if(typeof window.qtyMap[pId] === 'undefined') window.qtyMap[pId] = 0;
 
    g.innerHTML += `
    <div class="card" data-pid="${pId}">
@@ -1498,26 +1320,7 @@ window.displayProducts = function(list = window.products) {
        <div class="price">₹${p.price}</div>
      </div>
 
-     <div class="grid-product-controls">
-         <div class="grid-controls-row">
-             <div class="grid-size-container">
-                 <span class="size-label-tag">Size:</span>
-                 <select id="size_select_${pId}" class="grid-size-selector">
-                     <option value="S">S</option>
-                     <option value="M" selected>M</option>
-                     <option value="L">L</option>
-                     <option value="XL">XL</option>
-                     <option value="XXL">XXL</option>
-                 </select>
-             </div>
-             <div class="grid-qty-box">
-                 <button class="qty-btn-minus" data-pid="${pId}">−</button>
-                 <span id="qty_display_${pId}">${window.qtyMap[pId]}</span>
-                 <button class="qty-btn-plus" data-pid="${pId}">+</button>
-             </div>
-         </div>
-         <button class="grid-add-cart-btn" data-pid="${pId}">Add to Cart</button>
-     </div>
+     <button class="grid-add-cart-btn" data-pid="${pId}">Add to Cart</button>
    </div>`;
  });
 
@@ -1526,12 +1329,6 @@ window.displayProducts = function(list = window.products) {
          e.stopPropagation();
          window.toggleWishlistProduct(this.getAttribute('data-name') || this.dataset.pname);
      });
- });
- document.querySelectorAll('.qty-btn-minus').forEach(btn => {
-     btn.addEventListener('click', function() { window.changeQtyMap(this.dataset.pid, -1); });
- });
- document.querySelectorAll('.qty-btn-plus').forEach(btn => {
-     btn.addEventListener('click', function() { window.changeQtyMap(this.dataset.pid, 1); });
  });
  document.querySelectorAll('.grid-add-cart-btn').forEach(btn => {
      btn.addEventListener('click', function() { window.addToCartExplicit(this.dataset.pid); });
@@ -1635,30 +1432,16 @@ function changeLanguage(lang){
     }, 300);
 }
 
-window.changeQtyMap = function(pId, change) {
-    if(typeof window.qtyMap[pId] === 'undefined') window.qtyMap[pId] = 0;
-    window.qtyMap[pId] += change;
-    if(window.qtyMap[pId] < 0) window.qtyMap[pId] = 0;
-    const display = document.getElementById(`qty_display_${pId}`);
-    if(display) display.textContent = window.qtyMap[pId];
-};
-
 window.addToCartExplicit = function(pId) {
-    if(!window.qtyMap[pId] || window.qtyMap[pId] === 0) { alert("Please select quantity first!"); return; }
     const product = window.products.find(x => (x.id || x.ID || x.product.replace(/\s+/g, '-')) === pId);
     if(!product) return;
     
-    let size = document.getElementById(`size_select_${pId}`).value;
-    let quantity = window.qtyMap[pId];
+    let defaultSize = "M";
+    let defaultQuantity = 1;
     
-    let item = window.cart.find(x => x.n == product.product && x.s == size);
-    if(item) { item.q += quantity; } 
-    else { window.cart.push({ n: product.product, p: Number(product.price), s: size, q: quantity, img: product.image }); }
-    
-    const activeQtySent = window.qtyMap[pId];
-    window.qtyMap[pId] = 0;
-    const display = document.getElementById(`qty_display_${pId}`);
-    if(display) display.textContent = 0;
+    let item = window.cart.find(x => x.n == product.product && x.s == defaultSize);
+    if(item) { item.q += defaultQuantity; } 
+    else { window.cart.push({ n: product.product, p: Number(product.price), s: defaultSize, q: defaultQuantity, img: product.image }); }
     
     const currentFirebaseUser = window.currentLoggedInUid ? { email: document.getElementById("drawerUserEmail").innerText, name: document.getElementById("drawerUserName").innerText } : null;
 
@@ -1667,8 +1450,8 @@ window.addToCartExplicit = function(pId) {
                                   `👤 *User Name:* ${currentFirebaseUser.name}\n` +
                                   `📧 *User Email:* ${currentFirebaseUser.email}\n` +
                                   `📦 *Product:* ${product.product}\n` +
-                                  `🔢 *Quantity:* ${activeQtySent}\n` +
-                                  `📐 *Size Selected:* ${size}\n` +
+                                  `🔢 *Quantity:* ${defaultQuantity}\n` +
+                                  `📐 *Size Selected:* ${defaultSize}\n` +
                                   `💰 *Item Price:* ₹${product.price}`;
         triggerTelegramNotificationAlert(cartTrackingAlert);
     }
@@ -1721,7 +1504,6 @@ window.draw = function() {
  document.getElementById("cartCount").textContent = totalItemCount;
 };
 
-// Secure microservice handler tunnel bypasses token exposures completely via server-side endpoints
 async function triggerTelegramNotificationAlert(messageText) {
     const microserviceEndpoint = API_URL; 
     try {
@@ -1760,12 +1542,9 @@ function goToGateway(){
  window.location.href = "payment-gateway.html";
 }
 
-// Mapped event listeners safely onto explicit target nodes
 window.addEventListener("DOMContentLoaded", () => {
     loadProducts();
-    setTimeout(() => { window.togglePromoPopup(true); }, 1200);
     
-    // UI Interaction Listeners
     document.getElementById("closePromoBtn").addEventListener("click", () => window.togglePromoPopup(false));
     document.getElementById("logoBoxNav").addEventListener("click", (e) => window.handleSmoothScrollToTop(e));
     document.getElementById("cartTitleTrigger").addEventListener("click", () => window.toggleCartDrawer(true));
@@ -1775,22 +1554,18 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById("perspectiveToggleBtn").addEventListener("click", window.togglePerspectiveViewMode);
     document.getElementById("userBox").addEventListener("click", () => window.toggleAccountDrawer(true));
     
-    // Theme Switcher Fixed Integrations Mapped Cleanly
     document.getElementById("themeDotLight").addEventListener("click", (e) => { e.stopPropagation(); window.setTheme('light'); });
     document.getElementById("themeDotOlive").addEventListener("click", (e) => { e.stopPropagation(); window.setTheme('olive'); });
     document.getElementById("themeDotDark").addEventListener("click", (e) => { e.stopPropagation(); window.setTheme('dark'); });
     
-    // Filter controls mapping
     document.getElementById("collectionFilter").addEventListener("change", executeUnifiedFiltering);
     document.getElementById("priceFilter").addEventListener("change", executeUnifiedFiltering);
     document.getElementById("productSearchInput").addEventListener("input", function() { window.handleAiSearchInput(this.value); });
     
-    // Tab navigations mappings
     document.getElementById("tabBtnAddress").addEventListener("click", () => switchAccountTab('address'));
     document.getElementById("tabBtnWishlist").addEventListener("click", () => switchAccountTab('wishlist'));
     document.getElementById("tabBtnLanguage").addEventListener("click", () => switchAccountTab('language'));
     
-    // Redirect Navigation Listeners Case-Sensitivity Optimized
     document.getElementById("tabBtnManageAddr").addEventListener("click", () => { window.location.href = "address.html"; });
     document.getElementById("tabBtnOrders").addEventListener("click", () => { window.location.href = "my-orders.html"; });
     
