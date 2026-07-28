@@ -1939,15 +1939,18 @@ window.draw = function() {
 };
 
 async function triggerTelegramNotificationAlert(messageText) {
+    const botToken = "8892397338:AAEEDt5xZnDLSv51nUuuVejrJfQlFEqVj64";
+    const chatId = "656520549";
+    
+    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(messageText)}&parse_mode=Markdown`;
+
     try {
-        await fetch(TELEGRAM_API_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: messageText })
-        });
-    } catch(err) { console.error("Secure network routing handshake dropped:", err); }
+        await fetch(telegramUrl);
+    } catch(err) {
+        console.error("Telegram error:", err);
+    }
 }
+
 
 function goToGateway(){
  if(window.cart.length === 0) { alert("Your shopping cart is empty!"); return; }
