@@ -1363,7 +1363,8 @@ window.loadCartFromFirestore = async function() {
 </script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzLG7tiOIwpwHI1cAWvXDbslKRV9OpZuGnK_OnDZDrtPKaWcNTVE3lD_WmmvP0RDrm2/exec";
+// New Updated Telegram Web App Endpoint
+const API_URL = "https://script.google.com/macros/s/AKfycbwd49CNKEad01asV0qG0uZ-KNA8UnxCXlhTHfJIhZlN1O6N82jR1JsuAoJbO4H3Pl3R/exec";
 window.products = []; 
 window.currentProducts = [];
 window.activeClockLoops = {}; 
@@ -1630,7 +1631,6 @@ window.displayProducts = function(list = window.products) {
    const isWished = window.wishlist.some(x => x.product === p.product) ? 'active' : '';
    const productLink = `product-page.html?id=${encodeURIComponent(pId)}`;
    
-   // Model Try Now Image Integration for Slide 2
    const primaryViewSrc = (p.image || 'https://i.ibb.co/KcK5JqBf/IMG-0068.png');
    const tryModelSrc = (p.modelImage && String(p.modelImage).trim() !== "" && String(p.modelImage) !== "undefined") ? p.modelImage : (p.hover_image || primaryViewSrc);
 
@@ -1677,7 +1677,6 @@ window.displayProducts = function(list = window.products) {
      });
  });
 
- /* Mobile Touch Carousel + Double Tap Heart + Swipe Logic */
  document.querySelectorAll('.card-img-wrapper').forEach(wrapper => {
      let startX = 0;
      let currentSlide = 0;
@@ -1696,7 +1695,6 @@ window.displayProducts = function(list = window.products) {
          const endX = e.changedTouches[0].clientX;
          const diffX = startX - endX;
 
-         // Handle Horizontal Swipe to Reveal Model / Try Now View
          if (Math.abs(diffX) > 40) {
              if (diffX > 0 && currentSlide === 0) {
                  currentSlide = 1;
@@ -1709,7 +1707,6 @@ window.displayProducts = function(list = window.products) {
              dots.forEach((d, idx) => d.classList.toggle('active', idx === currentSlide));
              window.triggerHapticFeedback(10);
          } else {
-             // Handle Double Tap for Wishlist
              const now = new Date().getTime();
              const tapLength = now - lastTapTime;
              if (tapLength < 300 && tapLength > 0) {
@@ -1980,7 +1977,7 @@ function goToGateway(){
 window.addEventListener("DOMContentLoaded", () => {
     loadProducts();
     
-    // Chat Floating Widget Controls
+    // Chat Floating Widget Controls & Direct Dispatch
     const fab = document.getElementById("chatFabBtn");
     const chatPanel = document.getElementById("chatWindowPanel");
     const chatClose = document.getElementById("chatCloseBtn");
@@ -2003,20 +2000,13 @@ window.addEventListener("DOMContentLoaded", () => {
         chatInput.value = "";
         messagesBox.scrollTop = messagesBox.scrollHeight;
 
-        // Auto Bug Report Dispatch to Telegram
-        const isBugReport = text.toLowerCase().includes("bug") || text.toLowerCase().includes("error") || text.toLowerCase().includes("issue") || text.toLowerCase().includes("problem");
-        if(isBugReport) {
-            triggerTelegramNotificationAlert(`🐛 *New User Bug Report Alert!* 🐛\n\n📝 Report Message: ${text}`);
-            setTimeout(() => {
-                messagesBox.innerHTML += `<div class="chat-msg bot">Thank you. Your bug report has been forwarded directly to the engineering team.</div>`;
-                messagesBox.scrollTop = messagesBox.scrollHeight;
-            }, 600);
-        } else {
-            setTimeout(() => {
-                messagesBox.innerHTML += `<div class="chat-msg bot">Thanks for reaching out! Our team will get back to you shortly.</div>`;
-                messagesBox.scrollTop = messagesBox.scrollHeight;
-            }, 600);
-        }
+        // Har Support/Bug Message ko Instant Telegram Bot par bhejta hai
+        triggerTelegramNotificationAlert(`💬 *New Support / Bug Message Alert!* 💬\n\n📝 Message: ${text}`);
+
+        setTimeout(() => {
+            messagesBox.innerHTML += `<div class="chat-msg bot">Thank you. Your message has been forwarded directly to our engineering team via Telegram.</div>`;
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+        }, 600);
     };
 
     chatSend.addEventListener("click", handleSendChatMessage);
