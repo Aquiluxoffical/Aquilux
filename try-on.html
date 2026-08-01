@@ -264,7 +264,7 @@ header {
 </div>
 
 <script>
-// Element References
+// Element Handles
 const openCameraBtn = document.getElementById('openCameraBtn');
 const uploadUserBtn = document.getElementById('uploadUserBtn');
 const captureSnapBtn = document.getElementById('captureSnapBtn');
@@ -284,6 +284,145 @@ const outputContainer = document.getElementById('outputContainer');
 const aiCanvas = document.getElementById('aiCanvas');
 
 let videoStream = null;
+let userDataLoaded = false;
+let productDataLoaded = false;
+
+// -------------------------------------------------------------------------
+// Core Try-On Generation & Fitting Logic (Advanced Overlay via Face Detection)
+// -------------------------------------------------------------------------
+async function generateAdvancedFitTryOn() {
+  if (!userDataLoaded) {
+    alert("Please provide your photo or take a picture first!");
+    return;
+  }
+  if (!productDataLoaded) {
+    alert("Please upload a T-Shirt product photo!");
+    return;
+  }
+
+  loadingSpinner.style.display = 'block';
+  outputContainer.style.display = 'none';
+
+  // Face detector init (Standard Web API - Chrome, Edge main kaam karta hai)
+  let faceDetector = null;
+  if ('FaceDetector' in window) {
+      faceDetector = new FaceDetector({ maxFaces: 1 });
+  }
+
+  // Define canvas size
+  const targetW = 600;
+  const targetH = 800;
+  aiCanvas.width = targetW;
+  aiCanvas.height = targetH;
+  const ctx = aiCanvas.getContext('2d');
+
+  const userImg = new Image();
+  userImg.crossOrigin = "Anonymous"; // CORS issues handle karne ke liye
+  const prodImg = new Image();
+  prodImg.crossOrigin = "Anonymous";
+
+  // State handles, hum images load hone tak wait karenge sequentially
+  await new Promise(resolve => { userImg.src = userImgPreview.src; userImg.onload = resolve; });
+  await new Promise(resolve => { prodImg.src = productImgPreview.src; prodImg.onload = resolve; });
+
+  // 1. Draw User Image first (background)
+  ctx.drawImage(userImg, 0, 0, targetW, targetH);
+
+  // 2. Advanced Fitting Logic: Face location ke basis par torso area guess karna
+  let fitParams = null;
+
+  if (faceDetector) {
+      try {
+          const faces = await faceDetector.detect(userImgPreview); // Use original preview img element for detection
+          if (faces.length > 0) {
+              const face = faces[0];
+              const fBox = face.boundingBox;
+
+              // Face coords in original image space
+              const origW = userImg.naturalWidth;
+              const origH = userImg.naturalHeight;
+
+              // Face coords converted to Canvas space (targetW/H)
+              const faceX = (fBox.x + fBox.width / 2) * (targetW / origW);
+              const faceY = (fBox.y + fBox.height / 2) * (targetH / origH);
+              const faceWidthOnCanvas = fBox.width * (targetW / origW);
+
+              // ---------------------------------------------------------------------
+              // FITTING RULES (Based on artistic/anatomical proportions):
+              // T-shirt chest area face width se lagbhag 2.5 guna wide hota hai.
+              // T-shirt face ke exact neeche fit hoti hai (Lagbhag 1.3 face vertical offsets neeche).
+              // ---------------------------------------------------------------------
+
+              const shirtWidth = faceWidthOnCanvas * 2.5; // Scale shirt relative to face width
+              const shirtHeight = shirtWidth * 1.25;      // Standard shirt aspect ratio maintain
+              const shirtX = faceX - shirtWidth / 2;      // Center shirt horizontally on face X
+              const shirtY = faceY + faceWidthOnCanvas * 1.2; // Position shirt below face Y
+
+              fitParams = {
+                  x: shirtX,
+                  y: shirtY,
+                  width: shirtWidth,
+                  height: shirtHeight,
+                  detectedFace: true
+              };
+          }
+      } catch (err) {
+          console.error("Face detection failed or not supported in this context.", err);
+      }
+  }
+
+  // 3. Fallback: Agar face nahin miley, basic rule-of-thirds center logic use karein
+  if (!fitParams) {
+      console.log("No face detected, using center fallback.");
+      const fallbackWidth = targetW * 0.55; // 55% of canvas width
+      fitParams = {
+          x: targetW / 2 - fallbackWidth / 2,
+          y: targetH * 0.35, // Position near rule-of-thirds upper line
+          width: fallbackWidth,
+          height: fallbackWidth * 1.25, // Maintain shirt ratio
+          detectedFace: false
+      };
+  }
+
+  // 4. "Warping" or adjusting the T-shirt to match basic perspective
+  // Hum standard blend mode set karenge taaki kapda real lage
+  // Multiply or Source-Atop real lights/shadows maintain karne main help karte hain
+  ctx.globalBlendMode = 'multiply';
+
+  // Yahan par hum logic add karenge basic warp (perspective skew) simulate karne ka
+  // Left top corner ko slightly up, right bottom ko down to mimic basic lean
+  const skewX = fitParams.width * 0.03; // Slight horizontal skew
+  const skewY = fitParams.height * -0.015; // Slight vertical lift on left
+
+  ctx.save();
+  // Transform perspective (skew)
+  ctx.setTransform(1, skewY / fitParams.width, skewX / fitParams.height, 1, fitParams.x, fitParams.y);
+  ctx.globalAlpha = 0.93; // Very slight transparency helps blend boundaries
+  ctx.drawImage(prodImg, 0, 0, fitParams.width, fitParams.height);
+  ctx.restore();
+
+  // Draw detected face box if needed for debugging (COMMENT OUT in final build)
+  /* if(fitParams.detectedFace && faces.length > 0) {
+     ctx.strokeStyle = "red";
+     ctx.lineWidth = 3;
+     // Re-calc absolute canvas values for red box
+     const fBox = faces[0].boundingBox;
+     ctx.strokeRect(fBox.x * (targetW/userImg.naturalWidth), fBox.y * (targetH/userImg.naturalHeight), fBox.width*(targetW/userImg.naturalWidth), fBox.height*(targetH/userImg.naturalHeight));
+  } */
+
+  // Final rendering blending setting ko reset karein
+  ctx.globalBlendMode = 'source-over';
+
+  loadingSpinner.style.display = 'none';
+  outputContainer.style.display = 'block';
+}
+
+// -------------------------------------------------------------------------
+// Event Listeners for UI & Camera/Upload
+// -------------------------------------------------------------------------
+
+// Trigger Try-On Generation
+generateAiBtn.addEventListener('click', generateAdvancedFitTryOn);
 
 // 1. Camera Access Handling
 openCameraBtn.addEventListener('click', async () => {
@@ -306,11 +445,12 @@ captureSnapBtn.addEventListener('click', () => {
   canvas.height = webcamVideo.videoHeight || 480;
   const ctx = canvas.getContext('2d');
   ctx.drawImage(webcamVideo, 0, 0, canvas.width, canvas.height);
-  
+
   userImgPreview.src = canvas.toDataURL('image/png');
   userImgPreview.style.display = 'block';
   webcamVideo.style.display = 'none';
   captureSnapBtn.style.display = 'none';
+  userDataLoaded = true;
 
   // Stop Camera Tracks
   if (videoStream) {
@@ -330,6 +470,7 @@ userInputFile.addEventListener('change', (e) => {
       userPlaceholderText.style.display = 'none';
       webcamVideo.style.display = 'none';
       captureSnapBtn.style.display = 'none';
+      userDataLoaded = true;
       if (videoStream) {
         videoStream.getTracks().forEach(track => track.stop());
       }
@@ -348,51 +489,12 @@ productInputFile.addEventListener('change', (e) => {
       productImgPreview.src = event.target.result;
       productImgPreview.style.display = 'block';
       productPlaceholderText.style.display = 'none';
+      productDataLoaded = true;
     };
     reader.readAsDataURL(file);
   }
 });
 
-// 4. Client-side Processing Canvas Overlay
-generateAiBtn.addEventListener('click', () => {
-  if (userImgPreview.style.display === 'none' || !userImgPreview.src) {
-    alert("Please provide your photo or take a picture first!");
-    return;
-  }
-  if (productImgPreview.style.display === 'none' || !productImgPreview.src) {
-    alert("Please upload a T-Shirt product photo!");
-    return;
-  }
-
-  loadingSpinner.style.display = 'block';
-  outputContainer.style.display = 'none';
-
-  setTimeout(() => {
-    // Process images on Canvas
-    aiCanvas.width = 600;
-    aiCanvas.height = 800;
-    const ctx = aiCanvas.getContext('2d');
-
-    const userImg = new Image();
-    const prodImg = new Image();
-
-    userImg.src = userImgPreview.src;
-    userImg.onload = () => {
-      ctx.drawImage(userImg, 0, 0, 600, 800);
-
-      prodImg.src = productImgPreview.src;
-      prodImg.onload = () => {
-        // Overlay product t-shirt in center area
-        ctx.globalAlpha = 0.85; 
-        ctx.drawImage(prodImg, 150, 250, 300, 350);
-        ctx.globalAlpha = 1.0;
-
-        loadingSpinner.style.display = 'none';
-        outputContainer.style.display = 'block';
-      };
-    };
-  }, 1500);
-});
 </script>
 
 </body>
