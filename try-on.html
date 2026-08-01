@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Aquilux — AI Virtual Try-On</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap">
+
+<style>
+:root {
+  --bg: #ffffff;             
+  --text: #111111;           
+  --line: rgba(17, 17, 17, 0.08); 
+  --glass-bg: rgba(255, 255, 255, 0.6);
+}
+
+html[data-theme="dark"] {
+  --bg: #111111;
+  --text: #ffffff;
+  --line: rgba(255, 255, 255, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.04);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.logo-text strong { 
+  font-family: 'Cormorant Garamond', serif; 
+  font-size: 26px; 
+  font-weight: 500; 
+  letter-spacing: 2px; 
+  text-transform: uppercase;
+}
+
+.back-btn {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid var(--line);
+  padding: 8px 16px;
+  border-radius: 2px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+  flex: 1;
+  width: 100%;
+}
+
+.title-section {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.title-section h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.title-section p {
+  font-size: 12px;
+  opacity: 0.6;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+.tryon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.upload-card {
+  border: 1px solid var(--line);
+  padding: 24px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--glass-bg);
+}
+
+.upload-card h3 {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+}
+
+.preview-box {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border: 1px dashed var(--line);
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: rgba(0,0,0,0.02);
+}
+
+.preview-box img, .preview-box video, .preview-box canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.action-btns {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-primary {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+}
+
+.result-section {
+  grid-column: 1 / -1;
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 40px;
+  text-align: center;
+}
+
+.loading-spinner {
+  display: none;
+  margin: 20px auto;
+  border: 2px solid var(--line);
+  border-top: 2px solid var(--text);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .tryon-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-text">
+    <strong>Aquilux</strong>
+  </div>
+  <a href="index.html" class="back-btn">← Back to Shop</a>
+</header>
+
+<div class="container">
+  <div class="title-section">
+    <h1>AI Fitting Room</h1>
+    <p>Upload your photo & T-Shirt to visualize your style</p>
+  </div>
+
+  <div class="tryon-grid">
+    <!-- User Photo / Camera Card -->
+    <div class="upload-card">
+      <h3>1. Your Photo / Camera</h3>
+      <div class="preview-box" id="userPreviewBox">
+        <span id="userPlaceholderText" style="font-size: 11px; opacity: 0.5;">No photo selected</span>
+        <video id="webcamVideo" autoplay playsinline style="display: none;"></video>
+        <img id="userImgPreview" style="display: none;" alt="User Preview">
+      </div>
+      <input type="file" id="userInputFile" accept="image/*" style="display: none;">
+      
+      <div class="action-btns">
+        <button class="btn" id="openCameraBtn">Use Camera</button>
+        <button class="btn" id="uploadUserBtn">Upload Photo</button>
+      </div>
+      <button class="btn btn-primary" id="captureSnapBtn" style="display: none; margin-top: 10px; width: 100%;">Take Photo</button>
+    </div>
+
+    <!-- T-Shirt Product Card -->
+    <div class="upload-card">
+      <h3>2. T-Shirt / Product Photo</h3>
+      <div class="preview-box" id="productPreviewBox">
+        <span id="productPlaceholderText" style="font-size: 11px; opacity: 0.5;">No T-Shirt selected</span>
+        <img id="productImgPreview" style="display: none;" alt="Product Preview">
+      </div>
+      <input type="file" id="productInputFile" accept="image/*" style="display: none;">
+
+      <div class="action-btns">
+        <button class="btn" id="uploadProductBtn" style="width: 100%;">Upload T-Shirt Image</button>
+      </div>
+    </div>
+
+    <!-- AI Generation Trigger Section -->
+    <div class="result-section">
+      <button class="btn btn-primary" id="generateAiBtn" style="padding: 16px 40px; font-size: 12px;">
+        ✨ Generate AI Virtual Try-On
+      </button>
+      
+      <div class="loading-spinner" id="loadingSpinner"></div>
+
+      <!-- AI Output Display -->
+      <div id="outputContainer" style="margin-top: 30px; display: none;">
+        <h3 style="font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 20px;">AI Result Preview</h3>
+        <div style="max-width: 400px; margin: 0 auto; border: 1px solid var(--line); aspect-ratio: 3/4; overflow: hidden;">
+          <canvas id="aiCanvas" style="width: 100%; height: 100%; object-fit: cover;"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Element References
+const openCameraBtn = document.getElementById('openCameraBtn');
+const uploadUserBtn = document.getElementById('uploadUserBtn');
+const captureSnapBtn = document.getElementById('captureSnapBtn');
+const userInputFile = document.getElementById('userInputFile');
+const webcamVideo = document.getElementById('webcamVideo');
+const userImgPreview = document.getElementById('userImgPreview');
+const userPlaceholderText = document.getElementById('userPlaceholderText');
+
+const uploadProductBtn = document.getElementById('uploadProductBtn');
+const productInputFile = document.getElementById('productInputFile');
+const productImgPreview = document.getElementById('productImgPreview');
+const productPlaceholderText = document.getElementById('productPlaceholderText');
+
+const generateAiBtn = document.getElementById('generateAiBtn');
+const loadingSpinner = document.getElementById('loadingSpinner');
+const outputContainer = document.getElementById('outputContainer');
+const aiCanvas = document.getElementById('aiCanvas');
+
+let videoStream = null;
+
+// 1. Camera Access Handling
+openCameraBtn.addEventListener('click', async () => {
+  try {
+    videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+    webcamVideo.srcObject = videoStream;
+    webcamVideo.style.display = 'block';
+    userImgPreview.style.display = 'none';
+    userPlaceholderText.style.display = 'none';
+    captureSnapBtn.style.display = 'block';
+  } catch (err) {
+    alert("Camera access was denied or is not supported by your browser.");
+  }
+});
+
+// Capture Photo from Camera
+captureSnapBtn.addEventListener('click', () => {
+  const canvas = document.createElement('canvas');
+  canvas.width = webcamVideo.videoWidth || 640;
+  canvas.height = webcamVideo.videoHeight || 480;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(webcamVideo, 0, 0, canvas.width, canvas.height);
+  
+  userImgPreview.src = canvas.toDataURL('image/png');
+  userImgPreview.style.display = 'block';
+  webcamVideo.style.display = 'none';
+  captureSnapBtn.style.display = 'none';
+
+  // Stop Camera Tracks
+  if (videoStream) {
+    videoStream.getTracks().forEach(track => track.stop());
+  }
+});
+
+// 2. User File Upload
+uploadUserBtn.addEventListener('click', () => userInputFile.click());
+userInputFile.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      userImgPreview.src = event.target.result;
+      userImgPreview.style.display = 'block';
+      userPlaceholderText.style.display = 'none';
+      webcamVideo.style.display = 'none';
+      captureSnapBtn.style.display = 'none';
+      if (videoStream) {
+        videoStream.getTracks().forEach(track => track.stop());
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// 3. Product File Upload
+uploadProductBtn.addEventListener('click', () => productInputFile.click());
+productInputFile.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      productImgPreview.src = event.target.result;
+      productImgPreview.style.display = 'block';
+      productPlaceholderText.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// 4. Client-side Processing Canvas Overlay
+generateAiBtn.addEventListener('click', () => {
+  if (userImgPreview.style.display === 'none' || !userImgPreview.src) {
+    alert("Please provide your photo or take a picture first!");
+    return;
+  }
+  if (productImgPreview.style.display === 'none' || !productImgPreview.src) {
+    alert("Please upload a T-Shirt product photo!");
+    return;
+  }
+
+  loadingSpinner.style.display = 'block';
+  outputContainer.style.display = 'none';
+
+  setTimeout(() => {
+    // Process images on Canvas
+    aiCanvas.width = 600;
+    aiCanvas.height = 800;
+    const ctx = aiCanvas.getContext('2d');
+
+    const userImg = new Image();
+    const prodImg = new Image();
+
+    userImg.src = userImgPreview.src;
+    userImg.onload = () => {
+      ctx.drawImage(userImg, 0, 0, 600, 800);
+
+      prodImg.src = productImgPreview.src;
+      prodImg.onload = () => {
+        // Overlay product t-shirt in center area
+        ctx.globalAlpha = 0.85; 
+        ctx.drawImage(prodImg, 150, 250, 300, 350);
+        ctx.globalAlpha = 1.0;
+
+        loadingSpinner.style.display = 'none';
+        outputContainer.style.display = 'block';
+      };
+    };
+  }, 1500);
+});
+</script>
+
+</body>
+</html>
