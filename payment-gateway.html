@@ -6,23 +6,39 @@
 <title>Aquilux — Checkout Ledger</title>
 <style>
 /* ==========================================================================
-   1. Luxury Old Money Typography & Reset
+   iOS 27 Liquid Glass Aesthetic & SF Typography System
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@200;300;400;500;600&display=swap');
+
+:root {
+  --bg: #000000;
+  --surface: rgba(28, 28, 30, 0.65);
+  --surface-solid: #1c1c1e;
+  --text: #ffffff;
+  --text-secondary: #98989d;
+  --line: rgba(255, 255, 255, 0.1);
+  --liquid-border: rgba(255, 255, 255, 0.15);
+  --radius-ios: 24px;
+  --radius-pill: 999px;
+  --shadow-liquid: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --spring-ios: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-ios: cubic-bezier(0.16, 1, 0.3, 1);
+}
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
 }
 
 body {
-    background: #090909;
-    color: #ffffff;
+    background: var(--bg);
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-    padding: 60px 20px;
+    padding: 40px 20px;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -36,66 +52,78 @@ body {
 
 .brand-hero {
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 36px;
 }
 .brand-hero img {
-    width: 90px;
-    opacity: 0.85;
-    margin-bottom: 16px;
-    transition: transform 0.3s ease;
+    width: 64px;
+    opacity: 0.9;
+    margin-bottom: 12px;
+    transition: transform 0.3s var(--spring-ios);
 }
+.brand-hero img:hover { transform: scale(1.08); }
 .brand-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 34px;
+    font-size: 32px;
     font-weight: 400;
-    letter-spacing: 1.5px;
-    color: #ffffff;
+    letter-spacing: 2px;
+    color: var(--text);
+    text-transform: uppercase;
 }
 .brand-subtitle {
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 3px;
-    color: rgba(255, 255, 255, 0.3);
-    margin-top: 6px;
-    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+    font-weight: 600;
 }
 
 .summary-card {
-    background: #111111;
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 12px;
+    background: var(--surface);
+    backdrop-filter: blur(50px) saturate(220%);
+    -webkit-backdrop-filter: blur(50px) saturate(220%);
+    border: 1px solid var(--liquid-border);
+    border-radius: var(--radius-ios);
     padding: 24px;
     margin-bottom: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    box-shadow: var(--shadow-liquid);
 }
 .summary-card h3 {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: rgba(255, 255, 255, 0.35);
-    margin-bottom: 18px;
-    font-weight: 600;
-    border-left: 1.5px solid #ffffff;
-    padding-left: 8px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.summary-card h3::before {
+    content: '';
+    width: 4px;
+    height: 10px;
+    background: var(--text);
+    border-radius: 2px;
 }
 
-.address-details { font-size: 13px; line-height: 1.65; color: #a3a3a3; }
-.address-details strong { color: #ffffff; font-weight: 500; }
+.address-details { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+.address-details strong { color: var(--text); font-weight: 600; }
 
-.item-row { display: flex; align-items: center; gap: 15px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.03); }
+.item-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .item-row:last-of-type { border-bottom: none; }
-.item-thumb { width: 44px; aspect-ratio: 3/4; object-fit: cover; border-radius: 4px; background: #161616; }
+.item-thumb { width: 44px; aspect-ratio: 3/4; object-fit: cover; border-radius: 10px; background: var(--surface-solid); }
 .item-meta { flex: 1; }
-.item-meta h4 { font-size: 13px; font-weight: 400; color: #ffffff; letter-spacing: 0.3px; }
-.item-meta p { font-size: 11px; color: rgba(255, 255, 255, 0.35); margin-top: 3px; }
-.item-price { font-size: 13px; font-weight: 500; color: #ffffff; }
+.item-meta h4 { font-size: 13px; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.5px; }
+.item-meta p { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+.item-price { font-size: 13px; font-weight: 600; color: var(--text); }
 
-.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 18px; border-top: 1px dashed rgba(255, 255, 255, 0.08); }
-.total-label { font-size: 11px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; letter-spacing: 1.5px; }
-.total-amount { font-size: 24px; font-weight: 600; letter-spacing: -0.5px; color: #ffffff; }
+.total-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding-top: 18px; border-top: 1px dashed var(--line); }
+.total-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; }
+.total-amount { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; color: var(--text); }
 
 /* ==========================================================================
-   2. Refined Premium Payment Tray Style
+   2. Refined Liquid Glass Payment Buttons
    ========================================================================== */
 .payment-buttons-grid {
     display: flex;
@@ -109,23 +137,22 @@ body {
     justify-content: space-between;
     width: 100%;
     padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.01);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
+    background: var(--surface-solid);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 0.5px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s var(--spring-ios);
 }
 
 .premium-pay-btn:hover {
     background: #ffffff;
     color: #000000;
-    border-color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255,255,255,0.05);
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(255,255,255,0.15);
 }
 
 .btn-left-content {
@@ -147,18 +174,14 @@ body {
     filter: none;
 }
 
-.premium-pay-btn span {
-    font-weight: 500;
-}
-
 .arrow-indicator {
     font-size: 14px;
-    opacity: 0.3;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0.4;
+    transition: transform 0.3s var(--spring-ios), opacity 0.3s ease;
 }
 .premium-pay-btn:hover .arrow-indicator {
     opacity: 1;
-    transform: translateX(3px);
+    transform: translateX(4px);
 }
 </style>
 </head>
