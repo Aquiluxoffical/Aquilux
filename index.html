@@ -839,9 +839,9 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, increment } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -857,16 +857,33 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-async function trackVisitorSecure() {
-    try {
-        const visitorRef = doc(db, "analytics", "live_stats");
-        await setDoc(visitorRef, { total_visits: increment(1) }, { merge: true });
-        if(typeof window.gtag === 'function') {
-            window.gtag('event', 'visitor_logged', { 'event_category': 'analytics' });
-        }
-    } catch (e) { console.error("Tracking Error Logs:", e); }
+// -------------------------------------------------------------
+// LIVE STUDIO TELEMETRY & VISITOR TRACKING ENGINE
+// -------------------------------------------------------------
+let visitorSessionId = sessionStorage.getItem("aquilux_visitor_session");
+if (!visitorSessionId) {
+    visitorSessionId = "user_" + Math.random().toString(36).substring(2, 10);
+    sessionStorage.setItem("aquilux_visitor_session", visitorSessionId);
+    
+    // Increment Total Store Visits
+    setDoc(doc(db, "analytics", "live_stats"), { total_visits: increment(1) }, { merge: true }).catch(console.error);
 }
-trackVisitorSecure();
+
+function sendLiveUserPresenceHeartbeat() {
+    const currentUser = auth.currentUser;
+    setDoc(doc(db, "active_sessions", visitorSessionId), {
+        userEmail: currentUser ? currentUser.email : "Guest Visitor",
+        currentPath: document.title || "Aquilux Store Front",
+        device: window.innerWidth < 768 ? "Mobile/iPhone" : "Desktop/iPad",
+        city: "India",
+        lat: 20.5937,
+        lng: 78.9629,
+        lastActive: serverTimestamp()
+    }, { merge: true }).catch(console.error);
+}
+
+sendLiveUserPresenceHeartbeat();
+setInterval(sendLiveUserPresenceHeartbeat, 15000); // Pulse every 15s
 
 document.getElementById("loginBtn").addEventListener("click", async () => {
  try { await signInWithPopup(auth, provider); } 
@@ -907,6 +924,7 @@ onAuthStateChanged(auth, async (user) => {
      if(userBoxEl) userBoxEl.style.setProperty("display", "none", "important");
      window.currentLoggedInUid = null;
    }
+   sendLiveUserPresenceHeartbeat();
  } catch (err) { console.error("Auth UI Sync State Loop Error:", err); }
 });
 
