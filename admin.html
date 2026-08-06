@@ -144,9 +144,9 @@ tr:hover td { background: rgba(255,255,255,0.01); }
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -169,13 +169,17 @@ const AUTHORIZED_ADMINISTRATORS = [
 // Map Global Initialization Engine
 let operationalMap;
 function initAdminMapLayout() {
-    if(!document.getElementById('map')) return;
-    // Map initial center focuses on India geographical boundary center
+    if (!document.getElementById('map') || operationalMap) return;
     operationalMap = L.map('map').setView([22.5726, 78.4169], 4);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         attribution: '© OpenStreetMap contributors'
     }).addTo(operationalMap);
+
+    // Fix for Leaflet sizing inside hidden container
+    setTimeout(() => {
+        if (operationalMap) operationalMap.invalidateSize();
+    }, 300);
 }
 
 window.terminateAdminSession = function() {
@@ -201,10 +205,12 @@ function listenToLiveStoreTraffic() {
         if (docSnap.exists()) {
             const data = docSnap.data();
             const counterElement = document.getElementById("total-visits");
-            if(counterElement) {
+            if (counterElement) {
                 counterElement.innerText = data.total_visits || 0;
             }
         }
+    }, (err) => {
+        console.error("Error loading traffic stats:", err);
     });
 }
 
@@ -241,7 +247,7 @@ function listenToOrderTelemetryLogs() {
             const cartItems = data.cart || data.items || [];
             if (Array.isArray(cartItems)) {
                 cartItems.forEach(item => {
-                    itemsMarkup += `<div class="item-entry-row">· ${item.n} (Size: ${item.s} | Qty: ${item.q})</div>`;
+                    itemsMarkup += `<div class="item-entry-row">· ${item.n || item.name || 'Item'} (Size: ${item.s || item.size || 'N/A'} | Qty: ${item.q || item.quantity || 1})</div>`;
                 });
             }
 
@@ -265,22 +271,36 @@ function listenToOrderTelemetryLogs() {
         document.getElementById("metricPendingOrders").innerText = pendingCount;
         document.getElementById("metricApprovedOrders").innerText = approvedCount;
         tableBody.innerHTML = htmlRowsBuffer;
+    }, (err) => {
+        console.error("Firestore Orders query error:", err);
+        const tableBody = document.getElementById("adminOrdersTargetTable");
+        if(tableBody) tableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ff4a4a; padding:40px;">Failed to load order telemetry: ${err.message}</td></tr>`;
     });
 }
 
 window.updateOrderStatusRegistry = async function(docId, selectedStatus) {
-    try { await updateDoc(doc(db, "orders", docId), { paymentStatus: selectedStatus }); } 
-    catch(err) { console.error(err); }
+    try { 
+        await updateDoc(doc(db, "orders", docId), { paymentStatus: selectedStatus }); 
+    } catch(err) { 
+        console.error("Update error:", err);
+        alert("Failed to update status: " + err.message);
+    }
 };
 
 window.deleteAllOrdersFromDatabase = async function() {
     if (!confirm("Delete all entries permanently?")) return;
     try {
         const querySnapshot = await getDocs(collection(db, "orders"));
-        querySnapshot.forEach(async (docSnapshot) => {
-            await deleteDoc(doc(db, "orders", docSnapshot.id));
+        const batch = writeBatch(db);
+        querySnapshot.forEach((docSnap) => {
+            batch.delete(docSnap.ref);
         });
-    } catch (err) { console.error(err); }
+        await batch.commit();
+        alert("All order records deleted successfully.");
+    } catch (err) { 
+        console.error("Batch delete error:", err);
+        alert("Delete failed: " + err.message);
+    }
 };
 </script>
 </body>
