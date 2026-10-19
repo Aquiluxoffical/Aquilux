@@ -303,18 +303,99 @@ body { top: 0dvh !important; }
 .btn { display: inline-block; padding: 18px 52px; border-radius: var(--radius-pill); background: #ffffff; color: #000000; text-decoration: none; font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; transition: transform 0.3s var(--spring-ios), box-shadow 0.3s; }
 .btn:hover { transform: scale(1.06); box-shadow: 0 10px 30px rgba(255, 255, 255, 0.35); }
 
-/* Liquid Glass Collection Cards */
-section { padding: 120px 6%; }
+/* ==========================================================================
+   3D RACK SYSTEM UPDATE (Replaces the old standard Grid layout)
+   ========================================================================== */
+section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px 28px; }
 
-.card { border: none; background: transparent; display: flex; flex-direction: column; position: relative; transition: transform 0.4s var(--spring-ios); }
-.card:hover { transform: translateY(-8px); }
+.grid-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    perspective: 1200px; /* 3D Depth Engine */
+}
+
+/* Metal hanging rod simulation */
+.rack-bar-visual {
+    position: absolute;
+    top: 45px;
+    left: -5%;
+    width: 110%;
+    height: 8px;
+    background: linear-gradient(to bottom, #d0d0d0, #ffffff, #a0a0a0);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    z-index: 0;
+    pointer-events: none;
+}
+html[data-theme="dark"] .rack-bar-visual, html[data-theme="olive"] .rack-bar-visual {
+    background: linear-gradient(to bottom, #333, #666, #222);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.grid {
+    display: flex;
+    gap: 40px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    padding: 80px calc(50vw - 160px) 40px;
+    align-items: flex-start;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbars for absolute clean look */
+.grid::-webkit-scrollbar { display: none; }
+.grid { -ms-overflow-style: none; scrollbar-width: none; }
+
+.card {
+    flex: 0 0 320px;
+    scroll-snap-align: center;
+    transform-style: preserve-3d;
+    transform-origin: top center; /* Hinge from the top like a hanger */
+    will-change: transform, opacity;
+    position: relative;
+    z-index: 1;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hanger Graphic (Hooks onto the metal rod) */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -45px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 24px;
+    height: 24px;
+    border: 3px solid var(--text-secondary);
+    border-bottom: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-radius: 50%;
+    opacity: 0.6;
+    pointer-events: none;
+}
+.card::after {
+    content: '';
+    position: absolute;
+    top: -26px;
+    left: calc(50% - 1.5px);
+    width: 3px;
+    height: 26px;
+    background: var(--text-secondary);
+    opacity: 0.6;
+    pointer-events: none;
+}
+/* ========================================================================== */
 
 .card-img-wrapper {
   position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden;
   margin-bottom: 18px; border-radius: 20px; background: var(--surface-solid);
-  touch-action: pan-y; user-select: none; box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+  touch-action: pan-y; user-select: none; box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
 
 .carousel-slides-track { display: flex; width: 200%; height: 100%; transition: transform 0.4s var(--ease-ios); }
@@ -419,7 +500,6 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 
 @media screen and (min-width: 768px) and (max-width: 1180px) {
   header { width: 95%; padding: 12px 20px !important; }
-  .grid { grid-template-columns: repeat(3, 1fr) !important; gap: 32px 20px !important; }
   .account-sidebar-panel, .cart-sidebar-panel { width: 400px; }
 }
 
@@ -430,7 +510,12 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
   .header-right { gap: 12px !important; }
   .cart-title span:not(#cartCount) { display: none !important; }
   .account-sidebar-panel, .cart-sidebar-panel { width: 100%; right: -100%; padding: 28px 20px; }
-  .grid { grid-template-columns: repeat(2, 1fr) !important; gap: 24px 14px !important; }
+  
+  /* Mobile Rack Adjustments */
+  .grid { padding: 70px calc(50vw - 130px) 40px; gap: 20px; }
+  .card { flex: 0 0 260px; }
+  .rack-bar-visual { top: 40px; }
+  
   .hero h1 { font-size: 2.8rem; }
   .collection-header { flex-direction: column; align-items: flex-start; gap: 16px; }
   .controls-right-dock { width: 100%; flex-direction: column; align-items: stretch; gap: 10px; }
@@ -696,7 +781,13 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
        </div>
    </div>
  </div>
- <div class="grid" id="grid"></div>
+ 
+ <!-- Updated 3D Hanger Rack System -->
+ <div class="grid-container">
+     <div class="rack-bar-visual"></div>
+     <div class="grid" id="grid"></div>
+ </div>
+
 </section>
 
 <section id="upcoming" class="upcoming-section-wrapper" style="display: none; border-top:1px solid var(--line); max-width:1440px; margin:0 auto;">
@@ -835,6 +926,56 @@ window.addEventListener('DOMContentLoaded', () => {
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
+});
+</script>
+
+<!-- JS Logic for the 3D Rack Scroll Engine -->
+<script>
+window.updateRack3DEffect = function() {
+    const grid = document.getElementById("grid");
+    if(!grid) return;
+    const cards = grid.querySelectorAll(".card");
+    const gridRect = grid.getBoundingClientRect();
+    const gridCenter = gridRect.left + gridRect.width / 2;
+
+    cards.forEach((card) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const distFromCenter = cardCenter - gridCenter;
+        // Normalize against screen width
+        const normalizeDist = distFromCenter / (window.innerWidth / 1.5);
+
+        // Compute 3D physics for rack hanging effect
+        let rotateY = normalizeDist * 55;  // Rotate sideways when far
+        let rotateZ = normalizeDist * -3;  // Slight swing tilt
+        let translateZ = Math.abs(normalizeDist) * -250; // Push back into depth
+        let translateX = normalizeDist * -20; // Create slight overlap
+        let scale = 1 - Math.abs(normalizeDist) * 0.05; // Slightly smaller at edges
+
+        // Clamp extreme angles so it doesn't break
+        if (rotateY > 75) rotateY = 75;
+        if (rotateY < -75) rotateY = -75;
+
+        // Apply dynamically updated physics
+        card.style.transform = `translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`;
+        card.style.opacity = 1 - (Math.abs(normalizeDist) * 0.3);
+        card.style.zIndex = Math.round(100 - Math.abs(distFromCenter));
+    });
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("grid");
+    let isScrollingRack = false;
+    
+    if(grid) {
+        grid.addEventListener("scroll", () => {
+            if (!isScrollingRack) {
+                window.requestAnimationFrame(() => { window.updateRack3DEffect(); isScrollingRack = false; });
+                isScrollingRack = true;
+            }
+        }, {passive: true});
+    }
+    window.addEventListener("resize", () => requestAnimationFrame(window.updateRack3DEffect), {passive: true});
 });
 </script>
 
@@ -1252,6 +1393,13 @@ window.displayProducts = function(list = window.products) {
  document.querySelectorAll('.grid-add-cart-btn').forEach(btn => {
      btn.addEventListener('click', function() { window.triggerHapticFeedback(20); window.openQuickViewSheet(this.dataset.pid); });
  });
+
+ // Re-apply 3D Physics to the newly rendered HTML
+ setTimeout(() => {
+     if(typeof window.updateRack3DEffect === 'function') {
+         window.updateRack3DEffect();
+     }
+ }, 50);
 };
 
 window.openQuickViewSheet = function(pId) {
