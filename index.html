@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Aquilux — Own. Your. Altitude.</title>
 
-<!-- Three.js for 3D Box Experience -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
 <!-- Google Analytics (GA4) Integration Framework -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-3Q2P8NR8D6"></script>
 <script>
@@ -85,25 +82,89 @@ body {
   overflow-x: hidden;
 }
 
-/* 3D Entry Overlay */
-#entry-3d-overlay {
-  position: fixed; inset: 0; z-index: 9999999; background: #000000;
-  display: flex; justify-content: center; align-items: center;
-  transition: opacity 1.2s var(--ease-ios), visibility 1.2s;
+/* ==========================================================================
+   Premium Tag Detach Entrance System
+   ========================================================================== */
+#tag-entrance-overlay {
+    position: fixed; inset: 0; z-index: 9999999;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    display: flex; flex-direction: column; align-items: center;
+    transition: opacity 1s var(--ease-ios), visibility 1s;
+    overflow: hidden;
 }
-#entry-3d-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-#canvas-3d { position: absolute; inset: 0; width: 100%; height: 100%; cursor: pointer; }
+#tag-entrance-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 
-.tap-instruction {
-  position: absolute; bottom: 12%; color: #ffffff; font-size: 11px; font-weight: 600;
-  letter-spacing: 3px; text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(40px) saturate(200%);
-  -webkit-backdrop-filter: blur(40px) saturate(200%);
-  padding: 14px 28px; border-radius: var(--radius-pill);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  animation: pulseiOS 2s infinite ease-in-out;
+.hanging-string {
+    width: 2px; height: 180px;
+    background: linear-gradient(to bottom, #111, #888, #333);
+    transform-origin: top center;
+    transition: height 0.1s;
+    box-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+.hanging-string.snapped { 
+    height: 0 !important; 
+    transition: height 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045); 
+}
+
+.premium-tag {
+    width: 200px; height: 320px;
+    background: #111111;
+    border-radius: 12px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.15);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px;
+    position: relative;
+    cursor: grab;
+    transform-origin: top center;
+    animation: gentleSwing 5s infinite ease-in-out;
+    user-select: none;
+    touch-action: none;
+}
+.premium-tag:active { cursor: grabbing; }
+
+.premium-tag.dragging { animation: none; transition: none; }
+.premium-tag.falling {
+    animation: fallOff 0.8s forwards var(--ease-ios);
+}
+
+@keyframes gentleSwing {
+    0%, 100% { transform: rotate(-4deg); }
+    50% { transform: rotate(4deg); }
+}
+@keyframes fallOff {
+    0% { transform: translateY(var(--drag-y)) rotate(var(--drag-rot)); }
+    100% { transform: translateY(150vh) rotate(45deg); opacity: 0; }
+}
+
+.tag-hole {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: #000;
+    border: 2px solid rgba(255,255,255,0.3);
+    margin-top: -12px; margin-bottom: 40px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.8);
+}
+.tag-logo {
+    font-family: 'Cormorant Garamond', serif; font-size: 32px;
+    font-weight: 500; color: #ffffff; letter-spacing: 5px; margin-bottom: 12px;
+}
+.tag-divider {
+    width: 40px; height: 1px; background: rgba(255,255,255,0.2); margin-bottom: 12px;
+}
+.tag-sub {
+    font-size: 9px; font-weight: 600; color: var(--text-secondary);
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: auto;
+}
+.tag-barcode {
+    font-family: 'Inter', sans-serif; font-size: 28px; font-weight: 200;
+    color: #ffffff; letter-spacing: 4px; opacity: 0.4; margin-bottom: 25px; 
+    transform: scaleY(1.4);
+}
+.tag-instruct {
+    font-size: 11px; font-weight: 700; color: #ffffff;
+    letter-spacing: 2px; text-transform: uppercase;
+    animation: pulseiOS 2s infinite ease-in-out;
 }
 @keyframes pulseiOS {
   0%, 100% { opacity: 0.6; transform: scale(1); }
@@ -304,7 +365,7 @@ body { top: 0dvh !important; }
 .btn:hover { transform: scale(1.06); box-shadow: 0 10px 30px rgba(255, 255, 255, 0.35); }
 
 /* ==========================================================================
-   3D RACK SYSTEM UPDATE (Replaces the old standard Grid layout)
+   3D RACK SYSTEM (Horizontal Store Rack view)
    ========================================================================== */
 section { padding: 100px 6%; }
 .title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 400; color: var(--text); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; text-align: center; }
@@ -390,7 +451,6 @@ html[data-theme="dark"] .rack-bar-visual, html[data-theme="olive"] .rack-bar-vis
     opacity: 0.6;
     pointer-events: none;
 }
-/* ========================================================================== */
 
 .card-img-wrapper {
   position: relative; width: 100%; aspect-ratio: 3 / 4 !important; overflow: hidden;
@@ -528,10 +588,17 @@ footer { padding: 80px 8%; border-top: 1px solid var(--line); text-align: center
 </head>
 <body>
 
-<!-- 3D Entry Unboxing Screen Layer -->
-<div id="entry-3d-overlay">
-    <canvas id="canvas-3d"></canvas>
-    <div class="tap-instruction">TAP THE AQUILUX BOX TO UNBOX</div>
+<!-- Premium Clothing Tag Entrance Overlay -->
+<div id="tag-entrance-overlay">
+    <div class="hanging-string"></div>
+    <div class="premium-tag" id="draggable-tag">
+        <div class="tag-hole"></div>
+        <h2 class="tag-logo">AQUILUX</h2>
+        <div class="tag-divider"></div>
+        <p class="tag-sub">OWN. YOUR. ALTITUDE.</p>
+        <div class="tag-barcode">|| | ||| || ||| |</div>
+        <p class="tag-instruct">↓ PULL DOWN TO DETACH</p>
+    </div>
 </div>
 
 <!-- Dynamic Island Support Chat Widget -->
@@ -808,124 +875,93 @@ window.triggerHapticFeedback = function(duration = 15) {
 };
 </script>
 
-<!-- Dynamic 3D Box Unboxing Engine -->
+<!-- Dynamic Swing Tag Detach Engine -->
 <script>
 window.addEventListener('DOMContentLoaded', () => {
-    const canvas = document.getElementById('canvas-3d');
-    const overlay = document.getElementById('entry-3d-overlay');
+    const overlay = document.getElementById('tag-entrance-overlay');
     
     if (sessionStorage.getItem('aquilux_unboxed') === 'true') {
         overlay.style.display = 'none';
         return;
     }
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.shadowMap.enabled = true;
+    const tag = document.getElementById('draggable-tag');
+    const string = document.querySelector('.hanging-string');
+    let startY = 0, currentY = 0, isDragging = false;
+    const detachThreshold = 140; // Pixels to pull before it snaps
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
+    function startDrag(e) {
+        if(e.type === 'touchstart' && e.cancelable) e.preventDefault();
+        isDragging = true;
+        startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+        tag.classList.add('dragging');
+        window.triggerHapticFeedback(10);
+    }
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    dirLight.position.set(5, 10, 7);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
+    function drag(e) {
+        if (!isDragging) return;
+        if(e.type === 'touchmove' && e.cancelable) e.preventDefault(); // Prevent scrolling while pulling
+        
+        const y = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+        currentY = Math.max(0, y - startY); 
+        
+        // Elastic resistance effect
+        const resistanceY = currentY * 0.6;
+        
+        tag.style.transform = `translateY(${resistanceY}px) rotate(${resistanceY * 0.04}deg)`;
+        string.style.height = `${180 + resistanceY}px`;
 
-    const pointLight = new THREE.PointLight(0xffffff, 2, 10);
-    pointLight.position.set(0, 0, 3);
-    scene.add(pointLight);
+        if (resistanceY > detachThreshold) {
+            detachTag(resistanceY);
+        }
+    }
 
-    const matteBlackMat = new THREE.MeshStandardMaterial({
-        color: 0x111111, roughness: 0.4, metalness: 0.2
-    });
+    function endDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        tag.classList.remove('dragging');
+        
+        // Elastic snap-back if not pulled hard enough
+        tag.style.transform = `translateY(0px) rotate(0deg)`;
+        string.style.height = `180px`;
+        tag.style.transition = 'transform 0.4s var(--spring-ios)';
+        string.style.transition = 'height 0.4s var(--spring-ios)';
+        
+        setTimeout(() => {
+            if(!isDragging) { tag.style.transition = ''; string.style.transition = ''; }
+        }, 400);
+    }
 
-    const createLogoTexture = () => {
-        const texCanvas = document.createElement('canvas');
-        texCanvas.width = 512; texCanvas.height = 512;
-        const ctx = texCanvas.getContext('2d');
-        ctx.fillStyle = '#111111'; ctx.fillRect(0, 0, 512, 512);
-
-        ctx.strokeStyle = 'rgba(255,255,255,0.1)'; ctx.lineWidth = 10;
-        ctx.strokeRect(20, 20, 472, 472);
-
-        ctx.fillStyle = '#ffffff'; ctx.font = '500 48px "Cormorant Garamond", serif';
-        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText('AQUILUX', 256, 230);
-
-        ctx.font = '400 14px "Inter", sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.5)';
-        ctx.fillText('OWN. YOUR. ALTITUDE.', 256, 280);
-
-        return new THREE.CanvasTexture(texCanvas);
-    };
-
-    const logoTexture = createLogoTexture();
-    const topLidMat = new THREE.MeshStandardMaterial({ map: logoTexture, roughness: 0.3, metalness: 0.3 });
-
-    const boxGroup = new THREE.Group();
-    const baseGeo = new THREE.BoxGeometry(3, 1.2, 2.2);
-    const baseMesh = new THREE.Mesh(baseGeo, matteBlackMat);
-    baseMesh.position.y = -0.6; boxGroup.add(baseMesh);
-
-    const lidGeo = new THREE.BoxGeometry(3.08, 0.4, 2.28);
-    const lidMaterials = [matteBlackMat, matteBlackMat, topLidMat, matteBlackMat, matteBlackMat, matteBlackMat];
-    const lidMesh = new THREE.Mesh(lidGeo, lidMaterials);
-    lidMesh.position.set(0, 0.2, 0); boxGroup.add(lidMesh);
-
-    scene.add(boxGroup);
-    camera.position.set(0, 2.5, 6); camera.lookAt(0, 0, 0);
-
-    let isOpening = false;
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    function triggerUnboxing() {
-        if (isOpening) return;
-        isOpening = true;
-        window.triggerHapticFeedback(40);
+    function detachTag(finalY) {
+        isDragging = false;
+        window.triggerHapticFeedback(50); // Heavy snap vibration
         sessionStorage.setItem('aquilux_unboxed', 'true');
         
-        const inst = document.querySelector('.tap-instruction');
-        if(inst) inst.style.opacity = '0';
+        // Lock final physical coordinates before falling
+        tag.style.setProperty('--drag-y', `${finalY}px`);
+        tag.style.setProperty('--drag-rot', `${finalY * 0.04}deg`);
+        
+        string.classList.add('snapped');
+        tag.classList.add('falling');
 
+        // Fade out environment
         setTimeout(() => {
             overlay.classList.add('hidden');
             setTimeout(() => {
-                if(typeof window.togglePromoPopup === 'function') { window.togglePromoPopup(true); }
-            }, 800);
-        }, 1200);
+                if(typeof window.togglePromoPopup === 'function') window.togglePromoPopup(true);
+            }, 600);
+        }, 800);
     }
 
-    canvas.addEventListener('click', (e) => {
-        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(boxGroup.children);
-        if (intersects.length > 0 || !isOpening) { triggerUnboxing(); }
-    });
+    // Mouse Events
+    tag.addEventListener('mousedown', startDrag);
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('mouseup', endDrag);
 
-    function animate() {
-        requestAnimationFrame(animate);
-        if (!isOpening) {
-            boxGroup.rotation.y += 0.005;
-            boxGroup.position.y = Math.sin(Date.now() * 0.002) * 0.08;
-        } else {
-            if (lidMesh.position.y < 2.5) { lidMesh.position.y += 0.05; lidMesh.rotation.x -= 0.03; }
-            if (camera.position.z > 2) { camera.position.z -= 0.08; }
-            boxGroup.rotation.y += 0.02;
-        }
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    // Touch Events for Mobile
+    tag.addEventListener('touchstart', startDrag, {passive: false});
+    window.addEventListener('touchmove', drag, {passive: false});
+    window.addEventListener('touchend', endDrag);
 });
 </script>
 
@@ -1394,7 +1430,7 @@ window.displayProducts = function(list = window.products) {
      btn.addEventListener('click', function() { window.triggerHapticFeedback(20); window.openQuickViewSheet(this.dataset.pid); });
  });
 
- // Re-apply 3D Physics to the newly rendered HTML
+ // Re-apply 3D Physics to the newly rendered HTML for the Rack effect
  setTimeout(() => {
      if(typeof window.updateRack3DEffect === 'function') {
          window.updateRack3DEffect();
