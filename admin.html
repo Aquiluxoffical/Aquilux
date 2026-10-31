@@ -144,7 +144,6 @@ td { padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); col
         </div>
     </div>
 
-    <!-- Map Removed: Live users table now takes full width -->
     <div class="section-title">⚡ Live Active Users Activity Feed</div>
     <div class="table-wrapper">
         <table>
@@ -182,9 +181,10 @@ td { padding: 14px 18px; border-bottom: 1px solid rgba(255, 255, 255, 0.04); col
 </div>
 
 <script type="module">
+// UPDATE 1: collectionGroup ko import mein add kiya
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, onSnapshot, doc, updateDoc, writeBatch, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot, doc, updateDoc, writeBatch, getDocs, collectionGroup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
  apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -253,7 +253,6 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// 1. LISTEN TO LIVE USER SESSIONS (Map specific logic removed)
 function listenToActivePresence() {
     const activeUsersRef = collection(db, "active_sessions");
     
@@ -273,10 +272,8 @@ function listenToActivePresence() {
                 lastActiveMs = data.lastActive.seconds ? (data.lastActive.seconds * 1000) : new Date(data.lastActive).getTime();
             }
 
-            // Session active within last 2 minutes (120000 ms)
             if (now - lastActiveMs < 120000) {
                 activeCount++;
-
                 tableMarkup += `
                 <tr>
                     <td><strong>${data.userEmail || 'Guest User'}</strong><br><span style="font-size:10px; opacity:0.5;">ID: ${docSnap.id.substring(0,8)}</span></td>
@@ -310,7 +307,8 @@ function listenToLiveStoreTraffic() {
 }
 
 function listenToOrderTelemetryLogs() {
-    const ordersRef = collection(db, "orders");
+    // UPDATE 2: collection(db, "orders") ki jagah collectionGroup use kiya
+    const ordersRef = collectionGroup(db, "orders");
     
     onSnapshot(ordersRef, (snapshot) => {
         const tableBody = document.getElementById("adminOrdersTargetTable");
@@ -325,11 +323,13 @@ function listenToOrderTelemetryLogs() {
         snapshot.forEach((docSnap) => {
             const data = docSnap.data();
             const docId = docSnap.id;
+            const fullDocPath = docSnap.ref.path; // Exact location in database
+
             totalCount++;
             
             let statusBadgeClass = 'pending';
             const currentStatus = String(data.paymentStatus || 'Pending Verification').toLowerCase();
-            if (currentStatus === 'approved') { statusBadgeClass = 'approved'; approvedCount++; }
+            if (currentStatus === 'approved' || currentStatus === 'success' || currentStatus === 'dispatched') { statusBadgeClass = 'approved'; approvedCount++; }
             else if (currentStatus.includes('cancelled')) { statusBadgeClass = 'cancelled'; }
             else { pendingCount++; }
             
@@ -343,6 +343,7 @@ function listenToOrderTelemetryLogs() {
                 itemsMarkup += `<div style="font-size:11px;">· ${item.n || item.name || 'Item'} (${item.s || item.size || 'Free'} | Qty: ${item.q || item.quantity || 1})</div>`;
             });
 
+            // Status Update dropdown me hum path bhejenge na ki sirf docId
             htmlRowsBuffer += `
             <tr>
                 <td><strong>#${data.orderNumber || docId.substring(0,6)}</strong><br><span style="font-size:10px; opacity:0.4;">${formattedDate}</span></td>
@@ -350,9 +351,10 @@ function listenToOrderTelemetryLogs() {
                 <td>${itemsMarkup || 'No items listed'}</td>
                 <td><strong>₹${data.total || 0}</strong><br><span class="badge ${statusBadgeClass}">${data.paymentStatus || 'Pending'}</span></td>
                 <td>
-                    <select class="action-select" onchange="updateOrderStatusRegistry('${docId}', this.value)">
+                    <select class="action-select" onchange="updateOrderStatusRegistry('${fullDocPath}', this.value)">
                         <option value="Pending Verification" ${data.paymentStatus === 'Pending Verification' ? 'selected' : ''}>Pending</option>
                         <option value="Approved" ${data.paymentStatus === 'Approved' ? 'selected' : ''}>Approve</option>
+                        <option value="Dispatched" ${data.paymentStatus === 'Dispatched' ? 'selected' : ''}>Dispatch</option>
                         <option value="Cancelled by Owner" ${data.paymentStatus === 'Cancelled by Owner' ? 'selected' : ''}>Cancel</option>
                     </select>
                 </td>
@@ -365,18 +367,23 @@ function listenToOrderTelemetryLogs() {
         tableBody.innerHTML = htmlRowsBuffer;
     }, (err) => {
         console.error("Orders Snapshot Error:", err);
+        alert("Admin Fetch Error: " + err.message);
     });
 }
 
-window.updateOrderStatusRegistry = async function(docId, selectedStatus) {
-    try { await updateDoc(doc(db, "orders", docId), { paymentStatus: selectedStatus }); } 
+// UPDATE 3: docId ki jagah path ko update karna
+window.updateOrderStatusRegistry = async function(docPath, selectedStatus) {
+    try { 
+        await updateDoc(doc(db, docPath), { paymentStatus: selectedStatus }); 
+    } 
     catch(err) { alert("Error: " + err.message); }
 };
 
+// UPDATE 4: Delete all function me bhi collectionGroup use karna hoga
 window.deleteAllOrdersFromDatabase = async function() {
     if (!confirm("Are you sure you want to purge all records?")) return;
     try {
-        const querySnapshot = await getDocs(collection(db, "orders"));
+        const querySnapshot = await getDocs(collectionGroup(db, "orders"));
         const batch = writeBatch(db);
         querySnapshot.forEach((docSnap) => batch.delete(docSnap.ref));
         await batch.commit();
