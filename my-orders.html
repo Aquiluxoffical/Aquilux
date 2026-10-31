@@ -339,7 +339,7 @@ html[data-theme="olive"] .cancel-timer-countdown { color: #b51c1c; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+import { getFirestore, collection, query, getDocs, doc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0y2HlxnzZi_hcvDmfV8lmtMbuGd3jpKE",
@@ -380,9 +380,9 @@ async function fetchOrderManifest(uid) {
         Object.keys(window.activeCancelTimers).forEach(key => clearInterval(window.activeCancelTimers[key]));
         window.activeCancelTimers = {};
 
+        // UPDATE: User ke specific orders folder se fetch karne ka query
         const q = query(
-            collection(db, "orders"),
-            where("userId", "==", uid),
+            collection(db, "users", uid, "orders"),
             orderBy("createdAt", "desc")
         );
 
@@ -615,7 +615,8 @@ window.cancelPendingOrder = async function(docId, isDispatched, listIndex) {
         // Fetch target order dataset from the loaded array for formatting text fields
         const targetOrderData = allFetchedOrders[listIndex];
 
-        const orderDocRef = doc(db, "orders", docId);
+        // UPDATE: Update bhi user ke specific folder mein karna hai
+        const orderDocRef = doc(db, "users", currentUserId, "orders", docId);
         await updateDoc(orderDocRef, {
             paymentStatus: "Cancelled by User",
             orderStatus: "Cancelled by User"
